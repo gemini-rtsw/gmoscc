@@ -139,12 +139,13 @@ seq &systemCar,   "top=g7:cc:, cad=park, priority=75"
 # Wait while the database initialises and sequences start.
 taskDelay(210)
 
-# Trigger the initialisation of the instrument sequencer and components controller,
-# disabling initdcCadMark to prevent the detector controller being initialised
+# Trigger the initialisation of the instrument sequencer and components
+# controller, disabling initdcCadMark and avoiding the use of the top level
+# apply record to prevent the detector controller being initialised.
 dbpf "g7:initdcCadMark.DISA", "1"
 dbpf "g7:init.DIR", "0"
-dbpf "g7:apply.DIR", "3"
-# For some reason an extra components controller start is needed
+dbpf "g7:init.DIR", "3"
+# An extra components controller start is needed.
 dbpf "g7:cc:init.DIR", "0"
 dbpf "g7:cc:apply.DIR", "3"
 
