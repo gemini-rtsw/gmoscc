@@ -973,7 +973,7 @@
 	(RDBD (float))
 	(RTRY (int))
 )
-(RECORD "estringin" "estringins" "estringinm" "estringinsim" "ebarcode"
+(RECORD "estringin" "estringins" "estringinm" "estringinsim"
 	(PV (char))
 	(Type "stringin")
 	(DESC (char))
