@@ -6,7 +6,7 @@ display {
 	majv="2"
 	mnrv="4"
 	ndyng="23"
-	npc="43"
+	npc="40"
 	nstr="99"
 	ndynamic="25"
 	nplot="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="5174"
+	nwords_dspy="5132"
 	nwords_sta="520"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1970"
-	osta="1450"
-	odynamic="3298"
-	oplot="5002"
-	ord="5002"
-	oes="5162"
-	okd="5162"
-	opd="5174"
-	opo="5174"
+	odyng="1928"
+	osta="1408"
+	odynamic="3256"
+	oplot="4960"
+	ord="4960"
+	oes="5120"
+	okd="5120"
+	opd="5132"
+	opo="5132"
 	opc="68"
-	ostr="626"
-	ocmap="1450"
-	ocrules="1450"
+	ostr="584"
+	ocmap="1408"
+	ocrules="1408"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -101,9 +101,9 @@ display {
 }
 "text" {
 	object {
-		x="27"
-		y="332"
-		width="188"
+		x="25"
+		y="333"
+		width="190"
 		height="15"
 		groupid="0"
 	}
@@ -163,9 +163,9 @@ display {
 }
 "text" {
 	object {
-		x="64"
+		x="25"
 		y="304"
-		width="151"
+		width="190"
 		height="15"
 		groupid="0"
 	}
@@ -174,9 +174,9 @@ display {
 }
 "text" {
 	object {
-		x="46"
-		y="360"
-		width="169"
+		x="25"
+		y="364"
+		width="190"
 		height="15"
 		groupid="0"
 	}
@@ -185,7 +185,7 @@ display {
 }
 "rectangle" {
 	object {
-		x="15"
+		x="14"
 		y="271"
 		width="342"
 		height="121"
@@ -194,7 +194,7 @@ display {
 }
 "text" {
 	object {
-		x="28"
+		x="21"
 		y="274"
 		width="320"
 		height="22"
@@ -217,7 +217,7 @@ display {
 		x="21"
 		y="48"
 		width="320"
-		height="21"
+		height="22"
 		groupid="0"
 	}
 	textix="Move Inputs (mm):"
@@ -225,9 +225,9 @@ display {
 }
 "text" {
 	object {
-		x="49"
+		x="19"
 		y="160"
-		width="45"
+		width="70"
 		height="15"
 		groupid="0"
 	}
@@ -236,9 +236,9 @@ display {
 }
 "text" {
 	object {
-		x="48"
+		x="19"
 		y="99"
-		width="46"
+		width="70"
 		height="15"
 		groupid="0"
 	}
@@ -247,7 +247,7 @@ display {
 }
 "text" {
 	object {
-		x="20"
+		x="16"
 		y="128"
 		width="73"
 		height="15"
@@ -280,7 +280,7 @@ display {
 	object {
 		x="194"
 		y="444"
-		width="104"
+		width="160"
 		height="12"
 		groupid="0"
 	}
@@ -291,8 +291,8 @@ display {
 	object {
 		x="194"
 		y="487"
-		width="117"
-		height="11"
+		width="159"
+		height="12"
 		groupid="0"
 	}
 	textix="CAR Error Message"
@@ -322,7 +322,7 @@ display {
 	object {
 		x="21"
 		y="200"
-		width="195"
+		width="300"
 		height="22"
 		groupid="0"
 	}
@@ -331,7 +331,7 @@ display {
 }
 "text" {
 	object {
-		x="98"
+		x="103"
 		y="68"
 		width="108"
 		height="25"
@@ -342,9 +342,9 @@ display {
 }
 "text" {
 	object {
-		x="235"
+		x="236"
 		y="68"
-		width="102"
+		width="107"
 		height="25"
 		groupid="0"
 	}
@@ -1008,7 +1008,7 @@ display {
 "text" {
 	object {
 		x="470"
-		y="280"
+		y="282"
 		width="74"
 		height="20"
 		groupid="0"
@@ -1100,7 +1100,7 @@ display {
 "text" {
 	object {
 		x="470"
-		y="280"
+		y="282"
 		width="74"
 		height="20"
 		groupid="0"
@@ -1192,7 +1192,7 @@ display {
 "text" {
 	object {
 		x="470"
-		y="408"
+		y="411"
 		width="73"
 		height="20"
 		groupid="0"
@@ -1242,7 +1242,7 @@ display {
 "text" {
 	object {
 		x="470"
-		y="408"
+		y="411"
 		width="73"
 		height="20"
 		groupid="0"
@@ -1508,8 +1508,8 @@ display {
 	object {
 		x="221"
 		y="327"
-		width="129"
-		height="28"
+		width="130"
+		height="27"
 		groupid="0"
 	}
 	control {
@@ -1554,7 +1554,7 @@ display {
 		x="175"
 		y="566"
 		width="50"
-		height="24"
+		height="23"
 		groupid="0"
 	}
 	monitor {
@@ -1597,10 +1597,10 @@ display {
 }
 "text update" {
 	object {
-		x="222"
+		x="221"
 		y="360"
-		width="113"
-		height="23"
+		width="130"
+		height="22"
 		groupid="0"
 	}
 	monitor {
@@ -1646,7 +1646,7 @@ display {
 		x="26"
 		y="566"
 		width="106"
-		height="24"
+		height="23"
 		groupid="0"
 	}
 	monitor {
@@ -1691,7 +1691,7 @@ display {
 	object {
 		x="221"
 		y="300"
-		width="112"
+		width="130"
 		height="22"
 		groupid="0"
 	}
@@ -1735,9 +1735,9 @@ display {
 }
 "text update" {
 	object {
-		x="96"
+		x="95"
 		y="157"
-		width="121"
+		width="125"
 		height="22"
 		groupid="0"
 	}
@@ -1781,9 +1781,9 @@ display {
 }
 "text update" {
 	object {
-		x="96"
+		x="95"
 		y="96"
-		width="123"
+		width="125"
 		height="22"
 		groupid="0"
 	}
@@ -1829,7 +1829,7 @@ display {
 	object {
 		x="227"
 		y="157"
-		width="122"
+		width="125"
 		height="23"
 		groupid="0"
 	}
@@ -1875,7 +1875,7 @@ display {
 	object {
 		x="227"
 		y="96"
-		width="121"
+		width="125"
 		height="22"
 		groupid="0"
 	}
@@ -1921,7 +1921,7 @@ display {
 	object {
 		x="95"
 		y="124"
-		width="124"
+		width="125"
 		height="27"
 		groupid="0"
 	}
@@ -1964,7 +1964,7 @@ display {
 }
 "text entry" {
 	object {
-		x="226"
+		x="227"
 		y="124"
 		width="125"
 		height="27"
@@ -2101,7 +2101,7 @@ display {
 }
 "choice button" {
 	object {
-		x="124"
+		x="127"
 		y="226"
 		width="225"
 		height="29"
@@ -2483,7 +2483,7 @@ display {
 "message button" {
 	object {
 		x="371"
-		y="273"
+		y="275"
 		width="89"
 		height="30"
 		groupid="0"
@@ -2531,7 +2531,7 @@ display {
 "message button" {
 	object {
 		x="371"
-		y="403"
+		y="406"
 		width="89"
 		height="30"
 		groupid="0"

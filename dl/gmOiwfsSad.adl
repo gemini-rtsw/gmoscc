@@ -7,7 +7,7 @@ display {
 	mnrv="4"
 	ndyng="0"
 	npc="16"
-	nstr="71"
+	nstr="78"
 	ndynamic="15"
 	nplot="0"
 	nrd="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="2244"
+	nwords_dspy="2300"
 	nwords_sta="444"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1242"
-	osta="798"
-	odynamic="1242"
-	oplot="2232"
-	ord="2232"
-	oes="2232"
-	okd="2232"
-	opd="2244"
-	opo="2244"
+	odyng="1298"
+	osta="854"
+	odynamic="1298"
+	oplot="2288"
+	ord="2288"
+	oes="2288"
+	okd="2288"
+	opd="2300"
+	opo="2300"
 	opc="68"
 	ostr="222"
-	ocmap="798"
-	ocrules="798"
+	ocmap="854"
+	ocrules="854"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -120,7 +120,7 @@ display {
 		x="232"
 		y="115"
 		width="111"
-		height="20"
+		height="19"
 		groupid="0"
 	}
 	textix="probeX:"
@@ -175,7 +175,7 @@ display {
 		x="12"
 		y="122"
 		width="124"
-		height="20"
+		height="19"
 		groupid="0"
 	}
 	textix="Init:"
@@ -239,7 +239,7 @@ display {
 "text" {
 	object {
 		x="3"
-		y="70"
+		y="71"
 		width="70"
 		height="19"
 		groupid="0"
@@ -323,7 +323,7 @@ display {
 		x="350"
 		y="110"
 		width="150"
-		height="32"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -415,7 +415,7 @@ display {
 		x="350"
 		y="277"
 		width="200"
-		height="32"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -461,7 +461,7 @@ display {
 		x="147"
 		y="154"
 		width="53"
-		height="31"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -507,7 +507,7 @@ display {
 		x="147"
 		y="115"
 		width="53"
-		height="32"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -553,7 +553,7 @@ display {
 		x="147"
 		y="195"
 		width="53"
-		height="31"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -599,7 +599,7 @@ display {
 		x="147"
 		y="361"
 		width="53"
-		height="31"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -645,7 +645,7 @@ display {
 		x="147"
 		y="240"
 		width="53"
-		height="31"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -691,7 +691,7 @@ display {
 		x="147"
 		y="278"
 		width="53"
-		height="31"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -737,7 +737,7 @@ display {
 		x="147"
 		y="319"
 		width="53"
-		height="31"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -783,7 +783,7 @@ display {
 		x="350"
 		y="150"
 		width="150"
-		height="31"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -827,7 +827,7 @@ display {
 "text update" {
 	object {
 		x="80"
-		y="73"
+		y="71"
 		width="460"
 		height="18"
 		groupid="0"
@@ -875,7 +875,7 @@ display {
 		x="350"
 		y="361"
 		width="150"
-		height="31"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -921,7 +921,7 @@ display {
 		x="350"
 		y="319"
 		width="150"
-		height="31"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -967,7 +967,7 @@ display {
 		x="350"
 		y="233"
 		width="200"
-		height="32"
+		height="30"
 		groupid="0"
 	}
 	monitor {
