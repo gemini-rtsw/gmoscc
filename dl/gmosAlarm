@@ -10,15 +10,15 @@
 # $Id$
 #
 
-setenv ALARMHANDLER ./data
+setenv ALARMHANDLER ${GMOS_OP}/data
 
 #
 # Start Components Controller alarm screen
 #
-./gmosCcAlarm $1
+gmosCcAlarm $1
 
 #
 # Start Detector Controller alarm screen
 #
-./gmosDcAlarm $1
+gmosDcAlarm $1
 

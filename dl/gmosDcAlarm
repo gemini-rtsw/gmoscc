@@ -10,33 +10,33 @@
 # $Id$
 #
 
-setenv ALARMHANDLER ./data
+setenv ALARMHANDLER ${GMOS_OP}/data
 
 set arg = "$1"
 if "$arg" == "CP" then
    echo "Monitoring alarms in GMOS DC Cerro Pachon database"
-   alh -l ./data -a GMOSDC-CP.alhAlarm -f ./data GMOSDC-CP.alhConfig &
+   alh -l ${GMOS_OP}/data -a GMOSDC-CP.alhAlarm -f ${GMOS_OP}/data GMOSDC-CP.alhConfig &
 else if "$arg" == "RS" then
    echo "Monitoring alarms in GMOS DC Mauna Kea database"
-   alh -l ./data -a GMOSDC-MKRR.alhAlarm -f ./data GMOSDC-MKRR.alhConfig &
+   alh -l ${GMOS_OP}/data -a GMOSDC-MKRR.alhAlarm -f ${GMOS_OP}/data GMOSDC-MKRR.alhConfig &
 else if "$arg" == "PRE" then
    echo "Monitoring alarms in GMOS DC Mauna Kea database"
-   alh -l ./data -a GMOSDC-MKRR.alhAlarm -f ./data GMOSDC-MKRR.alhConfig &
+   alh -l ${GMOS_OP}/data -a GMOSDC-MKRR.alhAlarm -f ${GMOS_OP}/data GMOSDC-MKRR.alhConfig &
 else if "$arg" == "SR" then
    echo "Monitoring alarms in GMOS DC Mauna Kea database"
-   alh -l ./data -a GMOSDC-MKRR.alhAlarm -f ./data GMOSDC-MKRR.alhConfig &
+   alh -l ${GMOS_OP}/data -a GMOSDC-MKRR.alhAlarm -f ${GMOS_OP}/data GMOSDC-MKRR.alhConfig &
 else if "$arg" == "POST" then
    echo "Monitoring alarms in GMOS DC Mauna Kea database"
-   alh -l ./data -a GMOSDC-MKRR.alhAlarm -f ./data GMOSDC-MKRR.alhConfig &
+   alh -l ${GMOS_OP}/data -a GMOSDC-MKRR.alhAlarm -f ${GMOS_OP}/data GMOSDC-MKRR.alhConfig &
 else if "$arg" == "SS" then
    echo "Monitoring alarms in GMOS DC Mauna Kea database - simulated"
-   alh -l ./data -a GMOSDC-MKSS.alhAlarm -f ./data GMOSDC-MKSS.alhConfig &
+   alh -l ${GMOS_OP}/data -a GMOSDC-MKSS.alhAlarm -f ${GMOS_OP}/data GMOSDC-MKSS.alhConfig &
 else if "$arg" == "SIM" then
    echo "Monitoring alarms in GMOS DC Mauna Kea database - simulated"
-   alh -l ./data -a GMOSDC-MKSS.alhAlarm -f ./data GMOSDC-MKSS.alhConfig &
+   alh -l ${GMOS_OP}/data -a GMOSDC-MKSS.alhAlarm -f ${GMOS_OP}/data GMOSDC-MKSS.alhConfig &
 else
    echo "Monitoring alarms in GMOS DC Mauna Kea database"
-   alh -l ./data -a GMOSDC-MKRR.alhAlarm -f ./data GMOSDC-MKRR.alhConfig &
+   alh -l ${GMOS_OP}/data -a GMOSDC-MKRR.alhAlarm -f ${GMOS_OP}/data GMOSDC-MKRR.alhConfig &
 endif
 
 echo "NOTE - Not all workstations support audible alarms"

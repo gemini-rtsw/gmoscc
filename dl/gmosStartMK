@@ -3,12 +3,11 @@
 # Start all the GMOS MK display screens
 #
 # Invocation:
-#   gmosStartMK [version] [options] [sim]
+#   gmosStartMK [option] [option] [sim]
 #
-#   version=software version number required (defaults to GMOS_VERSION)
-#   options=noconsole means "do not start the VxWorks consoles"
-#   options=nolog     means "do not log output from the VxWorks consoles"
-#   sim=SIM           means "connect to simulation version of software"
+#   option=noconsole means "do not start the VxWorks consoles"
+#   option=nolog     means "do not log output from the VxWorks consoles"
+#   sim=SIM          means "connect to simulation version of software"
 #
 # Original Author: Steven M Beard
 #
@@ -17,7 +16,7 @@
 # Look for the strings "nolog" and "noconsole" in the arguments.
 #
 
-set options="$1 $2 $3 $4"
+set options="$1 $2 $3"
 
 if ( `echo $options | grep -i nolog | wc -l` == 1 ) then
    set nolog = nolog
@@ -30,76 +29,17 @@ if ( `echo $options | grep -i noconsole | wc -l` == 1 ) then
 else
    set noconsole = 0
 endif
-
-#
-# Check whether the first command argument contains a version number, recognised by
-# a string containing "gmos" or a digit. (The following logic will work for version
-# numbers between 001 and 099).
-#
-
-if ( `echo $1 | grep -i gmos | wc -l` == 1 ) then
-   set version = "$1"
-else if ( `echo $1 | grep -i 00 | wc -l` == 1 ) then
-   set version = "gmos$1"
-else if ( `echo $1 | grep -i 01 | wc -l` == 1 ) then
-   set version = "gmos$1"
-else if ( `echo $1 | grep -i 02 | wc -l` == 1 ) then
-   set version = "gmos$1"
-else if ( `echo $1 | grep -i 03 | wc -l` == 1 ) then
-   set version = "gmos$1"
-else if ( `echo $1 | grep -i 04 | wc -l` == 1 ) then
-   set version = "gmos$1"
-else if ( `echo $1 | grep -i 05 | wc -l` == 1 ) then
-   set version = "gmos$1"
-else if ( `echo $1 | grep -i 06 | wc -l` == 1 ) then
-   set version = "gmos$1"
-else if ( `echo $1 | grep -i 07 | wc -l` == 1 ) then
-   set version = "gmos$1"
-else if ( `echo $1 | grep -i 08 | wc -l` == 1 ) then
-   set version = "gmos$1"
-else if ( `echo $1 | grep -i 09 | wc -l` == 1 ) then
-   set version = "gmos$1"
-else if ( `echo $1 | grep -i 0 | wc -l` == 1 ) then
-   set version = "gmos0$1"
-else if ( `echo $1 | grep -i 1 | wc -l` == 1 ) then
-   set version = "gmos0$1"
-else if ( `echo $1 | grep -i 2 | wc -l` == 1 ) then
-   set version = "gmos0$1"
-else if ( `echo $1 | grep -i 3 | wc -l` == 1 ) then
-   set version = "gmos0$1"
-else if ( `echo $1 | grep -i 4 | wc -l` == 1 ) then
-   set version = "gmos0$1"
-else if ( `echo $1 | grep -i 5 | wc -l` == 1 ) then
-   set version = "gmos0$1"
-else if ( `echo $1 | grep -i 6 | wc -l` == 1 ) then
-   set version = "gmos0$1"
-else if ( `echo $1 | grep -i 7 | wc -l` == 1 ) then
-   set version = "gmos0$1"
-else if ( `echo $1 | grep -i 8 | wc -l` == 1 ) then
-   set version = "gmos0$1"
-else if ( `echo $1 | grep -i 9 | wc -l` == 1 ) then
-   set version = "gmos0$1"
-else
-   if (!($?GMOS_VERSION)) then
-       echo ""
-       echo "Current GMOS software version not defined."
-       echo ""
-       echo 'Type "source .login" and try again.'
-       exit
-   else
-       set version = "$GMOS_VERSION"
-   endif
-endif
+    echo 'Type "source .login" and try again.'
 
 #
 # Extract the optional simulation mode from the last argument specified, which
-# can be the 3rd or 4th depending on whether one or both options are specified.
+# can be the 2nd or 3rd depending on whether one or both options are specified.
 #
 
-if ( $4 != "" ) then
-   set sim = "$4"
-else
+if ( $3 != "" ) then
    set sim = "$3"
+else
+   set sim = "$2"
 endif
 
 #
@@ -110,7 +50,7 @@ if (!($?EPICS)) then
     echo ""
     echo "EPICS environment not defined."
     echo ""
-    echo 'Type "source .login" and try again.'
+    echo 'Type "source .cshrc" and try again.'
     exit
 endif
 
@@ -118,7 +58,7 @@ if (!($?GMOS_OP)) then
     echo ""
     echo "Location of GMOS operational software not defined."
     echo ""
-    echo 'Type "source .login" and try again.'
+    echo 'Type "source gmosCshrc" and try again.'
     exit
 endif
 
@@ -151,38 +91,27 @@ else
 endif
 
 #
-# Go to the software directory
+# Check the software directory
 #
 
 echo ""
-echo "Using ${version} version of the GMOS software in ${GMOS_OP}."
-cd ${GMOS_OP}/${version}
+echo "Using the GMOS software in ${GMOS_OP}."
 
 #
 # Check that the software has been built and a pointer to the detector controller exists
 #
 
-if (!(-e ./bin)) then
+if (!(-e ${GMOS_OP}/bin)) then
     echo ""
     echo "Software not built properly - no bin directory found."
     echo ""
-    echo 'Type "source makeEverything" to build the software and try again.'
     exit
 endif
 
-if (!(-e ./data)) then
+if (!(-e ${GMOS_OP}/data)) then
     echo ""
     echo "Software not built properly - no data directory found."
     echo ""
-    echo 'Type "source makeEverything" to build the software and try again.'
-    exit
-endif
-
-if (!(-e ./gmosdc)) then
-    echo ""
-    echo "Pointer to detector controller directory not found."
-    echo ""
-    echo 'Type "source uaeSetup" to set up the software and try again.'
     exit
 endif
 
@@ -198,19 +127,18 @@ else
 
     echo ""
     echo "Starting GMOS components controller VxWorks console window."
-    echo 'Type "pwd" on this console to make sure it is running' ${version}
     gmoscrate $nolog
 
     echo ""
     echo "Starting GMOS detector controller VxWorks console window."
-    echo 'Type "pwd" on this console to make sure it is running' ${GMOS_DC}
     mordred $nolog
 endif
 
 #
-# Finally, start the dm screens (argument $sim is used for testing)
+# Finally, start the dm screens `, assuming this command is in the PATH
+# (argument $sim is used for testing)
 #
-./gmosStart $sim
+gmosStart $sim
 
 
 
