@@ -1,0 +1,50 @@
+aux_grating
+#
+# This file contains the lookup tables calibrating grating cell tilt
+# angle into motor steps. A lookup table is used because the calibration
+# can be non-linear and include a sinusoidal element. Cell numbers 1,2,3,4
+# are the same as cells A,B,C,D. 65 degrees is the zero order reflection
+# angle.
+#
+
+#
+# All these lookup tables assume that the tilt vs motor steps curve for each
+# cell in any position is linear with the same gradient. The gradient is
+# currently chosen to be the average best fit for the B1200 and R600
+# grating cells in the blaze direction +ve orientation, as measured by Chris
+# Tierney and Morag Hasite at UKATC in July 2002
+#
+# (107.2623129 + 107.1323352) / 2.0 = 107.19732
+
+# The curve for each position is offset by the number of motor steps
+# required to bring the centre of the mask field to the centre of
+# the detector field at, apparently, 65 degrees (which is the GMOS-S fold
+# angle). This has been proved dependent upon both the cell and turret
+# position - for this reason it should be re-calibrated whenever
+# a grating cell is moved.
+
+## Grating position A translation table
+# tilt = steps /107.19732
+# 65.00 required   6987   motor steps
+#               Cell      Tilt      Steps
+# 30000012 Cell 1
+1               0.0       19.1742
+1               5.0       555.1608
+1               10.0      1091.1474
+1               15.0      1627.1340
+1               20.0      2163.1206
+1               25.0      2699.1072
+1               30.0      3235.0938
+1               35.0      3771.0804
+1               40.0      4307.0670
+1               45.0      4843.0536
+1               50.0      5379.0402
+1               55.0      5915.0268
+1               60.0      6451.0134
+1               65.0      6987.0000
+1               70.0      7522.9866
+1               75.0      8058.9732
+1               80.0      8594.9598
+1               85.0      9130.9464
+1               90.0      9666.9330
+

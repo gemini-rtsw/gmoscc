@@ -1,0 +1,18 @@
+aux_grating
+# Grating A translation table (based on Marc Dubbeldam's report)
+# NOTE: These figures are based on Marc's orientation A measurement
+# corrected using the offset measured by Rick Murowinski on 24 May 2000
+# corrected again using the offset measured by Stephanie Juneau on 28 June 2000
+# corrected again using the offset measured by Stephanie Juneau on 13 Feb 2001
+# Mirror
+# Cell  Tilt    Steps
+
+1   0.0000000       0
+1   7.784         882.5
+1  26.049        2810.5
+1  40.222        4306.5
+1  52.916        5646.5
+1  65.000        6922
+1  77.088        8198
+1  89.750        9534.5
+

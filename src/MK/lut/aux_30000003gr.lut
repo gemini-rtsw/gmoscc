@@ -1,0 +1,54 @@
+aux_grating
+# Grating R831 in position B
+# Grating B translation table (based on Marc Dubbeldam's report).
+# NOTE: These figures are based on Marc's orientation A measurement
+# corrected using the offset measured by Rick Murowinski on 24 May 2000
+# corrected again using the offset measured by Stephanie Juneau on 28 June 2000
+# corrected again using the offset measured by Stephanie Juneau on 13 Feb 2001
+# updated for grating R831 by Isobel Hook on 17 December 2001, by adding 23.3 to
+# all step values
+# except 0,0
+
+# Cell  Tilt    Steps
+
+2   0.0000000       0
+2   7.755         877
+2  26.016        2804
+2  40.226        4304
+2  52.902        5642
+2  65.000        6919
+2  77.060        8192
+2  89.741        9531
+
+# Grating R831 in position C
+# Using R400 in position C as starting point. Determined offset
+# (for grating R831 in position C, 65 degrees corresponds to 6924steps)
+# Other positions offset, zero kept at zero, IJ 2002nov21
+# Cell  Tilt    Steps
+
+3   0.0000000       0
+3   7.760         882
+3  26.016        2809
+3  40.226        4309
+3  52.888        5645.5
+3  65.000        6924
+3  77.074        8198.5
+3  89.741        9535.5
+# Grating D translation table (based on Marc Dubbeldam's report).
+# NOTE: These figures are based on Marc's orientation A measurement
+# corrected using the offset measured by Rick Murowinski on 24 May 2000
+# corrected again using the offset measured by Stephanie Juneau on 28 June 2000
+# corrected again using the offset reported by Isobel Hook on 17 January 2001
+# corrected again using the offset measured by Stephanie Juneau on 13 Feb 2001
+# Grating R831
+# Cell  Tilt    Steps
+
+4   0.0000000       0
+4   7.755         941.5
+4  26.025        2871
+4  40.231        4369.5
+4  52.912        5708
+4  65.000        6984
+4  77.069        8258
+4  89.745        9596
+
