@@ -284,8 +284,7 @@ Improvements made to version 2-7:
   as suggested by Steven Beard. 
 - default values for the motor power scan changed to 0.1 seconds. 	
 
-CJT changes :
--------------
+  CJT changes :
 - Fixed pvload of gmSeqTracking.pv to load iaa = 180 upon reboot.
 - Fixed gmosAlarm. Account gmos needed write accsess to /gemini/gmos/gmos/data.
   This needs a longer term solution.
@@ -294,3 +293,25 @@ CJT changes :
    * calculation of GMOS angles in function gmSeqAtmDemands().
    * changes to record issPort in capfast/gmSeqAtmTrack.sch
    * dl/gmSeqTcsSimulate.dl : added control for IAA value
+
+dev
+---
+- combine probeState in the inPosition flag
+- Includes Steven Beard's changes to gmOiwfsFollowA.sch to fix
+the in-position problem. Debugged and final fixes made by MBec.
+- EE2 temperature alarm disabled (temp3) in pv/gmTempCalibrate.pv
+- Changed scan rate of bi records in the following schematics:
+    
+    atmdc.sch
+    doors.sch
+    gmIlckWatchdog.sch
+    gratStat.sch
+    lifter.sch
+    xycomIn.sch
+    gmMaskSensors.sch
+
+- src/gmosGensub.c typo fixed. (strncmp changed to strncpy ingmosHealthCombineInt"
+- Rate of change of temperature that triggers an alarm for each of the sensors changed to higher values
+- GMOS OIWFS tracking bug fix
+
+

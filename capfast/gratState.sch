@@ -16,9 +16,9 @@ w 568 1323 100 0 n#50 ebis.TurretPosA.VAL 224 1312 960 1312 egenSub.SwitchStates
 w 1554 1315 100 0 state outhier.state.p 1920 1312 1248 1312 egenSub.SwitchStates.OUTA
 w -56 1371 100 0 n#46 hwin.hwin#13.in -32 1360 -32 1360 ebis.TurretPosA.INP
 w -56 1115 100 0 n#45 hwin.hwin#16.in -32 1104 -32 1104 ebis.TurretPosB.INP
-s -128 1472 100 0 Grating in position microswitches
-s 752 1472 100 0 This gensub combines the switch states into a single 0101 string.
 s -352 1952 300 0 Monitor the state fo the system microswitches
+s 752 1472 100 0 This gensub combines the switch states into a single 0101 string.
+s -128 1472 100 0 Grating in position microswitches
 [cell use]
 use hwout 1376 1207 100 0 hwout#74
 xform 0 1472 1248
@@ -33,32 +33,25 @@ p -132 1696 100 0 -1 COMMENT5:processing whenever a single bit changes,
 p -132 1664 100 0 -1 COMMENT6:only one of the records is triggered by
 p -132 1632 100 0 -1 COMMENT7:an I/O interrupt, and the others are
 p -132 1600 100 0 -1 COMMENT8:forward linked
-use hwin -224 551 100 0 hwin#57
-xform 0 -128 592
-p -221 584 100 0 -1 val(in):#<$(grtAtD)>
-use hwin -224 807 100 0 hwin#56
-xform 0 -128 848
-p -221 840 100 0 -1 val(in):#<$(grtAtC)>
-use hwin -224 1063 100 0 hwin#16
-xform 0 -128 1104
-p -221 1096 100 0 -1 val(in):#<$(grtAtB)>
 use hwin -224 1319 100 0 hwin#13
 xform 0 -128 1360
 p -221 1352 100 0 -1 val(in):#<$(grtAtA)>
-use ebis 224 624 100 0 TurretPosD
-xform 0 96 560
-p 32 416 100 0 1 DTYP:$(xycom)
-p 32 480 100 0 1 ONAM:NOTINPOSITION
-p 32 624 100 0 1 PV:$(top)$(dev)
-p -160 480 100 0 1 SCAN:Passive
-p 32 448 100 0 1 ZNAM:INPOSITION
-use ebis 224 880 100 0 TurretPosC
-xform 0 96 816
-p 32 672 100 0 1 DTYP:$(xycom)
-p 32 736 100 0 1 ONAM:NOTINPOSITION
-p 32 880 100 0 1 PV:$(top)$(dev)
-p -160 736 100 0 1 SCAN:Passive
-p 32 704 100 0 1 ZNAM:INPOSITION
+use hwin -224 1063 100 0 hwin#16
+xform 0 -128 1104
+p -221 1096 100 0 -1 val(in):#<$(grtAtB)>
+use hwin -224 807 100 0 hwin#56
+xform 0 -128 848
+p -221 840 100 0 -1 val(in):#<$(grtAtC)>
+use hwin -224 551 100 0 hwin#57
+xform 0 -128 592
+p -221 584 100 0 -1 val(in):#<$(grtAtD)>
+use ebis 224 1392 100 0 TurretPosA
+xform 0 96 1328
+p 32 1184 100 0 1 DTYP:$(xycom)
+p 32 1248 100 0 1 ONAM:NOTINPOSITION
+p 32 1392 100 0 1 PV:$(top)$(dev)
+p -160 1248 100 0 1 SCAN:.1 second
+p 32 1216 100 0 1 ZNAM:INPOSITION
 use ebis 224 1136 100 0 TurretPosB
 xform 0 96 1072
 p 32 928 100 0 1 DTYP:$(xycom)
@@ -66,13 +59,20 @@ p 32 992 100 0 1 ONAM:NOTINPOSITION
 p 32 1136 100 0 1 PV:$(top)$(dev)
 p -160 992 100 0 1 SCAN:Passive
 p 32 960 100 0 1 ZNAM:INPOSITION
-use ebis 224 1392 100 0 TurretPosA
-xform 0 96 1328
-p 32 1184 100 0 1 DTYP:$(xycom)
-p 32 1248 100 0 1 ONAM:NOTINPOSITION
-p 32 1392 100 0 1 PV:$(top)$(dev)
-p -160 1248 100 0 1 SCAN:$(iointr)
-p 32 1216 100 0 1 ZNAM:INPOSITION
+use ebis 224 880 100 0 TurretPosC
+xform 0 96 816
+p 32 672 100 0 1 DTYP:$(xycom)
+p 32 736 100 0 1 ONAM:NOTINPOSITION
+p 32 880 100 0 1 PV:$(top)$(dev)
+p -160 736 100 0 1 SCAN:Passive
+p 32 704 100 0 1 ZNAM:INPOSITION
+use ebis 224 624 100 0 TurretPosD
+xform 0 96 560
+p 32 416 100 0 1 DTYP:$(xycom)
+p 32 480 100 0 1 ONAM:NOTINPOSITION
+p 32 624 100 0 1 PV:$(top)$(dev)
+p -160 480 100 0 1 SCAN:Passive
+p 32 448 100 0 1 ZNAM:INPOSITION
 use outhier 1888 1271 100 0 state
 xform 0 1904 1312
 use egenSub 1216 1408 100 0 SwitchStates

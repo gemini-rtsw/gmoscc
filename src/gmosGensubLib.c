@@ -50,6 +50,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 /* *INDENT-OFF* */
 /*
  * $Log$
+ * Revision 1.1.1.1  2001/04/13 01:37:34  smb
+ * Initial creation of the Gemini GMOS repository
+ *
  * Revision 1.15  2001/02/28 15:19:32  gmos
  * Modified gmosIlockCombine to use string constants with logMsg rather than a message buffer. Extra checking in gmosMakeGratString. Some strcpy calls converted to strncpy.
  *
@@ -1232,61 +1235,61 @@ long gmosHealthCombineInt( struct genSubRecord *pgensub )
  */
 
     outHealth = *(long *)pgensub->a;
-    strncmp ( outMess, (char *)pgensub->b, MAX_STRING_SIZE-1 );
+    strncpy ( outMess, (char *)pgensub->b, MAX_STRING_SIZE-1 );
     outIndex = 1;
 
     if ( (pgensub->c != NULL) && (*(long *)pgensub->c > outHealth) )
     {
         outHealth = *(long *)pgensub->c;
-        strncmp ( outMess, (char *)pgensub->d, MAX_STRING_SIZE-1 );
+        strncpy ( outMess, (char *)pgensub->d, MAX_STRING_SIZE-1 );
         outIndex = 2;
     }
     if ( (pgensub->e != NULL) && (*(long *)pgensub->e > outHealth) )
     {
         outHealth = *(long *)pgensub->e;
-        strncmp ( outMess, (char *)pgensub->f, MAX_STRING_SIZE-1 );
+        strncpy ( outMess, (char *)pgensub->f, MAX_STRING_SIZE-1 );
         outIndex = 3;
     }
     if ( (pgensub->g != NULL) && (*(long *)pgensub->g > outHealth) )
     {
         outHealth = *(long *)pgensub->g;
-        strncmp ( outMess, (char *)pgensub->h, MAX_STRING_SIZE-1 );
+        strncpy ( outMess, (char *)pgensub->h, MAX_STRING_SIZE-1 );
         outIndex = 4;
     }
     if ( (pgensub->i != NULL) && (*(long *)pgensub->i > outHealth) )
     {
         outHealth = *(long *)pgensub->i;
-        strncmp ( outMess, (char *)pgensub->j, MAX_STRING_SIZE-1 );
+        strncpy ( outMess, (char *)pgensub->j, MAX_STRING_SIZE-1 );
         outIndex = 5;
     }
     if ( (pgensub->k != NULL) && (*(long *)pgensub->k > outHealth) )
     {
         outHealth = *(long *)pgensub->k;
-        strncmp ( outMess, (char *)pgensub->l, MAX_STRING_SIZE-1 );
+        strncpy ( outMess, (char *)pgensub->l, MAX_STRING_SIZE-1 );
         outIndex = 6;
     }
     if ( (pgensub->m != NULL) && (*(long *)pgensub->m > outHealth) )
     {
         outHealth = *(long *)pgensub->m;
-        strncmp ( outMess, (char *)pgensub->n, MAX_STRING_SIZE-1 );
+        strncpy ( outMess, (char *)pgensub->n, MAX_STRING_SIZE-1 );
         outIndex = 7;
     }
     if ( (pgensub->o != NULL) && (*(long *)pgensub->o > outHealth) )
     {
         outHealth = *(long *)pgensub->o;
-        strncmp ( outMess, (char *)pgensub->p, MAX_STRING_SIZE-1 );
+        strncpy ( outMess, (char *)pgensub->p, MAX_STRING_SIZE-1 );
         outIndex = 8;
     }
     if ( (pgensub->q != NULL) && (*(long *)pgensub->q > outHealth) )
     {
         outHealth = *(long *)pgensub->q;
-        strncmp ( outMess, (char *)pgensub->r, MAX_STRING_SIZE-1 );
+        strncpy ( outMess, (char *)pgensub->r, MAX_STRING_SIZE-1 );
         outIndex = 9;
     }
     if ( (pgensub->s != NULL) && (*(long *)pgensub->s > outHealth) )
     {
         outHealth = *(long *)pgensub->s;
-        strncmp ( outMess, (char *)pgensub->t, MAX_STRING_SIZE-1 );
+        strncpy ( outMess, (char *)pgensub->t, MAX_STRING_SIZE-1 );
         outIndex = 10;
     }
 

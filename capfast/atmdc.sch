@@ -56,12 +56,13 @@ xform 0 -864 -592
 p -928 -672 100 0 1 DTYP:$(xycom)
 p -928 -768 100 0 1 ONAM:YES
 p -848 -528 100 512 -1 PV:$(top)$(dev)
-p -928 -704 100 0 1 SCAN:$(iointr)
+p -928 -704 100 0 1 SCAN:.1 second
 p -928 -736 100 0 1 ZNAM:NO
 use ebis -1072 -48 100 0 Ilock
 xform 0 -1072 -112
 p -1248 -192 100 0 1 ONAM:INTERLOCK
 p -1072 -48 100 512 1 PV:$(top)$(dev)
+p -1424 -114 100 0 0 SCAN:Passive
 p -1248 -224 100 0 1 ZNAM:OK
 use edfans -592 32 100 0 Ilfan
 xform 0 -656 -160

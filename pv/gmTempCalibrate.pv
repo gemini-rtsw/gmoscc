@@ -46,10 +46,10 @@ group {
    double $(top)temp0.SMOO =   0.5;
 }
 group {
-   double $(top)tempChange0.LOLO = -1.0;
-   double $(top)tempChange0.LOW  = -0.25;
-   double $(top)tempChange0.HIGH =  0.25;
-   double $(top)tempChange0.HIHI =  1.0;
+   double $(top)tempChange0.LOLO = -10.0;
+   double $(top)tempChange0.LOW  = -5.0;
+   double $(top)tempChange0.HIGH =  5.0;
+   double $(top)tempChange0.HIHI =  10.0;
 }
 #
 # Use this field to disable a faulty temperature sensor
@@ -70,10 +70,10 @@ group {
    double $(top)temp1.SMOO =   0.5;
 }
 group {
-   double $(top)tempChange1.LOLO = -2.0;
-   double $(top)tempChange1.LOW  = -0.5;
-   double $(top)tempChange1.HIGH =  0.5;
-   double $(top)tempChange1.HIHI =  2.0;
+   double $(top)tempChange1.LOLO = -10.0;
+   double $(top)tempChange1.LOW  = -5.0;
+   double $(top)tempChange1.HIGH =  5.0;
+   double $(top)tempChange1.HIHI =  10.0;
 }
 #
 # Use this field to disable a faulty temperature sensor
@@ -94,10 +94,10 @@ group {
    double $(top)temp2.SMOO =   0.5;
 }
 group {
-   double $(top)tempChange2.LOLO = -1.0;
-   double $(top)tempChange2.LOW  = -0.25;
-   double $(top)tempChange2.HIGH =  0.25;
-   double $(top)tempChange2.HIHI =  1.0;
+   double $(top)tempChange2.LOLO = -10.0;
+   double $(top)tempChange2.LOW  = -5.0;
+   double $(top)tempChange2.HIGH =  5.0;
+   double $(top)tempChange2.HIHI =  10.0;
 }
 #
 # Use this field to disable a faulty temperature sensor
@@ -118,16 +118,16 @@ group {
    double $(top)temp3.SMOO =   0.5;
 }
 group {
-   double $(top)tempChange3.LOLO = -4.0;
-   double $(top)tempChange3.LOW  = -1.0;
-   double $(top)tempChange3.HIGH =  1.0;
-   double $(top)tempChange3.HIHI =  4.0;
+   double $(top)tempChange3.LOLO = -10.0;
+   double $(top)tempChange3.LOW  = -5.0;
+   double $(top)tempChange3.HIGH =  5.0;
+   double $(top)tempChange3.HIHI =  10.0;
 }
 #
 # Use this field to disable a faulty temperature sensor
 # (0=enable, 1=disable).
 #
-long $(top)temp3disable.VAL = 0;
+long $(top)temp3disable.VAL = 1;
 
 #
 # Temperature sensor 4 (Filter/CCD Body)
@@ -142,10 +142,10 @@ group {
    double $(top)temp4.SMOO =   0.5;
 }
 group {
-   double $(top)tempChange4.LOLO = -1.0;
-   double $(top)tempChange4.LOW  = -0.25;
-   double $(top)tempChange4.HIGH =  0.25;
-   double $(top)tempChange4.HIHI =  1.0;
+   double $(top)tempChange4.LOLO = -10.0;
+   double $(top)tempChange4.LOW  = -5.0;
+   double $(top)tempChange4.HIGH =  5.0;
+   double $(top)tempChange4.HIHI =  10.0;
 }
 #
 # Use this field to disable a faulty temperature sensor
@@ -166,10 +166,10 @@ group {
    double $(top)temp5.SMOO =   0.5;
 }
 group {
-   double $(top)tempChange5.LOLO = -1.0;
-   double $(top)tempChange5.LOW  = -0.25;
-   double $(top)tempChange5.HIGH =  0.25;
-   double $(top)tempChange5.HIHI =  1.0;
+   double $(top)tempChange5.LOLO = -10.0;
+   double $(top)tempChange5.LOW  = -5.0;
+   double $(top)tempChange5.HIGH =  5.0;
+   double $(top)tempChange5.HIHI =  10.0;
 }
 #
 # Use this field to disable a faulty temperature sensor
@@ -190,10 +190,10 @@ group {
    double $(top)temp6.SMOO =   0.5;
 }
 group {
-   double $(top)tempChange6.LOLO = -2.0;
-   double $(top)tempChange6.LOW  = -0.5;
-   double $(top)tempChange6.HIGH =  0.5;
-   double $(top)tempChange6.HIHI =  2.0;
+   double $(top)tempChange6.LOLO = -10.0;
+   double $(top)tempChange6.LOW  = -5.0;
+   double $(top)tempChange6.HIGH =  5.0;
+   double $(top)tempChange6.HIHI =  10.0;
 }
 #
 # Use this field to disable a faulty temperature sensor
@@ -214,10 +214,10 @@ group {
    double $(top)temp7.SMOO =   0.5;
 }
 group {
-   double $(top)tempChange7.LOLO = -4.0;
-   double $(top)tempChange7.LOW  = -1.0;
-   double $(top)tempChange7.HIGH =  1.0;
-   double $(top)tempChange7.HIHI =  4.0;
+   double $(top)tempChange7.LOLO = -10.0;
+   double $(top)tempChange7.LOW  = -5.0;
+   double $(top)tempChange7.HIGH =  5.0;
+   double $(top)tempChange7.HIHI =  10.0;
 }
 #
 # Use this field to disable a faulty temperature sensor
@@ -238,10 +238,10 @@ group {
    double $(top)temp8.SMOO =   0.5;
 }
 group {
-   double $(top)tempChange8.LOLO = -1.0;
-   double $(top)tempChange8.LOW  = -0.25;
-   double $(top)tempChange8.HIGH =  0.25;
-   double $(top)tempChange8.HIHI =  1.0;
+   double $(top)tempChange8.LOLO = -10.0;
+   double $(top)tempChange8.LOW  = -5.0;
+   double $(top)tempChange8.HIGH =  5.0;
+   double $(top)tempChange8.HIHI =  10.0;
 }
 #
 # Use this field to disable a faulty temperature sensor

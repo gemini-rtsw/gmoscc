@@ -1,10 +1,10 @@
 [schematic2]
-uniq 388
+uniq 389
 [tools]
 [detail]
-w 1682 2043 100 0 n#377 eaos.moveYout.FLNK 1856 2208 1920 2208 1920 2032 1504 2032 1504 1920 1600 1920 elongouts.moveFollow.SLNK
+w 1634 2059 100 0 n#388 elongouts.moveFollow.FLNK 1856 1952 1920 1952 1920 2048 1408 2048 1408 2432 1600 2432 eaos.moveXout.SLNK
 w 1682 2283 100 0 n#376 eaos.moveXout.FLNK 1856 2464 1920 2464 1920 2272 1504 2272 1504 2176 1600 2176 eaos.moveYout.SLNK
-w 1388 1627 100 0 n#375 ecad20.move.STLK 1072 832 1392 832 1392 2432 1600 2432 eaos.moveXout.SLNK
+w 1388 1371 100 0 n#375 ecad20.move.STLK 1072 832 1392 832 1392 1920 1600 1920 elongouts.moveFollow.SLNK
 w 1990 1899 100 0 MoveFollowState elongouts.moveFollow.OUT 1856 1888 2304 1888 outhier.MoveFollowState.p
 w 1196 1803 100 0 n#329 ecad20.move.FLNK 1072 960 1200 960 1200 2656 1600 2656 estringouts.moveMess.SLNK
 w 1338 2691 100 0 n#327 estringouts.moveMess.DOL 1600 2688 1136 2688 1136 2432 1072 2432 ecad20.move.MESS
@@ -14,8 +14,10 @@ w 2062 2155 100 0 y_t outhier.Y_T.p 2304 2144 1856 2144 eaos.moveYout.OUT
 w 1434 1955 100 0 n#248 ecad20.move.VALC 1072 2144 1328 2144 1328 1952 1600 1952 elongouts.moveFollow.DOL
 w 1306 2211 100 0 n#372 ecad20.move.VALB 1072 2208 1600 2208 eaos.moveYout.DOL
 w 1394 2467 100 0 n#374 ecad20.move.VALA 1072 2272 1248 2272 1248 2464 1600 2464 eaos.moveXout.DOL
+s 2496 1872 100 0 Must be triggered first
 s 640 2192 100 512 Y Target
 s 640 2240 100 512 X Target
+s 2496 2144 100 0 Must be triggered last
 [cell use]
 use ecad20 944 2528 100 0 move
 xform 0 912 1632

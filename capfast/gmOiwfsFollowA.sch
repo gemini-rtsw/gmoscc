@@ -1,7 +1,13 @@
 [schematic2]
-uniq 302
+uniq 314
 [tools]
 [detail]
+w 2226 1099 100 0 n#313 ebos.inPosBo.FLNK 2656 768 2688 768 2688 1088 1824 1088 1824 1280 1952 1280 ebos.following.SLNK
+w 1668 923 100 0 n#312 egenSub.followA.FLNK 992 1280 1664 1280 1664 576 2016 576 ecalcs.inPosCalc.SLNK
+w 2356 763 100 0 n#310 ecalcs.inPosCalc.FLNK 2304 800 2352 800 2352 736 2400 736 ebos.inPosBo.SLNK
+w 2322 779 100 0 n#309 ecalcs.inPosCalc.VAL 2304 768 2400 768 ebos.inPosBo.DOL
+w 2642 715 100 0 n#306 ebos.inPosBo.OUT 2656 704 2688 704 hwout.hwout#294.outp
+w 1922 939 100 0 n#304 hwin.hwin#303.in 1888 928 2016 928 ecalcs.inPosCalc.INPB
 w 2026 2075 100 0 n#301 elongouts.followMove.FLNK 2208 1984 2240 1984 2240 2064 1872 2064 1872 2176 1952 2176 elongouts.followStart.SLNK
 w 2026 1851 100 0 n#300 eaos.followX.FLNK 2208 1760 2240 1760 2240 1840 1872 1840 1872 1952 1952 1952 elongouts.followMove.SLNK
 w 2026 1627 100 0 n#299 eaos.followY.FLNK 2208 1536 2240 1536 2240 1616 1872 1616 1872 1728 1952 1728 eaos.followX.SLNK
@@ -9,13 +15,12 @@ w 2026 1403 100 0 n#298 ebos.following.FLNK 2208 1312 2240 1312 2240 1392 1872 1
 w 1890 459 100 0 n#297 egenSub.Offset.OUTJ 1568 448 2272 448 hwout.hwout#296.outp
 w 2210 1259 100 0 n#293 ebos.following.OUT 2208 1248 2272 1248 hwout.hwout#292.outp
 w 2128 1040 100 0 stream_valid egenSub.followA.OUTH 992 1536 1728 1536 1728 1024 2272 1024 hwout.hwout#295.outp
-w 2192 1104 100 0 in_position egenSub.followA.OUTG 992 1600 1760 1600 1760 1088 2272 1088 hwout.hwout#294.outp
+w 1310 1643 100 0 in_position egenSub.followA.VALG 992 1632 1760 1632 1760 960 2016 960 ecalcs.inPosCalc.INPA
 w 1792 1328 100 0 follow_s egenSub.followA.VALB 992 1952 1248 1952 1248 1312 1952 1312 ebos.following.DOL
 w 496 1568 100 0 follow inhier.follow.P -128 1152 448 1152 448 1568 704 1568 egenSub.followA.H
-w 1442 1291 100 0 n#270 egenSub.followA.FLNK 992 1280 1952 1280 ebos.following.SLNK
 w 448 1904 100 0 cur_pos inhier.cur_pos.P -128 1888 704 1888 egenSub.followA.C
-w 1074 1835 100 0 reject_offset egenSub.followA.VALD 992 1824 1216 1824 1216 320 1280 320 egenSub.Offset.SDIS
-w 1058 1419 100 0 offset_stream egenSub.followA.OUTJ 992 1408 1184 1408 1184 1056 1280 1056 egenSub.Offset.A
+w 1074 1835 100 0 reject_offset egenSub.followA.VALD 992 1824 1152 1824 1152 320 1280 320 egenSub.Offset.SDIS
+w 1058 1419 100 0 offset_stream egenSub.followA.OUTJ 992 1408 1120 1408 1120 1056 1280 1056 egenSub.Offset.A
 w 416 288 100 0 simulated_demand_stream egenSub.tcsSimulator.OUTJ 352 320 576 320 576 1440 704 1440 egenSub.followA.J
 w 514 1611 100 0 n#248 egenSub.followA.INPG 704 1600 384 1600 384 1248 224 1248 eais.PatrolYLoLim.VAL
 w 512 1504 100 0 tolerance inhier.tolerance.P -128 1088 512 1088 512 1504 704 1504 egenSub.followA.I
@@ -54,7 +59,7 @@ s 1600 864 100 0 R_offset
 s 1600 928 100 0 Z_offset
 s 1600 992 100 0 Y_offset
 s 1600 1056 100 0 X_offset
-s 1056 320 100 0 reject_offset
+s 1040 288 100 0 reject_offset
 s 1024 1040 100 0 offset_stream
 s 0 656 100 512 track_id
 s 512 800 100 512 track_id
@@ -63,18 +68,6 @@ s 1744 1984 100 512 MOVE
 s 1744 2192 100 512 START
 s 2608 1280 100 2 To Status Alarm Database
 [cell use]
-use hwout 2272 407 100 0 hwout#296
-xform 0 2368 448
-p 2272 400 100 0 -1 val(outp):$(agProbeOffset) PP NMS
-use hwout 2272 983 100 0 hwout#295
-xform 0 2368 1024
-p 2272 976 100 0 -1 val(outp):$(top)arrayS.VAL PP NMS
-use hwout 2272 1047 100 0 hwout#294
-xform 0 2368 1088
-p 2272 1056 100 0 -1 val(outp):$(top)inPosition.VAL PP NMS
-use hwout 2272 1207 100 0 hwout#292
-xform 0 2368 1248
-p 2272 1200 100 0 -1 val(outp):$(top)followS.VAL PP MS
 use ebos 2064 1360 100 0 following
 xform 0 2080 1280
 p 2000 1184 100 0 1 OMSL:closed_loop
@@ -83,12 +76,39 @@ p 2064 1360 100 512 1 PV:$(top)
 p 2000 1152 100 0 1 ZNAM:NOT_FOLLOWING
 p 2240 1248 75 768 -1 palrm(OUT):MS
 p 2208 1248 75 768 -1 pproc(OUT):PP
+use ebos 2512 816 100 0 inPosBo
+xform 0 2528 736
+p 2448 640 100 0 1 OMSL:closed_loop
+p 2448 576 100 0 1 ONAM:INPOSITION
+p 2512 816 100 512 1 PV:$(top)
+p 2448 608 100 0 1 ZNAM:NOT_INPOSITION
+p 2688 704 75 768 -1 palrm(OUT):MS
+p 2656 704 75 768 -1 pproc(OUT):PP
 use hwin 1760 2167 100 0 hwin#279
 xform 0 1856 2208
 p 1763 2200 100 0 -1 val(in):3
 use hwin 1760 1943 100 0 hwin#278
 xform 0 1856 1984
 p 1763 1976 100 0 -1 val(in):1
+use hwin 1696 887 100 0 hwin#303
+xform 0 1792 928
+p 1699 920 100 0 -1 val(in):$(top)probeAssembly.BUSY
+use ecalcs 2288 912 100 0 inPosCalc
+xform 0 2160 752
+p 2144 528 100 0 1 CALC:(A=1) && (B=0)
+p 2176 912 100 0 1 PV:$(top)
+use hwout 2272 407 100 0 hwout#296
+xform 0 2368 448
+p 2272 400 100 0 -1 val(outp):$(agProbeOffset) PP NMS
+use hwout 2272 983 100 0 hwout#295
+xform 0 2368 1024
+p 2272 976 100 0 -1 val(outp):$(top)arrayS.VAL PP NMS
+use hwout 2688 663 100 0 hwout#294
+xform 0 2784 704
+p 2688 672 100 0 -1 val(outp):$(top)inPosition.VAL PP NMS
+use hwout 2272 1207 100 0 hwout#292
+xform 0 2368 1248
+p 2272 1200 100 0 -1 val(outp):$(top)followS.VAL PP MS
 use inhier -160 2016 100 512 x_t
 xform 0 -128 2016
 use inhier -160 1952 100 512 y_t
