@@ -1,4 +1,4 @@
-GMOS Mask Assembly Checkout ... mask assembly check out
+GMOS Mask Assembly Checkout ... mask assembly (with IFU) check out
 
 Assumptions are ....
 
@@ -8,8 +8,9 @@ Assumptions are ....
         * The GMOS components control database has been loaded.
 
         * The mask lookup table (msk.lut) exists and contains mask IDs
-          valid for its current configuration. The first mask in the
-          lookup table (msk.lut) should be an IFU and the last mask
-          should be a mask.
+          valid for its current configuration.
+
+        * The first object in the lookup table (msk.lut) must be an
+          IFU and the last object must be a mask.
 
         It is safe to select and load masks....
