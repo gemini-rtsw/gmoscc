@@ -10,6 +10,7 @@ tyBackspaceSet 0177
 
 # Set the shell prompt
 shellPromptSet "GMOS MK - sim2 > "
+loginStringSet "MVME167 vxWorks (GMOS MK - sim2)\n\nlogin: "
 
 # cd to application install directory (beware automounter problems)
 cd "$(install)"

@@ -11,6 +11,7 @@ tyBackspaceSet 0177
 
 # Set the shell prompt
 shellPromptSet "Minimal startup > "
+loginStringSet "MVME167 vxWorks (minimal)\n\nlogin: "
 
 # cd to application install startup directory (beware automounter problems)
 cd "$(install)/bin/$(arch)"

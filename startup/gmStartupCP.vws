@@ -10,6 +10,7 @@ tyBackspaceSet 0177
 
 # Set the shell prompt
 shellPromptSet "GMOS CP > "
+loginStringSet "MVME167 vxWorks (GMOS CP)\n\nlogin: "
 
 # cd to application install directory (beware automounter problems)
 cd "$(install)"

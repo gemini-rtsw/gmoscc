@@ -10,6 +10,7 @@ tyBackspaceSet 0177
 
 # Set the shell prompt
 shellPromptSet "GMOS MK - sim2 > "
+loginStringSet "MVME167 vxWorks (GMOS MK - sim2)\n\nlogin: "
 
 # cd to application install startup directory (beware automounter problems)
 cd "$(install)/bin/$(arch)"
@@ -18,6 +19,7 @@ pwd
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
 < local
+cd "$(install)/bin/$(arch)"
 
 # Execute the GMOS simulation mode startup script
 < gmStartupMKSS2
