@@ -57,49 +57,64 @@ w 2256 1771 100 0 ext_velo easscontj.Assembly.VEL1 1760 1760 2848 1760 devctlpbv
 w 2262 1803 100 0 ext_pos easscontj.Assembly.POS1 1760 1792 2848 1792 devctlpbvs.devctlpbvs#15.vals
 w 2256 1835 100 0 ext_mode easscontj.Assembly.MOD1 1760 1824 2848 1824 devctlpbvs.devctlpbvs#15.mode
 w 2262 1867 100 0 ext_dir easscontj.Assembly.ODR1 1760 1856 2848 1856 devctlpbvs.devctlpbvs#15.dir
-s 1433 1086 100 2048 quickUpdate
-s 1433 1918 100 2048 EXT Index VELO
+s 1072 1040 100 0 Ignore Barcode Reader Failure
 s 1433 1950 100 2048 EXT Normal VELO
+s 1433 1918 100 2048 EXT Index VELO
+s 1433 1086 100 2048 quickUpdate
 [cell use]
-use outhier 3248 2416 100 0 CAR
-xform 0 3216 2416
-use outhier 3248 1984 100 0 HLTH
-xform 0 3216 1984
-use outhier 3248 2016 100 0 MESS
-xform 0 3216 2016
-use outhier 3248 2048 100 0 VAL
-xform 0 3216 2048
-use outhier 3248 2112 100 0 CFLK
-xform 0 3216 2112
-use outhier 3248 2240 100 0 OERR
-xform 0 3216 2240
-use outhier 3248 2272 100 0 OMSS
-xform 0 3216 2272
 use outhier 3248 384 100 0 FLNK
 xform 0 3216 384
+use outhier 3248 2272 100 0 OMSS
+xform 0 3216 2272
+use outhier 3248 2240 100 0 OERR
+xform 0 3216 2240
+use outhier 3248 2112 100 0 CFLK
+xform 0 3216 2112
+use outhier 3248 2048 100 0 VAL
+xform 0 3216 2048
+use outhier 3248 2016 100 0 MESS
+xform 0 3216 2016
+use outhier 3248 1984 100 0 HLTH
+xform 0 3216 1984
+use outhier 3248 2416 100 0 CAR
+xform 0 3216 2416
 use elongouts 960 2384 100 0 Dir
 xform 0 928 2304
 p 800 2208 100 0 1 OMSL:closed_loop
 p 960 2384 100 512 1 PV:$(top)$(dev)
-use inhier 240 2176 100 512 MODE
-xform 0 256 2176
-use inhier 240 2304 100 512 DIR
-xform 0 256 2304
-use inhier 240 416 100 512 DBUG
-xform 0 256 416
-use inhier 240 768 100 512 SIMM
-xform 0 256 768
-use inhier 224 1984 100 512 PARK
-xform 0 256 1984
-use inhier 224 2016 100 512 LOC
-xform 0 256 2016
 use inhier 224 2048 100 512 ID
 xform 0 256 2048
+use inhier 224 2016 100 512 LOC
+xform 0 256 2016
+use inhier 224 1984 100 512 PARK
+xform 0 256 1984
+use inhier 240 768 100 512 SIMM
+xform 0 256 768
+use inhier 240 416 100 512 DBUG
+xform 0 256 416
+use inhier 240 2304 100 512 DIR
+xform 0 256 2304
+use inhier 240 2176 100 512 MODE
+xform 0 256 2176
 use ebis 464 1808 100 0 Ilock
 xform 0 464 1744
 p 288 1664 100 0 1 ONAM:INTERLOCK
 p 464 1808 100 512 1 PV:$(top)$(dev)
 p 288 1632 100 0 1 ZNAM:OK
+use edfans 2800 944 100 0 Debug
+xform 0 2720 736
+p 2608 944 100 0 1 PV:$(top)$(dev)
+p 2848 800 75 768 -1 pproc(OUTA):NPP
+p 2848 768 75 768 -1 pproc(OUTB):NPP
+p 2848 736 75 768 -1 pproc(OUTC):NPP
+p 2848 704 75 768 -1 pproc(OUTD):NPP
+use edfans 2160 976 100 0 Simulate
+xform 0 2080 768
+p 1968 976 100 0 1 PV:$(top)$(dev)
+p 2208 832 75 768 -1 pproc(OUTA):NPP
+p 2208 800 75 768 -1 pproc(OUTB):NPP
+p 2208 768 75 768 -1 pproc(OUTC):NPP
+p 2208 736 75 768 -1 pproc(OUTD):NPP
 use edfans 640 1568 100 0 Ilfan
 xform 0 576 1376
 p 384 1184 100 0 1 OMSL:closed_loop
@@ -109,20 +124,6 @@ p 800 1376 100 0 1 def(OUTC):$(top)$(dev)GrpDevice.FLT
 p 800 1344 100 0 1 def(OUTD):$(top)$(dev)CasDevice.FLT
 p 800 1312 100 0 1 def(OUTE):$(top)$(dev)RelDevice.FLT
 p 704 1248 75 768 -1 pproc(OUTG):PP
-use edfans 2160 976 100 0 Simulate
-xform 0 2080 768
-p 1968 976 100 0 1 PV:$(top)$(dev)
-p 2208 832 75 768 -1 pproc(OUTA):NPP
-p 2208 800 75 768 -1 pproc(OUTB):NPP
-p 2208 768 75 768 -1 pproc(OUTC):NPP
-p 2208 736 75 768 -1 pproc(OUTD):NPP
-use edfans 2800 944 100 0 Debug
-xform 0 2720 736
-p 2608 944 100 0 1 PV:$(top)$(dev)
-p 2848 800 75 768 -1 pproc(OUTA):NPP
-p 2848 768 75 768 -1 pproc(OUTB):NPP
-p 2848 736 75 768 -1 pproc(OUTC):NPP
-p 2848 704 75 768 -1 pproc(OUTD):NPP
 use snlLink 1920 2263 100 0 snlLink#147
 xform 0 2224 2336
 use ecars 2752 2384 100 0 C
@@ -130,29 +131,29 @@ xform 0 2720 2224
 p 2752 2384 100 512 1 PV:$(top)$(dev)
 use gmMaskSensors 800 1063 100 0 gmMaskSensors#80
 xform 0 976 1168
-use devctlpvs 2464 1383 100 0 devctlpvs#44
-xform 0 2624 1520
-p 2528 1344 100 0 1 seta:dev $(dev)Grp
-p 2528 1312 100 0 1 setb:motor $(grpMotor)
-p 2528 1280 100 0 1 setc:power $(grpPower)
 use devctlpvs 1120 1607 100 0 devctlpvs#45
 xform 4 960 1744
 p 864 1568 100 512 1 seta:dev $(dev)Rel
 p 864 1536 100 512 1 setb:motor $(relMotor)
 p 864 1504 100 512 1 setc:power $(relPower)
 p 1056 1472 100 0 -1 setd:simm $(simm)
-use devctlpbvs 2080 1159 100 0 devctlpbvs#17
-xform 0 2240 1296
-p 2144 1120 100 0 1 seta:dev $(dev)Cas
-p 2144 1088 100 0 1 setb:motor $(casMotor)
-p 2144 1056 100 0 1 setc:power $(casPower)
-p 2144 1024 100 0 1 setd:brake $(casBrake)
+use devctlpvs 2464 1383 100 0 devctlpvs#44
+xform 0 2624 1520
+p 2528 1344 100 0 1 seta:dev $(dev)Grp
+p 2528 1312 100 0 1 setb:motor $(grpMotor)
+p 2528 1280 100 0 1 setc:power $(grpPower)
 use devctlpbvs 2848 1607 100 0 devctlpbvs#15
 xform 0 3008 1744
 p 2912 1568 100 0 1 seta:dev $(dev)Ext
 p 2912 1536 100 0 1 setb:motor $(extMotor)
 p 2912 1504 100 0 1 setc:power $(extPower)
 p 2912 1472 100 0 1 setd:brake $(extBrake)
+use devctlpbvs 2080 1159 100 0 devctlpbvs#17
+xform 0 2240 1296
+p 2144 1120 100 0 1 seta:dev $(dev)Cas
+p 2144 1088 100 0 1 setb:motor $(casMotor)
+p 2144 1056 100 0 1 setc:power $(casPower)
+p 2144 1024 100 0 1 setd:brake $(casBrake)
 use easscontj 1664 2416 100 0 Assembly
 xform 0 1600 1632
 p 1504 704 100 0 0 DBUG:NONE

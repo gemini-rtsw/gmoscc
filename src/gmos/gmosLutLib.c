@@ -66,6 +66,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  * HISTORY
  * -------
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:50  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -122,7 +125,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 
 /* Private constants and macros  (public ones are defined in gmosLutLib.h) */
 
-/* #define VERBOSE */               /* Define this constant for verbose messages */
+/*#define VERBOSE */               /* Define this constant for verbose messages */
 
 #define TRUE 1                      /* Logical constant. */
 

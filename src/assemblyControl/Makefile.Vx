@@ -5,7 +5,7 @@ include ../.applTop
 include $(APPLIC_TOP)/config/CONFIG
 
 # External libraries on which this directory is dependent.
-# DEPLIBS      =
+# DEPLIBS      = 
 
 # User compiler and loader flags
 # SNC_FLAGS    =

@@ -65,6 +65,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2002/04/24 05:24:56  ajf
+ * New directory for port to epics3.13.4GEM8.4.
+ *
  * Revision 1.1  2001/11/28 20:08:46  mbec
  * *** empty log message ***
  *
@@ -456,6 +459,7 @@
 #define MK_EXT_POSITION         *(long *) par->sik  /* Ptr. to extractor pos*/
 #define MK_BARCODE_READ         (char *)  par->sil  /* Ptr. to barcode read.*/
 #define MK_QUICK_UPDATE         *(long *) par->sim  /* Quick Update Flag    */
+#define MK_IGNORE_BARCODE       *(long *) par->sin  /* Ignore barcode reader failures Flag */
 
 #define MK_BARCODE_TRIGGER      par->sot            /* Ptr. to barcode link.*/
 #define MK_SENSOR_POWER         par->sor     /* Ptr. to control sensor power*/
@@ -2446,8 +2450,7 @@ static long mkCheckBarcodeId
      *  Copy the barcode reader ID string into a local variable.
      */
 
-    strcpy ( idString, MK_BARCODE_READ );
-
+      strcpy ( idString, MK_BARCODE_READ );
 
     /*
      *  Is the ID okay?
@@ -2459,7 +2462,23 @@ static long mkCheckBarcodeId
     {
         DEBUG(DAR_MSG_ERROR,"<%ld> %s:mkCheckBarcodeId: Barcode Reader failure? Returned string=%s\n",
               idString );
-        status = MK_BAR_READ_FAIL;
+       /* Barcode reader failure ack only if ignore barcode flag is set to false */
+       /* TRUE = 1 FALSE = 0 */
+
+       if ( MK_IGNORE_BARCODE == FALSE)
+	{
+        printf("TEST DEBUG: ID string is not OK, MK_IGNORE_BARCODE = FALSE");
+       	status = MK_BAR_READ_FAIL;
+       	}
+       else
+      	{
+        /* if flag is TRUE, just set the barcode to 000000000 and continue
+        status will remain DAR_S_SUCCESS */
+        printf("TEST DEBUG: ID string is not OK, MK_IGNORE_BARCODE = TRUE");
+       	*idString = '\0';
+        strcat(idString,"000000000"); 
+	}       
+        
     }
 
     /*
@@ -2509,11 +2528,12 @@ static long mkCheckBarcodeId
         }
 
         /*
-         * Compare the ID read with what the target expected
+         * Compare the ID read with what the target expected if ignoreFlag is set to zero 
          */
-        else if ( value != pMkPriv->currentBC ) 
+        else if ( value != pMkPriv->currentBC  && MK_IGNORE_BARCODE == FALSE) 
         {
             /* ID and target are different */
+            printf("TEST DEBUG: Compare ID with target expected: MK_IGNORE_BARCODE is FALSE");
             DEBUG4(DAR_MSG_ERROR,
                   "<%ld> %s:mkCheckBarcodeId:Wrong mask found! Expected %ld but found %ld%c%c\n", pMkPriv->currentBC, value,' ' ,' ' );
             SET_ERR_MSG("Wrong mask found in this slot");
@@ -4980,7 +5000,17 @@ static long mkMoveMode
     pMkPriv->currentLoc = MK_MASK_IFU_LOC;
     pMkPriv->currentParkPos = MK_PARK_POSITION_IN;
     pMkPriv->currentBC = MK_BARCODE_ID_IN;
-
+   
+    /*  If outbeam  requested when a mask is inbeam 
+        or update requested, return the ignore
+        barcode failures flag to false */
+        if ( pMkPriv->currentCmd == DAR_MODE_MOVE && 
+              pMkPriv->currentLoc == MK_CMD_INBEAM )
+        {
+		MK_IGNORE_BARCODE = FALSE;
+                 printf("TEST DEBUG: MK_IGNORE_BARCODE set to FALSE due to an out-of-beam, update request ");
+        }
+    
     /* 
      *  If an out-of-beam request or update is requested, then clear
      *  the current command code.
@@ -5005,6 +5035,7 @@ static long mkMoveMode
 
     if ( par->mode == DAR_MODE_MOVE || par->mode == DAR_MODE_PARK )
     {
+        printf("TEST DEBUG: MK_IGNORE_BARCODE set to FALSE due to an out-of-beam  or update request");
         if ( (status = mkBuildList( par, par->mode )) != DAR_S_SUCCESS )
         {
             DEBUG(DAR_MSG_ERROR, 

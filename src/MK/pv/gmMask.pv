@@ -66,6 +66,7 @@ group {
    double $(top)mskAssembly.AEHL  =    20.0; # hi lim for slow (indexing) extr velo
    double $(top)mskAssembly.AELL  =     5.0; # lo lim for slow (indexing) extr velo
    long   $(top)mskAssembly.SIL   =       0; # makes barcodeID in SAD happy
+   long   $(top)mskAssembly.SIN   =       0; # barcode reader error ignore is FALSE
 }
 #
 # Mask Cassette Device

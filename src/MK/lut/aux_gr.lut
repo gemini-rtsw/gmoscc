@@ -40,20 +40,20 @@ aux_grating
 2  77.060        8169
 2  89.741        9507.5
 
-# Grating R831 in position C
-# Using R400 in position C as starting point. Determined offset
-# (for grating R831 in position C, 65 degrees corresponds to 6924steps)
-# Other positions offset, zero kept at zero, IJ 2002nov21
+# Grating R400 in position C
+# corrected using the offset measured by Isobel Hook on July 13 2001
+# (for grating R400 in position C, 65 degrees corresponds to 6939steps)
+# ( added 53 steps (6939-6886) to all motor step values)
 # Cell  Tilt    Steps
 
 3   0.0000000       0
-3   7.760         882
-3  26.016        2809
-3  40.226        4309
-3  52.888        5645.5
-3  65.000        6924
-3  77.074        8198.5
-3  89.741        9535.5
+3   7.760         897
+3  26.016        2824
+3  40.226        4324
+3  52.888        5660.5
+3  65.000        6939
+3  77.074        8213.5
+3  89.741        9550.5
 
 # Grating D translation table (based on Marc Dubbeldam's report).
 # NOTE: These figures are based on Marc's orientation A measurement

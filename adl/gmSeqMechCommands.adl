@@ -1,5 +1,5 @@
 file {
-	name="gmSeqMechCommands.dl"
+	name="gmSeqMechCommands.adl"
 }
 display {
 	magic="305419896"
@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1280"
-	pixht="1024"
-	mmwid="361"
-	mmht="289"
+	pixwid="1024"
+	pixht="768"
+	mmwid="347"
+	mmht="260"
 }
 "<<basic attribute>>" {
 	attr {
@@ -278,8 +278,8 @@ display {
 }
 "text" {
 	object {
-		x="503"
-		y="345"
+		x="490"
+		y="344"
 		width="119"
 		height="20"
 		groupid="0"
@@ -289,8 +289,8 @@ display {
 }
 "text" {
 	object {
-		x="516"
-		y="362"
+		x="513"
+		y="361"
 		width="92"
 		height="22"
 		groupid="0"
@@ -331,9 +331,9 @@ display {
 }
 "rectangle" {
 	object {
-		x="471"
+		x="438"
 		y="294"
-		width="172"
+		width="205"
 		height="141"
 		groupid="0"
 	}
@@ -1866,8 +1866,8 @@ display {
 }
 "menu" {
 	object {
-		x="480"
-		y="385"
+		x="450"
+		y="384"
 		width="50"
 		height="38"
 		groupid="0"
@@ -1911,9 +1911,9 @@ display {
 }
 "text entry" {
 	object {
-		x="480"
+		x="445"
 		y="303"
-		width="155"
+		width="190"
 		height="32"
 		groupid="0"
 	}
@@ -2785,8 +2785,8 @@ display {
 }
 "menu" {
 	object {
-		x="534"
-		y="385"
+		x="521"
+		y="384"
 		width="50"
 		height="38"
 		groupid="0"
@@ -2831,7 +2831,7 @@ display {
 "menu" {
 	object {
 		x="589"
-		y="385"
+		y="384"
 		width="50"
 		height="38"
 		groupid="0"

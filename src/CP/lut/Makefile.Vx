@@ -61,7 +61,6 @@ DATA += ../masks.lut
 DATA += ../lambdaFocus.lut
 DATA += ../grt.lut
 DATA += ../gratings.lut
-#DATA += ../gr_TEST.lut
 DATA += ../grD.lut
 DATA += ../grC.lut
 DATA += ../grB.lut
@@ -76,12 +75,20 @@ DATA += ../dta3.lut
 DATA += ../dta2.lut
 DATA += ../dta1.lut
 DATA += ../dta.lut
-DATA += ../aux_gr.lut
+DATA += ../aux_30000011gr.lut
+DATA += ../aux_30000012gr.lut
+DATA += ../aux_30000013gr.lut
+DATA += ../aux_30000014gr.lut
+DATA += ../aux_30000015gr.lut
+DATA += ../aux_30000016gr.lut
+DATA += ../aux_30000017gr.lut
+DATA += ../aux_30000018gr.lut
+DATA += ../aux_30000019gr.lut
+DATA += ../aux_30000020gr.lut
 DATA += ../atmExp.lut
 DATA += ../atmEnp.lut
 DATA += ../atm.lut
 DATA += ../mskExt.lut
-#DATA += ../aux_gr_allgratings.lut
 
 # Any extra targets can be placed in a TARGETS macro (the build target
 # builds only pre_build, LIBNAME, TARGETS and PROD, not SCRIPTS, INC etc)

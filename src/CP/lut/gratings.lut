@@ -15,18 +15,22 @@
 # to be zero, as of 30 January 2001.
 #
 # New names suggested by Inger Jorgensen adopted on 22 Feb 2001.
+# Last updated: Bryan Miller, 2003mar10
 #
 
 # name            barcodeId     linesPerMm     blazeDir   focusOffset (microns)
 
 mirror             30000012              0           0        0.0
-Mirror1_rev        30000020              0           0        0.0
+#Mirror1_rev        30000020              0           0        0.0
 
 B1200+_G5321       30000016	      1200          +1      -50.6
 B1200-_G5321       30000015           1200          -1      -50.6
-R600+_G5324        30000018            600          +1      -54.4
-R600-_G5324        30000017            600          -1      -54.4
+R831+_G5322        30000011            831          +1        0.0
 B600-_G5323        30000013            600          -1        0.0
 B600+_G5323        30000014            600          +1        0.0
+R600+_G5324        30000018            600          +1      -54.4
+R600-_G5324        30000017            600          -1      -54.4
+R400+_G5325        30000019            400          +1        0.0
+R150+_G5326        30000020            150          +1        0.0
 
 

@@ -353,3 +353,45 @@ V3-7 May 2nd 2002 ajf/tpaz:
 V4-0 January 2003  pgigoux/tpaz:
 --------------------------------
 - Merged atc changes for gmos south
+
+V4-1 April 2003  tpaz:
+----------------------
+- New gratings lookup tables:
+
+One lut installed per grating barcode. Name format: aux_XXXXXXXXXgr.lut where
+XXXXXXXXX is the barcode number.
+Callibrations for all cells should be included in each lut
+
+Files changed:
+
+gmSeqLookupTables.sch
+src/MK/lut/Makefile.Vx
+src/CP/lut/Makefile.Vx
+src/assemblyControl/devGratingAss.c
+
+Added :
+src/MK/lut/aux_XXXXXXXXX.lut
+src/CP/lut/aux_XXXXXXXXX.lut
+
+Removed:
+aux_gr_allgratings.lut
+
+
+- Ignore Barcode Reader Failures False/True button added. If this option is set,
+  A failure to read a barcode will be ignored and the tasks will continue. Default
+  is set to FALSE.
+
+  Files changed:
+  
+  src/MK/pv/gmMask.pv
+  src/CP/pv/gmMask.pv
+  devMaskControl.c
+  gmMask.adl
+  gmMask.sch  (just added a text line ) mskAssembly.SIN is now used.
+
+
+- Lifter timecycle raised from 6 to 9 due to lifter timeouts.
+
+  Files changed:
+  inc/lifter.h
+

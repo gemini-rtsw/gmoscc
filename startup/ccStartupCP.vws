@@ -99,7 +99,7 @@ iocInit "$(iocpath)/data/resource.def"
 dbpf "g3:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "g3:sad:cc:name.VAL","GMOS Cerro Pachon (V4-0)"
+dbpf "g3:sad:cc:name.VAL","GMOS Cerro Pachon (V4-1)"
 
 # Load initialization files
 pvload "$(iocpath)/data/gmosCc.pv","top=g3:, sadtop=g3:sad:"

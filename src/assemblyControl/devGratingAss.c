@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2003/01/31 14:12:46  gemvx
+ * Merged gmos-south
+ *
  * Revision 1.1  2002/04/24 05:24:56  ajf
  * New directory for port to epics3.13.4GEM8.4.
  *
@@ -317,6 +320,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 #include        <lstLib.h>
 #include        <string.h>
 #include        <stdlib.h>
+#include        <stdio.h>
 #include        <wdLib.h>
 #include        <taskLib.h>
 
@@ -346,7 +350,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 /*
  *  Local Defines
  */
-#define MK                       0              /* Defined for different grating positons in GMOS-S */
+#define MK                                     /* Defined for different grating positons in GMOS-S */
 #define GR_LUT_FIRST_STRING     "grating"	/* The first line of the grating lookup		*/
 						/* table file must contain this string.		*/
 #define GR_AUX_LUT_FIRST_STRING "aux_grating"	/* The first line of the auxilliary lookup	*/
@@ -818,7 +822,6 @@ typedef struct {
 {								\
     DEBUG (l, "<%ld> %s:" FMT, V); \
 }
-
 
 
 /*
@@ -2581,11 +2584,13 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 
                if ( pGrPriv->tilt2StepsLut[GRA].numberOfEntries < 2 )
                {
+                    printf("*** applying scale factor from the D input field ***\n");
                     fsteps = (pDevConfig->newGratTilt[GRA] + pDevConfig->backlash) *
                              pDevConfig->tiltScale;
                }
                else
                {
+                    printf("*** succeeded loading lookup table, checking lut\n");
                     /* Check the LUT */
 
                     status = gmosLutCheck( &(pGrPriv->tilt2StepsLut[GRA]) );
@@ -2603,8 +2608,11 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     }
 
                     /* Translate via the lut */
-
-                    status = gmosLutApply( (pDevConfig->newGratTilt[GRA] + pDevConfig->backlash),
+                    printf(" *** translating via lut: pDevConfig->newGratTilt[GRA] = %f\n", pDevConfig->newGratTilt[GRA]); 
+                    printf(" *** translating via lut: pDevConfig->backlash = %f\n",pDevConfig->backlash); 
+                    printf(" *** translating via lut: &fsteps = %f\n", fsteps); 
+                    
+	            status = gmosLutApply( (pDevConfig->newGratTilt[GRA] + pDevConfig->backlash),
                                            &(pGrPriv->tilt2StepsLut[GRA]), &fsteps );
 
                     if ( status == GMOSLUT_S_OK )
@@ -2654,6 +2662,9 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     }
 
                     /* Translate via the lut */
+                    printf(" 2 translating via lut: pDevConfig->newGratTilt[GRA] = %f\n", pDevConfig->newGratTilt[GRA]); 
+                    printf(" 2 translating via lut: pDevConfig->backlash = %f\n", pDevConfig->backlash); 
+                    printf(" 2 translating via lut: &fsteps = %f\n", fsteps); 
 
                     status = gmosLutApply( (pDevConfig->newGratTilt[GRA]),
                                            &(pGrPriv->tilt2StepsLut[GRA]), &fsteps );
@@ -2705,6 +2716,10 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     }
 
                     /* Translate via the lut */
+                    /* Translate via the lut */
+                    printf(" 3 translating via lut: pDevConfig->newGratTilt[GRA] = %f\n", pDevConfig->newGratTilt[GRA]); 
+                    printf(" 3 translating via lut: pDevConfig->backlash = %f\n", pDevConfig->backlash); 
+                    printf(" 3 translating via lut: &fsteps = %f\n", fsteps); 
 
                     status = gmosLutApply( (pDevConfig->newGratTilt[GRA] + pDevConfig->forwardlash),
                                            &(pGrPriv->tilt2StepsLut[GRA]), &fsteps );
@@ -2756,6 +2771,10 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     }
 
                     /* Translate via the lut */
+                    /* Translate via the lut */
+                    printf(" 4 translating via lut: pDevConfig->newGratTilt[GRB] = %f\n", pDevConfig->newGratTilt[GRB]); 
+                    printf(" 4 translating via lut: pDevConfig->backlash = %f\n", pDevConfig->backlash); 
+                    printf(" 4 translating via lut: &fsteps = %f\n", fsteps); 
 
                     status = gmosLutApply( (pDevConfig->newGratTilt[GRB] + pDevConfig->backlash),
                                            &(pGrPriv->tilt2StepsLut[GRB]), &fsteps );
@@ -2807,6 +2826,9 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     }
 
                     /* Translate via the lut */
+                   printf(" 5 translating via lut: pDevConfig->newGratTilt[GRB] = %f\n", pDevConfig->newGratTilt[GRB]); 
+                    printf(" 5 translating via lut: pDevConfig->backlash = %f\n", pDevConfig->backlash); 
+                    printf(" 5 translating via lut: &fsteps = %f\n", fsteps); 
 
                     status = gmosLutApply( (pDevConfig->newGratTilt[GRB]),
                                             &(pGrPriv->tilt2StepsLut[GRB]), &fsteps );
@@ -2858,6 +2880,9 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     }
 
                     /* Translate via the lut */
+                   printf(" 5 translating via lut: pDevConfig->newGratTilt[GRB] = %f\n", pDevConfig->newGratTilt[GRB]); 
+                    printf(" 5 translating via lut: pDevConfig->backlash = %f\n", pDevConfig->backlash); 
+                    printf(" 5 translating via lut: &fsteps = %f\n", fsteps); 
 
                     status = gmosLutApply( (pDevConfig->newGratTilt[GRB] + pDevConfig->forwardlash),
                                            &(pGrPriv->tilt2StepsLut[GRB]), &fsteps );
@@ -3203,7 +3228,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 
 	       pGrPriv->mode = DAR_MODE_MOVE;
 	       pGrPriv->velocity[TRT] = GR_VELOCITY_TURRET;     /* Correct turret move velocity */
-#if (MK) 
+#ifdef MK 
 	       switch (pGrPriv->parkPosition)
 	       {
 	       case (GRA):
@@ -5526,7 +5551,9 @@ static long grReadConfig(ASSEMBLY_CONTROL_RECORD *par)
      GR_DEV_CONFIG  *pDevConfig;
      long status = DAR_S_SUCCESS;		/* Return function status.	*/
      char scratchBuf[256];
+     char testBuf[256];
      int gratPos = 0;
+     int gratingPos =0;
      float gratTilt = 0.0;
      long barcode = GR_NO_BARCODE;
      FILE *fp;
@@ -5720,12 +5747,26 @@ static long grReadConfig(ASSEMBLY_CONTROL_RECORD *par)
       * Read in the auxiliary lookup table. This time an empty or non-existent file IS regarded
       * as an error.
       */
+     n[GRA] = 0;
+     n[GRB] = 0;
+     n[GRC] = 0;
+     n[GRD] = 0;
+
+     for (gratingPos = 0; gratingPos < GR_NUM_GRATINGS; gratingPos++)
+     {
+     GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: gratingPos = %d \n", gratingPos);
+     *testBuf = '\0';
+     sprintf(testBuf, "%d", pDevConfig->barcode[gratingPos]); 
+     GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: testBuf: %s \n ", testBuf);
 
      *scratchBuf = '\0';
      strncat( scratchBuf, par->tdir, MAX_STRING_SIZE );
      strcat( scratchBuf, "/aux_" );
+     strncat( scratchBuf, testBuf, 9);
      strncat(scratchBuf, par->tfil, MAX_STRING_SIZE );
-
+     GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: scratchBuf :  %s  \n ", scratchBuf);
+    
+ 
      if (!(fp = fopen(scratchBuf, "r")))
      {
           /* A file open error should not affect the index status */
@@ -5736,11 +5777,6 @@ static long grReadConfig(ASSEMBLY_CONTROL_RECORD *par)
 
           return(status);
      }
-
-     n[GRA] = 0;
-     n[GRB] = 0;
-     n[GRC] = 0;
-     n[GRD] = 0;
 
      /* The first line should contain the string "aux_grating". Check this first */
 
@@ -5788,12 +5824,20 @@ static long grReadConfig(ASSEMBLY_CONTROL_RECORD *par)
                     else
                     {
                          /* read line was successful, populate internal store - if we have space left */
-          
+
+
+                         if (grind == (gratingPos+1)) {
+                         GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: grind %d = \n", grind);
+                         GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: gratingPos %d\n", gratingPos);
+                         GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: readline successfull scratchBuf: %s\n", scratchBuf);
                          if (n[grind - 1] <= MAX_GMOS_LUT_ENTRIES)
                          {
+                              GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: n[grind -1] = %d\n", n[grind - 1]);
                               semTake (pGrPriv->mutexSem, WAIT_FOREVER);
                               pGrPriv->tilt2StepsLut[grind -1].input[n[grind -1]]  = tilt;
+                              GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: TILT = %f\n",tilt);
                               pGrPriv->tilt2StepsLut[grind -1].measured[n[grind -1]] = steps;
+                              GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: STEPS = %f \n", steps);
                               semGive (pGrPriv->mutexSem);
                               n[grind - 1]++;
                          }
@@ -5806,17 +5850,25 @@ static long grReadConfig(ASSEMBLY_CONTROL_RECORD *par)
                               grTerminateTasks(par, status, "Too many entries in aux LUT file");
 
                               break;
-                         }
-                    }
-               }
-          }
+                         }/*if*/
+                      }/* if grind == gratingPos */
+
+
+                    }/*if*/
+               }/*if*/
+          }/*while*/
+        }/*for*/
      }
 
      semTake (pGrPriv->mutexSem, WAIT_FOREVER);
      pGrPriv->tilt2StepsLut[GRA].numberOfEntries = n[GRA];
+     GRDEBUG(DAR_MSG_MAX,"*** n[GRA] = %d\n",n[GRA]);
      pGrPriv->tilt2StepsLut[GRB].numberOfEntries = n[GRB];
+     GRDEBUG(DAR_MSG_MAX,"*** n[GRA] = %d\n",n[GRB]);
      pGrPriv->tilt2StepsLut[GRC].numberOfEntries = n[GRC];
+     GRDEBUG(DAR_MSG_MAX,"*** n[GRA] = %d\n",n[GRC]);
      pGrPriv->tilt2StepsLut[GRD].numberOfEntries = n[GRD];
+     GRDEBUG(DAR_MSG_MAX,"*** n[GRA] = %d\n",n[GRC]);
      semGive (pGrPriv->mutexSem);
 
      fclose (fp);
