@@ -1,0 +1,21 @@
+# monitor_wfs.cau
+#
+# cau macro which monitors the OIWFS records.
+# Invoked using cau "source" command.
+#
+monitor gm:wfs:activeC.VAL
+monitor gm:wfs:activeC.CLID
+monitor gm:wfs:activeC.OMSS
+
+monitor gm:wfs:probeC.VAL
+monitor gm:wfs:probeC.CLID
+monitor gm:wfs:probeC.OMSS
+
+monitor gm:wfs:state
+monitor gm:wfs:probeState
+
+monitor gm:wfs:inPosition
+monitor gm:wfs:arrayS
+monitor gm:wfs:followS
+
+# Type dataOut cau_wfs.log
