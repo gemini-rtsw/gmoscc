@@ -5,9 +5,9 @@ display {
 	magic="305419896"
 	majv="2"
 	mnrv="4"
-	ndyng="23"
-	npc="41"
-	nstr="128"
+	ndyng="24"
+	npc="43"
+	nstr="129"
 	ndynamic="26"
 	nplot="0"
 	nrd="6"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="7344"
+	nwords_dspy="7440"
 	nwords_sta="968"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="2828"
-	osta="1860"
-	odynamic="4000"
-	oplot="5740"
-	ord="5740"
-	oes="6700"
-	okd="7332"
-	opd="7344"
-	opo="7344"
+	odyng="2864"
+	osta="1896"
+	odynamic="4096"
+	oplot="5836"
+	ord="5836"
+	oes="6796"
+	okd="7428"
+	opd="7440"
+	opo="7440"
 	opc="68"
-	ostr="594"
-	ocmap="1860"
-	ocrules="1860"
+	ostr="618"
+	ocmap="1896"
+	ocrules="1896"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -590,8 +590,8 @@ display {
 }
 "text" {
 	object {
-		x="12"
-		y="38"
+		x="10"
+		y="33"
 		width="630"
 		height="16"
 		groupid="0"
@@ -781,8 +781,8 @@ display {
 }
 "text" {
 	object {
-		x="25"
-		y="61"
+		x="26"
+		y="75"
 		width="320"
 		height="30"
 		groupid="0"
@@ -1684,6 +1684,56 @@ display {
 	textix="Central"
 	align="horiz. left"
 }
+"<<basic attribute>>" {
+	attr {
+		clr="2"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if greater zero"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan="$(T)wfs:followA.K"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs=""
+		}
+	}
+}
+"text" {
+	object {
+		x="26"
+		y="47"
+		width="320"
+		height="30"
+		groupid="0"
+	}
+	textix="E-OFFSETS ARE ON"
+	align="horiz. left"
+}
 "text entry" {
 	object {
 		x="38"
@@ -2146,7 +2196,7 @@ display {
 "text update" {
 	object {
 		x="23"
-		y="100"
+		y="107"
 		width="495"
 		height="24"
 		groupid="0"
