@@ -2,21 +2,10 @@
 		=================================
 
 This is the top level GMOS software directory. It contains the
-GMOS Components Controller and Instrument Sequencer software, together
-with a pointer to the GMOS Detector Controller software, i.e.
-
-                         This directory
-                              |
-                         +----+---+
-                         |        |
-                        UAE     gmosdc (pointer)
-                                  |
-                                 UAE
-
+GMOS Components Controller and Instrument Sequencer software.
 
 The GMOS software and GMOS detector controller software are stored in a
 "Universal Application Environment" (UAE) directory structure.
-
 
 The top level GMOS directory contains the following tools in the form of
 scripts:
@@ -27,6 +16,10 @@ gmosInstall    - Standard Gemini script for installing and building
                  gmosInstall carries out the same functions as a
                  uaeSetup followed by uaeTidy. The script creates a
                  gmosBuild.Log file.
+
+gmosCshrc      - Setup script, to be included in a users .cshrc file,
+                 which defines environment variables and aliases
+                 necessary for running the GMOS software.
 
 uaeSetup       - Original script for setting up the UAE environment for
                  the GMOS software. It also creates the "gmosdc"
@@ -39,6 +32,9 @@ makeEverything - Script to build all the GMOS software.
 
 uaeTidy        - Script to remove junk files interactively prior to
                  releasing the software.
+
+
+The following commands are used to start the GMOS control screens, once a VME crate has been booted:
 
 gmosStart <V>  - Script to start the GMOS control screens. The argument
                  <V> can be as follows.
@@ -61,26 +57,19 @@ gmosAlarm <V>  - Script to start the GMOS alarm handler screen. The
                  argument <V> is the same as for gmosStart.
 
 
-Before building or using the system the following environment variables
-need to be defined (see uaeLogin and uaeSetup);
-
-EPICS          - Location of the EPICS release.
-GEMINI_LIB     - Location of the Gemini library directory.
-GEMINI_SLALIB  - Location of the Gemini slalib library.
-GEMINI_TIMELIB - Location of the Gemini timelib library.
-GEMINI_ASTLIB  - Location of the Gemini astlib library.
-GMOS_DC        - Location of the GMOS/NOAO detector controller.
-
-
 The following procedure makes and builds the GMOS software:
 
 1) Untar the files (if they have been released in a tar archive)
    For example
 
-   gunzip <gmos.tar.gz | tar -xvf -
+      gunzip <gmos.tar.gz | tar -xvf -
 
 2) Set up for EPICS software development by executing
    $EPICS/config/epics.csh and ~p3/capfastStart, or
    whatever.
 
-3) Execute the gmosInstall script in the top level directory.
+3) Set up for GMOS software development
+
+      source gmosCshrc
+
+4) Execute the gmosInstall script in the top level directory.
