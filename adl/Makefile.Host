@@ -1,7 +1,7 @@
 
 include ../.applTop
 include $(APPLIC_TOP)/config/CONFIG
-ADL2DL = $(EPICS)/extensions/bin/solaris/adl2dl2-4
+#ADL2DL = $(EPICS)/extensions/bin/solaris/adl2dl2-4
 
 SCRIPTS = gmosCcStartMKRR gmosCcStartMKRS gmosCcStartMKSR gmosCcStartMKSS \
 	  gmosCcStartCP gmEditFile gmEditFileField gmCcDoCommand \
@@ -13,22 +13,15 @@ SCRIPTS = gmosCcStartMKRR gmosCcStartMKRS gmosCcStartMKSR gmosCcStartMKSS \
 
 # List of display (*.dl) files
 #DATA    = ../gmos_logo.gif ../colors.dl ../gmColors.dl $(wildcard ../*.dl) \
-#          $(patsubst ../%.adl, %.dl, $(wildcard ../*.adl ../*.bit ../*.tk \
+#          $(patsubst ../%.adl, %.dl, $(wildcard ../*.adl ../*.bit ../*.gif ../*.tk \
 #	  ../*.sh ../*.test))
 
 
-DATA = colors.dl gmColors.dl \
+DATA = colorsMK.dl colorsCP.dl gmColors.dl template.dl\
 	$(patsubst ../%.adl, %.dl, $(wildcard ../*.adl ../*.bit ../*.gif ../*.tk \
           ../*.sh ../*.test))
 
+
+CMAPFILE=gmColors.dl
+ 
 include $(APPLIC_TOP)/config/RULES.Build
-
-# Override system rules for creating dl files
-
-%.dl: ../%.adl
-	$(RM) $@
-	-$(ADL2DL) $< >/dev/null
-
-%.dl: %.adl
-	$(RM) $@
-	-$(ADL2DL) $< >/dev/null

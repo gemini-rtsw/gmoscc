@@ -97,7 +97,7 @@ dbpf "gm:cc:msEnableEnable","0"
 #dbpf "g6:sad:cc:historyLog","Booting..."
 
 #Define the database name
-#dbpf "gm:sad:cc:name.VAL","GMOS CC Mauna Kea (V4-4) - no sad"
+#dbpf "gm:sad:cc:name.VAL","GMOS CC Mauna Kea (V5-0) - no sad"
 
 # Load initialization files
 pvload "$(iocpath)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"

@@ -103,8 +103,8 @@ dbpf "gm:cc:msEnableEnable","0"
 dbpf "gm:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "gm:sad:name.VAL","GMOS-N (V4-4) - tc1"
-dbpf "gm:sad:cc:name.VAL","GMOS-N (V4-4) - tc1"
+dbpf "gm:sad:name.VAL","GMOS-N (V5-0) - tc1"
+dbpf "gm:sad:cc:name.VAL","GMOS-N (V5-0) - tc1"
 
 # Load initialization files
 pvload "$(iocpath)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"

@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.4  2003/07/21 21:37:20  gemvx
+ * V4-2 follow in z only version
+ *
  * Revision 1.3  2003/05/27 21:16:51  gemvx
  * Version 4-1
  *
@@ -2287,6 +2290,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
      int lifterWaitTime = 1 + (int) ( (float) GR_LIFTER_CYCLE_TIME * 1.5);
 
      double fsteps;
+     double fsteps2;
 
      pGrPriv = ( GR_DEV_PRIVATE *) assGetPrivateStruct( par );
      pDevConfig = pGrPriv->pGratingPriv;
@@ -2613,7 +2617,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     /* Translate via the lut */
                     /*printf(" *** translating via lut: pDevConfig->newGratTilt[GRA] = %f\n", pDevConfig->newGratTilt[GRA]); */
                     /*printf(" *** translating via lut: pDevConfig->backlash = %f\n",pDevConfig->backlash);*/ 
-                    /*printf(" *** translating via lut: &fsteps = %f\n", fsteps); */
+                    /*printf(" GR_MV_GRATING_A_1 *** steps from lut: &fsteps = %f\n", fsteps); */
                     
 	            status = gmosLutApply( (pDevConfig->newGratTilt[GRA] + pDevConfig->backlash),
                                            &(pGrPriv->tilt2StepsLut[GRA]), &fsteps );
@@ -2667,7 +2671,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     /* Translate via the lut */
                     /*printf(" 2 translating via lut: pDevConfig->newGratTilt[GRA] = %f\n", pDevConfig->newGratTilt[GRA]); */
                     /*printf(" 2 translating via lut: pDevConfig->backlash = %f\n", pDevConfig->backlash); */
-                    /*printf(" 2 translating via lut: &fsteps = %f\n", fsteps); */
+                    /*printf(" 2 translating via lut: &fsteps = %f\n", fsteps);*/
 
                     status = gmosLutApply( (pDevConfig->newGratTilt[GRA]),
                                            &(pGrPriv->tilt2StepsLut[GRA]), &fsteps );
@@ -2686,6 +2690,8 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
                sprintf( pGrPriv->position[GRA], "%f", fsteps);
+               fsteps2 = fsteps; 
+               printf(" GRATING A MOTORSTEPS : %f\n", fsteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -2722,7 +2728,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     /* Translate via the lut */
                     /*printf(" 3 translating via lut: pDevConfig->newGratTilt[GRA] = %f\n", pDevConfig->newGratTilt[GRA]); */
                     /*printf(" 3 translating via lut: pDevConfig->backlash = %f\n", pDevConfig->backlash);*/ 
-                    /*printf(" 3 translating via lut: &fsteps = %f\n", fsteps); */
+                    /*printf(" 3 translating via lut: &fsteps = %f\n", fsteps);*/ 
 
                     status = gmosLutApply( (pDevConfig->newGratTilt[GRA] + pDevConfig->forwardlash),
                                            &(pGrPriv->tilt2StepsLut[GRA]), &fsteps );
@@ -2777,7 +2783,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     /* Translate via the lut */
                     /*printf(" 4 translating via lut: pDevConfig->newGratTilt[GRB] = %f\n", pDevConfig->newGratTilt[GRB]); */
                     /*printf(" 4 translating via lut: pDevConfig->backlash = %f\n", pDevConfig->backlash);*/ 
-                    /*printf(" 4 translating via lut: &fsteps = %f\n", fsteps); */
+                    /*printf(" 4 translating via lut: &fsteps = %f\n", fsteps);*/
 
                     status = gmosLutApply( (pDevConfig->newGratTilt[GRB] + pDevConfig->backlash),
                                            &(pGrPriv->tilt2StepsLut[GRB]), &fsteps );
@@ -2831,7 +2837,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     /* Translate via the lut */
                    /*printf(" 5 translating via lut: pDevConfig->newGratTilt[GRB] = %f\n", pDevConfig->newGratTilt[GRB]); */
                     /*printf(" 5 translating via lut: pDevConfig->backlash = %f\n", pDevConfig->backlash); */
-                    /*printf(" 5 translating via lut: &fsteps = %f\n", fsteps); */
+                    /*printf(" 5 translating via lut: &fsteps = %f\n", fsteps);*/
 
                     status = gmosLutApply( (pDevConfig->newGratTilt[GRB]),
                                             &(pGrPriv->tilt2StepsLut[GRB]), &fsteps );
@@ -2850,6 +2856,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
                sprintf( pGrPriv->position[GRB], "%f", fsteps);
+               printf(" GRATING B MOTORSTEPS : %f\n", fsteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -2885,7 +2892,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     /* Translate via the lut */
                    /*printf(" 5 translating via lut: pDevConfig->newGratTilt[GRB] = %f\n", pDevConfig->newGratTilt[GRB]); */
                     /*printf(" 5 translating via lut: pDevConfig->backlash = %f\n", pDevConfig->backlash);*/ 
-                    /*printf(" 5 translating via lut: &fsteps = %f\n", fsteps);*/ 
+                    /*printf(" 5 translating via lut: &fsteps = %f\n", fsteps); */
 
                     status = gmosLutApply( (pDevConfig->newGratTilt[GRB] + pDevConfig->forwardlash),
                                            &(pGrPriv->tilt2StepsLut[GRB]), &fsteps );
@@ -3006,6 +3013,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
                sprintf( pGrPriv->position[GRC], "%f", fsteps);
+               printf(" GRATING C MOTORSTEPS : %f\n", fsteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -3158,6 +3166,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
                sprintf( pGrPriv->position[GRD], "%f", fsteps);
+               printf(" GRATING D MOTORSTEPS : %f\n", fsteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;

@@ -22,19 +22,19 @@ pwd
 < $(version)/bin/$(arch)/local
 
 # Load EPICS core, pvload and sequencer
-ld < /gemini/external/GEM8.4/base/bin/$(arch)/iocCore
-ld < /gemini/external/GEM8.4/extensions/bin/$(arch)/pvload
-ld < /gemini/external/GEM8.4/base/bin/$(arch)/seq
+ld < /gemini/external/GEM8.5/base/bin/$(arch)/iocCore
+ld < /gemini/external/GEM8.5/extensions/bin/$(arch)/pvload
+ld < /gemini/external/GEM8.5/base/bin/$(arch)/seq
 
 # Load any application records, device support or drivers here,
 # or code for subroutine records. It is assumed that Gemini
 # libraries are available in the standard /gemini directory).
 ld < $(version)/bin/$(arch)/gemini.Support
 
-ld < /gemini/epics3.13.4/slalib/slalib/bin/$(arch)/slalib
-ld < /gemini/epics3.13.4/timelib/timelib/bin/$(arch)/timelib
-ld < /gemini/epics3.13.4/astlib/astlib/bin/$(arch)/astlib
-ld < /gemini/epics3.13.4/timelib/timelib/bin/mv167/timeSeq
+ld < /gemini/GEM8.5/slalib/slalib/bin/$(arch)/slalib
+ld < /gemini/GEM8.5/timelib/timelib/bin/$(arch)/timelib
+ld < /gemini/GEM8.5/astlib/astlib/bin/$(arch)/astlib
+ld < /gemini/GEM8.5/timelib/timelib/bin/$(arch)/timeSeq
 
 ld < $(version)/bin/$(arch)/deviceControlLib.a
 ld < $(version)/bin/$(arch)/gmosLib.a
@@ -72,8 +72,8 @@ dbpf "gm:cc:msEnableEnable","0"
 dbpf "gm:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "gm:sad:name.VAL","GMOS-N (V4-4)"
-dbpf "gm:sad:cc:name.VAL","GMOS-N (V4-4)"
+dbpf "gm:sad:name.VAL","GMOS-N (V5-0)"
+dbpf "gm:sad:cc:name.VAL","GMOS-N (V5-0)"
 
 # Load initialization files
 pvload "$(version)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"

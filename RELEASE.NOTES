@@ -440,3 +440,9 @@ V4-4 Dec 2003 tpaz
 
 - tuning of extractor release postion due to gripper/extractor failures with ifu
   files changed: MK/gmMask.pv
+
+
+V5-0 Apr 2004 tpaz
+--------------------
+-Ported to GEM8.5
+
