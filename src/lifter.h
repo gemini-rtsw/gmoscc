@@ -17,6 +17,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2001/04/20 01:02:50  smb
+ * Increased lifter wait time from 5 to 10 seconds.
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -59,7 +62,7 @@
 #define GR_VALVE_ACTIVE    0
 #define GR_PRESSURE_OK     0
 
-#define GR_LIFTER_CYCLE_TIME 10		/* Lifter cycle time in seconds			*/
+#define GR_LIFTER_CYCLE_TIME  8		/* Lifter cycle time in seconds			*/
 #define GR_LIFTER_SHORT_TIME  2		/* Lifter short reprocessing time in seconds	*/
 #define GR_LIFTER_MAX_CYCLES  2		/* Maximum number of lifter cycles		*/
 
