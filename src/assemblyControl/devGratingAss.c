@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.5  2004/04/29 19:05:39  gemvx
+ * ported to GEM8.5
+ *
  * Revision 1.4  2003/07/21 21:37:20  gemvx
  * V4-2 follow in z only version
  *
@@ -5869,6 +5872,7 @@ static long grReadConfig(ASSEMBLY_CONTROL_RECORD *par)
                     }/*if*/
                }/*if*/
           }/*while*/
+        fclose (fp);
         }/*for*/
      }
 
@@ -5882,8 +5886,6 @@ static long grReadConfig(ASSEMBLY_CONTROL_RECORD *par)
      pGrPriv->tilt2StepsLut[GRD].numberOfEntries = n[GRD];
      GRDEBUG(DAR_MSG_MAX,"*** n[GRA] = %d\n",n[GRC]);
      semGive (pGrPriv->mutexSem);
-
-     fclose (fp);
 
      return(status);
 }
