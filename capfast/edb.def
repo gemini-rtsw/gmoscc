@@ -973,7 +973,7 @@
 	(RDBD (float))
 	(RTRY (int))
 )
-(RECORD "estringin" "estringins" "estringinm" "estringinsim"
+(RECORD "estringin" "estringins" "estringinm" "estringinsim" "estringinval"
 	(PV (char))
 	(Type "stringin")
 	(DESC (char))
@@ -2611,6 +2611,26 @@
 	(OUT  (char(default "0.000000000000000e+00")))
 	(FLNK (char(default "0.000000000000000e+00")))
 )
+(RECORD  "ecmdTimeout"
+	(PV (char))
+	(Type "cmdTimeout")
+ 	(DESC (char))
+	(SCAN (char(default "Passive")))
+	(PINI (char(default "NO")))
+	(PHAS (int))
+	(EVNT (int))
+	(DISV (int))
+	(TOUT (float))
+	(PRIO (char(default "LOW")))
+	(FLNK (char(default "0.000000000000000e+00")))
+	(OMSS (char(default "0.000000000000000e+00")))
+	(OVAL (char(default "0.000000000000000e+00")))
+	(ODIR (char(default "0.000000000000000e+00")))
+	(ICDV (char(default "0.000000000000000e+00")))
+	(ICDM (char(default "0.000000000000000e+00")))
+	(ICRV (char(default "0.000000000000000e+00")))
+	(ICRM (char(default "0.000000000000000e+00")))
+)
 (RECORD "easscont" "eassconts" "easscontm" "easscontj"
         (PV (char))
         (Type "assemblyControl")
@@ -2761,6 +2781,3 @@
         (MDEL (float))
         (ADEL (float))
 )
-
-
-
