@@ -160,8 +160,8 @@ OUTPUT *.IALG* 4*
 DESC "Using Power status? Should be YES for translation stage"
 GETVAL devUsePwrStatus
 #Removed until power status problem fixed
-#OUTPUT *.UPSB* YES*
-OUTPUT *
+OUTPUT *.UPSB* YES*
+#OUTPUT *
 
 DESC "Get the power status timeout"
 GETVAL devPwrStatusTimeout

@@ -46,6 +46,11 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2001/04/23 18:23:09  smb
+ * OIWFS will no longer time out after being moved manually a significant amount 
+ * (bug 168).  HSWA field monitoring problem fixed (bug 218). Problem with setting 
+ * up of simulation mode incorrectly if mode changed after INIT fixed (bug 258).
+ *
  * Revision 1.25  2001/03/27 11:05:57  gmos
  * In omsScanTask(), allow spontaneous motion notification and
  * encoder updates even with no index or when in a limit switch.
@@ -321,8 +326,10 @@ typedef struct {
     int                 exists;            /* interface card exists         */
     int                 axis;              /* axis on the interface card    */
     int                 updateState;       /* state update request flag     */
+    int                 earlyDone;         /* done interrupt before moving  */
     long                simVelocity;       /* simulated velocity            */
     long                scansLeft;         /* timeout timer oms scans left  */
+    long                stoppedCntr;       /* #scans motor has been stopped */
     char                errorMessage[MAX_STRING_SIZE];  /* root message     */
     long                status;            /* motor status flag             */
     } DEV_CTL_OMS_PRIVATE;
@@ -592,7 +599,8 @@ static long configureDrive
  * In each case an OMS command string is generated based on the indexing
  * algorithm, the type of OMS card used for this device and the state of
  * the motion limit switches.
- * The string is then written to the OMS card for execution.
+ * The string is then written to the OMS card for execution.  All strings are
+ * terminated with "ID" to cause an interrupt when motion has finished.
  *
  * EXTERNAL VARIABLES:
  * None.
@@ -688,7 +696,7 @@ static long controlMotion
 
             case DDR_INDEX_NONE:
                 sprintf (scratch,
-                         "MA%ld GO ",
+                         "MA%ld GO ID ",
                          pDevice->target);
                 status = drvOmsVmeWriteMotor (pMotor->card,
                                               pMotor->axis,
@@ -743,13 +751,13 @@ static long controlMotion
                     if (pDevice->lowLimit)
                     {
                         sprintf (scratch,
-                                 "HL HM0 HH HM0 VL%ld HE HR0 HS MA0 GO ",
+                                 "HL HM0 HH HM0 VL%ld HE HR0 HS MA0 GO ID ",
                                  pDevice->indexVelocity);
                     }
                     else
                     {
                         sprintf (scratch,
-                                 "HL HR0 HH HM0 VL%ld HE HR0 HS MA0 GO ",
+                                 "HL HR0 HH HM0 VL%ld HE HR0 HS MA0 GO ID ",
                                  pDevice->indexVelocity);
                     }
                 }
@@ -785,13 +793,13 @@ static long controlMotion
                     if (pDevice->lowLimit)
                     {
                         sprintf (scratch,
-                                 "HH HM0 HL HR0 VL%ld HH HM0 MA0 GO ",
+                                 "HH HM0 HL HR0 VL%ld HH HM0 MA0 GO ID ",
                                  pDevice->indexVelocity);
                     }
                     else
                     {
                         sprintf (scratch,
-                                 "HL HR0 HH HM0 HL HR0 VL%ld HH HM0 MA0 GO ",
+                                 "HL HR0 HH HM0 HL HR0 VL%ld HH HM0 MA0 GO ID ",
                                  pDevice->indexVelocity);
                     }
                 }
@@ -854,13 +862,13 @@ static long controlMotion
                               "<%d> c:%d s:%d controlMotion: hilim set%c\n",
                               ' ');
                         sprintf (scratch,
-                                 "HL HR0 HH HR0 VL%ld HE HM0 HS MA0 GO ",
+                                 "HL HR0 HH HR0 VL%ld HE HM0 HS MA0 GO ID ",
                                  pDevice->indexVelocity);
                     }
                     else
                     {
                         sprintf (scratch,
-                                 "HL HM0 HH HR0 VL%ld HE HM0 HS MA0 GO ",
+                                 "HL HM0 HH HR0 VL%ld HE HM0 HS MA0 GO ID ",
                                  pDevice->indexVelocity);
                     }
                 }
@@ -899,13 +907,13 @@ static long controlMotion
                               "<%d> c:%d s:%d controlMotion: hilim set%c\n",
                               ' ');
                         sprintf (scratch,
-                                 "HH HR0 HL HM0 VL%ld HH HR0 MA0 GO ",
+                                 "HH HR0 HL HM0 VL%ld HH HR0 MA0 GO ID ",
                                  pDevice->indexVelocity);
                     }
                     else
                     {
                         sprintf (scratch,
-                                 "HL HM0 HH HR0 HL HM0 VL%ld HH HR0 MA0 GO ",
+                                 "HL HM0 HH HR0 HL HM0 VL%ld HH HR0 MA0 GO ID ",
                                  pDevice->indexVelocity);
                     }           
                 }
@@ -946,7 +954,7 @@ static long controlMotion
                       "<%d> c:%d s:%d controlMotion: INDEX_CHSW%c\n", ' ');
 
                 sprintf (scratch,
-                         "HL HR0 HH HR0 HH HM0 VL%ld HL HM0 MA0 GO ",
+                         "HL HR0 HH HR0 HH HM0 VL%ld HL HM0 MA0 GO ID ",
                          pDevice->indexVelocity);
                 status = drvOmsVmeWriteMotor (pMotor->card,
                                               pMotor->axis,
@@ -970,7 +978,7 @@ static long controlMotion
                       "<%d> c:%d s:%d controlMotion: INDEX_LLSW%c\n", ' ');
                 status = drvOmsVmeWriteMotor (pMotor->card,
                                               pMotor->axis,
-                                              "MR-1000000000 GO ");
+                                              "MR-1000000000 GO ID ");
                 break;
 
 
@@ -990,7 +998,7 @@ static long controlMotion
                       "<%d> c:%d s:%d controlMotion: INDEX_ULSW%c\n", ' ');
                 status = drvOmsVmeWriteMotor (pMotor->card,
                                               pMotor->axis,
-                                              "MR1000000000 GO ");
+                                              "MR1000000000 GO ID ");
                 break;
 
 
@@ -1017,7 +1025,7 @@ static long controlMotion
         case DDR_MOVE_STOP:
             status = drvOmsVmeWriteMotor (pMotor->card,
                                           pMotor->axis,
-                                          "ST ");
+                                          "ST ID ");
             DEBUG(DDR_MSG_MAX,
                   "<%d> c:%d s:%d controlMotion: Done DDR_MOVE_STOP%c\n",
                                      ' ');
@@ -1133,11 +1141,11 @@ static long controlPower
          *  limit switches on its next scan and then send a command 
          *  string to the OMS card.
          */
-
+	/*
         semTake (pMotor->mutexSem, WAIT_FOREVER);
         pMotor->updateState = TRUE;
         semGive (pMotor->mutexSem);
-
+	*/
         status = drvOmsVmeWriteMotor (pMotor->card,
                                       pMotor->axis,
                                       (power) ? "AN " : "AF ");
@@ -1479,6 +1487,7 @@ static long devInit
      */
 
     scanTaskPeriod = (int)sysClkRateGet() / DDR_OMS_SCAN_TASK_RATE;
+    logMsg ("\nPeriod of omsScanTask = %d clock ticks\n", scanTaskPeriod,0,0,0,0,0);
 
     return status;
 }
@@ -1642,8 +1651,10 @@ static long devInitRec
      */
 
     pMotor->updateState = TRUE;
+    pMotor->earlyDone = FALSE;
     pMotor->simVelocity = 1;
     pMotor->scansLeft = 0;
+    pMotor->stoppedCntr = 0;
     pMotor->status = 0;
     semGive (pMotor->mutexSem);
 
@@ -1722,22 +1733,52 @@ static long devInitRec
  *
  *          If we are in simulation mode:
  *          {
- *              Simulate reading home and limit switches (always off).
- *              Simulate moving the motor if not in target position.
+ *              Motor status is always good and encoder is always 0.
+ *              On 1st pass only:
+ *              {
+ *                  Clear home and limit switches.
+ *                  Set updateState flag.
+ *              }
+ *              Clear checkLimits flag.
+ *              Simulate move by updating current position with the distance 
+ *                the virtual motor would have gone between scans by adding or 
+ *                subtracting the simulated velocity offset until the desired 
+ *                target position is reached.
  *          }
  *
  *          Else if there is hardware attached to the device:
  *          {
- *              Save the last switch state and position values locally.
  *              Read current position and encoder from the OMS card. 
- *              Recover status information from the driver layer.
- *              If motion finished or error or update requested:
+ *              If error as a result of position/encoder update
  *              {
- *                  Read current home and limit switch state from OMS card.
+ *                  Recover the status error message from the driver level
+ *                    and don't bother checking for encoder errors or QA.
+ *              }
+ *              Else 
+ *              {
+ * 
+ *                  If either just starting the move OR just finished
+ *                    (I.e. checkLimits flag is set or moving flag is set  
+ *                     and position unchanged):
+ *                  {
+ *                      Set updateState flag.
+ *                      Read current states from OMS card:
+ *                        home switch
+ *                        high and low limit switches
+ *                        axisDone flag 
+ *                      If error as a result of position/encoder update recover
+ *                         the status error message from the driver level.
+ *                      Clear checkLimits flag.
+ *                  }
  *              }
  *          }
  *
- *          Else there is no hardware to control so simply keep current state.
+ *          Else there is no hardware to control so simply save previous 
+ *            position, encoder, limits & home state values locally.
+ *
+ *          Initialize local flags:
+ *            Clear rescan flag.
+ *            Set done flag.
  *
  *          If there is time remaining on the delay timer:
  *          {
@@ -1745,29 +1786,66 @@ static long devInitRec
  *              If the timer has reached zero set the timeout flag.
  *          }
  *
- *          If current position is not the same as last position:
+ *          If motor position & state were successfully read
  *          {
- *              Update interface struct position value.
- *              Set the interface structure moving flag
- *              Set the local rescan flag.
- *          }
+ *              If moving flag is set AND position is unchanged
+ *              {
+ *                  If status returned indicates either axisDone OR 
+ *                    we're simulating, then we've stopped.
+ *                    
+ *                  {
+ *                      Clear moving flag.
+ *                      Set rescan flag.
+ *                      Clear motion stopped scan counter 
+ *                  }
+ *                  Else status returned indicates either
+ *                    highLimit OR lowLimit
+ *                  {
+ *                      If stopped and in limit for 5 scans
+ *                      {
+ *                          Issue "EF ID" string to set up interrupt when done
+ *                      }
+ *                      Else  Increment motion stopped counter
+ * 
+ *                      Set checkLimits flag
+ *                  }
+ *              }
+ *              Else if position has changed
+ *              {
+ *                  If moving flag not set and not just indexing on limit
+ *                  {
+ *                      Set moving flag
+ *                  }
+ *                  Update position value.
+ *                  Clear done flag.
+ *                  Set rescan flag.
+ *              }
  *
- *          If the home or limit switch state has changed:
- *          {
- *              Update the interface structure switch values.
- *              Set the local rescan flag.
- *          }
+ *              If current encoder position has changed:
+ *              {
+ *                  Update encoder value.
+ *                  If not moving and not simulating:
+ *                  {
+ *                       Indicate spontaneous motion.
+ *                       Set rescan flag.
+ *                  }
+ *              }
  *
- *          If the position has not changed and the moving flag is set:
- *          {
- *              Clear the interface structure moving flag 
- *              Set the local rescan flag.
+ *              If updateState flag set:
+ *              {
+ *                  If the home or either limit switch states has changed:
+ *                  {
+ *                      Update switch values.
+ *                      Set rescan flag.
+ *                  }
+ *                  Clear updateState flag.
+ *              }
  *          }
- *
- *          If there was a motor driver error:
+ * 
+ *          If the motor status has changed:
  *          {
- *              Update the interface structure error information.
- *              Set the local rescan flag.
+ *              Update motor status for record.
+ *              Set rescan flag.
  *          }
  *
  *          If the timeout or rescan flags have been set:
@@ -1786,6 +1864,7 @@ static long devInitRec
  *      Calculate number of system ticks remaining until next scan starts.
  *      Put task to sleep for this number of ticks.
  *  }                          
+ *
  *
  *
  * EXTERNAL VARIABLES:
@@ -1814,6 +1893,7 @@ static int omsScanTask
     struct rset *pRset;                 /* deviceControl rec function str   */
     int rescan;                         /* record must be processed flag    */
     int done;                           /* motion finished flag             */
+    int axisDone;                       /* axis done flag from hardware     */
     int lowLimit;                       /* lower limit switch state         */
     int highLimit;                      /* upper limit switch state         */
     int homeSwitch;                     /* home switch state                */
@@ -1882,8 +1962,6 @@ static int omsScanTask
                      pDevice->highLimit  != 0 || 
                      pDevice->homeSwitch != 0   )
                 {
-                    DEBUG(DDR_MSG_MIN, "<%d> c:%d s:%d omsScanTask:updating limit and home switches for simulation mode: %c\n", ' ');
-
                     lowLimit = 0;
                     highLimit = 0;
                     homeSwitch = 0;
@@ -1891,6 +1969,8 @@ static int omsScanTask
                     semTake (pMotor->mutexSem, WAIT_FOREVER);
                     pMotor->updateState = TRUE;
                     semGive (pMotor->mutexSem);
+                    DEBUG(DDR_MSG_FULL, "<%d> c:%d s:%d omsScanTask:clearing limit and home switches for simulation mode: %c\n", ' ');
+
                 }
 
                 /*
@@ -1940,22 +2020,12 @@ static int omsScanTask
 
 
             /*
-             *  Otherwise check to see if the card and axis were found
+             *  Not simulating so check to see if the card and axis were found
              *  during system initialization.  
              */
 
             else if (pMotor->exists)
             {
-                /*
-                 *  Save the current position and limit switch values
-                 *  so we can see later if they have changed.
-                 */
-
-                position = pDevice->position;
-                encoder = pDevice->encoder;
-                lowLimit = pDevice->lowLimit;
-                highLimit = pDevice->highLimit;
-
                 /* 
                  *  Update the motor position and encoder value with the
                  *  current values from the OMS card.
@@ -1970,100 +2040,38 @@ static int omsScanTask
                 semGive (pMotor->mutexSem);
 
                 /*
-                 * AWE ... sometimes, the oms44 card returns a position when
-                 * asked for an encoder value.  This check detects invalid 
-                 * encoder counts and ignores them as long as the following
-                 * read is successfull.  Only perform this check if we know
-                 * that we are indexed and are not in the middle of an index.
-                 * Also, don't check if we're in a limit.
-                 */
-         
-                if (pdr->ueip &&
-                    pDevice->mode != DDR_MODE_INDEX &&
-                    position / pdr->mres != 0 && 
-                    (fabs(((double)position / pdr->mres - (double)encoder / pdr->eres) /
-                        ((double)position / pdr->mres)) > 0.1))
-                {
-                    if (pDevice->badRead)
-                    {
-                        /*
-                         *  Second consecutive bad read - this is a problem
-                         *  if we're not messed up by a limit.
-                         */
-
-                        if (pdr->hpvl && !(pdr->lswa) )
-                        {
-                            DEBUG(DDR_MSG_ERROR, 
-                                  "<%d> c:%d s:%d omsScanTask:bad encoder%c\n",
-                                  ' ');
-                            drvOmsVmeGetErrorMessage (pDevice->errorMessage);
-                        }
-                    }
-                    else
-                    {
-       	                /*
-                         *  First bad read - this can happen easily.
-                         */
-
-                        DEBUG(DDR_MSG_MIN,
-                              "<%d> c:%d s:%d omsScanTask: bad encoder value%c\n",
-                              ' ');
-                        drvOmsVmeGetErrorMessage (pDevice->errorMessage);
-                        DEBUG(DDR_MSG_MIN,
-                              "<%d> c:%d s:%d omsScanTask:prev encoder: %d\n",
-                              pDevice->encoder);
-                        DEBUG(DDR_MSG_MIN,
-                              "<%d> c:%d s:%d omsScanTask:prev position: %d\n",
-                              pDevice->position);
-                        DEBUG(DDR_MSG_MIN,
-                              "<%d> c:%d s:%d omsScanTask: new encoder: %d\n",
-                              encoder);
-                        DEBUG(DDR_MSG_MIN,
-                              "<%d> c:%d s:%d omsScanTask: new position: %d\n",
-                              position);
-                        encoder = pDevice->encoder;
-                        semTake (pDevice->mutexSem, WAIT_FOREVER);
-                        pDevice->badRead = TRUE;
-                        semGive (pDevice->mutexSem);               
-                    }
-                }
-
-                else
-                {
-                    semTake (pDevice->mutexSem, WAIT_FOREVER);
-                    pDevice->badRead = FALSE;
-                    semGive (pDevice->mutexSem);
-               
-                } /* end of check for bad encoder reads */
-
-
-                /*
-                 *  If there has been a motor driver failure recover the 
-                 *  status message that describes what went wrong.
+                 *  If there was a problem reading the motor position recover 
+                 *  the status message that describes what went wrong and
+                 *  don't bother checking for encoder errors or reading the
+                 *  motor state.
                  */
 
-                if (pMotor->status)
+                if ( pMotor->status )
                 {
                     drvOmsVmeGetErrorMessage (pDevice->errorMessage);
                     DEBUG(DDR_MSG_ERROR,
                             "<%d> c:%d s:%d Get motor position status = %d\n",
                             pMotor->status);
                 }
+                else if ( pDevice->checkLimits ||
+                         (pDevice->moving && (position == pDevice->position)))
+       	        {
+                    /*  Otherwise carry on
+                     *
+                     *  Update the motor state information (limits, home state
+                     *  and done flag) when the motor is either just starting 
+                     *  the move OR just finished (I.e. checkLimits flag is set 
+                     *  or moving flag is set and position unchanged).
+                     *
+                     *  These updates are only done when requested to eliminate 
+                     *  unnecessary communication with the OMS card.
+                     */
 
-       
-                /*
-                 *  Whenever a moving motor stops update the limit switch
-                 *  information.   This update is also done whenever
-                 *  a device fails or if the checkLimits flag is set by the
-                 *  higher level code.
-                 *  These updates are only done when requested to eliminate 
-                 *  unnecessary communication with the OMS card.
-                 */
+                    
+                    DEBUG(DDR_MSG_FULL,
+                        "<%d> c:%d s:%d Get motor state (checkLimits:%d)\n",
+                        pDevice->checkLimits);
 
-                if (!pMotor->status &&
-                    (pDevice->checkLimits ||
-                    (pDevice->moving && (position == pDevice->position))))
-                {
                     semTake (pMotor->mutexSem, WAIT_FOREVER);
                     pMotor->updateState = TRUE;
 
@@ -2071,23 +2079,42 @@ static int omsScanTask
                                                           pMotor->axis,
                                                           &lowLimit,
                                                           &highLimit,
-                                                          &homeSwitch);
+                                                          &homeSwitch,
+                                                          &axisDone);
                     semGive (pMotor->mutexSem);
+		    /*
+                    if ( pDevice->debug == DDR_MSG_FULL && 
+                         pMotor->card == 0 && pMotor->axis == 1 )
+                    {
+                        printf("grp motor dn:ll:hl:hm %d%d%d%d\n", 
+                               axisDone, lowLimit, highLimit, homeSwitch);
+                    }
+
+                    if ( pDevice->debug == DDR_MSG_FULL && axisDone )
+                    {
+                        printf("card:%d axis%d motion done\n", 
+                               pMotor->card, pMotor->axis);
+                    }
+		    */
+                    /*
+                     *  If there was a problem reading the motor state, recover 
+                     *  the status message that describes what went wrong.
+                     */
+
                     if (pMotor->status)
                     {
                         drvOmsVmeGetErrorMessage (pDevice->errorMessage);
                         DEBUG(DDR_MSG_ERROR,
-                              "<%d> c:%d s:%d Get motor state status = %d\n",
-                              pMotor->status);
+                            "<%d> c:%d s:%d Get motor state status = %d\n",
+                            pMotor->status);
                     }
 
                     semTake (pDevice->mutexSem, WAIT_FOREVER);
                     pDevice->checkLimits = 0;
                     semGive (pDevice->mutexSem);               
-                }         
+                }
 
             }   /* end of things to do if the motor exists */
-
 
 
             /*
@@ -2115,7 +2142,11 @@ static int omsScanTask
              *  current state to the starting state to determine if
              *  the associated record needs to be re-processed.
              */
-            
+
+            /*
+             *  Initialize local flags
+             */
+
             rescan = FALSE;
             done = TRUE;
 
@@ -2137,111 +2168,277 @@ static int omsScanTask
 
 
             /*
-             *  If there were no motor failures and the position returned
-             *  by the card has changed then the motor must be moving.
-             *  Update the current position, set the moving flag, clear
-             *  the done flag and then set the rescan flag to indicate that 
-             *  the record needs to see this.
+             *  Check motor status to see if motor position and state  
+             *  were successfully read.
              */
 
-            if ( !pMotor->status && position != pDevice->position)
+            if ( !pMotor->status )
             {
-                pDevice->position = position;
-                pDevice->moving = TRUE;
-                done = FALSE;
-                rescan = TRUE;
-                DEBUG(DDR_MSG_MAX,
-                     "<%d> c:%d s:%d omsScanTask:device position change%c\n",
-                     ' ');
-            }
 
+                /*  
+                 *  Status is okay so check to see if the motor was moving
+                 *  the last time it was checked.  If the position returned by the 
+                 *  card has also not changed, then we may have stopped.
+                 */
 
-            /*
-             *  Update current encoder position regardless, otherwise we
-             *  get a stalled motor. If the motor should not be moving
-             *  but is indexed and not in a limit, then you're seeing
-             *  some spontaneous motion, so set rescan flag.
-             */
-
-            if ( pdr->ueip && pDevice->encoder != encoder ) 
-            { 
-                if ( !(pDevice->moving) && !(pDevice->simulation) )
+                if ( pDevice->moving == TRUE       &&
+                     position == pDevice->position    )
                 {
-                    DEBUG(DDR_MSG_FULL, "<%d> c:%d s:%d omsScanTask:spontaneous encoder change:%d counts\n", (pDevice->encoder - encoder));
+
+                    if ( (pMotor->earlyDone == TRUE) && (axisDone == 0) )         
+                    {
+                        DEBUG(DDR_MSG_FULL,
+                           "<%d> c:%d s:%d omsScanTask:motion & done flag detected in the same scan%c\n", ' ');
+                        axisDone = 1;
+                        pMotor->earlyDone = FALSE;
+                    }
+                    /*  
+                     *  If the axis motion is done or axis is simulated, clear the
+                     *  moving flag and leave done set.  Set local rescan flag
+                     *  to indicate that the record needs to see this. Then clear 
+                     *  the motion stopped counter for the next move.
+                     */
+
+                    if ( axisDone || pDevice->simulation )
+                    {
+                        DEBUG(DDR_MSG_MIN,
+                           "<%d> c:%d s:%d omsScanTask:device motion stopped%c\n",
+                           ' ');
+                        pDevice->moving = FALSE;
+                        rescan = TRUE;
+                        semTake (pMotor->mutexSem, WAIT_FOREVER);
+                        pMotor->stoppedCntr = 0;
+                        semGive (pMotor->mutexSem);
+                    }
+
+                    /*
+                     *  If we're in a limit then we may not yet be stopped.
+                     */
+
+                    else if ( highLimit || lowLimit )
+                    {
+                        /*
+                         *  The moving flag is still set, we're still in a limit
+                         *  and the position remains unchanged.  Let it settle
+                         *  in this condition for five scans.
+                         */
+
+                        if (pMotor->stoppedCntr > 5)
+                        {
+                            DEBUG(DDR_MSG_MIN,"<%d> c:%d s:%d omsScanTask:device motion stopped in limit - issuing EF ID string%c\n",' ');
+
+                            /*  
+                             *  We've stopped and given the limits time to settle.
+                             *  Now we need to send an "ID" command to set up
+                             *  the interrupt when done flag. 
+                             */
+
+                            semTake (pMotor->mutexSem, WAIT_FOREVER);
+
+                            pMotor->status = drvOmsVmeWriteMotor (pMotor->card,
+                                                                  pMotor->axis,
+                                                                  "EF ID ");
+
+                            semGive (pMotor->mutexSem);
+
+                            /*
+                             *  If there was a problem reading the motor state  
+                             *  recover the status message that describes what 
+                             *  went wrong.
+                             */
+
+                            if (pMotor->status)
+                            {
+                                drvOmsVmeGetErrorMessage (pDevice->errorMessage);
+                                DEBUG(DDR_MSG_ERROR,
+                                  "<%d> c:%d s:%d Write motor stop status = %d\n",
+                                  pMotor->status);
+                            }
+                        }
+                        else
+                        {
+                            /*
+                             *  Increment motion stopped counter.
+                             */
+
+                            semTake (pMotor->mutexSem, WAIT_FOREVER);
+                            pMotor->stoppedCntr++;
+                            semGive (pMotor->mutexSem);
+
+                            /*
+                             *  Set the checkLimits flag so that the motor state
+                             *  is checked again next scan.
+                             */
+			    /*
+                            pDevice->checkLimits = 1;
+			    */
+                        }
+                    }
+                    else
+                    {
+                        /*
+                         *  This kludge has to stay until I figure out how to 
+                         *  handle bootup initialization where the moving flag
+                         *  gets set without an ID setting up the done interrupt.
+                         *  The position gets initialized to 0 steps but if the
+                         *  happens to have been left at anything non-zero (very
+                         *  likely but not for sure if the IOC is rebooted but
+                         *  not power cycled) then the change in position will
+                         *  cause the moving flag to get set.  However there is no
+                         *  done interrupt to cause moving to get cleared.
+                         */
+
+                        if (pMotor->stoppedCntr > 20)
+                        {
+ 
+                            DEBUG(DDR_MSG_WARNING,
+                               "<%d> c:%d s:%d omsScanTask:device motion stopped without done flag%c\n",' ');
+                            pDevice->moving = FALSE;
+                            rescan = TRUE;
+                            semTake (pMotor->mutexSem, WAIT_FOREVER);
+                            pMotor->stoppedCntr = 0;
+                            semGive (pMotor->mutexSem);
+                        }
+                        else
+                        {
+                            /*
+                             *  Increment motion stopped counter.
+                             */
+
+                            semTake (pMotor->mutexSem, WAIT_FOREVER);
+                            pMotor->stoppedCntr++;
+                            semGive (pMotor->mutexSem);
+                        }
+                    }
+    
+                }
+                else if ( position != pDevice->position ) 
+                {
+                    /*  
+                     *  The position has changed.  Have we just started a motion?
+                     *  Check to see if axis was already moving and if not, set 
+                     *  the moving flag.  But avoid getting fooled by the case 
+                     *  where the position has changed because of setPosition.
+                     */
+
+                    if ( (pDevice->moving != TRUE)   && 
+                          !(pDevice->index == DDR_INDEX_LLSW && 
+                                 pDevice->lowLimit)  &&
+                          !(pDevice->index == DDR_INDEX_ULSW && 
+                                 pDevice->highLimit)     )
+                    {
+                        DEBUG(DDR_MSG_MIN, 
+                            "<%d> c:%d s:%d omsScanTask:device motion started%c\n",
+                            ' ');
+                        pDevice->moving = TRUE;
+                        DEBUG(DDR_MSG_MAX, 
+                            "<%d> c:%d s:%d omsScanTask:new position:%d\n", 
+                            position);
+                        DEBUG(DDR_MSG_MAX, 
+                            "<%d> c:%d s:%d omsScanTask:old position:%d\n", 
+                            pDevice->position);
+
+                        if (axisDone)
+                        {
+                            /*
+                             *  The motion starting was detected in the same
+                             *  scan as the done flag (short move) so set the
+                             *  earlyDone flag.
+                             */
+
+                            semTake (pMotor->mutexSem, WAIT_FOREVER);
+                            pMotor->earlyDone = TRUE;
+                            semGive (pMotor->mutexSem);
+                        }
+
+		    }    
+
+                    /*
+                     *  Update the structure position and clear the local done flag,
+                     *  then set local rescan flag to indicate that the record 
+                     *  needs to see this.
+                     */
+
+                    pDevice->position = position;
+                    done = FALSE;
+                    rescan = TRUE;
+                    DEBUG(DDR_MSG_MAX, "<%d> c:%d s:%d omsScanTask:device position change%c\n", ' ');
+	        }
+
+
+                /*
+                 *  Update current encoder position regardless, otherwise we
+                 *  get a stalled motor at startup. If the motor should not be 
+                 *  moving  then you're seeing some spontaneous motion, so
+                 *  update the encoder and set rescan flag.  Plus or minus a few 
+                 *  counts is probably okay but make this determination at the 
+                 *  rec level.
+                 */
+
+                if ( pdr->ueip && pDevice->encoder != encoder ) 
+                { 
+                    if ( !(pDevice->moving) && !(pDevice->simulation) )
+                    {
+                        DEBUG(DDR_MSG_MIN, "<%d> c:%d s:%d omsScanTask:spontaneous encoder change:%d counts\n", (pDevice->encoder - encoder));
+                    }
+                    pDevice->encoder = encoder;
                     rescan = TRUE;
                 }
-                pDevice->encoder = encoder;
-            }
 
+
+                /*
+                 *  Look for changes in the home and limit switch states, if 
+                 *  they have changed the record needs to know about it.
+                 */
+
+                if ( pMotor->updateState )
+                {
+                    if (lowLimit != pDevice->lowLimit)
+                    {
+                        DEBUG(DDR_MSG_FULL,
+                          "<%d> c:%d s:%d omsScanTask:low limit change:%d\n",
+                          lowLimit);
+                        pDevice->lowLimit = lowLimit;
+                        rescan = TRUE;
+                    }
+
+                    if (highLimit != pDevice->highLimit)
+                    {
+                        DEBUG(DDR_MSG_FULL,
+                          "<%d> c:%d s:%d omsScanTask:high limit change:%d\n",
+                          highLimit);
+                        pDevice->highLimit = highLimit;
+                        rescan = TRUE;
+                    }
+
+                    if (homeSwitch != pDevice->homeSwitch)
+                    {
+                        DEBUG(DDR_MSG_FULL,
+                          "<%d> c:%d s:%d omsScanTask:home switch change:%d\n",
+                          homeSwitch);
+                        pDevice->homeSwitch = homeSwitch;
+                        rescan = TRUE;
+                    }
+
+                    semTake (pMotor->mutexSem, WAIT_FOREVER);
+                    pMotor->updateState = FALSE;
+                    semGive (pMotor->mutexSem);
+                }
+            }   /*  end of if ( !pMotor->status )... */
 
             /*
-             *  Look for changes in the home and limit switch states, if 
-             *  they have changed the record needs to know about it.
-             */
-
-            if ( !pMotor->status && pMotor->updateState)
-            {
-                if (lowLimit != pDevice->lowLimit)
-                {
-                    pDevice->lowLimit = lowLimit;
-                    rescan = TRUE;
-                    DEBUG(DDR_MSG_MAX,
-                          "<%d> c:%d s:%d omsScanTask:low limit change%c\n",
-                          ' ');
-                }
-
-                if (highLimit != pDevice->highLimit)
-                {
-                    pDevice->highLimit = highLimit;
-                    rescan = TRUE;
-                    DEBUG(DDR_MSG_MAX,
-                          "<%d> c:%d s:%d omsScanTask:high limit change%c\n",
-                          ' ');
-                }
-
-                if (homeSwitch != pDevice->homeSwitch)
-                {
-                    pDevice->homeSwitch = homeSwitch;
-                    rescan = TRUE;
-                    DEBUG(DDR_MSG_MAX,
-                          "<%d> c:%d s:%d omsScanTask:home switch change%c\n",
-                          ' ');
-                }
-
-                semTake (pMotor->mutexSem, WAIT_FOREVER);
-                pMotor->updateState = FALSE;
-                semGive (pMotor->mutexSem);
-            }
-
-
-            /*
-             *  If moving flag is set, and position has not changed, then 
-             *  we can consider the motion finished.   The record needs
-             *  to know about this.
-             */
-        
-            if (pDevice->moving && done)
-            {
-                pDevice->moving = FALSE;
-                rescan = TRUE;
-                DEBUG(DDR_MSG_MAX,
-                     "<%d> c:%d s:%d omsScanTask:motion complete%c\n",
-                     ' ');
-            }
-
-
-            /*
-             *  Check for failure from motor update calls.
+             *  Update the motor status if it's changed.
              */
 
             if (pMotor->status != pDevice->status)
             {
-                DEBUG(DDR_MSG_MAX,
+                DEBUG(DDR_MSG_MIN,
                  "<%d> c:%d s:%d omsScanTask:motor status != device status%c\n",
                  ' ');
                 pDevice->status = pMotor->status;
                 rescan = TRUE;
             }
+
             semGive (pDevice->mutexSem);
 
 
@@ -2449,7 +2646,7 @@ static long setPosition
     long status = 0;                        /* function return status       */
 
     DEBUG(DDR_MSG_FULL, 
-          "<%d> c:%d s:%d Update position to <%ld>\n", position);
+          "<%d> c:%d s:%d Set position to:%ld \n", position);
 
 
     /*

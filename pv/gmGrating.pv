@@ -37,7 +37,7 @@ group {
    long   $(top)grADevice.UBSB =             0;  # Monitor brake status bit (0/1)?
    long   $(top)grADevice.UEIP =             0;  # Use encoders if present (0/1)?
 # DISABLE POWER STATUS CHECK UNTIL GRATING ELECTRONICS PROBLEM FIXED
-   long   $(top)grADevice.UPSB =             0;  # Monitor power status bit (0/1)?
+   long   $(top)grADevice.UPSB =             1;  # Monitor power status bit (0/1)?
    double $(top)grADevice.VBAS =         125.0;  # Base velocity in whole steps/sec
    double $(top)grADevice.VELO =         500.0;  # Default velocity in whole steps/sec
    double $(top)grADevice.VHLM =        1000.0;  # Absolute maximum velocity in whole steps/sec
@@ -64,7 +64,7 @@ group {
    long   $(top)grBDevice.UBSB =             0;  # Monitor brake status bit (0/1)?
    long   $(top)grBDevice.UEIP =             0;  # Use encoders if present (0/1)?
 # DISABLE POWER STATUS CHECK UNTIL GRATING ELECTRONICS PROBLEM FIXED
-   long   $(top)grBDevice.UPSB =             0;  # Monitor power status bit (0/1)?
+   long   $(top)grBDevice.UPSB =             1;  # Monitor power status bit (0/1)?
    double $(top)grBDevice.VBAS =         125.0;  # Base velocity in whole steps/sec
    double $(top)grBDevice.VELO =         500.0;  # Default velocity in whole steps/sec
    double $(top)grBDevice.VHLM =        1000.0;  # Absolute maximum velocity in whole steps/sec
@@ -91,7 +91,7 @@ group {
    long   $(top)grCDevice.UBSB =             0;  # Monitor brake status bit (0/1)?
    long   $(top)grCDevice.UEIP =             0;  # Use encoders if present (0/1)?
 # DISABLE POWER STATUS CHECK UNTIL GRATING ELECTRONICS PROBLEM FIXED
-   long   $(top)grCDevice.UPSB =             0;  # Monitor power status bit (0/1)?
+   long   $(top)grCDevice.UPSB =             1;  # Monitor power status bit (0/1)?
    double $(top)grCDevice.VBAS =         125.0;  # Base velocity in whole steps/sec
    double $(top)grCDevice.VELO =         500.0;  # Default velocity in whole steps/sec
    double $(top)grCDevice.VHLM =        1000.0;  # Absolute maximum velocity in whole steps/sec
@@ -118,7 +118,7 @@ group {
    long   $(top)grDDevice.UBSB =             0;  # Monitor brake status bit (0/1)?
    long   $(top)grDDevice.UEIP =             0;  # Use encoders if present (0/1)?
 # DISABLE POWER STATUS CHECK UNTIL GRATING ELECTRONICS PROBLEM FIXED
-   long   $(top)grDDevice.UPSB =             0;  # Monitor power status bit (0/1)?
+   long   $(top)grDDevice.UPSB =             1;  # Monitor power status bit (0/1)?
    double $(top)grDDevice.VBAS =         125.0;  # Base velocity in whole steps/sec
    double $(top)grDDevice.VELO =         500.0;  # Default velocity in whole steps/sec
    double $(top)grDDevice.VHLM =        1000.0;  # Absolute maximum velocity in whole steps/sec

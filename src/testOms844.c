@@ -261,11 +261,11 @@ long omsState
     int axis
 )
 {
-    int hlim, llim, home;
+    int hlim, llim, home, done;
     long status;
 
-    status = drvOmsVmeMotorState (card, axis, &llim, &hlim, &home);
-    printf ("omsState: hlim = %d, llim = %d, home = %d\n", hlim, llim, home);
+    status = drvOmsVmeMotorState (card, axis, &llim, &hlim, &home, &done);
+    printf ("omsState: hlim = %d, llim = %d, home = %d, done = %d\n", hlim, llim, home, done);
     return status;
 }
 

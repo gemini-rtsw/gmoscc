@@ -164,9 +164,9 @@ OUTPUT *.IALG* 3*
 
 DESC "Using Power status? Should be YES for filter wheels"
 GETVAL devUsePwrStatus
-#OUTPUT *.UPSB* YES*
+OUTPUT *.UPSB* YES*
 # Allow the device not to use power status while in simulation mode for testing the script
-OUTPUT *.UPSB*
+#OUTPUT *.UPSB*
 
 DESC "Get the power status timeout"
 GETVAL devPwrStatusTimeout

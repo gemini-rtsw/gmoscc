@@ -34,6 +34,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1.1.1  2001/04/13 01:37:34  smb
+ * Initial creation of the Gemini GMOS repository
+ *
  * Revision 1.5  2000/10/04 00:32:08  gmos
  * Added max axes definition (also used in devDeviceControl.c now).
  *
@@ -96,7 +99,7 @@
  */
  
 long drvOmsVmeMotorPosition (int, int, long *, long *);
-long drvOmsVmeMotorState (int, int, int *, int *, int *);
+long drvOmsVmeMotorState (int, int, int *, int *, int *, int *);
 int  drvOmsVmeGetCardType (int);
 void drvOmsVmeGetErrorMessage (char *);
 long drvOmsVmeInit();

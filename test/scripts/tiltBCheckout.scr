@@ -159,8 +159,8 @@ OUTPUT *.IALG* 4*
 
 DESC "Using Power status? Should be YES for grating cells"
 GETVAL devUsePwrStatus
-#OUTPUT *.UPSB* YES* - set to NO whilst power status problems examined
-OUTPUT *.UPSB* NO*
+OUTPUT *.UPSB* YES*
+#OUTPUT *.UPSB* NO*
 
 DESC "Get the power status timeout"
 GETVAL devPwrStatusTimeout

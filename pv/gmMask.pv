@@ -83,9 +83,9 @@ group {
    long   $(top)mskCasDevice.UAPB =       1;
    long   $(top)mskCasDevice.UBSB =       0;
    long   $(top)mskCasDevice.UEIP =       0;
-#   long   $(top)mskCasDevice.UPSB =       1;
+   long   $(top)mskCasDevice.UPSB =       1;
 # DISABLE POWER STATUS CHECK UNTIL MASK ELECTRONICS PROBLEM FIXED
-   long   $(top)mskCasDevice.UPSB =       0;
+#   long   $(top)mskCasDevice.UPSB =       0;
    double $(top)mskCasDevice.VBAS =     0.5;
    double $(top)mskCasDevice.VELO =    20.0;
    double $(top)mskCasDevice.VHLM =    25.0;
@@ -107,9 +107,9 @@ group {
    long   $(top)mskExtDevice.UAPB =       1;
    long   $(top)mskExtDevice.UBSB =       0;
    long   $(top)mskExtDevice.UEIP =       0;
-#   long   $(top)mskExtDevice.UPSB =       1;
+   long   $(top)mskExtDevice.UPSB =       1;
 # DISABLE POWER STATUS CHECK UNTIL MASK ELECTRONICS PROBLEM FIXED
-   long   $(top)mskExtDevice.UPSB =       0;
+#   long   $(top)mskExtDevice.UPSB =       0;
    double $(top)mskExtDevice.VBAS =     2.0;
    double $(top)mskExtDevice.VELO =    35.0;
    double $(top)mskExtDevice.VHLM =    40.0;
@@ -131,9 +131,9 @@ group {
    long   $(top)mskGrpDevice.UAPB =       1;
    long   $(top)mskGrpDevice.UBSB =       0;
    long   $(top)mskGrpDevice.UEIP =       0;
-#   long   $(top)mskGrpDevice.UPSB =       1;
+   long   $(top)mskGrpDevice.UPSB =       1;
 # DISABLE POWER STATUS CHECK UNTIL MASK ELECTRONICS PROBLEM FIXED
-   long   $(top)mskGrpDevice.UPSB =       0;
+#   long   $(top)mskGrpDevice.UPSB =       0;
    double $(top)mskGrpDevice.VBAS =     0.1;
    double $(top)mskGrpDevice.VELO =    10.0;
    double $(top)mskGrpDevice.VHLM =    15.0;
@@ -155,9 +155,9 @@ group {
    long   $(top)mskRelDevice.UAPB =       1;
    long   $(top)mskRelDevice.UBSB =       0;
    long   $(top)mskRelDevice.UEIP =       0;
-#   long   $(top)mskRelDevice.UPSB =       1;
+   long   $(top)mskRelDevice.UPSB =       1;
 # DISABLE POWER STATUS CHECK UNTIL MASK ELECTRONICS PROBLEM FIXED
-   long   $(top)mskRelDevice.UPSB =       0;
+#   long   $(top)mskRelDevice.UPSB =       0;
    double $(top)mskRelDevice.VBAS =     0.1;
    double $(top)mskRelDevice.VELO =     5.0;
    double $(top)mskRelDevice.VHLM =    15.0;

@@ -126,8 +126,8 @@ OUTPUT *.IALG* 1*
 
 DESC "Using Power status?"
 GETVAL devUsePwrStatus
-#OUTPUT *.UPSB* YES*
-OUTPUT *.UPSB*
+OUTPUT *.UPSB* YES*
+#OUTPUT *.UPSB*
 
 DESC "Get the power status timeout"
 GETVAL devPwrStatusTimeout

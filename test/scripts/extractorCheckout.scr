@@ -149,9 +149,9 @@ OUTPUT *.IALG* 2*
 
 DESC "Using Power status?"
 GETVAL devUsePwrStatus
-#OUTPUT *.UPSB* YES*
+OUTPUT *.UPSB* YES*
 # Comment out check on UPSB until power status electronics problem fixed
-OUTPUT *.UPSB*
+#OUTPUT *.UPSB*
 
 DESC "Get the power status timeout"
 GETVAL devPwrStatusTimeout

@@ -63,9 +63,12 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2001/04/23 18:23:09  smb
+ * OIWFS will no longer time out after being moved manually a significant amount 
+ * (bug 168).  HSWA field monitoring problem fixed (bug 218). Problem with setting 
+ * up of simulation mode incorrectly if mode changed after INIT fixed (bug 258).
+ *
  * Revision 1.26  2001/03/27 10:59:53  gmos
- *
- *
  * Removed clearing of mmap & lmap in initState() to allow updates
  * of LSWA, HSWA, RENC, RRBV, MPOS & MSTA fields that are detected
  * in the callback section of process() prior to calling
@@ -360,8 +363,8 @@ static char rcsid[] = "$Id$";
 #define DDR_LUT_MAX_NAME         16   /* maximum length of name string      */
 #define DDR_MAX_INDEX_VEL    1023.0   /* maximum final index velo., st/sec  */
 #define DDR_MIN_INDEX_VEL       1.0   /* minimum final index velo., st/sec  */
-#define DDR_MOTION_OVERHEAD_TIME 15   /* motion setup overhead, 0.1 seconds */
-#define DDR_INDEX_OVERHEAD_TIME  20   /* indexing overhead, 0.1 seconds     */
+#define DDR_MOTION_OVERHEAD_TIME 25   /* motion setup overhead, x0.1 sec    */
+#define DDR_INDEX_OVERHEAD_TIME  25   /* indexing overhead, x0.1 sec        */
 
 /*
  * Bitmap mnemonics for EPICS record filds to have monitors raised
@@ -1470,6 +1473,19 @@ static long depoweringState
         {
             return idleState (pdr);
         }
+    }
+
+
+    /*
+     *  Abort the operation immediately if the moving flag suddenly comes alive.
+     */
+
+    if ( pPriv->moving )
+    {
+        SET_ERR_MSG("Unexpected motion while depowering");
+        DEBUG(DDR_MSG_ERROR, 
+              "<%d> %s:depoweringState:moving flag set after powering down%c\n", ' ');
+        return abortingState (pdr);
     }
 
 
@@ -3409,6 +3425,17 @@ static long lockingState
 
     }
 
+    /*
+     *  Abort the operation immediately if the moving flag suddenly comes alive.
+     */
+
+    if ( pPriv->moving )
+    {
+        SET_ERR_MSG("Unexpected motion while braking");
+        DEBUG(DDR_MSG_ERROR, 
+              "<%d> %s:lockingState:moving flag set after brakes applied%c\n", ' ');
+        return abortingState (pdr);
+    }
 
     /*
      *  If we have brake status feedback (use brake status bit set) and

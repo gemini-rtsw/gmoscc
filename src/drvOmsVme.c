@@ -45,6 +45,9 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1.1.1  2001/04/13 01:37:34  smb
+ * Initial creation of the Gemini GMOS repository
+ *
  * Revision 1.6  2000/10/16 22:36:31  gmos
  * Checks for home switch active ('\H') now instead of not active ('\N').
  * Added more status checks, some debugging and more comments.
@@ -183,6 +186,7 @@ static char rcsid[] = "$Id$";
 #define DRV_OMS_VME_MAX_REQUESTS            3       /* max synch attempts   */
 #define DRV_OMS_VME_MAX_MESSAGES            16      /* size of message queue*/
 #define DRV_OMS_VME_MAX_CARDS               8       /* max cards in a system*/
+#define DRV_OMS_VME_CTL_X                   0x18    /* define control-X     */
 #define DRV_OMS_VME_CTL_Y                   0x19    /* define control-Y     */
 
 
@@ -232,8 +236,10 @@ static int lastCard = 0;                            /* number of cards found*/
 static DRV_OMS_VME_CARD *pCards[DRV_OMS_VME_MAX_CARDS];     /* one per card */
 static char axisName[] = {'X', 'Y', 'Z', 'T', 'U', 'V', 'R', 'S'}; /* prefix*/
 static char errorMessage[MAX_STRING_SIZE];          /* error message buffer */
-static char readDebugBuffer[DRV_OMS_VME_MAX_MSG_LEN+1];   /* read debugging buf (with space for null at end)  */
-static char writeDebugBuffer[DRV_OMS_VME_MAX_MSG_LEN+1];  /* write debugging buf (with space for null at end) */
+static char readDebugBuffer[DRV_OMS_VME_MAX_MSG_LEN+1];   /* read debugging 
+                                      bufffer (with space for null at end)  */
+static char writeDebugBuffer[DRV_OMS_VME_MAX_MSG_LEN+1];  /* write debugging 
+                                       bufffer (with space for null at end) */
 
 
 /*
@@ -819,24 +825,30 @@ long drvOmsVmeInit ()
  *
  *
  *      Read the contents of the hardware communication registers
+ *        (except for the done register) 
  *
- *      If done bit was set in the ISR
+ *      If status register done bit is set indicates motion done or error
  *      {
- *          If soft limit bit was set in ISR
+ *          If status register overtravel (soft limit bit) is set
  *          {
  *              Send a debug message if we are debugging.
  *          }
- *          If command error bit was set in the ISR
+ *          If status register command error bit is set
  *          {
- *              Send a debug message if we are debugging.
+ *              Shouldn't happen so send a debug message.
  *          }            
- *          If the initializing or encoder error bits were set in the ISR.
+ *          If status register initializing or encoder error bits are set.
  *          {
- *              Send a debug message if we are debugging.
+ *              Shouldn't happen so send a debug message.
  *          }
- *          If none of the above, must just be done command 
+ *          If none of the above,  
  *          {
- *              Issue a CTL-Y to reset the register.
+ *              No errors so must mean motion is done.
+ *          }
+ *          Else
+ *          {
+ *              Issue a CTL-X to reset the status register error bits
+ *                leaving the done register as it was.
  *          }
  *      }
  *
@@ -904,42 +916,50 @@ static void drvOmsVmeIsr
 )
 {   
     uint8_t data;           /* contents of data register                    */
-    uint8_t done;           /* contents of done/error register              */
+/*  uint8_t done;              contents of done/error register              */
     uint8_t intStatus;      /* contents of interrupt status register        */
     uint8_t control;        /* contents of control register                 */
     char writeChar;         /* character to write to card                   */
     register int fromP;     /* ring buffer location return pointer          */
-    DRV_OMS_VME_CARD *pCard = (DRV_OMS_VME_CARD *) pIsr; /* card control str*/
-    DRV_OMS_VME_REGISTERS *pRegisters = pCard->pRegisters; /* register str  */
+    DRV_OMS_VME_CARD *pCard = (DRV_OMS_VME_CARD *) pIsr; /* card control 
+                                                                  structure */
+    DRV_OMS_VME_REGISTERS *pRegisters = pCard->pRegisters; /* register 
+                                                                  structure */
     long status = 0;        /* function return status                       */
 
      
     /*
-     * Read the contents of the hardware communication regesters
+     * Read the contents of the OMS status, data & control registers.
+     * Instead of reading the done register here and resetting the individual 
+     * axis done flags, reset them individually with the IC command in 
+     * drvOmsVmeMotorState().
      */
 
     intStatus = pRegisters->status;
     data = pRegisters->data; 
-    done = pRegisters->done;
     control = pRegisters->control;
-     
+
 
     /*
-     *  Done (or error) handler.
+     *  Done (or error) handler.  The DON_S bit can mean either an error
+     *  has caused the interrupt or that a motion has completed.
      */
          
     if (intStatus & DRV_OMS_VME_STAT_DONE)
     {
+
         /*
+         *  Check for errors first...
+         *
          *  Has a soft limit switch has been hit?
          */
 
         if (intStatus & DRV_OMS_VME_STAT_OVERTRAVEL)
         {
-
+            
             /*
              *  Send a debug message if we are debugging otherwise ignore
-             *  the interrupt.
+             *  the interrupt.  A limit may or may not actually be an error.
              */
 
             if (drvOmsVmeDebug)
@@ -960,21 +980,17 @@ static void drvOmsVmeIsr
         if (intStatus & DRV_OMS_VME_STAT_ERROR)
         {
             /*
-             *  If so, send a debug message if we are debugging otherwise
-             *  ignore the interrupt.
+             *  If so, send a debug message.
              */
 
-            if (drvOmsVmeDebug)
-            {
-                logMsg("OMS%d card: Command rejected, control=%d, status=%d\n", 
-                        pCard->type, control, intStatus, 0, 0, 0);
-                dumpDebugBuffer (pCard);
-            }
+            logMsg("OMS%d card: Command rejected, control=%d, status=%d\n", 
+                  pCard->type, control, intStatus, 0, 0, 0);
+            dumpDebugBuffer (pCard);
         }
 
 
         /*
-         *  Is the card OMS intializing (not likely), or feels it has an
+         *  Is the card OMS initializing (not likely), or feels it has an
          *  encoder problem (also not likely)?   
          */
 
@@ -982,21 +998,18 @@ static void drvOmsVmeIsr
              (intStatus & DRV_OMS_VME_STAT_ENCODER) )
         {
             /*
-             *  If so, send a debug message if we are debugging otherwise
-             *  ignore the interrupt.
+             *  If so, send a debug message.
              */
  
-            if (drvOmsVmeDebug)
-            {
-                logMsg("OMS%d card: Init or encoder error\n", 
+            logMsg("OMS%d card: Init or encoder error\n", 
                 pCard->type, 0, 0, 0, 0, 0);
-            }
         }
 
 
         /*
-         *  If none of the above then reset the status register by 
-         *  issuing a CTL-Y.
+         *  If none of the above then done bit means motion has
+         *  completed on at least one axis - otherwise reset the   
+         *  status register error bits by issuing a CTL-X.
          */
 
         if ( !(intStatus & DRV_OMS_VME_STAT_OVERTRAVEL) &&
@@ -1006,12 +1019,21 @@ static void drvOmsVmeIsr
         {
             if (drvOmsVmeDebug)
             {
-                logMsg("OMS%d card: Resetting status register :%d\n", 
+                logMsg("OMS%d card: Axis motion done.\n", 
+                        pCard->type, 0, 0, 0, 0, 0);
+            }
+        }
+        else
+        {
+            if (drvOmsVmeDebug)
+            {
+                logMsg("OMS%d card: Resetting status register error bits:%d\n", 
                         pCard->type, intStatus, 0, 0, 0, 0);
             }
- 
-            pRegisters->data = DRV_OMS_VME_CTL_Y;
+            pRegisters->data = DRV_OMS_VME_CTL_X;
+
         }
+
     }
 
 
@@ -1040,11 +1062,8 @@ static void drvOmsVmeIsr
             else
             {
                 SET_ERR_MSG ("OMS read buffer overflow");
-                if (drvOmsVmeDebug)
-                {
-                    logMsg("OMS%d card .. OMS read buffer overflow\n", 
-                            pCard->type, 0, 0, 0, 0, 0);
-                }
+                logMsg("OMS%d card .. OMS read buffer overflow\n", 
+                     pCard->type, 0, 0, 0, 0, 0);
                 pCard->status = DRV_OMS_VME_S_BUFFER_FULL;
             }
         }
@@ -1071,11 +1090,8 @@ static void drvOmsVmeIsr
             if (status)
             {
                 SET_ERR_MSG ("Cannot send to OMS message queue");
-                if (drvOmsVmeDebug)
-                {
-                    logMsg("OMS%d card .. OMS message queue send failure\n", 
-                            pCard->type, 0, 0, 0, 0, 0);
-                }
+                logMsg("OMS%d card .. OMS message queue send failure\n", 
+                     pCard->type, 0, 0, 0, 0, 0);
                 pCard->status = DRV_OMS_VME_S_SYS_ERROR;
             }
             
@@ -1155,26 +1171,23 @@ static void drvOmsVmeIsr
  * (long) Function status return.
  *
  * PURPOSE:
- * Request current position from a given axes
+ * Request current encoder and position from a given axes
  *
  * DESCRIPTION:
  * 
- *      Insure request is valid.
+ *      Ensure request is valid.
  *      Flush the message queue.
  *      If this is an OMS 44 card
  *      {
  *          Try up to a defined maximum number of times
  *          {
- *              Send the "Report Encoder" request.
+ *              Send the "Report Encoder" request and exit if error.
  *              Read card response.
  *              If response can be converted to long integer
  *              {
  *                  Break out of read encoder loop
  *              }
- *              Else
- *              {
- *                  Print debug information
- *              }
+ *              Print debug information
  *          }    
  *          If tried the maximum number without success
  *          {
@@ -1183,16 +1196,13 @@ static void drvOmsVmeIsr
  *      }
  *      Try up to a defined maximum number of times
  *      {
- *          Send the "Report Position" request.
+ *          Send the "Report Position" request and exit if error.
  *          Read card response.
  *          If response can be converted to long integer
  *          {
  *              Break out of read position loop
  *          }
- *          Else
- *          {
- *              Print debug information
- *          }
+ *          Print debug information
  *      }    
  *      If tried the maximum number without success
  *      {
@@ -1236,7 +1246,9 @@ long drvOmsVmeMotorPosition
      * Ensure that the request is valid
      */
      
-    if ( (card < 0) || (card >= DRV_OMS_VME_MAX_CARDS) || ((pCard = pCards[card]) == NULL))
+    if ( (card < 0) || 
+         (card >= DRV_OMS_VME_MAX_CARDS) || 
+         ((pCard = pCards[card]) == NULL))
     {
         SET_ERR_MSG ("OMS position requested from invalid card");
         return DRV_OMS_VME_S_CFG_ERROR;
@@ -1253,9 +1265,10 @@ long drvOmsVmeMotorPosition
         ;
     }
         
-    if (lostReply && drvOmsVmeDebug)
+    if (lostReply)
     {
-        logMsg("discarding %d messages from card:%d\n", lostReply, card, 0, 0, 0, 0);
+        logMsg("OMS card:%d  Flushed %d messages from input queue before RE/RP.\n", 
+             card, lostReply, 0, 0, 0, 0);
     }
 
 
@@ -1271,8 +1284,12 @@ long drvOmsVmeMotorPosition
 
     if (pCard->type == 44)
     {
-        for (requests = 0; requests < DRV_OMS_VME_MAX_REQUESTS; requests++)
+        for (requests = 1; requests < DRV_OMS_VME_MAX_REQUESTS; requests++)
         {
+            /*
+             *  Clear any existing errors encountered in ISR for input buffer   
+             */
+
             pCard->status = 0;
 
             /*
@@ -1282,11 +1299,9 @@ long drvOmsVmeMotorPosition
             status = drvOmsVmeWriteMotor (card, axis, "RE");
             if (status != 0)
             {
-                if (drvOmsVmeDebug )
-                {
-                    logMsg("OMS card:%d RE cmd writeMotor failed %d:%d\n", 
-                        card, status, pCard->status, 0, 0, 0);
-                }
+
+                logMsg("OMS card:%d RE cmd writeMotor failed %d:%d\n", 
+                     card, status, pCard->status, 0, 0, 0);
                 return status;
             }
 
@@ -1303,7 +1318,7 @@ long drvOmsVmeMotorPosition
 
 
             /*
-             *  If conversion was successful break out here
+             *  If conversion was successful break out of RE query loop here
              */
 
             if (status >= 0 && pCard->status == 0 && *pEnd == '\0')
@@ -1313,65 +1328,64 @@ long drvOmsVmeMotorPosition
 
             /*
              *  Otherwise an error occurred.   Write debugging information
-             *  if we are debugging and then go back and try again.
+             *  and then go back and try again.
              */
 
-            if (drvOmsVmeDebug)
+            if ( *pEnd != '\0' )
             {
-                if ( *pEnd != '\0' )
-                {
-                    logMsg("OMS card:%d RE bad string termination:%c, %d/%d\n", 
-                        card, *pEnd, requests, 
-                        DRV_OMS_VME_MAX_REQUESTS, 0, 0);
-                }
-                if ( pCard->status != 0 )
-                {
-                    logMsg("OMS card:%d RE status register error:%d, %d/%d\n", 
-                        card, pCard->status, requests, 
-                        DRV_OMS_VME_MAX_REQUESTS, 0, 0);
-                }
-                if ( status < 0 )
-                {
-                    logMsg("OMS card:%d RE readCard error:%d, %d/%d\n", 
-                        card, status, requests,
-                        DRV_OMS_VME_MAX_REQUESTS, 0, 0);
-                }
-                dumpDebugBuffer (pCard);
+                logMsg("OMS card:%d RE bad string termination:%c, %d/%d\n", 
+                    card, *pEnd, requests, 
+                    DRV_OMS_VME_MAX_REQUESTS, 0, 0);
             }
-        }
+            if ( pCard->status != 0 )
+            {
+                logMsg("OMS card:%d RE status register error:%d, %d/%d\n", 
+                    card, pCard->status, requests, 
+                    DRV_OMS_VME_MAX_REQUESTS, 0, 0);
+            }
+            if ( status < 0 )
+            {
+                logMsg("OMS card:%d RE readCard error:%d, %d/%d\n", 
+                    card, status, requests,
+                    DRV_OMS_VME_MAX_REQUESTS, 0, 0);
+            }
+            dumpDebugBuffer (pCard);
+
+        }     /* end of RE query loop */
 
 
         /*
-         * If this was not the first attempt...
+         * Either successful RE query or too many attempts. 
+         * Check to see how many tries it took.
          */
 
-        if ( requests < 0 )
+        if ( requests > 1 )
         {
             /* 
-             * Too many attempts to read the encoder have failed, 
-             * so bail out.
+             * This was not the first attempt.
              */
             if (requests >= DRV_OMS_VME_MAX_REQUESTS)
             {
+                /*
+                 * Too many attempts to read the encoder have failed, 
+                 * so bail out with an error.
+                 */
                 SET_ERR_MSG ("OMS44 Encoder request read failure");
-                if (drvOmsVmeDebug)
-                {
-                    logMsg("OMS card:%d RE cmd failed after %d attempts, %d:%d\n", 
-                            card, requests, status, pCard->status, 0, 0);
-                }
+                logMsg("OMS card:%d RE cmd failed after %d attempts, %d:%d\n", 
+                     card, requests, status, pCard->status, 0, 0);
                 return DRV_OMS_VME_S_SYS_ERROR;
             } 
             /*
              * Otherwise this is the first successful read after n
-             * failures, so just dump the read and write buffers
-             * and carry on.
+             * failures, so if debugging is set just dump the read 
+             * and write buffers and carry on.
              */
             else if (drvOmsVmeDebug)
             {
                 logMsg("OMS card:%d RE command accepted on attempt:%d of %d\n", 
                         card, requests, DRV_OMS_VME_MAX_REQUESTS, 0, 0, 0);
+                dumpDebugBuffer (pCard);
             }
-            dumpDebugBuffer (pCard);
         }
     }
 
@@ -1386,22 +1400,23 @@ long drvOmsVmeMotorPosition
      * input queue for that axis sorted out again.
      */
 
-    for (requests = 0; requests < DRV_OMS_VME_MAX_REQUESTS; requests++)
+    for (requests = 1; requests < DRV_OMS_VME_MAX_REQUESTS; requests++)
     {
+        /*
+         *  Clear any existing errors encountered in ISR for input buffer   
+         */
+
         pCard->status = 0;
 
         /*
-         *  Write the "report encoder" command to the axis
+         *  Write the "report position" command to the axis
          */
 
         status = drvOmsVmeWriteMotor (card, axis, "RP");
         if (status != 0)
         {
-            if (drvOmsVmeDebug )
-            {
-                logMsg("OMS card:%d RP cmd writeMotor failed %d:%d\n", 
-                    card, status, pCard->status, 0, 0, 0);
-            }
+            logMsg("OMS card:%d RP cmd writeMotor failed %d:%d\n", 
+                 card, status, pCard->status, 0, 0, 0);
             return status;
         }
 
@@ -1427,66 +1442,65 @@ long drvOmsVmeMotorPosition
             break;
         }
           
-
         /*
-         * Otherwise print debug information if we are debugging.
+         *  Otherwise an error occurred.   Write debugging information
+         *  and then go back and try again.
          */
 
-        if (drvOmsVmeDebug)
+        if ( *pEnd != '\0' )
         {
-            if ( *pEnd != '\0' )
-            {
-                logMsg("OMS card:%d RP bad string termination:%c,  %d/%d\n", 
-                        card, *pEnd, requests, 
-                        DRV_OMS_VME_MAX_REQUESTS, 0, 0);
-            }
-            if ( pCard->status != 0 )
-            {
-                logMsg("OMS card:%d RP status register error:%d, %d/%d\n", 
-                        card, pCard->status, requests, 
-                        DRV_OMS_VME_MAX_REQUESTS, 0, 0);
-            }
-            if ( status < 0 )
-            {
-                logMsg("OMS card:%d RP readCard error:%d, %d/%d\n", 
-                        card, status, requests,
-                        DRV_OMS_VME_MAX_REQUESTS, 0, 0);
-            }
-            dumpDebugBuffer (pCard);
+            logMsg("OMS card:%d RP bad string termination:%c,  %d/%d\n", 
+                 card, *pEnd, requests, 
+                 DRV_OMS_VME_MAX_REQUESTS, 0, 0);
         }
-    }
+        if ( pCard->status != 0 )
+        {
+            logMsg("OMS card:%d RP status register error:%d, %d/%d\n", 
+                 card, pCard->status, requests, 
+                 DRV_OMS_VME_MAX_REQUESTS, 0, 0);
+        }
+        if ( status < 0 )
+        {
+            logMsg("OMS card:%d RP readCard error:%d, %d/%d\n", 
+                 card, status, requests,
+                 DRV_OMS_VME_MAX_REQUESTS, 0, 0);
+        }
+        dumpDebugBuffer (pCard);
+
+    }     /* end of RP query loop */
 
     /*
-     * If this was not the first attempt...
+     * Either successful RP query or too many attempts. 
+     * Check to see how many tries it took.
      */
 
-    if ( requests < 0 )
+    if ( requests > 1 )
     {
         /* 
-         * Too many attempts to read the position have failed, 
-         * so bail out.
+         * This was not the first attempt.
          */
         if (requests >= DRV_OMS_VME_MAX_REQUESTS)
         {
+            /* 
+             * Too many attempts to read the position have failed, 
+             * so bail out with an error.
+             */
             SET_ERR_MSG ("OMS Position read failure");
-            if (drvOmsVmeDebug)
-            {
-                logMsg("OMS card:%d RP cmd failed after %d attempts, %d:%d\n", 
-                        card, requests, status, pCard->status, 0, 0);
-            }
+            logMsg("OMS card:%d RP cmd failed after %d attempts, %d:%d\n", 
+                 card, requests, status, pCard->status, 0, 0);
             return DRV_OMS_VME_S_SYS_ERROR;
         } 
         /*
-         * Otherwise this is the first successful read after n
-         * failures, so just dump the read and write buffers
+         * Otherwise this is the first successful read after n failures, 
+         * so if debugging set just dump the read and write buffers
          * and carry on.
          */
         else if (drvOmsVmeDebug)
         {
             logMsg("OMS card:%d RP command accepted on attempt:%d of %d\n", 
                         card, requests, DRV_OMS_VME_MAX_REQUESTS, 0, 0, 0);
+            dumpDebugBuffer (pCard);
         }
-        dumpDebugBuffer (pCard);
     }
 
     return OK;
@@ -1508,6 +1522,7 @@ long drvOmsVmeMotorPosition
  * (<) lowLimit   (int *) State of low limit switch
  * (<) highLimit  (int *) State of high limit switch
  * (<) homeSwitch (int *) State of home switch
+ * (<) axisDone   (int *) State of axis done bit
  *
  * FUNCTION VALUE:
  * (long) function status return.
@@ -1516,24 +1531,31 @@ long drvOmsVmeMotorPosition
  * Request current switch status for a given axes
  *
  * DESCRIPTION:
- * Query the given card to determine the state of the home and limit
- * switches associated with the given axes using the following algorithm:
+ * Query the given card to determine whether motion is done and the state of 
+ * the home and limit switches associated with the given axes using the
+ * following algorithm:
  *
- *      Insure request is valid.
+ *      Ensure request is valid.
  *      Flush the message queue.
  *      Try up to a defined maximum number of times
  *      {
- *          Send the "Query Axis" request.
+ *          Send the "Query Axis" request and exit if error.
  *          Read card response.
- *          If first character of response is valid
+ *          If direction character of response is valid
  *          {
+ *              If done
+ *              {
+ *                  Set local axisDone flag
+ *                  Send CA string to clear done bit for this axis only
+ *              }
+ *              Else clear axisDone flag
+ *
  *              Convert rest of response to switch values
- *              Break out of query loop
+ *              Break out of QA query loop
  *          }
- *          Else
- *          {
- *              Print debug information
- *          }
+ *          Print debug information
+ *          Exit with error
+ *          
  *      }    
  *      If tried the maximum number without success
  *      {
@@ -1562,7 +1584,8 @@ int card,                       /*  card to query                       */
 int axis,                       /*  axis to query                       */
 int *lowLimit,                  /*  state of lower limit switch         */
 int *highLimit,                 /*  state of upper limit switch         */
-int *homeSwitch                 /*  state of home switch                */
+int *homeSwitch,                /*  state of home switch                */
+int *axisDone                   /*  state of axis done flag             */
 )
 {
     char buffer[DRV_OMS_VME_MAX_MSG_LEN];   /* scratchpad buffer        */
@@ -1576,9 +1599,11 @@ int *homeSwitch                 /*  state of home switch                */
      * Ensure that the request is valid
      */
      
-    if ( (card < 0) || (card >= DRV_OMS_VME_MAX_CARDS) || ((pCard = pCards[card]) == NULL))
+    if ( (card < 0) || 
+         (card >= DRV_OMS_VME_MAX_CARDS) || 
+         ((pCard = pCards[card]) == NULL))
     {
-        SET_ERR_MSG ("OMS position requested from invalid card");
+        SET_ERR_MSG ("OMS motor status requested from invalid card");
         return DRV_OMS_VME_S_CFG_ERROR;
     }
 
@@ -1596,9 +1621,10 @@ int *homeSwitch                 /*  state of home switch                */
         ;
     }
         
-    if (lostReply && drvOmsVmeDebug)
+    if (lostReply)
     {
-        logMsg("discarding %d messages c=%d\n", lostReply, card, 0, 0, 0, 0);
+        logMsg("OMS card:%d  Flushed %d messages from input queue before QA.\n",
+             card , lostReply, 0, 0, 0, 0);
     }
 
 
@@ -1612,8 +1638,12 @@ int *homeSwitch                 /*  state of home switch                */
      * that axis sorted out again.
      */
     
-    for (requests = 0; requests < DRV_OMS_VME_MAX_REQUESTS; requests++)
+    for (requests = 1; requests < DRV_OMS_VME_MAX_REQUESTS; requests++)
     {
+        /*
+         *  Clear any existing errors encountered in ISR for input buffer   
+         */
+
         pCard->status = 0;
 
         /*
@@ -1623,11 +1653,8 @@ int *homeSwitch                 /*  state of home switch                */
         status = drvOmsVmeWriteMotor (card, axis, "QA");
         if (status != 0)
         {
-            if (drvOmsVmeDebug )
-            {
-                logMsg("OMS card:%d QA cmd writeMotor failed %d:%d\n", 
-                    card, status, pCard->status, 0, 0, 0);
-            }
+            logMsg("OMS card:%d QA cmd writeMotor failed %d:%d\n", 
+                 card, status, pCard->status, 0, 0, 0);
             return status;
         }
 
@@ -1640,31 +1667,57 @@ int *homeSwitch                 /*  state of home switch                */
                                    buffer, 
                                    DRV_OMS_VME_MAX_REPLY_TIME);
 
-        if (status >= 0 && pCard->status == 0 && buffer[4] == '\0')
+        if (status >= 0 && pCard->status == 0 )
         {
             /*
-             *  Check the first character to see if it is a valid return
+             *  Check the buffer to see if it is a valid return
              *
-             *     [0] ==  M  axis moving in a negative direction
-             *     [0] ==  P  axis moving in a positive direction
+             *     [0] == M  axis moving in a negative direction
+             *     [0] == P  axis moving in a positive direction
+             *     [1] == D  axis motion is done
+             *     [1] == N  axis motion either not done or not setup for it
+             *     [2] == L  axis in limit for direction [0]
+             *     [2] == N  axis not in limit for direction [0]
+             *     [3] == H  home switch active 
+             *     [3] == N  home switch not active
              */
 
-            if (buffer[0] == 'M' || buffer[0] == 'P')
+            if ( (buffer[0] == 'M' || buffer[0] == 'P') &&
+                 (buffer[1] == 'D' || buffer[1] == 'N') &&
+                 (buffer[2] == 'L' || buffer[2] == 'N') &&
+                 (buffer[3] == 'H' || buffer[3] == 'N') &&
+                  buffer[4] == '\0'                        )
             {
-
                 /*
-                 *  Response is valid,  extract switch info and exit read loop
-                 *
-                 *     [2] == L  axis in limit for direction [0]
-                 *     [2] == N  axis not in limit for direction [0]
-                 *     [3] == H  home switch active 
-                 *     [3] == N  home switch not active
+                 *  Response is valid, extract done flag and switch 
+                 *  info then exit read loop.
                  */
+
+                if (buffer[1] == 'D')
+                {
+                    /* axis motion has completed */
+                    *axisDone = 1;
+
+                    /* clear done flag for this axis only */
+                    status = drvOmsVmeWriteMotor (card, axis, "CA");
+                    if (status != 0)
+                    {
+                        logMsg("OMS card:%d CA cmd writeMotor failed %d:%d\n", 
+                             card, status, pCard->status, 0, 0, 0);
+                        return status;
+                    }
+                }
+                else if (buffer[1] == 'N')
+                {
+                    /* axis motion not complete or not enabled with ID */
+                    *axisDone = 0;
+                }
 
                 *lowLimit =   (int) (buffer[2] == 'L' && buffer[0] == 'M');
                 *highLimit =  (int) (buffer[2] == 'L' && buffer[0] == 'P'); 
                 *homeSwitch = (int) (buffer[3] == 'H');
-                break;            /* get out of 'for requests' loop */
+
+                break;            /* get out of query axis loop */
             }
 
             /*
@@ -1682,66 +1735,69 @@ int *homeSwitch                 /*  state of home switch                */
                 return DRV_OMS_VME_S_SYS_ERROR;
             } 
 
-        }
+        }    /* end if status...  */
 
         /*
-         * Dump the read and write buffers whenever the read request fails.
+         * Else dump the read and write buffers whenever the read request fails.
          */
-        if (drvOmsVmeDebug)
+
+        if ( buffer[4] != '\0' )
         {
-            if ( buffer[4] != '\0' )
-            {
-                logMsg("OMS card:%d QA bad string termination:%c,  %d/%d\n", 
-                        card, buffer[4], requests, 
-                        DRV_OMS_VME_MAX_REQUESTS, 0, 0);
-            }
-            if ( pCard->status != 0 )
-            {
-                logMsg("OMS card:%d QA status register error:%d,  %d/%d\n", 
-                        card, pCard->status, requests, 
-                        DRV_OMS_VME_MAX_REQUESTS, 0, 0);
-            }
-            if ( status < 0 )
-            {
-                logMsg("OMS card:%d QA readCard error:%d, %d/%d\n", 
-                        card, status, requests,
-                        DRV_OMS_VME_MAX_REQUESTS, 0, 0);
-            }
-            dumpDebugBuffer (pCard);
+            logMsg("OMS card:%d QA bad string termination:%c,  %d/%d\n", 
+                 card, buffer[4], requests, 
+                 DRV_OMS_VME_MAX_REQUESTS, 0, 0);
         }
-    }
-
-    /*
-     * If this was not the first attempt...
-     */
-
-    if ( requests < 0 )
-    {
-        /* 
-         * Too many attempts to read the status have failed, 
-         * so bail out.
-         */
-        if (requests >= DRV_OMS_VME_MAX_REQUESTS)
+        if ( pCard->status != 0 )
         {
-            SET_ERR_MSG ("OMS State request read failure");
-            if (drvOmsVmeDebug)
-            {
-                logMsg("OMS card:%d QA cmd failed after %d attempts, %d:%d\n", 
-                        card, requests, status, pCard->status, 0, 0);
-            }
-            return DRV_OMS_VME_S_SYS_ERROR;
-        } 
-        /*
-         * Otherwise this is the first successful read after n
-         * failures, so just dump the read and write buffers
-         * and carry on.
-         */
-        else if (drvOmsVmeDebug)
+            logMsg("OMS card:%d QA status register error:%d,  %d/%d\n", 
+                 card, pCard->status, requests, 
+                 DRV_OMS_VME_MAX_REQUESTS, 0, 0);
+        }
+        if ( status < 0 )
         {
-            logMsg("OMS card:%d QA command accepted on attempt:%d of %d\n", 
-                        card, requests, DRV_OMS_VME_MAX_REQUESTS, 0, 0, 0);
+            logMsg("OMS card:%d QA readCard error:%d, %d/%d\n", 
+                 card, status, requests,
+                 DRV_OMS_VME_MAX_REQUESTS, 0, 0);
         }
         dumpDebugBuffer (pCard);
+
+    }    /*   end of query axis loop  */ 
+
+    /*
+     * Either successful QA query or too many attempts. 
+     * Check to see how many tries it took.
+     */
+
+    if ( requests > 1 )
+    {
+        /* 
+         * This was not the first attempt. 
+         */
+
+        if (requests >= DRV_OMS_VME_MAX_REQUESTS)
+        {
+            /* 
+             * Too many attempts to read the status have failed, 
+             * so bail out with an error.
+             */
+
+            SET_ERR_MSG ("OMS State request read failure");
+            logMsg("OMS card:%d QA cmd failed after %d attempts, %d:%d\n", 
+                 card, requests, status, pCard->status, 0, 0);
+            return DRV_OMS_VME_S_SYS_ERROR;
+        } 
+        else if (drvOmsVmeDebug)
+        {
+            /*
+             * Otherwise this is the first successful read after n failures, 
+             * so if debugging set, just dump the read and write buffers
+             * and carry on.
+             */
+
+            logMsg("OMS card:%d QA command accepted on attempt:%d of %d\n", 
+                  card, requests, DRV_OMS_VME_MAX_REQUESTS, 0, 0, 0);
+            dumpDebugBuffer (pCard);
+        }
     }
                            
     return OK;
@@ -1844,11 +1900,8 @@ long drvOmsVmeReadCard
 
     if (status < 0)
     {
-        if (drvOmsVmeDebug)
-        {
-            logMsg("OMS card:%d readCard failed, %d:%d\n", 
-                    card, status, pCard->status, 0, 0, 0);
-        }
+        logMsg("OMS card:%d readCard failed, %d:%d\n", 
+             card, status, pCard->status, 0, 0, 0);
         return DRV_OMS_VME_S_NO_REPLY; 
     }
       
@@ -1929,10 +1982,7 @@ long drvOmsVmeWriteCard
     if ((pCard = pCards[card]) == NULL)
     {
         SET_ERR_MSG ("Write to invalid OMS card");
-        if (drvOmsVmeDebug)
-        {
-            logMsg("writeCard: OMS card:%d invalid\n", card, 0, 0, 0, 0, 0);
-        }
+        logMsg("writeCard: OMS card:%d invalid\n", card, 0, 0, 0, 0, 0);
         return DRV_OMS_VME_S_CFG_ERROR;
     }
 
@@ -1952,11 +2002,8 @@ long drvOmsVmeWriteCard
     {
         semGive (pCard->writeMutex);
         SET_ERR_MSG ("OMS write buffer overflow");
-        if (drvOmsVmeDebug)
-        {
-            logMsg("writeCard: OMS card:%d ring buffer overflow\n", 
-                    card, 0, 0, 0, 0, 0);
-        }
+        logMsg("writeCard: OMS card:%d ring buffer overflow\n", 
+             card, 0, 0, 0, 0, 0);
         return DRV_OMS_VME_S_BUFFER_FULL;
     }
 
@@ -1969,11 +2016,8 @@ long drvOmsVmeWriteCard
     {
         semGive (pCard->writeMutex);
         SET_ERR_MSG ("OMS write buffer failure");
-        if (drvOmsVmeDebug)
-        {
-            logMsg("writeCard: OMS card:%d ring buffer failure, rngBufPut\n", 
-                    card, 0, 0, 0, 0, 0);
-        }
+        logMsg("writeCard: OMS card:%d ring buffer failure, rngBufPut\n", 
+             card, 0, 0, 0, 0, 0);
         return DRV_OMS_VME_S_CFG_ERROR;
     }
 
@@ -1988,11 +2032,8 @@ long drvOmsVmeWriteCard
     if (strcmp (bufCopy, buffer))
     {
         SET_ERR_MSG ("OMS write buffer failure");
-        if (drvOmsVmeDebug)
-        {
-            logMsg("writeCard: OMS card:%d buffer changed, was:%s, now:%s\n", 
-                    card, (int)bufCopy, (int)buffer, 0, 0, 0);
-        }
+        logMsg("writeCard: OMS card:%d buffer changed, was:%s, now:%s\n", 
+             card, (int)bufCopy, (int)buffer, 0, 0, 0);
         return DRV_OMS_VME_S_CFG_ERROR;
     }
 
@@ -2082,10 +2123,7 @@ long drvOmsVmeWriteMotor (int card, int axis, char *buffer)
     if ((pCard = pCards[card]) == NULL)
     {
         SET_ERR_MSG ("Write to invalid OMS card");
-        if (drvOmsVmeDebug)
-        {
-            logMsg("writeMotor: OMS card:%d invalid\n", card, 0, 0, 0, 0, 0);
-        }
+        logMsg("writeMotor: OMS card:%d invalid\n", card, 0, 0, 0, 0, 0);
         return DRV_OMS_VME_S_CFG_ERROR;
     }
 
@@ -2098,11 +2136,8 @@ long drvOmsVmeWriteMotor (int card, int axis, char *buffer)
     if (axis >= pCard->axes)
     {
         SET_ERR_MSG ("Write to invalid OMS axis");
-        if (drvOmsVmeDebug)
-        {
-            logMsg("writeMotor: OMS card:%d invalid axis:%d\n", 
-                    card, axis, 0, 0, 0, 0);
-        }
+        logMsg("writeMotor: OMS card:%d invalid axis:%d\n", 
+             card, axis, 0, 0, 0, 0);
         return DRV_OMS_VME_S_CFG_ERROR;
     }
 
@@ -2117,7 +2152,7 @@ long drvOmsVmeWriteMotor (int card, int axis, char *buffer)
      */
         
     msgSize = strlen (buffer);
-    if (msgSize == 0 && drvOmsVmeDebug)
+    if (msgSize == 0)
     {
         logMsg("writeMotor: OMS card:%d, zero message length\n", 
                 card, 0, 0, 0, 0, 0);
@@ -2127,11 +2162,8 @@ long drvOmsVmeWriteMotor (int card, int axis, char *buffer)
     {
         semGive (pCard->writeMutex);
         SET_ERR_MSG ("OMS write buffer overflow");
-        if (drvOmsVmeDebug)
-        {
-            logMsg("writeMotor: OMS card:%d buffer overflow, msgSize:%d\n", 
-                    card, msgSize, 0, 0, 0, 0);
-        }
+        logMsg("writeMotor: OMS card:%d buffer overflow, msgSize:%d\n", 
+             card, msgSize, 0, 0, 0, 0);
         return DRV_OMS_VME_S_BUFFER_FULL;
     }
 
@@ -2145,11 +2177,8 @@ long drvOmsVmeWriteMotor (int card, int axis, char *buffer)
     {
         semGive (pCard->writeMutex);
         SET_ERR_MSG ("OMS write buffer failure");
-        if (drvOmsVmeDebug)
-        {
-            logMsg("writeMotor: OMS card:%d ring buffer failed,RNG_ELEM_PUT\n", 
-                    card, 0, 0, 0, 0, 0);
-        }
+        logMsg("writeMotor: OMS card:%d ring buffer failed,RNG_ELEM_PUT\n", 
+             card, 0, 0, 0, 0, 0);
         return DRV_OMS_VME_S_CFG_ERROR;
     }
 
@@ -2162,11 +2191,8 @@ long drvOmsVmeWriteMotor (int card, int axis, char *buffer)
     {
         semGive (pCard->writeMutex);
         SET_ERR_MSG ("OMS write buffer failure");
-        if (drvOmsVmeDebug)
-        {
-            logMsg("writeMotor: OMS card%d ring buffer failed,rngBufPut\n", 
-                    card, 0, 0, 0, 0, 0);
-        }
+        logMsg("writeMotor: OMS card%d ring buffer failed,rngBufPut\n", 
+             card, 0, 0, 0, 0, 0);
         return DRV_OMS_VME_S_CFG_ERROR;
     }
 
@@ -2181,11 +2207,8 @@ long drvOmsVmeWriteMotor (int card, int axis, char *buffer)
     if (strcmp (bufCopy, buffer))
     {
         SET_ERR_MSG ("OMS write buffer failure");
-        if (drvOmsVmeDebug)
-        {
-            logMsg("writeMotor: OMS card:%d buffer changed, was:%s, now:%s\n", 
-                    card, (int)bufCopy, (int)buffer, 0, 0, 0);
-        }
+        logMsg("writeMotor: OMS card:%d buffer changed, was:%s, now:%s\n", 
+             card, (int)bufCopy, (int)buffer, 0, 0, 0);
         return DRV_OMS_VME_S_CFG_ERROR;
     }
 

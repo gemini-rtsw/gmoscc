@@ -78,9 +78,9 @@ group {
    double $(top)probeBasDevice.PHLM =  180.0; # device level high limit
    double $(top)probeBasDevice.PLLM = -180.0; # device level low limit
    long   $(top)probeBasDevice.UEIP =      1; # use encoder if present
-#   long   $(top)probeBasDevice.UPSB =      1; # use power status
+   long   $(top)probeBasDevice.UPSB =      1; # use power status
 # DISABLE POWER STATUS CHECK UNTIL POWER STATUS ELECTRONICS PROBLEM FIXED
-   long   $(top)probeBasDevice.UPSB =      0; # DO NOT use power status
+#   long   $(top)probeBasDevice.UPSB =      0; # DO NOT use power status
    double $(top)probeBasDevice.VBAS =    0.1; # base velocity
    double $(top)probeBasDevice.VELO =    1.0; # velocity at startup
    double $(top)probeBasDevice.VHLM =    7.0; # maximum target velocity
@@ -102,9 +102,9 @@ group {
    double $(top)probePkoDevice.PHLM =  180.0; # device level high limit
    double $(top)probePkoDevice.PLLM = -180.0; # device level low limit
    long   $(top)probePkoDevice.UEIP =      1; # use encoder if present
-#   long   $(top)probePkoDevice.UPSB =      1; # use power status
+   long   $(top)probePkoDevice.UPSB =      1; # use power status
 # DISABLE POWER STATUS CHECK UNTIL POWER STATUS ELECTRONICS PROBLEM FIXED
-   long   $(top)probePkoDevice.UPSB =      0; # DO NOT use power status
+#   long   $(top)probePkoDevice.UPSB =      0; # DO NOT use power status
    double $(top)probePkoDevice.VBAS =    0.1; # base velocity
    double $(top)probePkoDevice.VELO =    1.0; # velocity at startup
    double $(top)probePkoDevice.VHLM =    7.0; # maximum target velocity
