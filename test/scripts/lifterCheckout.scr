@@ -196,7 +196,6 @@ DESC "Moving turret away to position C"
 PUTVAL turretDevMode "1"
 OUTPUT *MODE*MODE*MOVE*
 
-DESC "Put zero into target position to avoid device control bug"
 PUTVAL turretDevTarget "0"
 OUTPUT *VAL*VAL* 0*
 
@@ -241,7 +240,6 @@ DESC "Moving turret back to position B"
 PUTVAL turretDevMode "1"
 OUTPUT *MODE*MODE*MOVE*
 
-DESC "Put zero into target position to avoid device control bug"
 PUTVAL turretDevTarget "0"
 OUTPUT *VAL*VAL* 0*
 
@@ -502,7 +500,6 @@ DESC "Moving turret away to position C"
 PUTVAL turretDevMode "1"
 OUTPUT *MODE*MODE*MOVE*
 
-DESC "Put zero into target position to avoid device control bug"
 PUTVAL turretDevTarget "0"
 OUTPUT *VAL*VAL* 0*
 
@@ -547,7 +544,6 @@ DESC "Moving turret back to position B"
 PUTVAL turretDevMode "1"
 OUTPUT *MODE*MODE*MOVE*
 
-DESC "Put zero into target position to avoid device control bug"
 PUTVAL turretDevTarget "0"
 OUTPUT *VAL*VAL* 0*
 
@@ -769,7 +765,8 @@ OUTPUT *
 ENDTEST
 
 #
-# Wait for fifteen seconds and then check the lifter has NOT lowered.
+# Wait for 25 seconds for the lifter to go through the emrgency UP process
+# and then check the lifter has NOT lowered.
 #
 
 TEST "Verify status fields and check lifter has raised automatically"
@@ -777,7 +774,7 @@ FATAL
 
 DESC "Lifter acknowledgement should indicate failure"
 
-CMD "sleep 15"
+CMD "sleep 25"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* -1*
@@ -813,7 +810,6 @@ DESC "Moving turret to position B"
 PUTVAL turretDevMode "1"
 OUTPUT *MODE*MODE*MOVE*
 
-DESC "Put zero into target position to avoid device control bug"
 PUTVAL turretDevTarget "0"
 OUTPUT *VAL*VAL* 0*
 
