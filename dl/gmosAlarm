@@ -1,0 +1,24 @@
+#!/bin/csh
+#
+# Start all the GMOS alarm handlers.
+#
+# Invocation:
+#   ./gmosAlarm
+#
+# Original Author: Steven M Beard
+#
+# $Id$
+#
+
+setenv ALARMHANDLER ./data
+
+#
+# Start Components Controller alarm screen
+#
+./gmosCcAlarm $1
+
+#
+# Start Detector Controller alarm screen
+#
+./gmosDcAlarm $1
+
