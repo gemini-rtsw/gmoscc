@@ -13,6 +13,7 @@ SCRIPTS = gmosCcStartMKRR gmosCcStartMKRS gmosCcStartMKSR gmosCcStartMKSS \
 
 # List of display (*.dl) files
 DATA    = ../gmos_logo.gif ../colors.dl ../gmColors.dl $(wildcard ../*.dl) \
-          $(patsubst ../%.adl, %.dl, $(wildcard ../*.adl ../*.bit ../*.tk ../*.sh ../*.test))
+          $(patsubst ../%.adl, %.dl, $(wildcard ../*.adl ../*.bit ../*.tk \
+	  ../*.sh ../*.test))
 
 include .applTop/config/RULES.Build
