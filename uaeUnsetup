@@ -30,3 +30,9 @@ echo Removing EPICS links...
 /usr/bin/rm -rf `find . -name ".epics" -print`
 /usr/bin/rm -rf `find . -name ".version" -print`
 /usr/bin/rm -rf `find . -name ".applTop" -print`
+
+echo Removing gmosdc link...
+/usr/bin/rm -rf gmosdc
+
+echo Removing Distfile...
+/usr/bin/rm -rf Distfile
