@@ -39,9 +39,9 @@ ld < $(base)/bin/$(arch)/seq
 ld < $(iocpath)/bin/$(arch)/gemini.Support
 ld < $(iocpath)/bin/$(arch)/libDeviceRecord
 
-ld < /gemini/epics3.13.4/slalib/slalib/bin/$(arch)/slalib
-ld < /gemini/epics3.13.4/timelib/timelib/bin/$(arch)/timelib
-ld < /gemini/epics3.13.4/astlib/astlib/bin/$(arch)/astlib
+ld < /gemini/GEM8.5/slalib/slalib/bin/$(arch)/slalib
+ld < /gemini/GEM8.5/timelib/timelib/bin/$(arch)/timelib
+ld < /gemini/GEM8.5/astlib/astlib/bin/$(arch)/astlib
 
 ld < $(iocpath)/bin/$(arch)/devDeviceControl.o
 ld < $(iocpath)/bin/$(arch)/devBarcode.o
@@ -68,7 +68,7 @@ ld < $(iocpath)/bin/$(arch)/gmSeqAppl
 
 
 # Load sequences here
-ld </gemini/epics3.13.4/timelib/timelib/bin/$(arch)/timeSeq 
+ld </gemini/GEM8.5/timelib/timelib/bin/$(arch)/timeSeq 
 
 ld < $(iocpath)/bin/$(arch)/assemblyCar.o
 ld < $(iocpath)/bin/$(arch)/dtaAssemblyCar.o
