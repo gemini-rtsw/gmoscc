@@ -7,10 +7,10 @@ display {
 	mnrv="4"
 	ndyng="23"
 	npc="40"
-	nstr="99"
+	nstr="105"
 	ndynamic="25"
 	nplot="0"
-	nrd="1"
+	nrd="2"
 	nes="0"
 	nkd="1"
 	npd="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="5132"
+	nwords_dspy="5356"
 	nwords_sta="520"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1928"
-	osta="1408"
-	odynamic="3256"
-	oplot="4960"
-	ord="4960"
-	oes="5120"
-	okd="5120"
-	opd="5132"
-	opo="5132"
+	odyng="1992"
+	osta="1472"
+	odynamic="3320"
+	oplot="5024"
+	ord="5024"
+	oes="5344"
+	okd="5344"
+	opd="5356"
+	opo="5356"
 	opc="68"
 	ostr="584"
-	ocmap="1408"
-	ocrules="1408"
+	ocmap="1472"
+	ocrules="1472"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -2625,7 +2625,7 @@ display {
 "related display" {
 	object {
 		x="220"
-		y="404"
+		y="403"
 		width="130"
 		height="28"
 		groupid="0"
@@ -2754,6 +2754,140 @@ display {
 	clr="1"
 	bclr="9"
 	menu_title=""
+	decorate="none"
+}
+"related display" {
+	object {
+		x="246"
+		y="586"
+		width="130"
+		height="20"
+		groupid="0"
+	}
+	selfkill="off"
+	display[0] {
+		label="Probe offsets"
+		name="gmOiwfsOffset.dl"
+		args="T=$(T),D=$(D)probe"
+	}
+	display[1] {
+		label="OIWFS SAD"
+		name="gmOiwfsSad.dl"
+		args="T=$(T),D=$(D)probe"
+	}
+	display[2] {
+		label=""
+		name=""
+		args=""
+	}
+	display[3] {
+		label=""
+		name=""
+		args=""
+	}
+	display[4] {
+		label=""
+		name=""
+		args=""
+	}
+	display[5] {
+		label=""
+		name=""
+		args=""
+	}
+	display[6] {
+		label=""
+		name=""
+		args=""
+	}
+	display[7] {
+		label=""
+		name=""
+		args=""
+	}
+	display[8] {
+		label=""
+		name=""
+		args=""
+	}
+	display[9] {
+		label=""
+		name=""
+		args=""
+	}
+	display[10] {
+		label=""
+		name=""
+		args=""
+	}
+	display[11] {
+		label=""
+		name=""
+		args=""
+	}
+	display[12] {
+		label=""
+		name=""
+		args=""
+	}
+	display[13] {
+		label=""
+		name=""
+		args=""
+	}
+	display[14] {
+		label=""
+		name=""
+		args=""
+	}
+	display[15] {
+		label=""
+		name=""
+		args=""
+	}
+	display[16] {
+		label=""
+		name=""
+		args=""
+	}
+	display[17] {
+		label=""
+		name=""
+		args=""
+	}
+	display[18] {
+		label=""
+		name=""
+		args=""
+	}
+	display[19] {
+		label=""
+		name=""
+		args=""
+	}
+	display[20] {
+		label=""
+		name=""
+		args=""
+	}
+	display[21] {
+		label=""
+		name=""
+		args=""
+	}
+	display[22] {
+		label=""
+		name=""
+		args=""
+	}
+	display[23] {
+		label=""
+		name=""
+		args=""
+	}
+	clr="1"
+	bclr="9"
+	menu_title="Probe Status"
 	decorate="none"
 }
 "kill display" {
