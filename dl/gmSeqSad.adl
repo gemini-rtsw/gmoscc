@@ -6,9 +6,9 @@ display {
 	majv="2"
 	mnrv="4"
 	ndyng="0"
-	npc="20"
-	nstr="85"
-	ndynamic="19"
+	npc="24"
+	nstr="89"
+	ndynamic="22"
 	nplot="0"
 	nrd="0"
 	nes="0"
@@ -18,28 +18,28 @@ display {
 	object {
 		x="0"
 		y="0"
-		width="807"
-		height="563"
+		width="802"
+		height="628"
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="2774"
-	nwords_sta="504"
+	nwords_dspy="3132"
+	nwords_sta="584"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1496"
-	osta="992"
-	odynamic="1496"
-	oplot="2750"
-	ord="2750"
-	oes="2750"
-	okd="2750"
-	opd="2774"
-	opo="2774"
+	odyng="1656"
+	osta="1072"
+	odynamic="1656"
+	oplot="3108"
+	ord="3108"
+	oes="3108"
+	okd="3108"
+	opd="3132"
+	opo="3132"
 	opc="68"
-	ostr="282"
-	ocmap="992"
-	ocrules="992"
+	ostr="330"
+	ocmap="1072"
+	ocrules="1072"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -177,7 +177,7 @@ display {
 		x="13"
 		y="171"
 		width="769"
-		height="92"
+		height="81"
 		groupid="0"
 	}
 }
@@ -191,8 +191,8 @@ display {
 }
 "text" {
 	object {
-		x="21"
-		y="200"
+		x="22"
+		y="191"
 		width="116"
 		height="15"
 		groupid="0"
@@ -210,8 +210,8 @@ display {
 }
 "text" {
 	object {
-		x="170"
-		y="224"
+		x="171"
+		y="215"
 		width="95"
 		height="16"
 		groupid="0"
@@ -221,8 +221,8 @@ display {
 }
 "text" {
 	object {
-		x="305"
-		y="226"
+		x="306"
+		y="217"
 		width="89"
 		height="16"
 		groupid="0"
@@ -241,7 +241,7 @@ display {
 "text" {
 	object {
 		x="19"
-		y="295"
+		y="272"
 		width="150"
 		height="15"
 		groupid="0"
@@ -252,7 +252,7 @@ display {
 "text" {
 	object {
 		x="19"
-		y="310"
+		y="287"
 		width="150"
 		height="15"
 		groupid="0"
@@ -263,7 +263,7 @@ display {
 "text" {
 	object {
 		x="19"
-		y="380"
+		y="357"
 		width="150"
 		height="15"
 		groupid="0"
@@ -274,7 +274,7 @@ display {
 "text" {
 	object {
 		x="19"
-		y="399"
+		y="376"
 		width="150"
 		height="15"
 		groupid="0"
@@ -293,7 +293,7 @@ display {
 "rectangle" {
 	object {
 		x="13"
-		y="282"
+		y="259"
 		width="487"
 		height="83"
 		groupid="0"
@@ -302,7 +302,7 @@ display {
 "rectangle" {
 	object {
 		x="13"
-		y="369"
+		y="346"
 		width="487"
 		height="83"
 		groupid="0"
@@ -319,7 +319,7 @@ display {
 "text" {
 	object {
 		x="174"
-		y="332"
+		y="309"
 		width="95"
 		height="16"
 		groupid="0"
@@ -330,7 +330,7 @@ display {
 "text" {
 	object {
 		x="278"
-		y="332"
+		y="309"
 		width="95"
 		height="16"
 		groupid="0"
@@ -341,7 +341,7 @@ display {
 "text" {
 	object {
 		x="388"
-		y="332"
+		y="309"
 		width="95"
 		height="16"
 		groupid="0"
@@ -360,7 +360,7 @@ display {
 "text" {
 	object {
 		x="581"
-		y="329"
+		y="306"
 		width="204"
 		height="14"
 		groupid="0"
@@ -379,7 +379,7 @@ display {
 "rectangle" {
 	object {
 		x="553"
-		y="317"
+		y="294"
 		width="231"
 		height="99"
 		groupid="0"
@@ -396,7 +396,7 @@ display {
 "text" {
 	object {
 		x="587"
-		y="386"
+		y="363"
 		width="95"
 		height="16"
 		groupid="0"
@@ -407,7 +407,7 @@ display {
 "text" {
 	object {
 		x="688"
-		y="387"
+		y="364"
 		width="95"
 		height="16"
 		groupid="0"
@@ -417,8 +417,8 @@ display {
 }
 "text" {
 	object {
-		x="170"
-		y="241"
+		x="171"
+		y="232"
 		width="95"
 		height="16"
 		groupid="0"
@@ -428,8 +428,8 @@ display {
 }
 "text" {
 	object {
-		x="305"
-		y="241"
+		x="306"
+		y="232"
 		width="86"
 		height="16"
 		groupid="0"
@@ -448,18 +448,18 @@ display {
 "text" {
 	object {
 		x="19"
-		y="466"
+		y="443"
 		width="150"
 		height="14"
 		groupid="0"
 	}
-	textix="Data Translation"
+	textix="Det. Translation"
 	align="horiz. left"
 }
 "text" {
 	object {
 		x="19"
-		y="484"
+		y="461"
 		width="150"
 		height="15"
 		groupid="0"
@@ -478,7 +478,7 @@ display {
 "rectangle" {
 	object {
 		x="13"
-		y="457"
+		y="434"
 		width="487"
 		height="87"
 		groupid="0"
@@ -517,7 +517,7 @@ display {
 "text" {
 	object {
 		x="174"
-		y="414"
+		y="391"
 		width="95"
 		height="16"
 		groupid="0"
@@ -528,7 +528,7 @@ display {
 "text" {
 	object {
 		x="278"
-		y="414"
+		y="391"
 		width="95"
 		height="16"
 		groupid="0"
@@ -539,7 +539,7 @@ display {
 "text" {
 	object {
 		x="388"
-		y="414"
+		y="391"
 		width="95"
 		height="16"
 		groupid="0"
@@ -550,7 +550,7 @@ display {
 "text" {
 	object {
 		x="172"
-		y="503"
+		y="480"
 		width="95"
 		height="16"
 		groupid="0"
@@ -561,7 +561,7 @@ display {
 "text" {
 	object {
 		x="276"
-		y="503"
+		y="480"
 		width="95"
 		height="16"
 		groupid="0"
@@ -572,7 +572,7 @@ display {
 "text" {
 	object {
 		x="386"
-		y="503"
+		y="480"
 		width="95"
 		height="16"
 		groupid="0"
@@ -589,6 +589,94 @@ display {
 		groupid="0"
 	}
 	textix="Effective Wavelength"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="19"
+		y="536"
+		width="150"
+		height="14"
+		groupid="0"
+	}
+	textix="Det. Translation"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="19"
+		y="554"
+		width="150"
+		height="15"
+		groupid="0"
+	}
+	textix="Offsets"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="13"
+		y="527"
+		width="487"
+		height="87"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="25"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="172"
+		y="573"
+		width="95"
+		height="16"
+		groupid="0"
+	}
+	textix="Xoffset"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="276"
+		y="573"
+		width="95"
+		height="16"
+		groupid="0"
+	}
+	textix="Yoffset"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="386"
+		y="573"
+		width="95"
+		height="16"
+		groupid="0"
+	}
+	textix="Zoffset"
 	align="horiz. left"
 }
 "text update" {
@@ -823,8 +911,8 @@ display {
 }
 "text update" {
 	object {
-		x="170"
-		y="188"
+		x="171"
+		y="179"
 		width="100"
 		height="25"
 		groupid="0"
@@ -869,8 +957,8 @@ display {
 }
 "text update" {
 	object {
-		x="305"
-		y="188"
+		x="306"
+		y="179"
 		width="100"
 		height="25"
 		groupid="0"
@@ -916,7 +1004,7 @@ display {
 "text update" {
 	object {
 		x="174"
-		y="296"
+		y="273"
 		width="100"
 		height="25"
 		groupid="0"
@@ -962,7 +1050,7 @@ display {
 "text update" {
 	object {
 		x="278"
-		y="296"
+		y="273"
 		width="99"
 		height="25"
 		groupid="0"
@@ -1008,7 +1096,7 @@ display {
 "text update" {
 	object {
 		x="388"
-		y="296"
+		y="273"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1054,7 +1142,7 @@ display {
 "text update" {
 	object {
 		x="174"
-		y="380"
+		y="357"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1100,7 +1188,7 @@ display {
 "text update" {
 	object {
 		x="278"
-		y="380"
+		y="357"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1146,7 +1234,7 @@ display {
 "text update" {
 	object {
 		x="388"
-		y="380"
+		y="357"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1192,7 +1280,7 @@ display {
 "text update" {
 	object {
 		x="565"
-		y="352"
+		y="329"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1238,7 +1326,7 @@ display {
 "text update" {
 	object {
 		x="669"
-		y="352"
+		y="329"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1284,7 +1372,7 @@ display {
 "text update" {
 	object {
 		x="174"
-		y="468"
+		y="445"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1330,7 +1418,7 @@ display {
 "text update" {
 	object {
 		x="278"
-		y="468"
+		y="445"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1376,7 +1464,7 @@ display {
 "text update" {
 	object {
 		x="388"
-		y="468"
+		y="445"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1465,6 +1553,144 @@ display {
 	align="horiz. centered"
 	format="decimal"
 }
+"text update" {
+	object {
+		x="174"
+		y="538"
+		width="100"
+		height="25"
+		groupid="0"
+	}
+	monitor {
+		chan="$(S)dtaXoffset"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule=""
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="278"
+		y="538"
+		width="100"
+		height="25"
+		groupid="0"
+	}
+	monitor {
+		chan="$(S)dtaYoffset"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule=""
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="388"
+		y="538"
+		width="100"
+		height="25"
+		groupid="0"
+	}
+	monitor {
+		chan="$(S)dtaZoffset"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule=""
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
 "kill display" {
 	object {
 		x="901"
@@ -1480,8 +1706,8 @@ display {
 }
 "kill display" {
 	object {
-		x="680"
-		y="503"
+		x="705"
+		y="580"
 		width="80"
 		height="35"
 		groupid="0"
