@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -67,7 +67,7 @@ display {
 		x="194"
 		y="59"
 		width="335"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="Lookup table directory."
@@ -78,7 +78,7 @@ display {
 		x="18"
 		y="220"
 		width="335"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="Filter Names lookup table filename"
@@ -89,7 +89,7 @@ display {
 		x="369"
 		y="207"
 		width="335"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="Loaded filters lookup table filename"
@@ -100,7 +100,7 @@ display {
 		x="18"
 		y="314"
 		width="335"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="Grating Names lookup table filename"
@@ -111,7 +111,7 @@ display {
 		x="369"
 		y="305"
 		width="335"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="Loaded Gratings lookup table filename"
@@ -122,7 +122,7 @@ display {
 		x="369"
 		y="114"
 		width="335"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="Loaded Masks lookup table filename"
@@ -158,7 +158,7 @@ display {
 		x="18"
 		y="412"
 		width="335"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="Lambda Focus lookup table filename"
@@ -213,7 +213,7 @@ display {
 		x="369"
 		y="130"
 		width="335"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="(See Components Controller)"
@@ -224,7 +224,7 @@ display {
 		x="369"
 		y="223"
 		width="335"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="(See Components Controller)"
@@ -235,7 +235,7 @@ display {
 		x="369"
 		y="320"
 		width="335"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="(See Components Controller)"
@@ -254,7 +254,7 @@ display {
 		x="18"
 		y="126"
 		width="335"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="Mask Names lookup table filename"

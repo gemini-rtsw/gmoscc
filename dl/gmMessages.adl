@@ -6,8 +6,8 @@ display {
 	majv="2"
 	mnrv="4"
 	ndyng="10"
-	npc="41"
-	nstr="95"
+	npc="40"
+	nstr="98"
 	ndynamic="29"
 	nplot="0"
 	nrd="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="5574"
+	nwords_dspy="5578"
 	nwords_sta="1532"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="3124"
-	osta="1592"
-	odynamic="3648"
-	oplot="5562"
-	ord="5562"
-	oes="5562"
-	okd="5562"
-	opd="5574"
-	opo="5574"
+	odyng="3128"
+	osta="1596"
+	odynamic="3652"
+	oplot="5566"
+	ord="5566"
+	oes="5566"
+	okd="5566"
+	opd="5578"
+	opo="5578"
 	opc="68"
-	ostr="694"
-	ocmap="1592"
-	ocrules="1592"
+	ostr="680"
+	ocmap="1596"
+	ocrules="1596"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -51,8 +51,8 @@ display {
 	cmap="gmColors.dl"
 	pixwid="1280"
 	pixht="1024"
-	mmwid="320"
-	mmht="240"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -67,7 +67,7 @@ display {
 		x="20"
 		y="67"
 		width="150"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="applyC Message:"
@@ -78,7 +78,7 @@ display {
 		x="20"
 		y="45"
 		width="150"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="apply Message:"
@@ -97,7 +97,7 @@ display {
 		x="14"
 		y="7"
 		width="560"
-		height="23"
+		height="22"
 		groupid="0"
 	}
 	textix="GMOS Components Controller Messages"
@@ -108,7 +108,7 @@ display {
 		x="20"
 		y="101"
 		width="400"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Atmospheric Dispersion Compensator"
@@ -170,7 +170,7 @@ display {
 		x="60"
 		y="125"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="CAR:"
@@ -181,7 +181,7 @@ display {
 		x="60"
 		y="145"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Assembly:"
@@ -234,7 +234,7 @@ display {
 		x="23"
 		y="212"
 		width="400"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Mask Assembly"
@@ -253,7 +253,7 @@ display {
 		x="60"
 		y="235"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="CAR:"
@@ -264,7 +264,7 @@ display {
 		x="60"
 		y="256"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Assembly:"
@@ -275,7 +275,7 @@ display {
 		x="60"
 		y="277"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Extractor:"
@@ -286,7 +286,7 @@ display {
 		x="60"
 		y="298"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Cassette:"
@@ -297,7 +297,7 @@ display {
 		x="60"
 		y="319"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Gripper:"
@@ -308,7 +308,7 @@ display {
 		x="60"
 		y="340"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Release:"
@@ -319,7 +319,7 @@ display {
 		x="27"
 		y="165"
 		width="143"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Entrance Prism:"
@@ -330,7 +330,7 @@ display {
 		x="60"
 		y="185"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Exit Prism:"
@@ -383,7 +383,7 @@ display {
 		x="23"
 		y="375"
 		width="400"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Filter Assembly"
@@ -402,7 +402,7 @@ display {
 		x="60"
 		y="398"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="CAR:"
@@ -413,7 +413,7 @@ display {
 		x="60"
 		y="417"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Assembly:"
@@ -424,7 +424,7 @@ display {
 		x="60"
 		y="437"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Wheel 1:"
@@ -435,7 +435,7 @@ display {
 		x="60"
 		y="456"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Wheel 2:"
@@ -488,7 +488,7 @@ display {
 		x="21"
 		y="486"
 		width="400"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Grating Assembly"
@@ -507,7 +507,7 @@ display {
 		x="60"
 		y="506"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="CAR:"
@@ -518,7 +518,7 @@ display {
 		x="60"
 		y="526"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Assembly:"
@@ -529,7 +529,7 @@ display {
 		x="60"
 		y="547"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Grating A:"
@@ -540,7 +540,7 @@ display {
 		x="60"
 		y="567"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Grating B:"
@@ -551,7 +551,7 @@ display {
 		x="60"
 		y="588"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Grating C:"
@@ -562,7 +562,7 @@ display {
 		x="60"
 		y="609"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Grating D:"
@@ -573,7 +573,7 @@ display {
 		x="25"
 		y="628"
 		width="145"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Grating turret:"
@@ -584,7 +584,7 @@ display {
 		x="25"
 		y="646"
 		width="145"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Grating lifter:"
@@ -603,7 +603,7 @@ display {
 		x="20"
 		y="680"
 		width="400"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Translation Assembly"
@@ -656,7 +656,7 @@ display {
 		x="60"
 		y="702"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="CAR:"
@@ -667,7 +667,7 @@ display {
 		x="60"
 		y="722"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Assembly:"
@@ -678,7 +678,7 @@ display {
 		x="60"
 		y="741"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="X axis:"
@@ -689,7 +689,7 @@ display {
 		x="60"
 		y="761"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Y axis:"
@@ -700,7 +700,7 @@ display {
 		x="60"
 		y="781"
 		width="110"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Z axis:"
@@ -1119,7 +1119,7 @@ display {
 		x="177"
 		y="67"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1165,7 +1165,7 @@ display {
 		x="177"
 		y="45"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1211,7 +1211,7 @@ display {
 		x="177"
 		y="125"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1257,7 +1257,7 @@ display {
 		x="177"
 		y="702"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1303,7 +1303,7 @@ display {
 		x="177"
 		y="398"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1349,7 +1349,7 @@ display {
 		x="177"
 		y="506"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1395,7 +1395,7 @@ display {
 		x="177"
 		y="235"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1441,7 +1441,7 @@ display {
 		x="177"
 		y="145"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1487,7 +1487,7 @@ display {
 		x="177"
 		y="256"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1533,7 +1533,7 @@ display {
 		x="177"
 		y="417"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1579,7 +1579,7 @@ display {
 		x="177"
 		y="526"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1625,7 +1625,7 @@ display {
 		x="177"
 		y="722"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1671,7 +1671,7 @@ display {
 		x="177"
 		y="277"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1717,7 +1717,7 @@ display {
 		x="177"
 		y="298"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1763,7 +1763,7 @@ display {
 		x="177"
 		y="319"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1809,7 +1809,7 @@ display {
 		x="177"
 		y="340"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1855,7 +1855,7 @@ display {
 		x="177"
 		y="165"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1901,7 +1901,7 @@ display {
 		x="177"
 		y="185"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1947,7 +1947,7 @@ display {
 		x="177"
 		y="437"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -1993,7 +1993,7 @@ display {
 		x="177"
 		y="456"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -2039,7 +2039,7 @@ display {
 		x="177"
 		y="547"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -2085,7 +2085,7 @@ display {
 		x="177"
 		y="568"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -2131,7 +2131,7 @@ display {
 		x="177"
 		y="589"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -2177,7 +2177,7 @@ display {
 		x="177"
 		y="609"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -2223,7 +2223,7 @@ display {
 		x="177"
 		y="628"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -2269,7 +2269,7 @@ display {
 		x="177"
 		y="646"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -2315,7 +2315,7 @@ display {
 		x="177"
 		y="741"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -2361,7 +2361,7 @@ display {
 		x="177"
 		y="761"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
@@ -2407,7 +2407,7 @@ display {
 		x="177"
 		y="781"
 		width="390"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	monitor {
