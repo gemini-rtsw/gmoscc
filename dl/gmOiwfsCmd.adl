@@ -7,10 +7,10 @@ display {
 	mnrv="4"
 	ndyng="23"
 	npc="40"
-	nstr="107"
+	nstr="112"
 	ndynamic="25"
 	nplot="0"
-	nrd="2"
+	nrd="3"
 	nes="0"
 	nkd="1"
 	npd="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="5380"
+	nwords_dspy="5594"
 	nwords_sta="520"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="2016"
-	osta="1496"
-	odynamic="3344"
-	oplot="5048"
-	ord="5048"
-	oes="5368"
-	okd="5368"
-	opd="5380"
-	opo="5380"
+	odyng="2070"
+	osta="1550"
+	odynamic="3398"
+	oplot="5102"
+	ord="5102"
+	oes="5582"
+	okd="5582"
+	opd="5594"
+	opo="5594"
 	opc="68"
 	ostr="584"
-	ocmap="1496"
-	ocrules="1496"
+	ocmap="1550"
+	ocrules="1550"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -64,9 +64,9 @@ display {
 }
 "text" {
 	object {
-		x="78"
-		y="6"
-		width="427"
+		x="32"
+		y="7"
+		width="460"
 		height="24"
 		groupid="0"
 	}
@@ -75,20 +75,20 @@ display {
 }
 "line" {
 	object {
-		x="50"
-		y="34"
-		width="459"
+		x="32"
+		y="35"
+		width="460"
 		height="0"
 		groupid="0"
 	}
 	npoints="2"
 	point[0] {
-		x="50"
-		y="34"
+		x="32"
+		y="35"
 	}
 	point[1] {
-		x="509"
-		y="34"
+		x="492"
+		y="35"
 	}
 	orgpoint[0] {
 		x="0"
@@ -2888,6 +2888,140 @@ display {
 	clr="1"
 	bclr="9"
 	menu_title="Probe Status"
+	decorate="none"
+}
+"related display" {
+	object {
+		x="499"
+		y="10"
+		width="75"
+		height="25"
+		groupid="0"
+	}
+	selfkill="off"
+	display[0] {
+		label="WFS assembly"
+		name="gmosWfsHelp.dl"
+		args=""
+	}
+	display[1] {
+		label="Assembly modes"
+		name="gmosAssemblyHelp.dl"
+		args=""
+	}
+	display[2] {
+		label=""
+		name=""
+		args=""
+	}
+	display[3] {
+		label=""
+		name=""
+		args=""
+	}
+	display[4] {
+		label=""
+		name=""
+		args=""
+	}
+	display[5] {
+		label=""
+		name=""
+		args=""
+	}
+	display[6] {
+		label=""
+		name=""
+		args=""
+	}
+	display[7] {
+		label=""
+		name=""
+		args=""
+	}
+	display[8] {
+		label=""
+		name=""
+		args=""
+	}
+	display[9] {
+		label=""
+		name=""
+		args=""
+	}
+	display[10] {
+		label=""
+		name=""
+		args=""
+	}
+	display[11] {
+		label=""
+		name=""
+		args=""
+	}
+	display[12] {
+		label=""
+		name=""
+		args=""
+	}
+	display[13] {
+		label=""
+		name=""
+		args=""
+	}
+	display[14] {
+		label=""
+		name=""
+		args=""
+	}
+	display[15] {
+		label=""
+		name=""
+		args=""
+	}
+	display[16] {
+		label=""
+		name=""
+		args=""
+	}
+	display[17] {
+		label=""
+		name=""
+		args=""
+	}
+	display[18] {
+		label=""
+		name=""
+		args=""
+	}
+	display[19] {
+		label=""
+		name=""
+		args=""
+	}
+	display[20] {
+		label=""
+		name=""
+		args=""
+	}
+	display[21] {
+		label=""
+		name=""
+		args=""
+	}
+	display[22] {
+		label=""
+		name=""
+		args=""
+	}
+	display[23] {
+		label=""
+		name=""
+		args=""
+	}
+	clr="9"
+	bclr="1"
+	menu_title="Help"
 	decorate="none"
 }
 "kill display" {
