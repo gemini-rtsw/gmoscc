@@ -1,30 +1,30 @@
 [schematic2]
-uniq 138
+uniq 148
 [tools]
 [detail]
-w -134 2539 100 0 n#137 efanouts.StartOnly.LNK1 -144 2528 -64 2528 junction
-w -134 2507 100 0 n#137 efanouts.StartOnly.LNK2 -144 2496 -64 2496 junction
-w -134 2443 100 0 n#137 efanouts.StartOnly.LNK4 -144 2432 -64 2432 junction
-w -134 2411 100 0 n#137 efanouts.StartOnly.LNK5 -144 2400 -64 2400 junction
+w -542 1099 100 0 n#147 gmosAssemblies.gmosAssemblies#105.VAL 64 1440 160 1440 160 1088 -1184 1088 -1184 1728 -1024 1728 gmosCcApply.gmosCcApply#138.INPC
+w -542 1131 100 0 n#146 gmosAssemblies.gmosAssemblies#105.MESS 64 1408 128 1408 128 1120 -1152 1120 -1152 1664 -1024 1664 gmosCcApply.gmosCcApply#138.INMC
+w -542 2251 100 0 n#145 gmosCcSystem.gmosCcSystem#116.MESS 64 2048 160 2048 160 2240 -1184 2240 -1184 1792 -1024 1792 gmosCcApply.gmosCcApply#138.INMB
+w -542 2219 100 0 n#144 gmosCcSystem.gmosCcSystem#116.VAL 64 2080 128 2080 128 2208 -1152 2208 -1152 1856 -1024 1856 gmosCcApply.gmosCcApply#138.INPB
+w 70 2315 100 0 n#143 gmosCcApply.gmosCcApply#138.CLID -1024 1920 -1120 1920 -1120 2304 1320 2304 1320 2144 1440 2144 ecars.applyC.ICID
+w -742 2539 100 0 n#142 gmosCcApply.gmosCcApply#138.DIR -1024 1984 -1088 1984 -1088 2528 -336 2528 efanouts.StartOnly.SELL
+w -686 1867 100 0 n#141 gmosCcApply.gmosCcApply#138.OUTC -736 1856 -576 1856 -576 1440 -448 1440 gmosAssemblies.gmosAssemblies#105.DIR
+w -686 1931 100 0 n#140 gmosCcApply.gmosCcApply#138.OUTB -736 1920 -576 1920 -576 2080 -448 2080 gmosCcSystem.gmosCcSystem#116.DIR
+w -558 2459 100 0 n#139 gmosCcApply.gmosCcApply#138.FLNK -736 1984 -672 1984 -672 2448 -384 2448 efanouts.StartOnly.SLNK
 w -134 2379 100 0 n#137 efanouts.StartOnly.LNK6 -144 2368 -64 2368 -64 2640 0 2640 eais.doNothing.SLNK
+w -134 2411 100 0 n#137 efanouts.StartOnly.LNK5 -144 2400 -64 2400 junction
+w -134 2443 100 0 n#137 efanouts.StartOnly.LNK4 -144 2432 -64 2432 junction
+w -134 2507 100 0 n#137 efanouts.StartOnly.LNK2 -144 2496 -64 2496 junction
+w -134 2539 100 0 n#137 efanouts.StartOnly.LNK1 -144 2528 -64 2528 junction
 w 98 1027 100 0 n#135 doors.doors#122.DOORS -128 896 -64 896 -64 1024 320 1024 320 896 384 896 gmIlckWatchdog.gmIlckWatchdog#124.DOORS
 w -38 2475 100 0 n#133 efanouts.StartOnly.LNK3 -144 2464 128 2464 gmosCadCar.gmosCadCar#132.SLNK
-w 408 2475 100 0 n#97 gmosCadCar.gmosCadCar#132.FLNK 288 2464 576 2464 576 1472 junction
-w 252 1323 100 0 n#97 gmosAssemblies.gmosAssemblies#105.CFLK 64 1184 256 1184 256 1472 junction
 w 472 1475 100 0 n#97 gmosCcSystem.gmosCcSystem#116.CFLK 64 1824 256 1824 256 1472 736 1472 egenSubD.applyCGensub.SLNK
-w -742 2539 100 0 n#131 eapply.apply.DIR -1056 1984 -1088 1984 -1088 2528 -336 2528 efanouts.StartOnly.SELL
+w 252 1323 100 0 n#97 gmosAssemblies.gmosAssemblies#105.CFLK 64 1184 256 1184 256 1472 junction
+w 408 2475 100 0 n#97 gmosCadCar.gmosCadCar#132.FLNK 288 2464 576 2464 576 1472 junction
 w 418 2539 100 0 n#127 gmosCadCar.gmosCadCar#132.IVAL 288 2528 608 2528 608 1984 736 1984 egenSubD.applyCGensub.INPG
 w 1112 2147 100 0 n#71 egenSubD.applyCGensub.OUTA 1024 2144 1248 2144 1248 2176 1440 2176 ecars.applyC.IVAL
-w -542 2459 100 0 n#126 eapply.apply.FLNK -672 2016 -640 2016 -640 2448 -384 2448 efanouts.StartOnly.SLNK
-w -572 1979 100 0 n#118 eapply.apply.OUTA -672 1888 -576 1888 -576 2080 -448 2080 gmosCcSystem.gmosCcSystem#116.DIR
-w -572 1627 100 0 n#117 eapply.apply.OUTB -672 1824 -576 1824 -576 1440 -448 1440 gmosAssemblies.gmosAssemblies#105.DIR
 w -190 1547 100 0 n#115 gmosCcSystem.gmosCcSystem#116.SIMM 64 1984 160 1984 160 1536 -480 1536 -480 1216 -448 1216 gmosAssemblies.gmosAssemblies#105.SIMM
 w -222 1579 100 0 n#114 gmosCcSystem.gmosCcSystem#116.DBUG 64 1952 128 1952 128 1568 -512 1568 -512 1184 -448 1184 gmosAssemblies.gmosAssemblies#105.DBUG
-w -542 1003 100 0 n#113 gmosAssemblies.gmosAssemblies#105.MESS 64 1408 128 1408 128 992 -1152 992 -1152 1792 -1056 1792 eapply.apply.INMB
-w -542 971 100 0 n#112 gmosAssemblies.gmosAssemblies#105.VAL 64 1440 160 1440 160 960 -1184 960 -1184 1824 -1056 1824 eapply.apply.INPB
-w -526 2251 100 0 n#111 gmosCcSystem.gmosCcSystem#116.MESS 64 2048 192 2048 192 2240 -1184 2240 -1184 1856 -1056 1856 eapply.apply.INMA
-w -526 2219 100 0 n#110 gmosCcSystem.gmosCcSystem#116.VAL 64 2080 160 2080 160 2208 -1152 2208 -1152 1888 -1056 1888 eapply.apply.INPA
-w 18 2307 100 0 n#107 eapply.apply.CLID -1056 1952 -1216 1952 -1216 2304 1312 2304 1312 2144 1440 2144 ecars.applyC.ICID
 w 508 1611 100 0 n#100 gmosAssemblies.gmosAssemblies#105.OERR 64 1216 512 1216 512 2016 736 2016 egenSubD.applyCGensub.INPF
 w 476 1643 100 0 n#99 gmosAssemblies.gmosAssemblies#105.OMSS 64 1248 480 1248 480 2048 736 2048 egenSubD.applyCGensub.INPE
 w 444 1675 100 0 n#98 gmosAssemblies.gmosAssemblies#105.CAR 64 1280 448 1280 448 2080 736 2080 egenSubD.applyCGensub.INPD
@@ -34,10 +34,12 @@ w 520 2179 100 0 n#94 gmosCcSystem.gmosCcSystem#116.CAR 64 1920 352 1920 352 217
 w 1144 2019 100 0 n#86 egenSubD.applyCGensub.OUTC 1024 2016 1312 2016 1312 2080 1440 2080 ecars.applyC.IERR
 w 1128 2091 100 0 n#85 egenSubD.applyCGensub.OUTB 1024 2080 1280 2080 1280 2112 1440 2112 ecars.applyC.IMSS
 w 1276 1707 100 0 n#76 egenSubD.applyCGensub.FLNK 1024 1440 1280 1440 1280 1984 1440 1984 ecars.applyC.SLNK
-s 336 2592 100 0 (PPC FANOUT BUG CRASHES CHANNEL ACCESS)
-s 336 2624 100 0 <--- PROTECT AGAINST FUTURE PPC CONVERSION
 s -48 2496 100 0 CAD_START = 3
+s 336 2624 100 0 <--- PROTECT AGAINST FUTURE PPC CONVERSION
+s 336 2592 100 0 (PPC FANOUT BUG CRASHES CHANNEL ACCESS)
 [cell use]
+use gmosCcApply -1024 1591 100 0 gmosCcApply#138
+xform 0 -880 1816
 use eais 128 2704 100 0 doNothing
 xform 0 128 2640
 p -16 2704 100 0 -1 PV:$(top)$(cc)
@@ -92,9 +94,6 @@ p -1024 576 100 0 1 sete:xycom $(bothXycom)
 p -1024 544 100 0 1 setf:iointr $(bothIointr)
 use gmosCcSystem -448 1767 100 0 gmosCcSystem#116
 xform 0 -192 1968
-use eapply -800 2064 100 0 apply
-xform 0 -864 1712
-p -976 2064 100 0 1 PV:$(top)$(cc)
 use gmosAssemblies -448 1135 100 0 gmosAssemblies#105
 xform 0 -192 1328
 use ecars 1696 2240 100 0 applyC

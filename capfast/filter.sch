@@ -224,7 +224,7 @@ p 144 -960 70 0 -1 FTSJ:STRING
 p 144 -992 70 0 -1 FTSK:STRING
 p 128 272 100 0 -1 PV:$(top)$(dev)
 p 128 -1472 100 0 1 SIMM:$(simm)
-p 128 -1344 100 0 1 TDIR:/gemini/gmos/lut
+p 128 -1344 100 0 1 TDIR:/gemini/epics3.13.4/gmos/gmos/data
 p 128 -1376 100 0 1 TFIL:$(dev).lut
 p 224 48 90 256 -1 Type:assemblyControl
 p 144 -64 100 1024 0 name:$(top)$(dev)FilterAssembly

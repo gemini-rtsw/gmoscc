@@ -317,7 +317,7 @@ p 160 -480 70 0 -1 FTSL:STRING
 p 160 -544 70 0 -1 FTSN:DOUBLE
 p 144 816 100 0 -1 PV:$(top)$(dev)
 p 144 -928 100 0 1 SIMM:$(simm)
-p 144 -800 100 0 1 TDIR:/gemini/gmos/lut
+p 144 -800 100 0 1 TDIR:/gemini/epics3.13.4/gmos/gmos/data
 p 144 -832 100 0 1 TFIL:$(dev).lut
 p 496 -480 80 768 0 def(SOT):0.0
 p 464 128 80 768 -1 pproc(ACK1):NPP

@@ -150,7 +150,7 @@ p 928 -352 100 0 1 PLLM:0.0
 p 608 -384 100 0 1 PREC:4
 p 1120 192 100 0 1 PTMO:0
 p 608 -416 100 0 1 SIMM:$(simm)
-p 608 -224 100 0 1 TDIR:/gemini/gmos/lut
+p 608 -224 100 0 1 TDIR:/gemini/epics3.13.4/gmos/gmos/data
 p 992 192 100 0 1 UAPB:NO
 p 624 160 100 0 1 UBSB:YES
 p 928 -384 100 0 1 UEIP:NO

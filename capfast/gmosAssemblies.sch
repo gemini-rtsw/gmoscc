@@ -1,7 +1,9 @@
 [schematic2]
-uniq 208
+uniq 211
 [tools]
 [detail]
+w -702 1259 100 0 n#210 atmdc.atmdc#175.MESS -512 896 -416 896 -416 1248 -928 1248 -928 1472 -1184 1472 -1184 2112 -960 2112 eapply.assemApply.INME
+w -734 1227 100 0 n#209 eapply.assemApply.INPE -960 2144 -1216 2144 -1216 1440 -960 1440 -960 1216 -448 1216 -448 928 -512 928 atmdc.atmdc#175.VAL
 w 18 811 100 0 n#200 edfans.simlFanout.OUTE -1408 1152 -800 1152 -800 1056 -320 1056 -320 800 416 800 translation.translation#66.SIMM
 w -1276 2171 100 0 n#199 edfans.simlFanout.OUTC -1408 1216 -1280 1216 -1280 3136 224 3136 224 2304 416 2304 filter.filter#64.SIMM
 w -478 1027 100 0 n#198 edfans.simlFanout.OUTD -1408 1184 -832 1184 -832 1024 -64 1024 -64 1600 416 1600 grating.grating#65.SIMM
@@ -12,11 +14,11 @@ w 2418 971 100 0 n#194 gmOiwfsCommands.gmOiwfsCommands#174.DEBUG 2400 960 2496 9
 w 2418 1259 100 0 n#193 gmOiwfsCommands.gmOiwfsCommands#174.Y_M 2400 1248 2496 1248 gmOiwfs.gmOiwfs#173.Y_M
 w 2418 1291 100 0 n#192 gmOiwfsCommands.gmOiwfsCommands#174.X_M 2400 1280 2496 1280 gmOiwfs.gmOiwfs#173.X_M
 w -892 1355 100 0 n#191 eapply.assemApply.OUTE -576 2144 -480 2144 -480 1792 -896 1792 -896 928 -832 928 atmdc.atmdc#175.DIR
-w -174 651 100 0 n#177 atmdc.atmdc#175.CFLK -512 640 224 640 224 448 896 448 896 768 junction
-w -104 1347 100 0 n#177 gmMask.gmMask#171.CFLK -384 1344 224 1344 224 1216 896 1216 junction
-w 892 1179 100 0 n#177 translation.translation#66.CFLK 736 768 896 768 896 1600 junction
-w 892 1723 100 0 n#177 grating.grating#65.CFLK 736 1568 896 1568 896 1888 junction
 w 1186 1891 100 0 n#177 filter.filter#64.CFLK 736 2272 896 2272 896 1888 1536 1888 egenSubD.assemCGensub.SLNK
+w 892 1723 100 0 n#177 grating.grating#65.CFLK 736 1568 896 1568 896 1888 junction
+w 892 1179 100 0 n#177 translation.translation#66.CFLK 736 768 896 768 896 1600 junction
+w -104 1347 100 0 n#177 gmMask.gmMask#171.CFLK -384 1344 224 1344 224 1216 896 1216 junction
+w -174 651 100 0 n#177 atmdc.atmdc#175.CFLK -512 640 224 640 224 448 896 448 896 768 junction
 w 1444 1147 100 0 n#190 atmdc.atmdc#175.OERR -512 672 -416 672 -416 32 224 32 224 160 1440 160 1440 2144 1536 2144 egenSubD.assemCGensub.INPO
 w 1412 1179 100 0 n#189 atmdc.atmdc#175.OMSS -512 704 -384 704 -384 64 192 64 192 192 1408 192 1408 2176 1536 2176 egenSubD.assemCGensub.INPN
 w 1380 1211 100 0 n#188 atmdc.atmdc#175.CAR -512 736 -352 736 -352 96 160 96 160 224 1376 224 1376 2208 1536 2208 egenSubD.assemCGensub.INPM
@@ -46,8 +48,8 @@ w -158 2659 100 0 n#130 filter.filter#64.VAL 736 2560 768 2560 768 2656 -1024 26
 w 2402 2379 100 0 CFLK ecars.assemC.FLNK 2400 2368 2464 2368 2464 2304 2656 2304 outhier.CFLK.p
 w 2546 2443 100 0 OERR ecars.assemC.OERR 2400 2496 2496 2496 2496 2432 2656 2432 outhier.OERR.p
 w 2498 2539 100 0 OMSS ecars.assemC.OMSS 2400 2528 2656 2528 outhier.OMSS.p
-w 1960 2595 100 0 n#71 egenSubD.assemCGensub.OUTA 1824 2560 1888 2560 1888 2592 2080 2592 ecars.assemC.IVAL
 w 2328 2659 100 0 n#71 junction 2048 2592 2048 2656 2656 2656 outhier.CAR.p
+w 1960 2595 100 0 n#71 egenSubD.assemCGensub.OUTA 1824 2560 1888 2560 1888 2592 2080 2592 ecars.assemC.IVAL
 w -432 2784 100 0 FLNK eapply.assemApply.FLNK -576 2528 -448 2528 -448 2912 -32 2912 outhier.FLNK.p
 w -480 2832 100 0 MESS eapply.assemApply.MESS -576 2464 -480 2464 -480 3008 -32 3008 outhier.MESS.p
 w -512 2864 100 0 VAL eapply.assemApply.VAL -576 2496 -512 2496 -512 3104 -32 3104 outhier.VAL.p
@@ -66,8 +68,8 @@ w 1240 2595 100 0 n#94 filter.filter#64.CAR 736 2368 992 2368 992 2592 1536 2592
 w 1864 2435 100 0 n#86 egenSubD.assemCGensub.OUTC 1824 2432 1952 2432 1952 2496 2080 2496 ecars.assemC.IERR
 w 1976 2531 100 0 n#85 egenSubD.assemCGensub.OUTB 1824 2496 1920 2496 1920 2528 2080 2528 ecars.assemC.IMSS
 w 1916 2123 100 0 n#76 egenSubD.assemCGensub.FLNK 1824 1856 1920 1856 1920 2400 2080 2400 ecars.assemC.SLNK
-s -928 720 200 0 TBD
 s 2448 1904 100 0 Not a true SAD, so included in main database.
+s -928 720 200 0 TBD
 [cell use]
 use gmOiwfsSad 2560 1607 100 0 gmOiwfsSad#202
 xform 0 2688 1744
@@ -75,16 +77,6 @@ p 2560 1600 100 0 -1 seta:sadtop $(top)wfs:
 p 2560 1568 100 0 -1 setb:wfstop $(top)wfs:
 p 2560 1536 100 0 -1 setc:dev $(oiwfs)
 p 2560 1504 100 0 -1 setd:dtyp Oiwfs
-use edfans -1504 1424 100 0 simlFanout
-xform 0 -1536 1216
-p -1600 976 100 768 1 OMSL:supervisory
-p -1664 1424 100 0 1 PV:$(top)cc:
-p -1408 1280 75 768 -1 pproc(OUTA):PP
-p -1408 1248 75 768 -1 pproc(OUTB):PP
-p -1408 1216 75 768 -1 pproc(OUTC):PP
-p -1408 1184 75 768 -1 pproc(OUTD):PP
-p -1408 1152 75 768 -1 pproc(OUTE):PP
-p -1408 1120 75 768 -1 pproc(OUTF):PP
 use edfans -1504 912 100 0 debugFanout
 xform 0 -1536 704
 p -1600 464 100 768 1 OMSL:supervisory
@@ -95,6 +87,16 @@ p -1408 704 75 768 -1 pproc(OUTC):PP
 p -1408 672 75 768 -1 pproc(OUTD):PP
 p -1408 640 75 768 -1 pproc(OUTE):PP
 p -1408 608 75 768 -1 pproc(OUTF):PP
+use edfans -1504 1424 100 0 simlFanout
+xform 0 -1536 1216
+p -1600 976 100 768 1 OMSL:supervisory
+p -1664 1424 100 0 1 PV:$(top)cc:
+p -1408 1280 75 768 -1 pproc(OUTA):PP
+p -1408 1248 75 768 -1 pproc(OUTB):PP
+p -1408 1216 75 768 -1 pproc(OUTC):PP
+p -1408 1184 75 768 -1 pproc(OUTD):PP
+p -1408 1152 75 768 -1 pproc(OUTE):PP
+p -1408 1120 75 768 -1 pproc(OUTF):PP
 use atmdc -832 583 100 0 atmdc#175
 xform 0 -672 800
 p -832 576 100 0 -1 seta:top $(top)$(c1)
@@ -137,26 +139,26 @@ p 1040 16 150 0 -1 Rev:$Revision$
 p 2940 128 120 256 -1 Title:Components Controller Database
 p 2656 64 100 768 -1 author:$Author$
 p 2656 32 100 768 -1 date:$Date$
-use outhier 2624 2263 100 0 CFLK
-xform 0 2640 2304
-use outhier 2624 2391 100 0 OERR
-xform 0 2640 2432
-use outhier 2624 2487 100 0 OMSS
-xform 0 2640 2528
-use outhier 2624 2615 100 0 CAR
-xform 0 2640 2656
-use outhier -64 2871 100 0 FLNK
-xform 0 -48 2912
-use outhier -64 2967 100 0 MESS
-xform 0 -48 3008
 use outhier -64 3063 100 0 VAL
 xform 0 -48 3104
-use inhier -1744 2455 100 0 DIR
-xform 0 -1728 2496
-use inhier -1776 1175 100 0 SIMM
-xform 0 -1760 1216
+use outhier -64 2967 100 0 MESS
+xform 0 -48 3008
+use outhier -64 2871 100 0 FLNK
+xform 0 -48 2912
+use outhier 2624 2615 100 0 CAR
+xform 0 2640 2656
+use outhier 2624 2487 100 0 OMSS
+xform 0 2640 2528
+use outhier 2624 2391 100 0 OERR
+xform 0 2640 2432
+use outhier 2624 2263 100 0 CFLK
+xform 0 2640 2304
 use inhier -1776 663 100 0 DBUG
 xform 0 -1760 704
+use inhier -1776 1175 100 0 SIMM
+xform 0 -1760 1216
+use inhier -1744 2455 100 0 DIR
+xform 0 -1728 2496
 use eapply -960 1863 100 0 assemApply
 xform 0 -768 2224
 p -896 1824 100 0 1 PV:$(top)cc:

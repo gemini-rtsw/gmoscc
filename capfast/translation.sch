@@ -288,7 +288,7 @@ p 176 -704 70 0 -1 FTSL:DOUBLE
 p 160 -1120 100 0 1 PREC:1
 p 160 592 100 0 -1 PV:$(top)$(dev)
 p 160 -1152 100 0 1 SIMM:$(simm)
-p 160 -1024 100 0 1 TDIR:/gemini/gmos/lut
+p 160 -1024 100 0 1 TDIR:/gemini/epics3.13.4/gmos/gmos/data
 p 160 -1056 100 0 1 TFIL:dta.lut
 p 480 -96 80 768 -1 pproc(ACK1):NPP
 p 480 -320 80 768 -1 pproc(ACK2):NPP

@@ -1,16 +1,20 @@
 [schematic2]
-uniq 300
+uniq 304
 [tools]
 [detail]
+w -366 2859 100 0 n#303 gmSeqCadCarE.gmSeqCadCarE#299.VAL 720 1648 800 1648 800 2848 -1472 2848 -1472 2128 -1088 2128 eapply.apply1.INPA
+w -366 2891 100 0 n#302 gmSeqCadCarE.gmSeqCadCarE#299.MESS 720 1616 832 1616 832 2880 -1504 2880 -1504 2096 -1088 2096 eapply.apply1.INMA
+w -606 2699 100 0 n#301 gmSeqCadCarB.gmSeqCadCarB#277.VAL 112 1632 224 1632 224 2688 -1376 2688 -1376 2064 -1088 2064 eapply.apply1.INPB
+w -606 2731 100 0 n#300 gmSeqCadCarB.gmSeqCadCarB#277.MESS 112 1600 256 1600 256 2720 -1408 2720 -1408 2032 -1088 2032 eapply.apply1.INMB
 w 1922 2715 100 0 n#295 gmSeqCadCarD.gmSeqCadCarD#298.CAR 1104 880 1472 880 1472 2704 2432 2704 egenSubD.carCombine1.INPG
 w -222 -5 100 0 n#294 gmSeqCadCarD.gmSeqCadCarD#298.MESS 1104 1008 1152 1008 1152 -16 -1536 -16 -1536 1968 -1088 1968 eapply.apply1.INMC
-w 658 315 100 0 n#293 gmSeqCadCarB.gmSeqCadCarB#279.CFLK -896 784 -864 784 -864 304 2240 304 2240 2192 2432 2192 egenSubD.carCombine1.SLNK
-w 1082 795 100 0 n#293 gmSeqCadCarD.gmSeqCadCarD#298.CFLK 1104 784 1120 784 1120 304 junction
-w 636 539 100 0 n#293 gmSeqCadCarD.gmSeqCadCarD#297.CFLK 608 784 640 784 640 304 junction
-w 156 539 100 0 n#293 gmSeqCadCarD.gmSeqCadCarD#296.CFLK 128 784 160 784 160 304 junction
-w -388 539 100 0 n#293 gmSeqCadPark.gmSeqCadPark#280.CFLK -416 784 -384 784 -384 304 junction
-w -30 1291 100 0 n#293 gmSeqCadCarB.gmSeqCadCarB#277.CFLK 112 1376 144 1376 144 1280 -144 1280 -144 304 junction
 w 970 1403 100 0 n#293 gmSeqCadCarE.gmSeqCadCarE#299.CFLK 720 1392 1280 1392 1280 304 junction
+w -30 1291 100 0 n#293 gmSeqCadCarB.gmSeqCadCarB#277.CFLK 112 1376 144 1376 144 1280 -144 1280 -144 304 junction
+w -388 539 100 0 n#293 gmSeqCadPark.gmSeqCadPark#280.CFLK -416 784 -384 784 -384 304 junction
+w 156 539 100 0 n#293 gmSeqCadCarD.gmSeqCadCarD#296.CFLK 128 784 160 784 160 304 junction
+w 636 539 100 0 n#293 gmSeqCadCarD.gmSeqCadCarD#297.CFLK 608 784 640 784 640 304 junction
+w 1082 795 100 0 n#293 gmSeqCadCarD.gmSeqCadCarD#298.CFLK 1104 784 1120 784 1120 304 junction
+w 658 315 100 0 n#293 gmSeqCadCarB.gmSeqCadCarB#279.CFLK -896 784 -864 784 -864 304 2240 304 2240 2192 2432 2192 egenSubD.carCombine1.SLNK
 w 1954 2651 100 0 n#292 gmSeqCadCarD.gmSeqCadCarD#298.OERR 1104 816 1536 816 1536 2640 2432 2640 egenSubD.carCombine1.INPI
 w 1938 2683 100 0 n#291 gmSeqCadCarD.gmSeqCadCarD#298.OMSS 1104 848 1504 848 1504 2672 2432 2672 egenSubD.carCombine1.INPH
 w 1794 2907 100 0 n#275 gmSeqCadCarE.gmSeqCadCarE#299.CAR 720 1488 1216 1488 1216 2896 2432 2896 egenSubD.carCombine1.INPA
@@ -21,10 +25,6 @@ w 770 1275 100 0 n#271 gmSeqCadCarB.gmSeqCadCarB#277.OMSS 112 1440 224 1440 224 
 w 770 1243 100 0 n#270 gmSeqCadCarB.gmSeqCadCarB#277.OERR 112 1408 192 1408 192 1232 1408 1232 1408 2736 2432 2736 egenSubD.carCombine1.INPF
 w -1254 2187 100 0 ICID inhier.ICID.P -1296 2176 -1152 2176 -1152 2192 -1088 2192 eapply.apply1.CLID
 w -1254 2267 100 0 DIR inhier.DIR.P -1296 2256 -1152 2256 -1152 2224 -1088 2224 eapply.apply1.DIR
-w -334 2907 100 0 n#267 gmSeqCadCarE.gmSeqCadCarE#299.MESS 720 1616 864 1616 864 2896 -1472 2896 -1472 2032 -1088 2032 eapply.apply1.INMB
-w -318 2875 100 0 n#266 gmSeqCadCarE.gmSeqCadCarE#299.VAL 720 1648 832 1648 832 2864 -1408 2864 -1408 2064 -1088 2064 eapply.apply1.INPB
-w -590 2843 100 0 n#264 gmSeqCadCarB.gmSeqCadCarB#277.MESS 112 1600 256 1600 256 2832 -1376 2832 -1376 2096 -1088 2096 eapply.apply1.INMA
-w -590 2811 100 0 n#263 gmSeqCadCarB.gmSeqCadCarB#277.VAL 112 1632 224 1632 224 2800 -1344 2800 -1344 2128 -1088 2128 eapply.apply1.INPA
 w -190 2099 100 0 n#261 eapply.apply1.OCLA -704 2096 384 2096 384 1568 496 1568 gmSeqCadCarE.gmSeqCadCarE#299.ICID
 w -174 2131 100 0 n#260 eapply.apply1.OUTA -704 2128 416 2128 416 1648 496 1648 gmSeqCadCarE.gmSeqCadCarE#299.DIR
 w -478 2035 100 0 n#259 eapply.apply1.OCLB -704 2032 -192 2032 -192 1552 -112 1552 gmSeqCadCarB.gmSeqCadCarB#277.ICID
@@ -63,38 +63,38 @@ w 130 1211 100 0 n#198 eapply.apply1.OUTC -704 2000 -480 2000 -480 1200 800 1200
 w 3228 2619 100 0 CFLK ecars.compCar1.FLNK 3200 2672 3232 2672 3232 2576 3328 2576 outhier.CFLK.p
 w 3232 2736 100 0 OERR ecars.compCar1.OERR 3200 2800 3264 2800 3264 2704 3328 2704 outhier.OERR.p
 w 3240 2835 100 0 OMSS ecars.compCar1.OMSS 3200 2832 3328 2832 outhier.OMSS.p
-w 3070 2963 100 0 CAR junction 2848 2896 2848 2960 3328 2960 outhier.CAR.p
 w 2798 2899 100 0 CAR egenSubD.carCombine1.OUTA 2720 2864 2752 2864 2752 2896 2880 2896 ecars.compCar1.IVAL
+w 3070 2963 100 0 CAR junction 2848 2896 2848 2960 3328 2960 outhier.CAR.p
 w -600 2259 100 0 FLNK eapply.apply1.FLNK -704 2256 -448 2256 -448 2288 -384 2288 outhier.FLNK.p
 w -632 2195 100 0 MESS eapply.apply1.MESS -704 2192 -512 2192 -512 2384 -384 2384 outhier.MESS.p
 w -548 2363 100 0 VAL eapply.apply1.VAL -704 2224 -544 2224 -544 2512 -384 2512 outhier.VAL.p
 w 2744 2739 100 0 n#86 egenSubD.carCombine1.OUTC 2720 2736 2816 2736 2816 2800 2880 2800 ecars.compCar1.IERR
 w 2808 2835 100 0 n#85 egenSubD.carCombine1.OUTB 2720 2800 2784 2800 2784 2832 2880 2832 ecars.compCar1.IMSS
 w 2844 2427 100 0 n#76 egenSubD.carCombine1.FLNK 2720 2160 2848 2160 2848 2704 2880 2704 ecars.compCar1.SLNK
-s -960 1424 100 0 Wires too close? - SMB
 s 3008 3040 150 0 gmSeqSeqCommands1.sch
+s -960 1424 100 0 Wires too close? - SMB
 [cell use]
 use gmSeqCadCarE 496 1335 100 0 gmSeqCadCarE#299
 xform 0 608 1536
 p 516 1308 100 0 1 seta:seqcommand init
 p 536 1288 100 0 1 setb:snam gmSeqCadInit
-use gmSeqCadCarD -96 727 100 0 gmSeqCadCarD#296
-xform 0 16 928
-p -76 700 100 0 1 seta:seqcommand verify
-use gmSeqCadCarD 384 727 100 0 gmSeqCadCarD#297
-xform 0 496 928
-p 404 700 100 0 1 seta:seqcommand endVerify
 use gmSeqCadCarD 880 727 100 0 gmSeqCadCarD#298
 xform 0 992 928
 p 900 700 100 0 1 seta:seqcommand guide
-use gmSeqCadCarB -1120 727 100 0 gmSeqCadCarB#279
-xform 0 -1008 928
-p -1120 720 100 0 -1 seta:seqcommand datum
-p -1120 928 100 0 -1 setb:snam gmSeqCadDatum
+use gmSeqCadCarD 384 727 100 0 gmSeqCadCarD#297
+xform 0 496 928
+p 404 700 100 0 1 seta:seqcommand endVerify
+use gmSeqCadCarD -96 727 100 0 gmSeqCadCarD#296
+xform 0 16 928
+p -76 700 100 0 1 seta:seqcommand verify
 use gmSeqCadCarB -112 1319 100 0 gmSeqCadCarB#277
 xform 0 0 1520
 p -112 1312 100 0 -1 seta:seqcommand test
 p -96 1520 100 0 -1 setb:snam gmSeqCadTest
+use gmSeqCadCarB -1120 727 100 0 gmSeqCadCarB#279
+xform 0 -1008 928
+p -1120 720 100 0 -1 seta:seqcommand datum
+p -1120 928 100 0 -1 setb:snam gmSeqCadDatum
 use gmSeqCadPark -640 727 100 0 gmSeqCadPark#280
 xform 0 -528 928
 p -640 720 100 0 -1 seta:seqcommand park
@@ -104,26 +104,26 @@ xform 0 -896 1952
 use oslBorderD -1712 -201 100 0 oslBorderD#276
 xform 0 928 1504
 p 3148 48 120 256 -1 Title:GMOS IS - sequence commands - 1
-use inhier -1312 2215 100 0 DIR
-xform 0 -1296 2256
 use inhier -1312 2135 100 0 ICID
 xform 0 -1296 2176
+use inhier -1312 2215 100 0 DIR
+xform 0 -1296 2256
 use ecars 2880 2615 100 0 compCar1
 xform 0 3040 2784
-use outhier 3296 2535 100 0 CFLK
-xform 0 3312 2576
-use outhier 3296 2663 100 0 OERR
-xform 0 3312 2704
-use outhier 3296 2791 100 0 OMSS
-xform 0 3312 2832
-use outhier 3296 2919 100 0 CAR
-xform 0 3312 2960
-use outhier -416 2247 100 0 FLNK
-xform 0 -400 2288
-use outhier -416 2343 100 0 MESS
-xform 0 -400 2384
 use outhier -416 2471 100 0 VAL
 xform 0 -400 2512
+use outhier -416 2343 100 0 MESS
+xform 0 -400 2384
+use outhier -416 2247 100 0 FLNK
+xform 0 -400 2288
+use outhier 3296 2919 100 0 CAR
+xform 0 3312 2960
+use outhier 3296 2791 100 0 OMSS
+xform 0 3312 2832
+use outhier 3296 2663 100 0 OERR
+xform 0 3312 2704
+use outhier 3296 2535 100 0 CFLK
+xform 0 3312 2576
 use egenSubD 2432 2103 100 0 carCombine1
 xform 0 2576 2528
 p 2209 1877 100 0 0 FTA:LONG
