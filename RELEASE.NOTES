@@ -159,6 +159,13 @@ moved to the bin/solaris directory and the PATH and EPICS_DISPLAY_PATH
 variables have been defined to include /gemini/gmos/gmos/bin and
 /gemini/gmos/gmos/data.
 
+V2-2-3 20 Apr 2001 SMB:
+-----------------------
+This version is identical to V2-2-2 except that the wait time associated
+with the grating lifter has been increased to compensate for the denser
+air in Hilo as compared with Edinburgh. The error messages reported by
+some of the mask checkout scripts have been made more explicit.
+
 V2-3 ?? Apr 2001 SMB:
 ---------------------
 gmos023 - This version contains fixes to the following problems
