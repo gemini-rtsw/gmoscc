@@ -1,0 +1,693 @@
+menu(assemblyControlDIR) {
+	choice(assemblyControlDIR_MARK,"MARK")
+	choice(assemblyControlDIR_CLEAR,"CLEAR")
+	choice(assemblyControlDIR_PRESET,"PRESET")
+	choice(assemblyControlDIR_START,"START")
+	choice(assemblyControlDIR_STOP,"STOP")
+}
+menu(assemblyControlMODE) {
+	choice(assemblyControlMODE_INIT,"INIT")
+	choice(assemblyControlMODE_MOVE,"MOVE")
+	choice(assemblyControlMODE_TRACK,"TRACK")
+	choice(assemblyControlMODE_INDEX,"INDEX")
+	choice(assemblyControlMODE_PARK,"PARK")
+	choice(assemblyControlMODE_TEST,"TEST")
+	choice(assemblyControlMODE_UPDATE,"UPDATE")
+}
+menu(assemblyControlBUSY) {
+	choice(assemblyControlBUSY_IDLE,"IDLE")
+	choice(assemblyControlBUSY_PAUSED,"PAUSED")
+	choice(assemblyControlBUSY_BUSY,"BUSY")
+	choice(assemblyControlBUSY_ERR,"ERR")
+}
+menu(assemblyControlSIMM) {
+	choice(assemblyControlSIMM_NONE,"NONE")
+	choice(assemblyControlSIMM_VSM,"VSM")
+	choice(assemblyControlSIMM_FAST,"FAST")
+	choice(assemblyControlSIMM_FULL,"FULL")
+}
+menu(assemblyControlDBUG) {
+	choice(assemblyControlDBUG_QUIET,"QUIET")
+	choice(assemblyControlDBUG_NONE,"NONE")
+	choice(assemblyControlDBUG_MIN,"MIN")
+	choice(assemblyControlDBUG_FULL,"FULL")
+	choice(assemblyControlDBUG_MAX,"MAX")
+}
+menu(assemblyControlASTA) {
+	choice(assemblyControlASTA_IDLE,"IDLE")
+	choice(assemblyControlASTA_INITIALIZING,"INITIALIZING")
+	choice(assemblyControlASTA_MOVING,"MOVING")
+	choice(assemblyControlASTA_TRACKING,"TRACKING")
+	choice(assemblyControlASTA_TESTING,"TESTING")
+	choice(assemblyControlASTA_INDEXING,"INDEXING")
+	choice(assemblyControlASTA_UPDATING,"UPDATING")
+	choice(assemblyControlASTA_STARTING,"STARTING")
+}
+menu(assemblyControlHLTH) {
+	choice(assemblyControlHLTH_GOOD,"GOOD")
+	choice(assemblyControlHLTH_WARNING,"WARNING")
+	choice(assemblyControlHLTH_BAD,"BAD")
+}
+recordtype(assemblyControl) {
+	include "dbCommon.dbd" 
+	field(DIR,DBF_MENU) {
+		prompt("Directive")
+		pp(TRUE)
+		interest(1)
+		menu(assemblyControlDIR)
+	}
+	field(MODE,DBF_MENU) {
+		prompt("Operating Mode")
+		promptgroup(GUI_COMMON)
+		special(SPC_MOD)
+		interest(1)
+		menu(assemblyControlMODE)
+	}
+	field(VAL,DBF_LONG) {
+		prompt("Directive Response")
+		interest(1)
+	}
+	field(ILCK,DBF_SHORT) {
+		prompt("Interlock")
+		special(SPC_MOD)
+		interest(1)
+	}
+	field(BUSY,DBF_MENU) {
+		prompt("Device Action State")
+		menu(assemblyControlBUSY)
+	}
+	field(ASTA,DBF_MENU) {
+		prompt("Assembly Rec State")
+		menu(assemblyControlASTA)
+	}
+	field(MESS,DBF_STRING) {
+		prompt("Error Message")
+		size(40)
+	}
+	field(HLTH,DBF_MENU) {
+		prompt("Health")
+		promptgroup(GUI_COMMON)
+		interest(1)
+		menu(assemblyControlHLTH)
+	}
+	field(INDX,DBF_SHORT) {
+		prompt("Is it Indexed")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(INIT,DBF_SHORT) {
+		prompt("Is it Initialized")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(PARK,DBF_SHORT) {
+		prompt("Is it Parked")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(MARK,DBF_SHORT) {
+		prompt("Is Record Preset?")
+		interest(1)
+	}
+	field(SIMM,DBF_MENU) {
+		prompt("Simulation Mode")
+		promptgroup(GUI_COMMON)
+		interest(1)
+		menu(assemblyControlSIMM)
+	}
+	field(DBUG,DBF_MENU) {
+		prompt("Debug Mode")
+		promptgroup(GUI_COMMON)
+		interest(1)
+		menu(assemblyControlDBUG)
+	}
+	field(TDIR,DBF_STRING) {
+		prompt("Translation Directory")
+		promptgroup(GUI_COMMON)
+		interest(1)
+		size(40)
+	}
+	field(TFIL,DBF_STRING) {
+		prompt("Translation File")
+		promptgroup(GUI_COMMON)
+		interest(1)
+		size(40)
+	}
+	field(MSGL,DBF_OUTLINK) {
+		prompt("Error Message Link")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(SIML,DBF_OUTLINK) {
+		prompt("Simulation Mode Link")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(DBGL,DBF_OUTLINK) {
+		prompt("Debug Mode Link")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(BSYL,DBF_OUTLINK) {
+		prompt("Busy Link")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(PREC,DBF_SHORT) {
+		prompt("Display Precision")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(EGU,DBF_STRING) {
+		prompt("Engineering Units")
+		promptgroup(GUI_COMMON)
+		interest(1)
+		size(16)
+	}
+	field(VERS,DBF_STRING) {
+		prompt("Code Version")
+		promptgroup(GUI_COMMON)
+		interest(1)
+		size(16)
+	}
+	field(PP,DBF_SHORT) {
+		prompt("Post process command")
+		interest(2)
+	}
+	field(LTHP,DBF_NOACCESS) {
+		prompt("Lookup Table Head Ptr")
+		special(SPC_NOMOD)
+		interest(1)
+		extra("void *lthp")
+	}
+	field(NMDV,DBF_SHORT) {
+		prompt("Total devices attached")
+		interest(2)
+	}
+	field(MDEL,DBF_FLOAT) {
+		prompt("Monitor Deadband")
+		promptgroup(GUI_COMMON)
+		interest(3)
+	}
+	field(ADEL,DBF_FLOAT) {
+		prompt("Archive Deadband")
+		promptgroup(GUI_COMMON)
+		interest(3)
+	}
+	field(MMAP,DBF_ULONG) {
+		prompt("Monitor Mask")
+		interest(3)
+	}
+	field(LMAP,DBF_ULONG) {
+		prompt("Link Trigger Mask")
+		interest(3)
+	}
+	field(HIHI,DBF_FLOAT) {
+		prompt("Hihi Alarm Limit")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+	}
+	field(LOLO,DBF_FLOAT) {
+		prompt("Lolo Alarm Limit")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+	}
+	field(HIGH,DBF_FLOAT) {
+		prompt("High Alarm Limit")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+	}
+	field(LOW,DBF_FLOAT) {
+		prompt("Low Alarm Limit")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+	}
+	field(HHSV,DBF_MENU) {
+		prompt("Hihi Severity")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuAlarmSevr)
+	}
+	field(LLSV,DBF_MENU) {
+		prompt("Lolo Severity")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuAlarmSevr)
+	}
+	field(HSV,DBF_MENU) {
+		prompt("High Severity")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuAlarmSevr)
+	}
+	field(LSV,DBF_MENU) {
+		prompt("Low Severity")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuAlarmSevr)
+	}
+	field(HLSV,DBF_MENU) {
+		prompt("HW Limit Violation Svr")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuAlarmSevr)
+	}
+	field(A,DBF_NOACCESS) {
+		prompt("Attribute A")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *a")
+	}
+	field(B,DBF_NOACCESS) {
+		prompt("Attribute B")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *b")
+	}
+	field(C,DBF_NOACCESS) {
+		prompt("Attribute C")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *c")
+	}
+	field(D,DBF_NOACCESS) {
+		prompt("Attribute D")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *d")
+	}
+	field(E,DBF_NOACCESS) {
+		prompt("Attribute E")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *e")
+	}
+	field(VALA,DBF_NOACCESS) {
+		prompt("Out Attr A")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *vala")
+	}
+	field(VALB,DBF_NOACCESS) {
+		prompt("Out Attr B")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *valb")
+	}
+	field(VALC,DBF_NOACCESS) {
+		prompt("Out Attr C")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *valc")
+	}
+	field(VALD,DBF_NOACCESS) {
+		prompt("Out Attr D")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *vald")
+	}
+	field(VALE,DBF_NOACCESS) {
+		prompt("Out Attr E")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *vale")
+	}
+	field(FTA,DBF_MENU) {
+		prompt("Attr A Data Type")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuFtype)
+	}
+	field(FTB,DBF_MENU) {
+		prompt("Attr B Data Type")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuFtype)
+	}
+	field(FTC,DBF_MENU) {
+		prompt("Attr C Data Type")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuFtype)
+	}
+	field(FTD,DBF_MENU) {
+		prompt("Attr D Data Type")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuFtype)
+	}
+	field(FTE,DBF_MENU) {
+		prompt("Attr E Data Type")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuFtype)
+	}
+	field(AAHL,DBF_DOUBLE) {
+		prompt("Attr A High Limit")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(AALL,DBF_DOUBLE) {
+		prompt("Attr A Low Limit")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(ABHL,DBF_DOUBLE) {
+		prompt("Attr B High Limit")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(ABLL,DBF_DOUBLE) {
+		prompt("Attr B Low Limit")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(ACHL,DBF_DOUBLE) {
+		prompt("Attr C High Limit")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(ACLL,DBF_DOUBLE) {
+		prompt("Attr C Low Limit")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(ADHL,DBF_DOUBLE) {
+		prompt("Attr D High Limit")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(ADLL,DBF_DOUBLE) {
+		prompt("Attr D Low Limit")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(AEHL,DBF_DOUBLE) {
+		prompt("Attr E High Limit")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(AELL,DBF_DOUBLE) {
+		prompt("Attr E Low Limit")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(ACK1,DBF_INLINK) {
+		prompt("Command Stat from 1")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(ACK2,DBF_INLINK) {
+		prompt("Command Stat from 2")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(ACK3,DBF_INLINK) {
+		prompt("Command Stat from 3")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(ACK4,DBF_INLINK) {
+		prompt("Command Stat from 4")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(ACK5,DBF_INLINK) {
+		prompt("Command Stat from 5")
+		promptgroup(GUI_COMMON)
+		interest(1)
+	}
+	field(BUS1,DBF_SHORT) {
+		prompt("Device Action from 1")
+		special(SPC_MOD)
+		pp(TRUE)
+	}
+	field(BUS2,DBF_SHORT) {
+		prompt("Device Action from 2")
+		special(SPC_MOD)
+		pp(TRUE)
+	}
+	field(BUS3,DBF_SHORT) {
+		prompt("Device Action from 3")
+		special(SPC_MOD)
+		pp(TRUE)
+	}
+	field(BUS4,DBF_SHORT) {
+		prompt("Device Action from 4")
+		special(SPC_MOD)
+		pp(TRUE)
+	}
+	field(BUS5,DBF_SHORT) {
+		prompt("Device Action from 5")
+		special(SPC_MOD)
+		pp(TRUE)
+	}
+	field(ODR1,DBF_OUTLINK) {
+		prompt("Directive to 1")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(ODR2,DBF_OUTLINK) {
+		prompt("Directive to 2")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(ODR3,DBF_OUTLINK) {
+		prompt("Directive to 3")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(ODR4,DBF_OUTLINK) {
+		prompt("Directive to 4")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(ODR5,DBF_OUTLINK) {
+		prompt("Directive to 5")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(MOD1,DBF_OUTLINK) {
+		prompt("Operating Mode to 1")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(MOD2,DBF_OUTLINK) {
+		prompt("Operating Mode to 2")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(MOD3,DBF_OUTLINK) {
+		prompt("Operating Mode to 3")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(MOD4,DBF_OUTLINK) {
+		prompt("Operating Mode to 4")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(MOD5,DBF_OUTLINK) {
+		prompt("Operating Mode to 5")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(POS1,DBF_OUTLINK) {
+		prompt("Position to 1")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(POS2,DBF_OUTLINK) {
+		prompt("Position to 2")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(POS3,DBF_OUTLINK) {
+		prompt("Position to 3")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(POS4,DBF_OUTLINK) {
+		prompt("Position to 4")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(POS5,DBF_OUTLINK) {
+		prompt("Position to 5")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(VEL1,DBF_OUTLINK) {
+		prompt("Velocity to 1")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(VEL2,DBF_OUTLINK) {
+		prompt("Velocity to 2")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(VEL3,DBF_OUTLINK) {
+		prompt("Velocity to 3")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(VEL4,DBF_OUTLINK) {
+		prompt("Velocity to 4")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(VEL5,DBF_OUTLINK) {
+		prompt("Velocity to 5")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(SIJ,DBF_NOACCESS) {
+		prompt("Sensor In J")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *sij")
+	}
+	field(SIK,DBF_NOACCESS) {
+		prompt("Sensor In K")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *sik")
+	}
+	field(SIL,DBF_NOACCESS) {
+		prompt("Sensor In L")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *sil")
+	}
+	field(SIM,DBF_NOACCESS) {
+		prompt("Sensor In M")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *sim")
+	}
+	field(SIN,DBF_NOACCESS) {
+		prompt("Sensor In N")
+		asl(ASL0)
+		special(SPC_DBADDR)
+		interest(1)
+		extra("void *sin")
+	}
+	field(FTSJ,DBF_MENU) {
+		prompt("Sensor In Data Type J")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuFtype)
+	}
+	field(FTSK,DBF_MENU) {
+		prompt("Sensor In Data Type K")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuFtype)
+	}
+	field(FTSL,DBF_MENU) {
+		prompt("Sensor In Data Type L")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuFtype)
+	}
+	field(FTSM,DBF_MENU) {
+		prompt("Sensor In Data Type M")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuFtype)
+	}
+	field(FTSN,DBF_MENU) {
+		prompt("Sensor In Data Type N")
+		promptgroup(GUI_COMMON)
+		pp(TRUE)
+		interest(2)
+		menu(menuFtype)
+	}
+	field(SOR,DBF_OUTLINK) {
+		prompt("Sensor Out R")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(SOS,DBF_OUTLINK) {
+		prompt("Sensor Out S")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(SOT,DBF_OUTLINK) {
+		prompt("Sensor Out T")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(SOU,DBF_OUTLINK) {
+		prompt("Sensor Out U")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+	field(SOV,DBF_OUTLINK) {
+		prompt("Sensor Out V")
+		promptgroup(GUI_COMMON)
+		special(SPC_NOMOD)
+		interest(1)
+	}
+}

@@ -1,0 +1,10 @@
+include "assemblyControlRecord.dbd"
+device(bo,VME_IO,devDeviceBoOmsDao,"DEV OMS POWER")
+device(stringin,INST_IO,devBarcode,"barcodeScanner")
+device(deviceControl,VME_IO,devDeviceControlOMS,"DEV CTL OMS 8/44")
+device(assemblyControl,VME_IO,devAtmdcAssembly,"Atmdc")
+device(assemblyControl,VME_IO,devOiwfsAssembly,"Oiwfs")
+device(assemblyControl,VME_IO,devMaskAssembly,"Mask")
+device(assemblyControl,VME_IO,devFilterAssembly,"Filter")
+device(assemblyControl,VME_IO,devGratingAssembly,"Grating")
+device(assemblyControl,VME_IO,devTranslationAssembly,"Translation")

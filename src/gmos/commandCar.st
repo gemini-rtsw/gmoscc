@@ -1,0 +1,714 @@
+/*
+ ************************************************************************
+ ****      D A O   I N S T R U M E N T A T I O N   G R O U P        *****
+ *
+ * (c) <year>                       (c) <year>
+ * National Research Council        Conseil national de recherches
+ * Ottawa, Canada, K1A 0R6          Ottawa, Canada, K1A 0R6
+ * All rights reserved              Tous droits reserves
+ *                    
+ * NRC disclaims any warranties,    Le CNRC denie toute garantie
+ * expressed, implied, or statu-    enoncee, implicite ou legale,
+ * tory, of any kind with respect   de quelque nature que se soit,
+ * to the software, including       concernant le logiciel, y com-
+ * without limitation any war-      pris sans restriction toute
+ * ranty of merchantability or      garantie de valeur marchande
+ * fitness for a particular pur-    ou de pertinence pour un usage
+ * pose.  NRC shall not be liable   particulier.  Le CNRC ne
+ * in any event for any damages,    pourra en aucun cas etre tenu
+ * whether direct or indirect,      responsable de tout dommage,
+ * special or general, consequen-   direct ou indirect, particul-
+ * tial or incidental, arising      ier ou general, accessoire ou
+ * from the use of the software.    fortuit, resultant de l'utili-
+ *                                  sation du logiciel.
+ *
+ ************************************************************************
+ *
+ * FILENAME
+ *   commandCar.stpp
+ *
+ * PURPOSE:
+ *   This file contains the EPICS state transition language program for
+ *   managing the CAR record associated with the GMOS oiwfs interface
+ *   to the Gemini A&G system. The program monitors the BUSY field of the 
+ *   command CADs and transmits changes of state to the probeC CAR record.
+ *   SNL is used because it ensures the oiwfs, CAD and CAR records are in
+ *   different lock sets.
+ *
+ *   FUNCTION NAME(S)
+ *   ----------------
+ *   command_ss  - Manage top level probeC CAR record.
+ *
+ *   PROGRAM
+ *   --------
+ *   commandCar
+ *
+ *   INVOCATION
+ *   -----------
+ *   Include the following line in the VxWorks startup script:
+ *
+ *   seq &commandCar, "top=gm:cc:, dev=dd"
+ *
+ *   PARAMETERS (all are input)
+ *   --------------------------
+ *      top      string    String to be substituted for the {top} macro
+ *                         used to for the top level name of the prefix
+ *                         EPICS database. The default value is "gm:"
+ *
+ *      dev      string    String to be substituted for the {dev} macro
+ *                         used for the name of the device. The default
+ *                         value is "wfs:"
+ *
+ *   AUTHORS
+ *   -------
+ *   Angelic Ebbers, DAO   (Angelic.Ebbers@hia.nrc.ca)
+ *   Bob Wooff,      DAO   (Robert.Wooff@hia.nrc.ca)
+ *   Steven Beard,   UKATC (smb@roe.ac.uk)
+ *
+ *
+ *INDENT-OFF*
+ *
+ * $Log$
+ * Revision 1.1.1.1  2001/04/13 01:37:34  smb
+ * Initial creation of the Gemini GMOS repository
+ *
+ * Revision 1.8  2000/11/10 19:41:05  gmos
+ * Added transition from "busy" state to "error_rejected" state.
+ *
+ * Revision 1.7  2000/11/07 16:15:03  gmos
+ * Monitor the probe assembly start directive counter and detect whenever a command is rejected for a reason not covered by the checks in the high level CAD records.
+ *
+ * Revision 1.6  2000/11/02 13:46:35  gmos
+ * Added extra event checks to allow BUSY/BUSY-FOLLOWING transitions, which should prevent activeC getting stuck BUSY if a STOP is issued while following.
+ *
+ * Revision 1.5  2000/10/30 09:51:55  gmos
+ * Fixed problem of activeC fluttering BUSY/IDLE by splitting BUSY states into two - with and without following. Added minimum delay of 0.5 seconds to avoid transients.
+ *
+ * Revision 1.4  2000/10/27 08:47:02  gmos
+ * Renamed followS record to followState.
+ *
+ * Revision 1.3  2000/10/16 23:06:19  gmos
+ * Changed names to match new record names.  Added newTrack check.
+ *
+ * Revision 1.2  2000/05/30 16:29:07  gmos
+ * New version commented by William Rambold. Master enable bug fixed.
+ *
+ * Revision 1.1  2000/04/10 09:19:58  gmos
+ * gmtools and gmoscc merged
+ *
+ * Revision 1.1.1.1  2000/02/29 11:42:26  gmos
+ * V1.00 release from HIA
+ *
+ * Revision 1.7  2000/02/18 22:24:46  angelic
+ * opps ... another fix to names
+ *
+ * Revision 1.6  2000/02/18 22:15:58  angelic
+ * fixed names of cad records
+ *
+ * Revision 1.5  2000/02/17 22:31:42  wooff
+ * stopC to StopC
+ *
+ * Revision 1.4  2000/02/17 20:16:21  dunn
+ * Changed MoveCar, StopCar, FollowCar, ToleranceCar to
+ * MoveC, StopC, FollowC, ToleranceC
+ *
+ * Revision 1.3  2000/02/16 20:34:08  dunn
+ * Changed name of oiwfs car
+ *
+ * Revision 1.2  2000/02/15 23:08:43  angelic
+ * changed record names to match ICD
+ *
+ * Revision 1.1  2000/01/28 23:26:37  dunn
+ * Initial revision
+ *
+ *INDENT-ON* 
+ *
+ ****      D A O   I N S T R U M E N T A T I O N   G R O U P        *****
+ ************************************************************************
+ */
+
+program commandCar ("top=gm:, dev=wfs:")
+
+/*
+ * The following option is needed to make the code reentrant.
+ * This allows a separate copy of this sequence program to be
+ * loaded for each oiwfs.
+ */
+
+option +r;
+
+%%#include <stdlib.h>
+%%#include <stdioLib.h>
+%%#include <string.h>
+%%#include <ctype.h>
+%%#include <logLib.h>
+
+%%#include <cad.h>
+%%#include <carRecord.h>
+%%#include <menuCarstates.h>
+
+
+%%#include <recAssControl.h>
+
+/* #define VERBOSE */    /* Enable this line for debugging */
+
+
+/*
+ * The following declarations assign variables to fields in the EPICS database.
+ */
+
+
+/**** Probe Assembly ****/
+
+long probeAssAck;           /* Acknowledgement from the oiwfs probe assembly record */
+assign probeAssAck to "{top}{dev}probeAssembly.VAL";
+monitor probeAssAck;
+
+string probeAssMess;         /* Message from the oiwfs probe assembly record */
+assign probeAssMess to "{top}{dev}probeAssembly.MESS";
+
+long probeCount;             /* Probe assembly start directive counter */
+assign probeCount to "{top}{dev}probeCounter.VAL";
+monitor probeCount;
+
+evflag probeCountFlag;       /* Event flag triggered by changes to probeAssCount */
+sync probeCount probeCountFlag;
+
+
+/**** Probe CAR ****/
+
+long probeCarBusy;           /* BUSY out from the oiwfs probe car record */
+assign probeCarBusy to "{top}{dev}probeC.VAL";
+monitor probeCarBusy;
+
+string probeCarMess;         /* Message out from the oiwfs car record */
+assign probeCarMess to "{top}{dev}probeC.OMSS";
+
+
+/**** tolerance CAR ****/
+
+long toleranceCBusy;         /* BUSY output from the tolerance car record */
+assign toleranceCBusy to "{top}{dev}toleranceC.VAL";
+monitor toleranceCBusy;
+
+
+/**** debug CAR ****/
+
+long debugCBusy;             /* BUSY output from the debug car record */
+assign debugCBusy to "{top}{dev}debugC.VAL";
+monitor debugCBusy;
+
+
+/**** follow CAR ****/
+
+long followCBusy;            /* BUSY output from the follow car record */
+assign followCBusy to "{top}{dev}followC.VAL";
+monitor followCBusy;
+
+
+/**** CommandResponse CAR ****/
+
+long carIval;                /* State input to the CAR record */
+assign carIval to "{top}{dev}activeC.IVAL";
+
+long carIerr;                /* Error status input to the CAR record */
+assign carIerr to "{top}{dev}activeC.IERR";
+
+string carImss;              /* Message input to the CAR record */
+assign carImss to "{top}{dev}activeC.IMSS";
+
+long carBusy;                /* BUSY output from the CAR record */
+assign carBusy to "{top}{dev}activeC.VAL";
+monitor carBusy;
+
+string carName;              /* Name of CAR record */
+assign carName to "{top}{dev}activeC.NAME";
+
+
+/**** Follow State ****/
+
+long followState;            /* Follow state */
+assign followState to "{top}{dev}followA.H";
+monitor followState;
+
+
+/**** newTrack State ****/
+
+long newTrackState;             /* new TrackID state */
+assign newTrackState to "{top}{dev}followA.VALC";
+monitor newTrackState;
+
+
+
+/* ===================================================================== */
+
+ss command_ss
+{
+
+/*+
+ *   Function name:
+ *   State set "command_ss"
+ *
+ *   Purpose:
+ *   Manage CAR record associated with an OIWFS top-level interface
+ *
+ *   Invocation:
+ *   Invoked automatically when sequence program "commandCar" starts.
+ *
+ *   Parameters: (">" input, "!" modified, "<" output)
+ *   None
+ *
+ *   Return value:
+ *   N/A
+ *
+ *   External functions:
+ *   EPICS sequencer functions used are
+ *   pvGet      - Get a process variable
+ *   pvPut      - Put a process variable
+ *
+ *   External variables:
+ *   See definitions above
+ *
+ *   Requirements:
+ *   Same as requirements for program "commandCar"
+ *
+ *   Limitations:
+ *   Same as limitations for program "commandCar"
+ *
+ *-
+ */
+
+/* --------------------------------------------------------------------- */
+
+    /*
+     * state init - This is the state the command_ss state set begins in
+     *              when it first starts running.
+     */
+
+    state init
+    {
+
+        /* Wait until all the appropriate connections have been made. */
+
+        when ( pvConnectCount( ) == pvChannelCount( ) )
+        {
+            pvGet( carName );
+
+            logMsg( "SNL for %s connected.\n", carName, 0, 0, 0, 0, 0 );
+
+            /* Initialise the probe start counter flag. */
+
+            efClear( probeCountFlag );
+
+            /* Jump to the "idle" state. */
+
+#ifdef VERBOSE
+            logMsg( "INIT to IDLE\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        }  state idle
+    }
+
+/* --------------------------------------------------------------------- */
+
+    /*
+     * state idle - Remain in this state until a commandCar record or the
+     *              probe CAR goes BUSY.
+     *              When this happens set the CAR record to busy and jump to
+     *              the BUSY state.
+     */
+
+    state idle
+    {
+
+        when ( ( probeCarBusy == menuCarstatesBUSY && followState != 2 ) ||
+               ( toleranceCBusy == menuCarstatesBUSY )                   ||
+               ( debugCBusy == menuCarstatesBUSY )                          )
+        {
+            carIval = menuCarstatesBUSY;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "IDLE to BUSY\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state busy
+
+        when ( ( followState == 2 && newTrackState == 1 )       ||
+               ( followCBusy == menuCarstatesBUSY )                         )
+        {
+            carIval = menuCarstatesBUSY;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "IDLE to BUSY_FOLLOWING\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state busy_following
+
+        /*
+         * Detect when the assembly has rejected a new command for a reason that isn't
+         * trapped by the top level CAD records.
+         */
+
+        when ( (efTest( probeCountFlag )) && (probeAssAck != DAR_ACK_VAL_ACCEPT)  )
+        {
+            efClear( probeCountFlag );
+
+            carIval = menuCarstatesBUSY;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "IDLE to BUSY_REJECTED\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state busy_rejected
+    }
+
+
+/* --------------------------------------------------------------------- */
+
+    /*
+     * state busy - Remain in this state until all the car records are IDLE,
+     *              the probe CAR goes to ERR or the assembly rejects a command.
+     */
+
+    state busy
+    {
+
+        /*
+         * When a command car record goes IDLE reflect that fact in the CAR 
+         * record and jump to the IDLE state. A minimum delay of 0.5 seconds
+         * guards against transitory states.
+         */
+
+        when ( probeCarBusy == menuCarstatesIDLE   &&
+               toleranceCBusy == menuCarstatesIDLE &&
+               debugCBusy == menuCarstatesIDLE     &&
+               delay(0.5)                     )
+        {
+            carIval = menuCarstatesIDLE;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "BUSY to IDLE\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state idle
+
+        /*
+         * If something happens to change the following mode but keep the probe BUSY,
+         * such as the receipt of a FOLLOW command, switch to the following BUSY state.
+         */
+
+        when ( ( followState == 2 && newTrackState == 1 )       ||
+               ( followCBusy == menuCarstatesBUSY )                         )
+        {
+            carIval = menuCarstatesBUSY;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "BUSY to BUSY_FOLLOWING\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state busy_following
+
+        /*
+         * When an error occurs transfer the error information to the CAR record
+         * and jump to the ERROR state (this assumes that only probeCarBusy
+         * can get to the ERROR state - none of the other CARs).
+         */
+
+        when ( probeCarBusy == menuCarstatesERROR  )
+        {
+            pvGet( probeCarMess );
+            strcpy( carImss, probeCarMess );
+            pvPut( carImss );
+
+            carIerr = -1;
+            pvPut( carIerr );
+
+            carIval = menuCarstatesERROR;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "BUSY to ERROR\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state error
+
+        /*
+         * A transition from BUSY to ERROR_REJECTED is not needed because, in
+         * the case of issuing a MOVE while MOVING, the assembly record itself
+         * goes into an ERR state if the command is rejected.
+         */
+
+        /*
+         * Detect when the assembly has rejected a new command while BUSY
+         * for a reason that wasn't initially trapped by the top level CAD records.
+         */
+
+        when ( (efTest( probeCountFlag )) && (probeAssAck != DAR_ACK_VAL_ACCEPT)  )
+        {
+            efClear( probeCountFlag );
+
+            pvGet( probeAssMess );
+            strcpy( carImss, probeAssMess );
+            pvPut( carImss );
+
+            carIerr = -1;
+            pvPut( carIerr );
+
+            carIval = menuCarstatesERROR;
+
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "BUSY to ERROR_REJECTED\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state error_rejected
+
+    }
+
+/* --------------------------------------------------------------------- */
+
+    /*
+     * state busy_following - Remain in this state until the probe has reached
+     *                        its first position.
+     */
+
+    state busy_following
+    {
+
+        /*
+         * When the following has started  and the probe has reaches its first
+         * position jump to the IDLE state. A minimum delay of 0.5 seconds
+         * guards against transitory states.
+         */
+
+        when ( probeCarBusy == menuCarstatesIDLE   &&
+               followCBusy == menuCarstatesIDLE    &&
+               debugCBusy == menuCarstatesIDLE     && 
+               newTrackState == 0         &&
+               delay(0.5)                    )
+        {
+            carIval = menuCarstatesIDLE;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "BUSY_FOLLOWING to IDLE - 1\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state idle
+
+        /*
+         * If something happens to change the following mode and make the probe IDLE,
+         * such as the receipt of a STOP command, switch to the IDLE state.
+         */
+
+        when ( followState != 2 &&
+               probeCarBusy == menuCarstatesIDLE )
+        {
+            carIval = menuCarstatesIDLE;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "BUSY_FOLLOWING to IDLE - 2\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state idle
+
+
+        /*
+         * If something happens to change the following mode but keep the probe BUSY,
+         * such as the receipt of a MOVE command, switch to the non-following BUSY state.
+         */
+
+        when ( followState != 2 &&
+               probeCarBusy == menuCarstatesBUSY )
+        {
+            carIval = menuCarstatesBUSY;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "BUSY_FOLLOWING to BUSY\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state busy
+
+        /*
+         * When an error occurs transfer the error information to the CAR record
+         * and jump to the ERROR state (this assumes that only probeCarBusy
+         * can get to the ERROR state - none of the other CARs).
+         */
+
+        when ( probeCarBusy == menuCarstatesERROR )
+        {
+            pvGet( probeCarMess );
+            strcpy( carImss, probeCarMess );
+            pvPut( carImss );
+
+            carIerr = -1;
+            pvPut( carIerr );
+
+            carIval = menuCarstatesERROR;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "BUSY_FOLLOWING to ERROR\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state error
+
+        /*
+         * Detect when the assembly has rejected a new command while following
+         * for a reason that wasn't initially trapped by the top level CAD records.
+         */
+
+        when ( (efTest( probeCountFlag )) && (probeAssAck != DAR_ACK_VAL_ACCEPT)  )
+        {
+            efClear( probeCountFlag );
+
+            pvGet( probeAssMess );
+            strcpy( carImss, probeAssMess );
+            pvPut( carImss );
+
+            carIerr = -1;
+            pvPut( carIerr );
+
+            carIval = menuCarstatesERROR;
+
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "BUSY_FOLLOWING to ERROR_REJECTED\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state error_rejected
+    }
+
+/* --------------------------------------------------------------------- */
+
+    /*
+     * state error - Remain in this state until the probe CAR goes back 
+     * to IDLE or till a busy transition occurs.
+     */ 
+
+    state error
+    {
+        /*
+         * When the probe CAR goes IDLE clear the CAR record
+         * and jump to the IDLE state.
+         */
+
+        when ( probeCarBusy == menuCarstatesIDLE )
+        {
+
+            carIerr = 0;
+            pvPut( carIerr );
+
+            carIval = menuCarstatesIDLE;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "ERROR to IDLE\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state idle
+
+        /*
+         * When a command car record goes BUSY clear the CAR record
+         * and jump to the appropriate BUSY state.
+         */
+
+        when ( ( ( probeCarBusy == menuCarstatesBUSY && followState != 2 ) ||
+                 ( toleranceCBusy == menuCarstatesBUSY )                   ||
+                 ( debugCBusy == menuCarstatesBUSY )                          ) &&
+               ( probeCarBusy != menuCarstatesERROR                      )    )
+        {
+            carIerr = 0;
+            pvPut( carIerr );
+
+            carIval = menuCarstatesBUSY;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "ERROR to BUSY\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state busy
+
+        when ( ( ( followState == 2 && newTrackState == 1 )  ||
+                 ( followCBusy == menuCarstatesBUSY )                    ) &&
+               ( probeCarBusy != menuCarstatesERROR                      )    )
+        {
+            carIerr = 0;
+            pvPut( carIerr );
+
+            carIval = menuCarstatesBUSY;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "ERROR to BUSY_FOLLOWING\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state busy_following
+    }
+
+/* --------------------------------------------------------------------- */
+
+    /*
+     * state busy_rejected - wait a short time then jump to error_rejected.
+     */ 
+
+    state busy_rejected
+    {
+        /*
+         * Wait a short time then set the CAR record to ERROR and jump to error_rejected.
+         */
+
+        when ( delay(0.2)  )
+        {
+            pvGet( probeAssMess );
+            strcpy( carImss, probeAssMess );
+            pvPut( carImss );
+
+            carIerr = -1;
+            pvPut( carIerr );
+
+            carIval = menuCarstatesERROR;
+            pvPut( carIval );
+
+#ifdef VERBOSE
+            logMsg( "BUSY_REJECTED to ERROR_REJECTED\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state error_rejected
+    }
+
+/* --------------------------------------------------------------------- */
+
+    /*
+     * state error_rejected - Remain in this state until a new START directive
+     * is accepted by the probe assembly.
+     */ 
+
+    state error_rejected
+    {
+        /*
+         * Detect when the assembly has accepted a command and jump to the normal
+         * error state, which will then jump to the appropriate busy state.
+         */
+
+        when ( (efTest( probeCountFlag )) && (probeAssAck == DAR_ACK_VAL_ACCEPT)  )
+        {
+            efClear( probeCountFlag );
+
+#ifdef VERBOSE
+            logMsg( "ERROR_REJECTED to ERROR\n", 0, 0, 0, 0, 0, 0);
+#endif
+
+        } state error
+    }
+}
