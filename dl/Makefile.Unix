@@ -9,7 +9,7 @@ SCRIPTS = gmosCcStartMKRR gmosCcStartMKRS gmosCcStartMKSR gmosCcStartMKSS \
           gmosStartMKRR gmosStartMKSS gmosStartMKSS2 gmosStartCP \
 	  gmosStart gmosStartMK gmosAlarm gmosCcAlarm gmosDcAlarm \
 	  gmosXterm gmosIocConsole gmosIocAnnex sim2 gmoscc gmosdc \
-	  gmosannex gmosLog gmosSetResetAliases
+	  gmosannex gmosLog gmosSetResetAliases gmosHelp gmosTest
 
 # List of display (*.dl) files
 DATA    = ../gmos_logo.gif ../colors.dl ../gmColors.dl $(wildcard ../*.dl) \
