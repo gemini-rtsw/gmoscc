@@ -27,7 +27,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *    gmSeqConfigEnd  -          Implements the end of configuration apply handling.
  *    gmSeqCadTrivial   -        Routine for trivial GMOS sequence CAD record
  *    gmSeqCadObserve -          Implements the CAD for the 'observe' sequence command
- *    gmSeqCadStopObserve  -     For sequence CADs: pause/stop an observation
+ *    gmSeqCadStopObserve  -     For sequence CADs: pause/stop/abort an observation
  *    gmSeqCadEndObserve  -      For GMOS sequence CAD endObserve
  *    gmSeqCadContinue  -        For GMOS sequence CAD continue
  *    gmSeqCadMask -             Implements the mskPos CAD command 
@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.1.1.1  2001/04/13 01:37:34  smb
+ * Initial creation of the Gemini GMOS repository
+ *
  * Revision 1.50  2001/03/01 14:09:19  gmos
  * Fixed mistake in gmSeqCadDebug where pcad->b was being treated as a long rather than string. Use (char *) explicitly for CAD string fields.
  *
@@ -2033,8 +2036,11 @@ long gmSeqCadStopObserve (struct cadRecord *pcad)
     long status;           /* Return status */
     long dcDisabled;
 
+    status = CAD_ACCEPT;
+
     switch (pcad->dir)
     {
+
        case CAD_PRESET:
 
 /*      Reject the command if the detector controller is disabled */
@@ -2054,6 +2060,10 @@ long gmSeqCadStopObserve (struct cadRecord *pcad)
              gmSeqSetCADTest( 0 );
              status = CAD_ACCEPT;
           }
+
+       default:
+          /* Accept all other directives */
+          status = CAD_ACCEPT;
     }
     return (status);
 }
@@ -2088,6 +2098,8 @@ long gmSeqCadContinue (struct cadRecord *pcad)
     long status;           /* Return status */
     long dcDisabled;
 
+    status = CAD_ACCEPT;
+
     switch (pcad->dir)
     {
        case CAD_PRESET:
@@ -2109,6 +2121,10 @@ long gmSeqCadContinue (struct cadRecord *pcad)
              gmSeqSetCADTest(CONFIGURING);
              status = CAD_ACCEPT;
           }
+
+       default:
+          /* Accept all other directives */
+          status = CAD_ACCEPT;
     }
     
     return (status);
