@@ -136,6 +136,7 @@
 #include    <sysLib.h>
 
 #include    <vxWorks.h>
+#include    <vxLib.h>
 #include    <vme.h>
 #include    <logLib.h> 
 #include    <msgQLib.h>
@@ -194,7 +195,7 @@
  */
 
 #define DRV_OMS_VME_MAX_REPLY_TIME          4       /* read timeout..       */
-#define DRV_OMS_VME_MAX_REQUESTS            4       /* max synch attempts   */
+#define DRV_OMS_VME_MAX_REQUESTS            5       /* max synch attempts   */
 #define DRV_OMS_VME_MAX_MESSAGES            16      /* size of message queue*/
 #define DRV_OMS_VME_MAX_CARDS               8       /* max cards in a system*/
 #define DRV_OMS_VME_CTL_X                   0x18    /* define control-X     */

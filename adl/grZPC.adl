@@ -1,17 +1,17 @@
 file {
-	name="grZPC.dl"
+	name="grZPC.adl"
 }
 display {
 	magic="305419896"
 	majv="2"
 	mnrv="4"
 	ndyng="1"
-	npc="9"
-	nstr="69"
-	ndynamic="5"
+	npc="7"
+	nstr="77"
+	ndynamic="4"
 	nplot="0"
 	nrd="0"
-	nes="0"
+	nes="1"
 	nkd="1"
 	npd="0"
 	npo="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="1236"
+	nwords_dspy="1412"
 	nwords_sta="104"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="832"
-	osta="728"
-	odynamic="888"
-	oplot="1224"
-	ord="1224"
-	oes="1224"
-	okd="1224"
-	opd="1236"
-	opo="1236"
+	odyng="922"
+	osta="818"
+	odynamic="978"
+	oplot="1242"
+	ord="1242"
+	oes="1242"
+	okd="1400"
+	opd="1412"
+	opo="1412"
 	opc="68"
-	ostr="188"
-	ocmap="728"
-	ocrules="728"
+	ostr="158"
+	ocmap="818"
+	ocrules="818"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -187,7 +187,7 @@ display {
 		param {
 			rulecolorfg="1"
 			rulecolorbg="1"
-			chan="$(T)cc:grAssembly.MARK"
+			chan="gm:grSelect.MARK"
 			rulechan[0] = ""
 			rulechan[1] = ""
 			rulechan[2] = ""
@@ -398,53 +398,138 @@ display {
 	}
 	format="decimal"
 }
-"message button" {
+"execute script" {
 	object {
-		x="187"
+		x="44"
 		y="234"
-		width="99"
+		width="103"
 		height="33"
 		groupid="0"
 	}
-	control {
-		chan="$(T)apply.DIR"
-		clr="1"
-		bclr="6"
-		label="none"
-		clrmod="static"
-		rulechan[0] = ""
-		rulechan[1] = ""
-		rulechan[2] = ""
-		rulechan[3] = ""
-		rulechan[4] = ""
-		rulechan[5] = ""
-		rulechan[6] = ""
-		rulechan[7] = ""
-		rulechan[8] = ""
-		rulechan[9] = ""
-		rulechan[10] = ""
-		rulechan[11] = ""
-		rulechan[12] = ""
-		rulechan[13] = ""
-		rulechan[14] = ""
-		rulechan[15] = ""
-		clrrule="alarm"
-		clrargs=""
-		rulecolorbg="1"
-		rulecolorfg="1"
-		hdl="0"
-		ldl="0"
-		prec="-1"
-		newunits=""
-		units="none"
-		decorate="outward"
-		convertFunc=""
-		convertParams=""
+	script[0] {
+		label="APPLY"
+		path="gmSeqApplyZPC $(T)"
+		args=""
 	}
-	inactive_label="APPLY"
-	pressed_label="APPLY"
-	press_msg="START"
-	release_msg=""
+	script[1] {
+		label=""
+		path=""
+		args=""
+	}
+	script[2] {
+		label=""
+		path=""
+		args=""
+	}
+	script[3] {
+		label=""
+		path=""
+		args=""
+	}
+	script[4] {
+		label=""
+		path=""
+		args=""
+	}
+	script[5] {
+		label=""
+		path=""
+		args=""
+	}
+	script[6] {
+		label=""
+		path=""
+		args=""
+	}
+	script[7] {
+		label=""
+		path=""
+		args=""
+	}
+	script[8] {
+		label=""
+		path=""
+		args=""
+	}
+	script[9] {
+		label=""
+		path=""
+		args=""
+	}
+	script[10] {
+		label=""
+		path=""
+		args=""
+	}
+	script[11] {
+		label=""
+		path=""
+		args=""
+	}
+	script[12] {
+		label=""
+		path=""
+		args=""
+	}
+	script[13] {
+		label=""
+		path=""
+		args=""
+	}
+	script[14] {
+		label=""
+		path=""
+		args=""
+	}
+	script[15] {
+		label=""
+		path=""
+		args=""
+	}
+	script[16] {
+		label=""
+		path=""
+		args=""
+	}
+	script[17] {
+		label=""
+		path=""
+		args=""
+	}
+	script[18] {
+		label=""
+		path=""
+		args=""
+	}
+	script[19] {
+		label=""
+		path=""
+		args=""
+	}
+	script[20] {
+		label=""
+		path=""
+		args=""
+	}
+	script[21] {
+		label=""
+		path=""
+		args=""
+	}
+	script[22] {
+		label=""
+		path=""
+		args=""
+	}
+	script[23] {
+		label=""
+		path=""
+		args=""
+	}
+	clr="1"
+	bclr="13"
+	menu_title=""
+	decorate="none"
 }
 "kill display" {
 	object {

@@ -65,6 +65,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.3  2003/11/18 18:53:55  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.2  2003/05/27 21:16:51  gemvx
  * Version 4-1
  *
@@ -4011,9 +4014,6 @@ static long mkDoTask
                  *  If the write fails set status to abort the command.
                  */
 
-                /*if ( recGblPutLinkValue (&(MK_BARCODE_TRIGGER), 
-                    (void *) par, DBR_LONG, &nRequest, &nRequest) != 
-                    DAR_S_SUCCESS )*/
                   if (
                      (dbPutLink(&(MK_BARCODE_TRIGGER), DBR_LONG,&nRequest,nRequest))
                     !=DAR_S_SUCCESS

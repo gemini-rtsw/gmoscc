@@ -1,0 +1,52 @@
+#! /bin/csh -f
+#
+# gmSeqCcCommand
+#
+# Description:
+#   Execute a command by marking its CAD records and sending
+#   a START directive to the apply record. This is a useful
+#   script to execute from a "dm" screen to allow a command
+#   to be invoked by a single button.
+#
+#   Disable the xxxxdcCadMark first, thus forwarding command
+#   only to the components controller.
+#
+# Invocation:
+#   gmSeqCcCommand cad <a b c d e f>
+#
+
+#
+# Remove unwanted output from caput
+#
+alias caput "caput -ts"
+#
+if ($1 == "") then
+  echo "Usage : gmSeqCcCommand cadname <p1 p2 p3 p4 p5 p6>"
+  echo "Where cadname includes prefix:"
+  exit 1
+endif
+
+#
+# Extract the EPICS prefix from the CAD name, assuming it is delimited by a colon.
+#
+set EPICS_PREFIX = `echo $1 | cut -d\: -f1`:
+set CAD          = `echo $1 | cut -d\: -f2`
+if ($EPICS_PREFIX == ":") then
+  exit 1
+endif
+
+#
+# Mark the CAD record and set any attributes that may have been specified.
+# Use the "set response" trick to throw away output from caput.
+#
+set response = `caput gm:cc:grAssembly.MODE INIT`
+set response = `caput gm:cc:grAssembly.DIR MARK`
+set response = `caput gm:cc:grAssembly.DIR START`
+
+sleep 1 
+
+set response = `caput gm:cc:grAssembly.MODE MOVE`
+set response = `caput gm:cc:grAssembly.DIR MARK`
+set response = `caput gm:cc:grAssembly.DIR START`
+
+exit 0 

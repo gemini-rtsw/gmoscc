@@ -79,7 +79,7 @@ endif
 
 
 echo "Setting up UAE environment with dependencies on `echo ${ext_comment}` libraries"
-applSetup.pl -install . -s Makefile.Dirs `echo ${ext_depends}` -T mv167 -I alh -I ascii -I capfast -I dl -I pv -I src -I startup -I sys -X db -X ar
+applSetup.pl -install . -s Makefile.Dirs `echo ${ext_depends}` -T ppc604_long -I alh -I ascii -I capfast -I dl -I pv -I src -I startup -I sys -X db -X ar
 
 # There is a bug in applSetup which means that occasionally some vital files in the config
 # directory are not created, and the script has to be repeated. Detect this failure.

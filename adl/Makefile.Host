@@ -3,7 +3,7 @@ include $(APPLIC_TOP)/config/CONFIG
 
 SCRIPTS = gmosCcStartMKRR gmosCcStartMKRS gmosCcStartMKSR gmosCcStartMKSS \
 	  gmosCcStartCP gmEditFile gmEditFileField gmCcDoCommand \
-	  gmSeqStart gmSeqStartMKRR gmSeqDoCommand gmSeqCcCommand \
+	  gmSeqStart gmSeqStartMKRR gmSeqDoCommand gmSeqCcCommand gmSeqApplyZPC \
           gmosMK_dm.sh gmosStartMKSS gmosStartMKSS2 gmosCP_dm.sh \
 	  gmosStart gmosStartMK gmosAlarm gmosCcAlarm gmosDcAlarm \
 	  gmosXterm gmosIocConsole gmosIocAnnex sim2 gmoscc gmosdc \

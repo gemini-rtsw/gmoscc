@@ -49,6 +49,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.4  2002/04/24 05:14:05  ajf
+ * Changes for 3.13.4GEM8.4.
+ *
  * Revision 1.2  2002/01/15 21:06:06  mbec
  * *** empty log message ***
  *
@@ -169,7 +172,7 @@
 #define DEVICE_LENGTH   10      /* Maximum device string length.       */
 #define MESSAGE_LENGTH  5       /* Size of string for message queue.   */
 #define READ_TIMEOUT    1       /* Number of seconds before giving up. */
-#define MAX_RESCANS     1       /* Maximum number of scan attempts.    */
+#define MAX_RESCANS     3       /* Maximum number of scan attempts.    */
 
 #define BAR_SIM_BASE	50000000 /* Base number for simulated barcode.  */
 
@@ -1175,9 +1178,11 @@ static void monitor_port ()
                     else if (strcmp(rpy_string, "NR") == 0)
                     {
                         strncpy (pbar[chan].barcode, rpy_string, BARCODE_LENGTH-1);
-                        DEBUGBAR(BAR_DBUG_MIN,
+                        DEBUGBAR(BAR_DBUG_NONE,
                                  "Barcode d:%s c:%ld Bad barcode.\n",chan);
-                        break;
+                        /* removing break to trigger rescan if barcode
+                        appears to be bad */
+                        /*break;*/
                     }
 
                     else

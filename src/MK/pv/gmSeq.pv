@@ -19,7 +19,7 @@ string $(top)debug.DIR     = "CLEAR" ;
 # Initialise the default grating selection parameters.
 #
 string $(top)grSelect.A = "WLEN" ;
-string $(top)grSelect.D = "1" ;
+string $(top)grSelect.D = "0" ;
 string $(top)grSelect.DIR = "CLEAR" ;
 
 #

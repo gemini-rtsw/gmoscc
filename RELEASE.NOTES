@@ -1,3 +1,10 @@
+V6-2 Dec 2004 tpaz
+------------------
+-Additional modifications to oms driver
+-ZPC is now loaded into the lut structure in memory
+-Additional repetions of barcode reading in case of failure
+added to the barcode driver
+
 V6-1 Nov 2004 tpaz
 ------------------
 Modifications to Oms driver to deal with

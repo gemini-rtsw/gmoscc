@@ -1,10 +1,7 @@
-# Makefile,v 1.2 1995/09/02 01:45:05 epics Exp
-#
-
 include .applTop
 -include $(APPLIC_TOP)/config/CONFIG
 
-APPLIC_DIR_TYPE = all
+APPLIC_DIR_TYPE = startup
 
 -include $(APPLIC_TOP)/config/RULES.Dirs
 
