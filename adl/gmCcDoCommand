@@ -93,11 +93,11 @@ set response = `caput ${EPICS_PREFIX}apply.DIR START`
 sleep 1
 set v = `caget -n ${EPICS_PREFIX}apply.VAL`; shift v
 if ($v < 0) then
-  #echo "Command ${EPICS_PREFIX}${CAD} rejected"
-  #caget ${EPICS_PREFIX}apply.MESS
+  echo "Command ${EPICS_PREFIX}${CAD} rejected"
+  caget ${EPICS_PREFIX}apply.MESS
   set v = 1
 else 
-  #echo "Command ${EPICS_PREFIX}${CAD} accepted"
+  echo "Command ${EPICS_PREFIX}${CAD} accepted"
   set v = 0
 endif
 exit $v

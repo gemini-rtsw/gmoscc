@@ -155,7 +155,7 @@ OUTPUT *.MRND*
 
 DESC "Get the indexing algorithm number - should be 2 for translation stage Y axis"
 GETVAL devIndexType
-OUTPUT *.IALG* 2*
+OUTPUT *.IALG* UPPHOME*
 
 DESC "Using Power status? Should be YES for translation stage"
 GETVAL devUsePwrStatus

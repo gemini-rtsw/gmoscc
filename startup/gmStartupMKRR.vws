@@ -98,17 +98,28 @@ dbpf "gm:sad:cc:historyLog","Booting..."
 dbpf "gm:sad:name.VAL","GMOS-N (V3-0)"
 dbpf "gm:sad:cc:name.VAL","GMOS-N (V3-0)"
 
+taskDelay(60)
+
 # Load initialization files
 pvload "$(iocpath)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"
-pvload "$(iocpath)/data/gmOiwfs.pv","top=gm:wfs:"
-pvload "$(iocpath)/data/gmMask.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmFilter.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmGrating.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmTranslation.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmTempCalibrate.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmSeq.pv","top=gm:, sadtop=gm:sad:"
-pvload "$(iocpath)/data/gmSeqTracking.pv","top=gm:, sadtop=gm:sad:"
+taskDelay(60)
 
+pvload "$(iocpath)/data/gmOiwfs.pv","top=gm:wfs:"
+taskDelay(60)
+pvload "$(iocpath)/data/gmMask.pv","top=gm:cc:"
+taskDelay(60)
+pvload "$(iocpath)/data/gmFilter.pv","top=gm:cc:"
+taskDelay(60)
+pvload "$(iocpath)/data/gmGrating.pv","top=gm:cc:"
+taskDelay(60)
+pvload "$(iocpath)/data/gmTranslation.pv","top=gm:cc:"
+taskDelay(60)
+pvload "$(iocpath)/data/gmTempCalibrate.pv","top=gm:cc:"
+taskDelay(60)
+pvload "$(iocpath)/data/gmSeq.pv","top=gm:, sadtop=gm:sad:"
+taskDelay(60)
+pvload "$(iocpath)/data/gmSeqTracking.pv","top=gm:, sadtop=gm:sad:"
+taskDelay(60)
 # Start sequences
 seq &timeSeq, "sys=gm:cc:"
 

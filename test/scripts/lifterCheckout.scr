@@ -21,6 +21,7 @@ VAR   lifterDevice    lifterAck                  lifterAck            1
 VAR   lifterDevice    lifterInterlock            lifterInterlock      1
 VAR   lifterDevice    lifterState                lifterState          1
 VAR   lifterDevice    lifterMess                 lifterMess           1
+VAR   lifterDevice    lifterIlockDisable         lifterIlockDisable   1
 
 VAR   gratingStatus   gratingInPosition          grInpos              1
 VAR   gratingStatus   gratingLifterUp            lifterUp             1
@@ -79,6 +80,7 @@ VAR   gratingTurretDevice    devLimited          turretDevLimited           1
 # check starting point. The air pressure should be ok and the lifter should be down....
 #
 #
+
 
 TEST "Verify status fields"
 FATAL
@@ -344,7 +346,10 @@ ENDTEST
 TEST "Test grating lifter will not operate during an interlock"
 FATAL
 
-DESC "Setting interlock"
+DESC "Disabling fanout and Setting interlock"
+
+PUTVAL lifterIlockDisable "1"
+OUTPUT *
 
 PUTVAL lifterInterlock "1"
 OUTPUT *D* 1*
@@ -932,6 +937,27 @@ OUTPUT *VAL* OFF*
 
 ENDTEST
 
+
+#
+#   Fanout is reenabled when the
+#   interlock is restored:
+TEST "Test grating lifter will not carry on when interlock removed"
+FATAL
+
+DESC "Resetting interlock and restoring fanout"
+
+PUTVAL lifterInterlock "0"
+OUTPUT *D* 0*
+
+PUTVAL lifterIlockDisable "0"
+OUTPUT *
+
+DESC "Process the lifter genSub"
+
+PUTVAL lifterProcess "1"
+OUTPUT *
+
+ENDTEST
 #
 #  Grating Lifter functions are OK
 #

@@ -161,7 +161,7 @@ OUTPUT *.MRND*
 
 DESC "Get the indexing algorithm number - should be 3 for filter wheels"
 GETVAL devIndexType
-OUTPUT *.IALG* 3*
+OUTPUT *.IALG*CENHOME*
 
 DESC "Using Power status? Should be YES for filter wheels"
 GETVAL devUsePwrStatus

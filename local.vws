@@ -21,7 +21,7 @@ nfsAuthUnixSet "pisces", 2966, 10, 0
 
 nfsMount "pisces", "/export/gemini", "/gemini"
 nfsMount "manta", "/export/astro",  "/usr/astro"
-nfsMount "polaris","/export/software","/export/software"
+nfsMount "polaris","/export/software","/usr/software"
 
 # The following line needs to be executed after the "/gemini"
 # directory has been mounted.

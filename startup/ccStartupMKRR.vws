@@ -24,12 +24,6 @@ pwd
 
 # Load EPICS core and record stuff
 ld < $(base)/bin/$(arch)/iocCore
-ld < $(base)/bin/$(arch)/drvSup
-ld < $(base)/bin/$(arch)/recSup
-ld < $(iocpath)/bin/$(arch)/recApply.o
-ld < $(base)/bin/$(arch)/devSup
-ld < $(iocpath)/bin/$(arch)/devApplyLocal.o
-ld < $(iocpath)/bin/$(arch)/devApplyRemote.o
 
 # Add this for pvload
 ld < $(base)/../extensions/bin/$(arch)/pvload
@@ -41,10 +35,13 @@ ld < $(base)/bin/$(arch)/seq
 # or code for subroutine records. It is assumed that Gemini
 # libraries are available in the standard /gemini directory).
 
-ld < /gemini/slalib/bin/$(arch)/slalib
-ld < /gemini/timelib/bin/$(arch)/timelib
+ld < $(iocpath)/bin/$(arch)/gemini.Support
+ld < $(iocpath)/bin/$(arch)/libDeviceRecord
 
-ld < $(iocpath)/bin/$(arch)/drvOmsVme.o
+ld < /gemini/epics3.13.4/slalib/slalib/bin/$(arch)/slalib
+ld < /gemini/epics3.13.4/timelib/timelib/bin/$(arch)/timelib
+ld < /gemini/epics3.13.4/astlib/astlib/bin/$(arch)/astlib
+
 ld < $(iocpath)/bin/$(arch)/devDeviceControl.o
 ld < $(iocpath)/bin/$(arch)/devBarcode.o
 ld < $(iocpath)/bin/$(arch)/recAssControl.o
@@ -68,7 +65,7 @@ ld < $(iocpath)/bin/$(arch)/devTranslationAss.o
 ld < $(iocpath)/bin/$(arch)/gmosCcCadLib.o
 
 # Load sequences here
-ld < /gemini/timelib/bin/mv167/timeSeq
+ld < /gemini/epics3.13.4/timelib/timelib/bin/mv167/timeSeq
 
 ld < $(iocpath)/bin/$(arch)/assemblyCar.o
 ld < $(iocpath)/bin/$(arch)/systemCar.o
@@ -82,7 +79,7 @@ timeClockInit 0, 1, 60, 1, 0
 TSconfigure 1, 0, 0, 0, 0, 0
 
 # Load one or more ASCII databases here
-dbLoad "$(iocpath)/data/default.dctsdr"
+dbLoadDatabase "$(iocpath)/dbd/gemini.dbd"
 dbLoadRecords "$(iocpath)/data/gmosCcTopMKRR.db"
 dbLoadRecords "$(iocpath)/data/gmosCcSadTopMKRR.db"
 
@@ -98,7 +95,7 @@ dbpf "gm:sad:cc:historyLog","Booting..."
 
 #Define the database name
 dbpf "gm:sad:cc:name.VAL","GMOS CC Mauna Kea (V3-0)"
-
+taskDelay(60)
 # Load initialization files
 pvload "$(iocpath)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"
 pvload "$(iocpath)/data/gmOiwfs.pv","top=gm:wfs:"

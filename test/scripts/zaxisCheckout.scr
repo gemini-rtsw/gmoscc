@@ -155,7 +155,7 @@ OUTPUT *.MRND*
 
 DESC "Get the indexing algorithm number - should be 4 for translation stage Z axis"
 GETVAL devIndexType
-OUTPUT *.IALG* 4*
+OUTPUT *.IALG* LOWLIM*
 
 DESC "Using Power status? Should be YES for translation stage"
 GETVAL devUsePwrStatus
