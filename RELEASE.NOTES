@@ -227,5 +227,11 @@ This version is the same as V2-4 with
   sizes were much larger on Hilo workstations, rendering some text
   information unreadable). Interlock information on the top level
   WFS screen corrected.
+- Bob Wooff and Malcolm Smith's changes to the OIWFS focus settings.
+  The OIWFS will now return a focus offset based on the different
+  between the probe's position and the telescope focal surface rather
+  than the flat mask plane. The software has also been given the ability
+  to change the focal surface when the AtmDC is fitted, but this part
+  of the code is will be tested later.
 - Any adjustments to the OIWFS probe control as a result of the
   tests with the TCS and A&G simulators.
