@@ -1,4 +1,0 @@
-#!/bin/csh -f
-setenv PATH ${PATH}:/home/pbt/gemini/gmos/gmosis/data:/home/pbt/gemini/gmos/gmosis/dl
-setenv EPICS_DISPLAY_PATH .:/home/pbt/gemini/gmos/gmosis/data:/home/pbt/gemini/gmos/gmosis/dl
-dm2.4 gmSeqNew.dl "T=g7:, S=g7;, C1=c7:, C2=c7:, CC=cc:, DC=dc:" &

@@ -1,13 +1,13 @@
 [schematic2]
-uniq 53
+uniq 54
 [tools]
 [detail]
 w 2296 1643 100 0 n#19 eaos.ActIdle.OUT 2368 736 2592 736 2592 1632 2048 1632 2048 2032 junction
 w 1970 1872 100 0 n#19 eaos.ActTimeoutErr.OUT 1808 1664 1968 1664 1968 2032 2224 2032 ecars.CommSentC.IVAL
 w 2264 1611 100 0 n#18 estringouts.ActNullMess.OUT 2368 1040 2560 1040 2560 1600 2016 1600 2016 1968 junction
 w 1992 1970 100 0 n#18 estringouts.ActTimeoutMess.OUT 1808 1968 2224 1968 ecars.CommSentC.IMSS
-w 2096 1371 -100 0 ACTVAL ewait.applyWait.VAL 1104 1152 1312 1152 1312 1360 2928 1360 outhier.SUBAPPLYC.p
-w 1184 875 100 0 n#49 ewait.applyWait.FLNK 1104 864 1312 864 1312 1008 1504 1008 efanouts.IssueStop.SLNK
+w 2084 1371 -100 0 ACTVAL ecalcouts.applyWait.VAL 800 992 1312 992 1312 1360 2928 1360 outhier.SUBAPPLYC.p
+w 1032 1067 100 0 n#49 ecalcouts.applyWait.FLNK 800 1056 1312 1056 1312 1008 1504 1008 efanouts.IssueStop.SLNK
 w 1904 1067 100 0 n#48 efanouts.IssueStop.LNK2 1744 1056 2112 1056 estringouts.ActNullMess.SLNK
 w 2248 914 100 0 n#44 estringouts.ActNullMess.FLNK 2368 1072 2496 1072 2496 912 2048 912 2048 768 2112 768 eaos.ActIdle.SLNK
 w 2040 802 100 0 n#43 hwin.hwin#47.in 2016 800 2112 800 eaos.ActIdle.DOL
@@ -43,6 +43,14 @@ schematic
 gmSeqDriveSubApply
 _
 [cell use]
+use ecalcouts 480 871 100 0 applyWait
+xform 0 640 992
+p 552 904 100 0 -1 CALC:A
+p 1080 1692 100 0 0 DESC:Monitor applyC
+p 1312 1422 100 0 0 DOPT:Use CALC
+p 1312 1454 100 0 0 OOPT:On Change
+p 568 1104 100 0 1 SCAN:I/O Intr
+p 896 1248 60 0 0 def(INPA):$(gm)$(subsys):applyC.VAL
 use oslBorderC -192 7 100 0 oslBorderC#52
 xform 0 1488 1312
 p 2748 256 120 256 -1 Title:GMOS IS - monitor subsystem applyC status
@@ -94,18 +102,6 @@ p 720 1662 100 0 1 seta:timeout 6.0
 use efanouts 1528 872 100 0 IssueStop
 xform 0 1624 1024
 p 1488 928 100 0 1 SELM:All
-use ewait 424 776 100 0 applyWait
-xform 0 752 1104
-p 528 894 100 0 0 ADEL:0.000000000000000e+00
-p 723 1352 100 0 1 CALC:A
-p 609 1302 100 0 1 DESC:Monitor applyC
-p 784 1152 100 0 1 INAP:Yes
-p 784 1120 100 0 0 INBP:No
-p 784 1088 100 0 0 INCP:No
-p 528 928 100 0 1 OOPT:On Change
-p 528 1246 100 0 1 SCAN:I/O Intr
-p 32 1262 100 0 -1 def(INAN):$(gm)$(subsys):applyC.VAL
-p 512 768 100 1024 0 name:$(top)$(I)
 use ecars 2248 1752 100 0 CommSentC
 xform 0 2384 1920
 p 2288 2094 100 0 -1 DESC:Command sent CAR

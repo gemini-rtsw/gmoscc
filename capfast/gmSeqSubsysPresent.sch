@@ -63,7 +63,7 @@ xform 0 2480 768
 use eao 312 1256 100 0 checkHeartBeat
 xform 0 608 1712
 p 416 1326 100 0 0 ADEL:0.000000000000000e+00
-p 452 2042 100 0 1 DESC:Check alarm on "heartBeat"
+p 452 2042 100 0 1 DESC:Check alarm on heartBeat
 p 640 1902 100 0 0 DISS:NO_ALARM
 p 416 1550 100 0 0 DISV:1
 p 416 1614 100 0 0 DRVH:0.0000000e+00
@@ -97,7 +97,7 @@ p -368 1648 100 0 1 def(DOL):$(gm)sad:$(subsys):heartBeat.VAL
 p 896 1760 100 1024 -1 username(U0):SEVR
 use eaos 1912 1992 100 0 OldheartBeat
 xform 0 2016 2080
-p 1904 2190 100 0 -1 DESC:Old value of "heartBeat"
+p 1904 2190 100 0 -1 DESC:Old value of heartBeat
 p 1952 1936 100 0 1 OMSL:supervisory
 use eseqs 1352 1672 100 0 WaitheartBeat
 xform 0 1488 1920

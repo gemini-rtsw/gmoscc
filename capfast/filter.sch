@@ -210,7 +210,7 @@ use inhier -64 -73 100 0 FLT1
 xform 0 -48 -32
 use inhier -1296 215 100 0 DIR
 xform 0 -1280 256
-use easscontj 288 272 100 0 Assembly
+use easscontj 288 272 -100 0 Assembly
 xform 0 224 -512
 p -64 -160 100 0 0 ACHL:1.0
 p 128 320 100 0 -1 DESC:Filter assembly
@@ -226,6 +226,8 @@ p 128 272 100 0 -1 PV:$(top)$(dev)
 p 128 -1472 100 0 1 SIMM:$(simm)
 p 128 -1344 100 0 1 TDIR:/gemini/gmos/lut
 p 128 -1376 100 0 1 TFIL:$(dev).lut
+p 224 48 90 256 -1 Type:assemblyControl
+p 144 -64 100 1024 0 name:$(top)$(dev)FilterAssembly
 p 448 -416 80 768 -1 pproc(ACK1):NPP
 p 448 -640 80 768 -1 pproc(ACK2):NPP
 p 448 -288 80 768 -1 pproc(ODR1):PP

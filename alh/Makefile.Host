@@ -1,0 +1,48 @@
+
+include ../.applTop
+include $(APPLIC_TOP)/config/CONFIG
+
+# Create an alarm file for all the GMOS databases
+
+TOPMKRR	= gm
+TOPMKSR	= g5
+TOPMKRS	= g6
+TOPMKSS	= g7
+TOPCP	= g3
+
+# Alarm handler files to put into the DATA directory
+
+DATA	= GMOS-MKRR.alhConfig \
+	  GMOS-MKSR.alhConfig \
+	  GMOS-MKRS.alhConfig \
+	  GMOS-MKSS.alhConfig \
+	  GMOS-CP.alhConfig \
+	  GMOSDC-MKRR.alhConfig \
+	  GMOSDC-MKSS.alhConfig \
+	  GMOSDC-CP.alhConfig
+
+GMOS-MKRR.alhConfig: ../gmos.alh
+	sed -e 's/$$(top)/$(TOPMKRR):/g' -e 's/$$(name)/Mauna Kea/g' $^ > $@
+
+GMOS-MKSR.alhConfig: ../gmos.alh
+	sed -e 's/$$(top)/$(TOPMKSR):/g' -e 's/$$(name)/Mauna Kea (post fp)/g' $^ > $@
+
+GMOS-MKRS.alhConfig: ../gmos.alh
+	sed -e 's/$$(top)/$(TOPMKRS):/g' -e 's/$$(name)/Mauna Kea (pre fp)/g' $^ > $@
+
+GMOS-MKSS.alhConfig: ../gmos.alh
+	sed -e 's/$$(top)/$(TOPMKSS):/g' -e 's/$$(name)/Mauna Kea (simulated)/g' $^ > $@
+
+GMOS-CP.alhConfig: ../gmos.alh
+	sed -e 's/$$(top)/$(TOPCP):/g' -e 's/$$(name)/Cerro Pachon/g' $^ > $@
+
+GMOSDC-MKRR.alhConfig: ../gmosDc.alh
+	sed -e 's/$$(top)/$(TOPMKRR):/g' -e 's/$$(name)/Mauna Kea Detector Controller/g' $^ > $@
+
+GMOSDC-MKSS.alhConfig: ../gmosDc.alh
+	sed -e 's/$$(top)/$(TOPMKSS):/g' -e 's/$$(name)/Mauna Kea Detector Controller (simulated)/g' $^ > $@
+
+GMOSDC-CP.alhConfig: ../gmosDc.alh
+	sed -e 's/$$(top)/$(TOPCP):/g' -e 's/$$(name)/Cerro Pachon Detector Controller/g' $^ > $@
+
+include $(APPLIC_TOP)/config/RULES.Build

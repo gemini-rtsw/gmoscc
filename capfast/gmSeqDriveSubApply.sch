@@ -1,5 +1,5 @@
 [schematic2]
-uniq 129
+uniq 130
 [tools]
 [detail]
 w 2372 1139 100 0 n#128 estringouts.errMess.SLNK 2432 1520 2368 1520 2368 768 2496 768 2496 624 2352 624 efanouts.fan2.LNK1
@@ -18,15 +18,15 @@ w 640 1275 100 0 DIR inhier.DIR.P 528 1264 800 1264 elongouts.subsysDir.DOL
 w 1824 523 100 0 n#91 ecalcs.subApplyValCalc.VAL 1744 512 1952 512 1952 624 2160 624 efanouts.fan2.SELL
 w 1900 211 100 0 SUBVAL junction 1280 464 1280 208 2592 208 outhier.SUBVAL.p
 w 1352 715 100 0 SUBVAL eais.subApplyVal.VAL 1264 464 1280 464 1280 704 1456 704 ecalcs.subApplyValCalc.INPA
-w 928 619 100 0 n#89 ewait.wait.VAL 912 608 992 608 992 512 1008 512 eais.subApplyVal.INP
+w 824 603 100 0 n#89 ecalcouts.wait.VAL 704 592 992 592 992 512 1008 512 eais.subApplyVal.INP
 w 1288 507 100 0 n#88 eais.subApplyVal.FLNK 1264 496 1360 496 1360 320 1456 320 ecalcs.subApplyValCalc.SLNK
-w 912 331 100 0 n#87 ewait.wait.FLNK 912 320 960 320 960 480 1008 480 eais.subApplyVal.SLNK
+w 808 667 100 0 n#87 ecalcouts.wait.FLNK 704 656 960 656 960 480 1008 480 eais.subApplyVal.SLNK
 w 2052 875 100 2 c#82 lboat.c#82.p 2048 880 2048 880 estringouts.subApplyMess.DOL
 w 2136 731 100 0 n#80 efanouts.fan2.FLNK 2352 656 2400 656 2400 720 1920 720 1920 848 2048 848 estringouts.subApplyMess.SLNK
 w 2692 1499 100 2 c#75 rboat.c#75.p 2688 1504 2688 1504 estringouts.errMess.OUT
 w 2692 2027 100 2 c#74 rboat.c#74.p 2688 2032 2688 2032 estringouts.noResp.OUT
 w 2692 1755 100 2 c#73 rboat.c#73.p 2688 1760 2688 1760 eaos.errVal.OUT
-w 136 715 100 0 c#71 lboat.c#71.p 112 704 208 704 ewait.wait.INAN
+w 224 667 100 0 c#71 lboat.c#71.p 112 704 112 656 384 656 ecalcouts.wait.INPA
 w 2882 1608 100 0 n#57 eaos.errVal.FLNK 2688 1824 2880 1824 2880 1344 2560 1344 2560 1168 2624 1168 eaos.stopApplyCTrig.SLNK
 w 2576 1202 100 0 n#54 hwin.hwin#56.in 2576 1200 2624 1200 eaos.stopApplyCTrig.DOL
 w 2552 1635 100 0 n#53 estringouts.errMess.FLNK 2688 1536 2752 1536 2752 1632 2400 1632 2400 1792 junction
@@ -57,6 +57,14 @@ s 3440 832 100 0 Check whether applyC is BUSY
 s 4160 768 140 0 Trigger timeout start if not BUSY
 s 2432 640 100 0 LNK1: subsys error
 [cell use]
+use ecalcouts 384 471 100 0 wait
+xform 0 544 592
+p 456 504 100 0 -1 CALC:A
+p 984 1292 100 0 0 DESC:Wait for subsystem Apply accept/reject
+p 1216 1022 100 0 0 DOPT:Use CALC
+p 1216 1054 100 0 0 OOPT:Every Time
+p 472 704 100 0 1 SCAN:I/O Intr
+p 800 848 60 0 0 def(INPA):$(prefix)apply.VAL
 use elongouts 824 1144 100 0 subsysDir
 xform 0 928 1232
 p 832 1326 100 0 -1 DESC:Set directive in subsystem APPLY
@@ -164,14 +172,6 @@ use estringouts 2048 775 100 0 subApplyMess
 xform 0 2176 848
 p 2112 736 100 0 1 OMSL:closed_loop
 p 1792 912 100 0 -1 def(DOL):$(prefix)apply.MESS
-use ewait 232 232 100 0 wait
-xform 0 560 560
-p 336 350 100 0 0 ADEL:0.000000000000000e+00
-p 531 808 100 0 1 CALC:A
-p 336 768 100 0 -1 DESC:Wait for subsystem Apply accept/reject
-p 592 608 100 0 1 INAP:Yes
-p 336 702 100 0 1 SCAN:I/O Intr
-p -80 720 100 0 -1 def(INAN):$(prefix)apply.VAL
 use gmSeqTimeOut 1624 1800 100 0 gmSeqTimeOut#17
 xform 0 1824 1952
 p 1824 1854 100 0 -1 seta:timeout 3.0

@@ -1,7 +1,8 @@
 [schematic2]
-uniq 149
+uniq 154
 [tools]
 [detail]
+w 2522 -693 100 0 n#153 hwin.hwin#128.in 2432 -544 2464 -544 2464 -704 2640 -704 ecalcouts.grWaitForIdle.INPA
 w 994 -1053 100 0 n#148 ecad20.grSelect.VALK -128 0 32 0 32 -1056 2016 -1056 2016 256 2368 256 2368 576 2496 576 eaos.grEffWavelenSad.DOL
 w 66 707 100 0 n#146 ecad20.grSelect.OUTA -128 608 16 608 16 704 176 704 hwout.hwout#141.outp
 w -54 547 100 0 n#145 ecad20.grSelect.OUTB -128 544 80 544 80 592 176 592 hwout.hwout#142.outp
@@ -12,8 +13,7 @@ w 1170 -597 100 0 n#137 elongouts.grAssemblyMode.FLNK 880 -576 1040 -576 1040 -6
 w 1288 -574 100 0 n#134 hwin.hwin#135.in 1264 -576 1360 -576 elongouts.grMarkDta.DOL
 w 530 -461 100 0 n#133 eaos.grFocusOffset.FLNK 1456 -208 1648 -208 1648 -464 208 -464 208 -880 464 -880 estringouts.grSirUnknown.SLNK
 w 180 -525 100 0 n#132 ecad20.grSelect.STLK -128 -800 176 -800 176 -240 512 -240 eaos.lambdaGrOffset.SLNK
-w 2436 -549 100 2 n#129 hwin.hwin#128.in 2432 -544 2432 -544 ewait.grWaitForIdle.INAN
-w 3266 -917 100 0 n#127 ewait.grWaitForIdle.FLNK 3136 -928 3456 -928 3456 -848 3568 -848 eevents.grCadStartEvent.SLNK
+w 3274 -837 100 0 n#127 ecalcouts.grWaitForIdle.FLNK 2960 -704 3040 -704 3040 -848 3568 -848 eevents.grCadStartEvent.SLNK
 w 34 139 100 0 n#125 ecad20.grSelect.VALI -128 128 256 128 256 -208 512 -208 eaos.lambdaGrOffset.DOL
 w 162 1147 100 0 n#114 estringouts.gratingModeString.OUT 800 1296 992 1296 992 1136 -608 1136 -608 640 -448 640 ecad20.grSelect.A
 w 474 1355 100 0 n#112 ebos.gratingModeTranslate.VAL 400 1376 464 1376 464 1344 544 1344 estringouts.gratingModeString.DOL
@@ -53,6 +53,13 @@ s 96 1552 100 0 Displayed strings are translated to WLEN/SEL
 s 1680 -336 100 0 Offset record now SCAN Passive rather than Event - SMB
 s 1184 -112 100 0 Grating focus offset
 [cell use]
+use ecalcouts 2640 -889 100 0 grWaitForIdle
+xform 0 2800 -768
+p 2712 -856 100 0 -1 CALC:A
+p 3472 -338 100 0 0 DOPT:Use CALC
+p 3472 -306 100 0 0 OOPT:Transition To Zero
+p 2728 -656 100 0 1 SCAN:I/O Intr
+p 3056 -512 60 0 0 def(SDIS):0.0
 use eaos 1360 471 100 0 grWavelenSad
 xform 0 1488 560
 p 1140 746 100 0 0 DESC:Output of CAD
@@ -302,12 +309,6 @@ p 528 -816 100 0 1 VAL:unknown
 p 672 -944 100 0 -1 def(OUT):$(sad)grName
 p 576 -976 100 1024 0 name:$(top)$(I)
 p 720 -896 75 768 -1 pproc(OUT):PP
-use ewait 2432 -1017 100 0 grWaitForIdle
-xform 0 2784 -688
-p 2755 -440 100 0 -1 CALC:A
-p 2816 -640 100 0 1 INAP:Yes
-p 2560 -864 100 0 1 OOPT:Transition To Zero
-p 2560 -546 100 0 1 SCAN:I/O Intr
 use oslBorderD -1088 -1497 100 0 oslBorderD#116
 xform 0 1552 208
 p 3772 -1248 120 256 -1 Title:GMOS IS - grating commands

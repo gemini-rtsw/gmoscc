@@ -1,5 +1,5 @@
 [schematic2]
-uniq 39
+uniq 41
 [tools]
 [detail]
 w 3368 1003 100 0 CFLK egenSubD.egenSubD#18.FLNK 3312 992 3472 992 outhier.CFLK.p
@@ -10,12 +10,27 @@ w 2320 1339 100 0 n#30 elongouts.elongouts#10.FLNK 2192 1328 2496 1328 junction
 w 2736 1035 100 0 n#30 elongouts.elongouts#14.FLNK 2208 2112 2496 2112 2496 1024 3024 1024 egenSubD.egenSubD#18.SLNK
 w 2792 1675 100 0 n#26 elongouts.elongouts#14.VAL 2208 2080 2608 2080 2608 1664 3024 1664 egenSubD.egenSubD#18.INPC
 w 2784 1579 100 0 n#25 elongouts.elongouts#10.VAL 2192 1296 2592 1296 2592 1568 3024 1568 egenSubD.egenSubD#18.INPF
-w 2008 1483 100 0 n#22 ewait.ewait#9.VAL 1520 1472 2544 1472 2544 1632 3024 1632 egenSubD.egenSubD#18.INPD
-w 2080 2267 100 0 n#19 ewait.MonChange.VAL 1536 2256 2672 2256 2672 1728 3024 1728 egenSubD.egenSubD#18.INPA
-w 1664 1979 100 0 n#16 ewait.MonChange.FLNK 1536 1968 1840 1968 1840 2080 1952 2080 elongouts.elongouts#14.SLNK
-w 1648 1195 100 0 n#12 ewait.ewait#9.FLNK 1520 1184 1824 1184 1824 1296 1936 1296 elongouts.elongouts#10.SLNK
+w 1920 1643 100 0 n#22 ecalcouts.ecalcouts#40.VAL 624 1360 864 1360 864 1632 3024 1632 egenSubD.egenSubD#18.INPD
+w 1632 2251 100 0 n#19 ecalcouts.MonChange.VAL 640 2144 640 2240 2672 2240 2672 1728 3024 1728 egenSubD.egenSubD#18.INPA
+w 1216 2219 100 0 n#16 ecalcouts.MonChange.FLNK 640 2208 1840 2208 1840 2080 1952 2080 elongouts.elongouts#14.SLNK
+w 1200 1435 100 0 n#12 ecalcouts.ecalcouts#40.FLNK 624 1424 1824 1424 1824 1296 1936 1296 elongouts.elongouts#10.SLNK
 s 3200 2528 140 0 gmSeqSeqCommandCar
 [cell use]
+use ecalcouts 320 2023 100 0 MonChange
+xform 0 480 2144
+p 392 2056 100 0 -1 CALC:A
+p 1152 2574 100 0 0 DOPT:Use CALC
+p 1152 2606 100 0 0 OOPT:On Change
+p 408 2256 100 0 1 SCAN:I/O Intr
+p 736 2400 60 0 0 def(INPA): $(cc)$(seqcommand)C.VAL
+use ecalcouts 304 1239 100 0 ecalcouts#40
+xform 0 464 1360
+p 480 1312 100 0 -1 CALC:A
+p 1136 1790 100 0 0 DOPT:Use CALC
+p 1136 1822 100 0 0 OOPT:On Change
+p 392 1472 100 0 1 SCAN:I/O Intr
+p 720 1616 60 0 0 def(FLNK):0.000000000000000e+00
+p 720 1616 60 0 0 def(INPA):$(dc)$(seqcommand)C.VAL 
 use outhier 3504 1568 100 0 CERR
 xform 0 3472 1568
 use outhier 3504 1616 100 0 CMESS
@@ -56,27 +71,4 @@ xform 0 2080 2080
 p 2016 1920 100 0 1 OMSL:closed_loop
 p 1696 2144 100 0 -1 def(DOL):$(cc)$(seqcommand)C.OERR
 p 2112 1968 100 1024 1 name:$(gm)$(seqcommand)CcCarOerr
-use ewait 832 1879 -100 0 MonChange
-xform 0 1184 2208
-p 1155 2456 100 0 1 CALC:A
-p 1216 2256 100 0 1 INAP:Yes
-p 1216 2224 100 0 0 INBP:No
-p 1216 2192 100 0 0 INCP:No
-p 960 2032 100 0 1 OOPT:On Change
-p 960 2350 100 0 1 SCAN:I/O Intr
-p 528 2336 100 0 -1 def(INAN): $(cc)$(seqcommand)C.VAL
-p 1120 1840 100 1024 1 name:$(gm)$(seqcommand)CcWaitCar
-use ewait 816 1095 100 0 ewait#9
-xform 0 1168 1424
-p 1139 1672 100 0 1 CALC:A
-p 1200 1472 100 0 1 INAP:Yes
-p 1200 1440 100 0 0 INBP:No
-p 1200 1408 100 0 0 INCP:No
-p 944 1248 100 0 1 OOPT:On Change
-p 944 1566 100 0 1 SCAN:I/O Intr
-p 544 1568 100 0 -1 def(INAN):$(dc)$(seqcommand)C.VAL 
-p 1072 1072 100 1024 1 name:$(gm)$(seqcommand)DcWaitCar
-use oslBorderC 320 87 100 0 oslBorderC#1
-xform 0 2000 1392
-p 3260 336 120 256 -1 Title:GMOS IS - combine subsystem CAR status
 [comments]

@@ -31,7 +31,7 @@
 #        Original version.
 #-
 
-if ( -e /gemini/gmos ) then
+if ( -e /gemini/epics3.13.4/gmos ) then
 
    echo ""
    echo "Type 'gmosHelp' for information on the GMOS software or 'gmosTest'"

@@ -1,2 +1,0 @@
-setenv EPICS_DISPLAY_PATH .:./data
-dm2.4 gmosCc.dl "T=g3:, S=g3:sad:, C1=cc:, C2=cc:, CC=cc:" &

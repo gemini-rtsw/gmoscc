@@ -1,7 +1,9 @@
 [schematic2]
-uniq 129
+uniq 131
 [tools]
 [detail]
+w 1178 -341 100 0 n#130 ecalcouts.ecalcouts#129.OUT 688 -608 768 -608 768 -352 1648 -352 ecars.updateC.IVAL
+w 372 -485 100 2 c#109 lboat.c#109.p 368 -480 368 -480 ecalcouts.ecalcouts#129.INPA
 w 498 267 100 0 n#128 ecad4.update.PLNK 224 256 832 256 832 544 1024 544 elongouts.updatedcCadMark.SLNK
 w 1426 -245 100 0 n#126 elongouts.updateOerrIn.OUT 1376 -256 1536 -256 1536 -448 1648 -448 ecars.updateC.IERR
 w 2010 -437 100 0 c#122 ecars.updateC.OERR 1968 -448 2112 -448 2112 -496 2240 -496 outhier.OERR.p
@@ -9,12 +11,10 @@ w 2074 -405 100 0 c#121 ecars.updateC.OMSS 1968 -416 2240 -416 outhier.OMSS.p
 w 2074 -341 100 0 c#120 ecars.updateC.VAL 1968 -352 2240 -352 outhier.CAR.p
 w 1242 -293 100 0 n#119 elongouts.updateOerrIn.FLNK 1376 -192 1456 -192 1456 -304 1088 -304 1088 -592 1104 -592 estringouts.updateMessIn.SLNK
 w 1124 -197 100 2 c#113 elongouts.updateOerrIn.DOL 1120 -192 1120 -192 lboat.c#113.p
-w 986 -213 100 0 n#116 ewait.ewait#104.FLNK 880 -768 912 -768 912 -224 1120 -224 elongouts.updateOerrIn.SLNK
+w 874 -213 100 0 n#106 ecalcouts.ecalcouts#129.FLNK 688 -480 688 -224 1120 -224 elongouts.updateOerrIn.SLNK
 w 1442 -565 100 0 n#114 estringouts.updateMessIn.FLNK 1360 -576 1584 -576 1584 -544 1648 -544 ecars.updateC.SLNK
 w 1108 -565 100 2 c#110 lboat.c#110.p 1104 -560 1104 -560 estringouts.updateMessIn.DOL
-w 180 -389 100 2 c#109 lboat.c#109.p 176 -384 176 -384 ewait.ewait#104.INAN
 w 1490 -405 100 0 n#108 estringouts.updateMessIn.OUT 1360 -608 1392 -608 1392 -416 1648 -416 ecars.updateC.IMSS
-w 1074 -469 100 0 n#106 ewait.ewait#104.VAL 880 -480 1328 -480 1328 -352 1648 -352 ecars.updateC.IVAL
 w 1284 507 100 2 c#101 rboat.c#101.p 1280 512 1280 512 elongouts.updatedcCadMark.OUT
 w 1472 587 100 0 c#91 elongouts.updatedcCadMark.FLNK 1280 576 1712 576 outhier.FLNK.p
 w 936 635 100 0 n#90 hwin.hwin#88.in 928 624 992 624 992 576 1024 576 elongouts.updatedcCadMark.DOL
@@ -26,6 +26,14 @@ s 2320 1264 150 0 gmSeqUpdate
 s 816 1024 180 0 Update Sequence Command
 s 720 928 150 0 MARK command to Components Controller only
 [cell use]
+use ecalcouts 368 -665 100 0 ecalcouts#129
+xform 0 528 -544
+p 440 -632 100 0 -1 CALC:A
+p 1200 -114 100 0 0 DOPT:Use CALC
+p 456 -432 100 0 1 SCAN:I/O Intr
+p 784 -288 60 0 0 def(INPA):$(cc)updateC.VAL 
+p 784 -288 60 0 0 def(SDIS):0.0
+p 352 -600 75 0 -1 palrm(SDIS):NMS
 use outhier 520 968 100 0 VAL
 xform 0 512 1008
 use outhier 520 888 100 0 MESS
@@ -54,19 +62,13 @@ use lboat 960 -233 100 0 c#113
 xform 0 1040 -192
 use lboat 944 -601 100 0 c#110
 xform 0 1024 -560
-use lboat 16 -425 100 0 c#109
-xform 0 96 -384
+use lboat 208 -521 100 0 c#109
+xform 0 288 -480
 use estringouts 1104 -665 100 0 updateMessIn
 xform 0 1232 -592
 p 1184 -704 100 0 1 OMSL:closed_loop
 p 832 -592 100 0 -1 def(DOL):$(cc)updateC.OMSS
 p 1360 -608 75 768 -1 pproc(OUT):PP
-use ewait 176 -857 100 0 ewait#104
-xform 0 528 -528
-p 499 -280 100 0 -1 CALC:A
-p 560 -480 100 0 1 INAP:Yes
-p 304 -386 100 0 1 SCAN:I/O Intr
-p -64 -416 100 0 -1 def(INAN):$(cc)updateC.VAL 
 use rboat 1280 471 100 0 c#101
 xform 0 1360 512
 use ecars 1648 -633 100 0 updateC

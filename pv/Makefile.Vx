@@ -1,8 +1,8 @@
 # Include file identifying the target architecture (defines the T_A
 # macro) and application configuration definitions
 
-include Target.include
-include .applTop/config/CONFIG
+include ../.applTop
+include $(APPLIC_TOP)/config/CONFIG
 
 # External libraries on which this directory is dependent.
 # DEPLIBS	=
@@ -50,7 +50,7 @@ DATA	=
 TARGETS =
 
 # Rules for building targets
-include .applTop/config/RULES.Build
+include $(APPLIC_TOP)/config/RULES.Build
 
 # This rule will work if there is only one target, but has to be
 # modified appropriately for multiple targets

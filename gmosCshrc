@@ -61,8 +61,8 @@ endif
 # and the location of the GMOS detector controller software.
 
 setenv GMOS_OP      /gemini/gmos/gmos
-setenv GMOS_DEV     /home/gemvx/gmos/gmos
-setenv GMOS_DC      /gemini/gmosdc/gmosdc
+setenv GMOS_DEV     /gemini/epics3.13.4/gmos/gmos
+setenv GMOS_DC      /gemini/epics3.13.4/gmosdc/gmosdc
 
 # Add the GMOS solaris binary directories to the PATH
 

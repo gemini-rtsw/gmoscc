@@ -1,12 +1,12 @@
 [schematic2]
-uniq 360
+uniq 361
 [tools]
 [detail]
 w -70 5691 100 0 n#338 elongouts.ObsCarDisconVal.OUT 96 4976 192 4976 192 5680 -272 5680 -272 5568 junction
 w -366 5571 100 0 n#338 gmSeqObserveCar.gmSeqObserveCar#337.CVAL -560 5488 -448 5488 -448 5568 -224 5568 ecars.observeC.IVAL
 w -198 5203 100 0 n#341 elongouts.ObsCarDisconVal.FLNK 96 5040 144 5040 144 5200 -480 5200 -480 5344 junction
 w -486 5347 100 0 n#341 gmSeqObserveCar.gmSeqObserveCar#337.CFLK -560 5344 -352 5344 -352 5376 -224 5376 ecars.observeC.SLNK
-w -174 4907 100 0 n#359 ewait.waitForDcDisconnected.FLNK -160 4208 16 4208 16 4896 -304 4896 -304 5008 -160 5008 elongouts.ObsCarDisconVal.SLNK
+w -254 4283 100 0 n#359 ecalcouts.waitForDcDisconnected.FLNK -464 4272 16 4272 16 4896 -304 4896 -304 5008 -160 5008 elongouts.ObsCarDisconVal.SLNK
 w -269 5104 100 0 n#355 hwin.hwin#354.in -368 5136 -368 5040 -160 5040 elongouts.ObsCarDisconVal.DOL
 w -502 5395 100 0 n#340 gmSeqObserveCar.gmSeqObserveCar#337.CERR -560 5392 -384 5392 -384 5472 -224 5472 ecars.observeC.IERR
 w -350 5507 100 0 n#339 gmSeqObserveCar.gmSeqObserveCar#337.CMESS -560 5440 -416 5440 -416 5504 -224 5504 ecars.observeC.IMSS
@@ -28,13 +28,16 @@ w 806 5171 100 0 n#292 gmSeqSeqCommandCar.gmSeqSeqCommandCar#284.CVAL 640 5120 7
 w 790 5603 100 0 n#290 gmSeqSeqCommandCar.gmSeqSeqCommandCar#282.CVAL 640 5552 712 5552 712 5600 928 5600 ecars.testC.IVAL
 s 1600 5968 140 0 gmSeqLocalCars.sch
 [cell use]
-use ewait -864 4119 100 0 waitForDcDisconnected
-xform 0 -512 4448
-p -541 4696 100 0 -1 CALC:A
-p -480 4496 100 0 1 INAP:Yes
-p -736 4272 100 0 1 OOPT:Transition To Non-zero
-p -736 4590 100 0 1 SCAN:I/O Intr
-p -1104 4592 100 0 -1 def(INAN):$(gm)dcDisabled.VAL
+use ecalcouts -784 4087 100 0 waitForDcDisconnected
+xform 0 -624 4208
+p -712 4120 100 0 -1 CALC:A
+p -184 4908 100 0 0 DESC:calcout record
+p 48 4638 100 0 0 DOPT:Use CALC
+p 48 4670 100 0 0 OOPT:Transition To Non-zero
+p -696 4320 100 0 1 SCAN:I/O Intr
+p -368 4464 60 0 0 def(INPA):$(gm)dcDisabled.VAL
+p -368 4464 60 0 0 def(INPB):0.0
+p -368 4464 60 0 0 def(INPC):0.0
 use hwin -560 5095 100 0 hwin#354
 xform 0 -464 5136
 p -592 5120 100 0 -1 val(in):$(CAR_ERROR)

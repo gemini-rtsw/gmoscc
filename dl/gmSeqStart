@@ -1,4 +1,0 @@
-#!/bin/csh -f
-setenv PATH ${PATH}:./bin/solaris:../gmoscc/bin/solaris
-setenv EPICS_DISPLAY_PATH .:./data:./dl:../gmoscc/data
-dm2.4 gmSeq.dl "T=g7:, S=g7;, C1=c7:, C2=c7:, CC=cc:, DC=dc:" &

@@ -1,7 +1,9 @@
 [schematic2]
-uniq 136
+uniq 139
 [tools]
 [detail]
+w 474 -245 100 0 fltWaitForIdle ecalcouts.ecalcouts#136.FLNK 160 -112 192 -112 192 -256 816 -256 eevents.fltCadStartEvent.SLNK
+w -270 -101 100 0 n#137 hwin.hwin#106.in -352 0 -320 0 -320 -112 -160 -112 ecalcouts.ecalcouts#136.INPA
 w 794 555 100 0 n#135 ecad8.fltPos.VALF 128 864 416 864 416 544 1232 544 1232 768 1328 768 eaos.lambdaOffset2.DOL
 w 594 843 100 0 n#134 ecad8.fltPos.VALE 128 928 448 928 448 832 800 832 800 768 880 768 eaos.lambdaOffset1.DOL
 w 1154 875 100 0 n#133 eaos.filtOffset2.FLNK 1568 1152 1632 1152 1632 864 736 864 736 736 880 736 eaos.lambdaOffset1.SLNK
@@ -14,8 +16,6 @@ w 1266 515 100 0 n#120 eaos.lambdaOffset2.FLNK 1584 768 1664 768 1664 512 928 51
 w 1202 1131 100 0 n#119 eaos.filtOffset1.FLNK 1120 1152 1152 1152 1152 1120 1312 1120 eaos.filtOffset2.SLNK
 w 668 811 100 0 n#118 ecad8.fltPos.STLK 128 512 672 512 672 1120 864 1120 eaos.filtOffset1.SLNK
 w 1898 123 100 0 n#117 estringouts.fltSirUnknown1.FLNK 1728 128 1824 128 1824 112 2032 112 estringouts.fltSirUnknown2.SLNK
-w 442 -373 100 0 n#108 ewait.fltWaitForIdle.FLNK 352 -384 592 -384 592 -256 816 -256 eevents.fltCadStartEvent.SLNK
-w -348 -5 100 2 n#107 hwin.hwin#106.in -352 0 -352 0 ewait.fltWaitForIdle.INAN
 w 786 403 100 0 n#102 ecad8.fltPos.PLNK 128 544 352 544 352 400 1280 400 elongouts.fltAssemblyMode.SLNK
 w 634 995 100 0 n#101 ecad8.fltPos.VALD 128 992 1200 992 1200 1152 1312 1152 eaos.filtOffset2.DOL
 w 354 1059 100 0 n#100 ecad8.fltPos.VALC 128 1056 640 1056 640 1152 864 1152 eaos.filtOffset1.DOL
@@ -40,6 +40,12 @@ s 304 1184 100 0 Target Filter 2 Barcode ID
 s 2128 1712 140 0 gmSeqFilter.sch
 s 944 1312 100 0 Offset records now SCAN Passive rather than Event - SMB
 [cell use]
+use ecalcouts -160 -297 100 0 ecalcouts#136
+xform 0 0 -176
+p -88 -264 100 0 -1 CALC:A
+p 672 254 100 0 0 DOPT:Use CALC
+p 672 286 100 0 0 OOPT:Transition To Zero
+p -72 -64 100 0 1 SCAN:I/O Intr
 use eaos 1328 647 100 0 lambdaOffset2
 xform 0 1456 736
 p 1392 576 100 0 1 EGU:microns
@@ -147,17 +153,8 @@ p 1680 1200 100 0 1 SCAN:Event
 p 1984 1056 100 0 -1 def(OUT):$(sad)filtName1
 p 1888 1024 100 1024 0 name:$(top)$(I)
 p 2032 1104 75 768 -1 pproc(OUT):PP
-use ewait -352 -473 100 0 fltWaitForIdle
-xform 0 0 -144
-p -29 104 100 0 -1 CALC:A
-p 32 -96 100 0 1 INAP:Yes
-p -224 -320 100 0 1 OOPT:Transition To Zero
-p -224 -2 100 0 1 SCAN:I/O Intr
 use gmSeqFiltNames -528 1415 100 0 gmSeqFiltNames#104
 xform 0 -408 1560
-use oslBorderC -720 -745 100 0 oslBorderC#87
-xform 0 960 560
-p 2220 -496 120 256 -1 Title:GMOS IS - filter commands
 use eevents 816 -345 100 0 fltCadStartEvent
 xform 0 960 -256
 p 896 -384 100 0 1 EVNT:0
