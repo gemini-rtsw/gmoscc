@@ -44,12 +44,22 @@ if (${#argv} < 3) then
 endif
 
 #
-# Create the "logfiles" directory if it doesn't exist.
+# Save the current day
 #
-if ( !(-e logfiles) ) then
+set day = `date +%d%h%y`
+
+#
+# Create the "logfiles" directory for the current day if it doesn't exist.
+#
+if ( !(-e ./logfiles) ) then
 
    echo "Creating logfiles directory..." 
    mkdir logfiles
+endif
+
+if (!(-e ./logfiles/$day)) then
+
+    mkdir ./logfiles/$day
 endif
 
 #
@@ -173,14 +183,14 @@ while ($countDown > 0)
 #
     if (`grep Fatal scripts/${1}Checkout.scr.log | wc -l` != 0) then
         echo ""
-        echo "The script has failed. Aborting."
+        echo "The script has failed after "$countUp" executions. Aborting."
         echo ""
         goto abort
     endif
 
     if (`grep PASSED scripts/${1}Checkout.scr.log | wc -l` == 0) then
         echo ""
-        echo "The script has been cancelled. Aborting."
+        echo "The script has been cancelled after "$countUp" executions. Aborting."
         echo ""
         goto abort
     endif
@@ -194,7 +204,6 @@ end
 
 echo ""
 echo "Soak test of $3 iterations of $1 script complete."
-exit
 
 abort:
 
@@ -203,9 +212,9 @@ abort:
 # Logfiles made in simulation mode have the string "Sim" appended
 # to their name.
 #
-\mv ./scripts/${1}Checkout.scr.log ./logfiles/${1}CheckoutSim.log
+\mv ./scripts/${1}Checkout.scr.log ./logfiles/${day}/${1}CheckoutSim.log
 
 #
 # Make a backup copy of the log file with the current date and time appended
 #
-\cp ./logfiles/${1}CheckoutSim.log ./logfiles/${1}CheckoutSim.log.`date +%H:%M:%S-%d-%h-20%y`
+\cp ./logfiles/${day}/${1}CheckoutSim.log ./logfiles/${day}/${1}CheckoutSim.log.`date +%H:%M:%S-%d-%h-20%y`
