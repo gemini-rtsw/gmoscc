@@ -130,10 +130,9 @@ group {
 
 # Ideal Focal Surface
 #
-# on-axis distance between ideal focal surface and probe tip
-# will need to be calibrated on telescope
+# On-axis distance between slit plane and probe tip
 #
-   double $(top)probeZOffset        =  76.3;  # Z-offset
+   double $(top)probeZOffset        =  75.0;  # Z-offset
 }
 
 # Load offsets for zeroing absolute encoders to be similar to 
