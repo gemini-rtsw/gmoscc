@@ -19,7 +19,7 @@ pwd
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
 # (Commented out, since already done in startup_MINIMAL)
-< $(iocpath)/bin/$(arch)/local
+< $(version)/bin/$(arch)/local
 
 # Load EPICS core, pvload and sequencer
 ld < /gemini/external/GEM8.4/base/bin/$(arch)/iocCore
@@ -29,24 +29,24 @@ ld < /gemini/external/GEM8.4/base/bin/$(arch)/seq
 # Load any application records, device support or drivers here,
 # or code for subroutine records. It is assumed that Gemini
 # libraries are available in the standard /gemini directory).
-ld < $(iocpath)/bin/$(arch)/gemini.Support
+ld < $(version)/bin/$(arch)/gemini.Support
 
 ld < /gemini/epics3.13.4/slalib/slalib/bin/$(arch)/slalib
 ld < /gemini/epics3.13.4/timelib/timelib/bin/$(arch)/timelib
 ld < /gemini/epics3.13.4/astlib/astlib/bin/$(arch)/astlib
 ld < /gemini/epics3.13.4/timelib/timelib/bin/mv167/timeSeq
 
-ld < $(iocpath)/bin/$(arch)/deviceControlLib.a
-ld < $(iocpath)/bin/$(arch)/gmosLib.a
-ld < $(iocpath)/bin/$(arch)/assemblyControlLib.a
-ld < $(iocpath)/bin/$(arch)/gmSeqLib.a
+ld < $(version)/bin/$(arch)/deviceControlLib.a
+ld < $(version)/bin/$(arch)/gmosLib.a
+ld < $(version)/bin/$(arch)/assemblyControlLib.a
+ld < $(version)/bin/$(arch)/gmSeqLib.a
 
 # Load sequences here
 
-ld < $(iocpath)/bin/$(arch)/assemblyCar
-ld < $(iocpath)/bin/$(arch)/dtaAssemblyCar
-ld < $(iocpath)/bin/$(arch)/systemCar
-ld < $(iocpath)/bin/$(arch)/commandCar
+ld < $(version)/bin/$(arch)/assemblyCar
+ld < $(version)/bin/$(arch)/dtaAssemblyCar
+ld < $(version)/bin/$(arch)/systemCar
+ld < $(version)/bin/$(arch)/commandCar
 
 # Initialise the Gemini Time System (1=master, 1=simulate, intPerSecond, intPerTick, timeOffset)
 timeClockInit 0, 0, 60, 1, 0
@@ -55,16 +55,16 @@ timeClockInit 0, 0, 60, 1, 0
 TSconfigure 1, 0, 0, 0, 0, 0
 
 # Load one or more ASCII databases here
-dbLoadDatabase "$(iocpath)/dbd/gemini.dbd"
-dbLoadRecords "$(iocpath)/data/gmosCcTopMKRR.db"
-dbLoadRecords "$(iocpath)/data/gmosCcSadTopMKRR.db"
-dbLoadRecords "$(iocpath)/data/gmSeqTopMKRR.db"
-dbLoadRecords "$(iocpath)/data/gmSeqSadTopMKRR.db"
+dbLoadDatabase "$(version)/dbd/gemini.dbd"
+dbLoadRecords "$(version)/data/gmosCcTopMKRR.db"
+dbLoadRecords "$(version)/data/gmosCcSadTopMKRR.db"
+dbLoadRecords "$(version)/data/gmSeqTopMKRR.db"
+dbLoadRecords "$(version)/data/gmSeqSadTopMKRR.db"
 
 # This turns off logging
 # iocLogDisable=1
 
-iocInit "$(iocpath)/data/resource.def"
+iocInit "$(version)/data/resource.def"
 
 # Ensure master enable is disabled while startup script executes
 dbpf "gm:cc:msEnableEnable","0"
@@ -76,15 +76,15 @@ dbpf "gm:sad:name.VAL","GMOS-N (V3-2)"
 dbpf "gm:sad:cc:name.VAL","GMOS-N (V3-2)"
 
 # Load initialization files
-pvload "$(iocpath)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"
-pvload "$(iocpath)/data/gmOiwfs.pv","top=gm:wfs:"
-pvload "$(iocpath)/data/gmMask.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmFilter.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmGrating.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmTranslation.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmTempCalibrate.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmSeq.pv","top=gm:, sadtop=gm:sad:"
-pvload "$(iocpath)/data/gmSeqTracking.pv","top=gm:, sadtop=gm:sad:"
+pvload "$(version)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"
+pvload "$(version)/data/gmOiwfs.pv","top=gm:wfs:"
+pvload "$(version)/data/gmMask.pv","top=gm:cc:"
+pvload "$(version)/data/gmFilter.pv","top=gm:cc:"
+pvload "$(version)/data/gmGrating.pv","top=gm:cc:"
+pvload "$(version)/data/gmTranslation.pv","top=gm:cc:"
+pvload "$(version)/data/gmTempCalibrate.pv","top=gm:cc:"
+pvload "$(version)/data/gmSeq.pv","top=gm:, sadtop=gm:sad:"
+pvload "$(version)/data/gmSeqTracking.pv","top=gm:, sadtop=gm:sad:"
 # Start sequences
 seq &timeSeq, "sys=gm:cc:"
 
