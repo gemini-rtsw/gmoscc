@@ -17,27 +17,28 @@ xform 0 1168 1392
 p 1080 1304 100 0 -1 CALC:A
 p 1840 1822 100 0 0 DOPT:Use CALC
 p 1840 1854 100 0 0 OOPT:On Change
-p 1096 1504 100 0 1 SCAN:I/O Intr
+p 1096 1504 100 0 1 SCAN:Passive
 p 1424 1648 60 0 0 def(INPA): $(dc)observeC.VAL
 p 1072 1272 100 0 -1 name:$(gm)observeDcWaitCar
-use elongouts 1968 1447 100 0 elongouts#50
-xform 0 2096 1536
-p 1808 1454 100 0 0 OMSL:closed_loop
-p 2112 1440 100 1024 1 name:$(gm)observeDcCarVal
-p 2224 1504 75 768 -1 pproc(OUT):PP
+p 960 1464 75 0 -1 pproc(INPA):CP
 use elongouts 1984 1223 100 0 elongouts#14
 xform 0 2112 1312
 p 1824 1230 100 0 0 OMSL:closed_loop
 p 1728 1376 100 0 -1 def(DOL):$(dc)observeC.OERR
 p 2144 1200 100 1024 1 name:$(gm)observeDcCarOerr
-use outhier 2784 1248 100 0 CVAL
-xform 0 2736 1264
-use outhier 2784 1168 100 0 CMESS
-xform 0 2736 1168
-use outhier 2784 1040 100 0 CERR
-xform 0 2736 1056
+use elongouts 1968 1447 100 0 elongouts#50
+xform 0 2096 1536
+p 1808 1454 100 0 0 OMSL:closed_loop
+p 2112 1440 100 1024 1 name:$(gm)observeDcCarVal
+p 2224 1504 75 768 -1 pproc(OUT):PP
 use outhier 2784 928 100 0 CFLK
 xform 0 2736 928
+use outhier 2784 1040 100 0 CERR
+xform 0 2736 1056
+use outhier 2784 1168 100 0 CMESS
+xform 0 2736 1168
+use outhier 2784 1248 100 0 CVAL
+xform 0 2736 1264
 use estringouts 2000 871 100 0 estringouts#41
 xform 0 2128 944
 p 1936 750 100 0 0 OMSL:supervisory

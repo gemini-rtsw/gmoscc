@@ -17,24 +17,14 @@ include $(APPLIC_TOP)/config/CONFIG
   USR_DBDFLAGS += -S macsub
 
 # Menus
-  MENUS += menuAlarmSevr.h \
-           menuAlarmStat.h \
-           menuArrType.h \
-           menuCompress.h \
-           menuFtype.h \
-           menuIvoa.h \
-	   menuLinr.h \
-           menuOmsl.h \
-           menuPriority.h \
-           menuScan.h \
-           menuYesNo.h 
+  MENUS += menuAlarmStat.h menuScan.h 
   
 # Add the record include (*.h) files to this variable.
 # This causes the record *.h file to be built from the record *.dbd file.
 RECTYPES = assemblyControlRecord.h 
 
 # Add dbd files to this variable for installation.
-DBDINSTALL = device.dbd assemblyControlRecord.dbd
+DBDINSTALL = device.dbd assemblyControlRecord.dbd 
 
 
 # Add the source code files to this variable. The default has all .c files 

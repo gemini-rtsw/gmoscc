@@ -1,17 +1,20 @@
 [schematic2]
-uniq 115
+uniq 131
 [tools]
 [detail]
+w 1098 1195 100 0 n#130 ecalcs.offsetSum.FLNK 880 1440 912 1440 912 1184 1344 1184 1344 1056 1696 1056 egenSubD.dtaTrack.SLNK
+w 1314 1579 100 0 n#126 ecalcs.offsetSum.VAL 880 1408 992 1408 992 1568 1696 1568 egenSubD.dtaTrack.INPG
+w 426 1515 100 0 n#125 hwin.hwin#124.in 320 1456 320 1504 592 1504 ecalcs.offsetSum.INPD
 w 706 899 100 0 n#113 hwin.hwin#110.in 320 896 1152 896 1152 1408 1696 1408 egenSubD.dtaTrack.INPL
-w 690 995 100 0 n#112 hwin.hwin#109.in 320 992 1120 992 1120 1440 1696 1440 egenSubD.dtaTrack.INPK
-w 1314 1571 100 0 n#104 egenSubD.dtaTrack.INPG 1696 1568 992 1568 992 1376 320 1376 hwin.hwin#105.in
+w 690 955 100 0 n#112 hwin.hwin#109.in 320 944 1120 944 1120 1440 1696 1440 egenSubD.dtaTrack.INPK
+w 426 1547 100 0 n#104 ecalcs.offsetSum.INPC 592 1536 320 1536 320 1520 hwin.hwin#105.in
 w 898 227 100 0 n#101 hwin.hwin#95.in 320 224 1536 224 1536 1120 1696 1120 egenSubD.dtaTrack.INPU
 w 882 291 100 0 n#100 hwin.hwin#94.in 320 288 1504 288 1504 1152 1696 1152 egenSubD.dtaTrack.INPT
 w 872 355 100 0 n#99 hwin.hwin#93.in 320 352 1472 352 1472 1184 1696 1184 egenSubD.dtaTrack.INPS
 w 856 419 100 0 n#98 hwin.hwin#92.in 320 416 1440 416 1440 1216 1696 1216 egenSubD.dtaTrack.INPR
 w 840 483 100 0 n#97 hwin.hwin#91.in 320 480 1408 480 1408 1248 1696 1248 egenSubD.dtaTrack.INPQ
 w 824 547 100 0 n#96 hwin.hwin#90.in 320 544 1376 544 1376 1280 1696 1280 egenSubD.dtaTrack.INPP
-w 680 1091 -100 0 c#88 hwin.hwin#108.in 320 1088 1088 1088 1088 1472 1696 1472 egenSubD.dtaTrack.INPJ
+w 680 1003 -100 0 c#88 hwin.hwin#108.in 320 992 1088 992 1088 1472 1696 1472 egenSubD.dtaTrack.INPJ
 w 2264 427 100 0 n#87 egenSubD.dtaTrack.OUTJ 1984 1152 2176 1152 2176 416 2400 416 eaos.totalFocusOffset.SLNK
 w 2008 1035 100 0 n#86 egenSubD.dtaTrack.FLNK 1984 1024 2080 1024 outhier.FLNK.p
 w 2072 1227 100 0 n#85 egenSubD.dtaTrack.OUTI 1984 1216 2208 1216 2208 688 2400 688 eaos.tempZoff.SLNK
@@ -23,26 +26,26 @@ w 2072 1547 100 0 n#80 egenSubD.dtaTrack.OUTD 1984 1536 2208 1536 2208 2128 2400
 w 2056 1643 100 0 n#73 egenSubD.dtaTrack.VALC 1984 1632 2176 1632 outhier.ZPOS.p
 w 2056 1707 100 0 n#72 egenSubD.dtaTrack.VALB 1984 1696 2176 1696 outhier.YPOS.p
 w 2056 1771 100 0 n#71 egenSubD.dtaTrack.VALA 1984 1760 2176 1760 outhier.XPOS.p
-w 848 99 100 0 n#68 inhier.SLNK.P 144 96 1600 96 1600 1056 1696 1056 egenSubD.dtaTrack.SLNK
+w 344 1227 100 0 n#68 inhier.SLNK.P 144 1232 144 1216 592 1216 ecalcs.offsetSum.SLNK
 w 688 659 100 0 n#67 inhier.ZOFF.P 144 656 1280 656 1280 1312 1696 1312 egenSubD.dtaTrack.INPO
 w 672 739 100 0 n#66 inhier.YOFF.P 144 736 1248 736 1248 1344 1696 1344 egenSubD.dtaTrack.INPN
 w 656 835 100 0 n#65 inhier.XOFF.P 144 832 1216 832 1216 1376 1696 1376 egenSubD.dtaTrack.INPM
-w 664 1187 100 0 n#64 hwin.hwin#107.in 320 1184 1056 1184 1056 1504 1696 1504 egenSubD.dtaTrack.INPI
-w 648 1283 100 0 n#61 hwin.hwin#106.in 320 1280 1024 1280 1024 1536 1696 1536 egenSubD.dtaTrack.INPH
-w 1304 1603 100 0 n#60 hwin.hwin#103.in 320 1472 960 1472 960 1600 1696 1600 egenSubD.dtaTrack.INPF
-w 1288 1635 100 0 n#59 hwin.hwin#102.in 320 1568 928 1568 928 1632 1696 1632 egenSubD.dtaTrack.INPE
+w 664 1051 100 0 n#64 hwin.hwin#107.in 320 1040 1056 1040 1056 1504 1696 1504 egenSubD.dtaTrack.INPI
+w 648 1099 100 0 n#61 hwin.hwin#106.in 320 1088 1024 1088 1024 1536 1696 1536 egenSubD.dtaTrack.INPH
+w 432 1579 100 0 n#60 hwin.hwin#103.in 320 1568 592 1568 ecalcs.offsetSum.INPB
+w 432 1611 100 0 n#59 hwin.hwin#102.in 320 1616 320 1600 592 1600 ecalcs.offsetSum.INPA
 w 896 1675 100 0 n#58 inhier.MODE.P 144 1664 1696 1664 egenSubD.dtaTrack.INPD
 w 1016 2211 100 0 n#56 hwin.hwin#111.in 544 2208 1536 2208 1536 1760 1696 1760 egenSubD.dtaTrack.INPA
 w 888 2043 100 0 n#55 eais.refTemp.VAL 320 2032 1504 2032 1504 1728 1696 1728 egenSubD.dtaTrack.INPB
 s 368 912 100 0 Grating tilt in degrees
-s 368 1008 100 0 Grating order (0 for imaging)
-s 368 1104 100 0 Focus offset derived from grating wavelength
-s 368 1200 100 0 Focus offset derived from filter 2 wavelength
-s 368 1296 100 0 Focus offset derived from filter 1 wavelength
-s 368 1392 100 0 Surface focus offset for grating
-s 368 1504 100 0 Surface focus offset for filter 2
-s 368 1600 100 0 Surface focus offset for filter 1
-s 368 1680 100 0 Operating mode
+s 368 960 100 0 Grating order (0 for imaging)
+s 368 1008 100 0 Focus offset derived from grating wavelength
+s 368 1056 100 0 Focus offset derived from filter 2 wavelength
+s 368 1104 100 0 Focus offset derived from filter 1 wavelength
+s 112 1344 100 0 Surface focus offset for grating
+s 112 1376 100 0 Surface focus offset for filter 2
+s 112 1408 100 0 Surface focus offset for filter 1
+s 176 1680 100 0 Operating mode
 s 1584 2000 100 0 the atmTrack gensub.
 s 1584 2048 100 0 by the gmSeqatmDemands function within
 s 1584 2096 100 0 on a TCS context placed in global variables
@@ -56,6 +59,7 @@ s 2432 144 100 0 Copyright
 s 2432 112 100 0 Observatory
 s 2432 80 100 0 Sciences Ltd.
 s 432 576 100 0 X, Y and Z limits read from DTA assembly record
+s 112 1312 100 0 IFU focus offset
 [cell use]
 use hwin 352 2167 100 0 hwin#111
 xform 0 448 2208
@@ -63,27 +67,27 @@ p 355 2200 100 0 -1 val(in):$(gm)cc:temp8
 use hwin 128 855 100 0 hwin#110
 xform 0 224 896
 p 131 888 100 0 -1 val(in):$(gm)grSelect.VALC
-use hwin 128 951 100 0 hwin#109
+use hwin 128 903 100 0 hwin#109
+xform 0 224 944
+p 131 936 100 0 -1 val(in):$(gm)grSelect.VALF
+use hwin 128 951 100 0 hwin#108
 xform 0 224 992
-p 131 984 100 0 -1 val(in):$(gm)grSelect.VALF
-use hwin 128 1047 100 0 hwin#108
+p 131 984 100 0 -1 val(in):$(gm)lambdaGrOffset
+use hwin 128 999 100 0 hwin#107
+xform 0 224 1040
+p 131 1032 100 0 -1 val(in):$(gm)lambdaOffset2
+use hwin 128 1047 100 0 hwin#106
 xform 0 224 1088
-p 131 1080 100 0 -1 val(in):$(gm)lambdaGrOffset
-use hwin 128 1143 100 0 hwin#107
-xform 0 224 1184
-p 131 1176 100 0 -1 val(in):$(gm)lambdaOffset2
-use hwin 128 1239 100 0 hwin#106
-xform 0 224 1280
-p 131 1272 100 0 -1 val(in):$(gm)lambdaOffset1
-use hwin 128 1335 100 0 hwin#105
-xform 0 224 1376
-p 131 1368 100 0 -1 val(in):$(gm)grFocusOffset
-use hwin 128 1431 100 0 hwin#103
-xform 0 224 1472
-p 131 1464 100 0 -1 val(in):$(gm)filtOffset2
-use hwin 128 1527 100 0 hwin#102
+p 131 1080 100 0 -1 val(in):$(gm)lambdaOffset1
+use hwin 128 1479 100 0 hwin#105
+xform 0 224 1520
+p 131 1512 100 0 -1 val(in):$(gm)grFocusOffset
+use hwin 128 1527 100 0 hwin#103
 xform 0 224 1568
-p 131 1560 100 0 -1 val(in):$(gm)filtOffset1
+p 131 1560 100 0 -1 val(in):$(gm)filtOffset2
+use hwin 128 1575 100 0 hwin#102
+xform 0 224 1616
+p 131 1608 100 0 -1 val(in):$(gm)filtOffset1
 use hwin 128 503 100 0 hwin#90
 xform 0 224 544
 p 131 536 100 0 -1 val(in):$(cc)dtaAssembly.AALL
@@ -102,14 +106,23 @@ p 131 280 100 0 -1 val(in):$(cc)dtaAssembly.ACLL
 use hwin 128 183 100 0 hwin#95
 xform 0 224 224
 p 131 216 100 0 -1 val(in):$(cc)dtaAssembly.ACHL
+use hwin 128 1415 100 0 hwin#124
+xform 0 224 1456
+p 131 1448 100 0 -1 val(in):$(gm)mskPos.VALC
+use ecalcs 592 1127 100 0 offsetSum
+xform 0 736 1392
+p 499 1608 100 0 0 CALC:A+B+C+D
+p 304 1406 100 0 0 def(INPB):0.000000000000000e+00
+p 304 1342 100 0 0 def(INPD):0.000000000000000e+00
+p 704 1120 100 1024 0 name:$(top)$(I)
 use inhier 128 791 100 0 XOFF
 xform 0 144 832
 use inhier 128 695 100 0 YOFF
 xform 0 144 736
 use inhier 128 615 100 0 ZOFF
 xform 0 144 656
-use inhier 128 55 100 0 SLNK
-xform 0 144 96
+use inhier 128 1191 100 0 SLNK
+xform 0 144 1232
 use inhier 128 1623 100 0 MODE
 xform 0 144 1664
 use eaos 2400 2039 100 0 flexXoff
@@ -215,6 +228,7 @@ p 2064 1168 100 0 -1 FTVJ:DOUBLE
 p 1760 928 100 0 1 INAM:
 p 1760 832 100 0 1 PREC:2
 p 1760 880 100 0 1 SNAM:gmSeqDtaDemands
+p 1412 1706 100 0 0 def(INPC):0.000000000000000e+00
 p 1984 1546 75 0 -1 pproc(OUTD):PP
 p 1984 1482 75 0 -1 pproc(OUTE):PP
 p 1984 1418 75 0 -1 pproc(OUTF):PP

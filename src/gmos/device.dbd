@@ -1,4 +1,5 @@
 include "assemblyControlRecord.dbd"
+include "deviceControlRecord.dbd"
 device(bo,VME_IO,devDeviceBoOmsDao,"DEV OMS POWER")
 device(stringin,INST_IO,devBarcode,"barcodeScanner")
 device(deviceControl,VME_IO,devDeviceControlOMS,"DEV CTL OMS 8/44")

@@ -13,6 +13,9 @@
 */
 /*
  * $Log$
+ * Revision 1.2  2001/11/28 19:35:26  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -234,6 +237,7 @@ typedef struct MASKLUT
     NODE node;                     /* Next node in linked list.                  */
     char tag[LUT_TAG_SZ];          /* Mask name.                                 */
     long barcodeId;                /* Barcode ID of mask.                        */
+    double focusOffset;            /* Focus offset for ifu                       */
 } MASKLUT;
 
 /*

@@ -42,6 +42,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:46  mbec
+ * *** empty log message ***
+ *
  * Revision 1.3  2001/04/27 21:33:16  smb
  * TEST command now passed on to filter and grating devices.
  *
@@ -2108,6 +2111,7 @@ static long flDoTask(ASSEMBLY_CONTROL_RECORD *par)
      FL_LIST        *taskRequested = NULL;	/* Ptr to task requested. */
      FL_TASK_LIST   *taskItem = NULL;	/* Ptr to item in task list.	*/
      long timerStatus = DAR_S_SUCCESS;  /* status word from assStopTimer  */
+     int dbPutRet;                      /* debug status for dbPuts*/
 
 
      pFlPriv = ( FL_DEV_PRIVATE *) assGetPrivateStruct( par );
@@ -2238,8 +2242,10 @@ static long flDoTask(ASSEMBLY_CONTROL_RECORD *par)
                strncpy( FILT1_BARCODE_READ_FIELD, "WAITING", MAX_STRING_SIZE-1);
                /*if ( recGblPutLinkValue (&(FILT1_BARCODE_TRIGGER), (void *) par, DBR_LONG,
                       &nRequest, &nRequest) != DAR_S_SUCCESS )*/
-                if (dbPutLink(&(FILT1_BARCODE_TRIGGER), DBR_LONG,&nRequest,nRequest)!=DAR_S_SUCCESS)
+                dbPutRet = dbPutLink(&(FILT1_BARCODE_TRIGGER), DBR_LONG, &nRequest, 0);
+                if (dbPutRet != DAR_S_SUCCESS)
                {
+                    printf("---------> dbPutRet = %d\n",dbPutRet);
                     status = FL_TRIG_FAILED;
                     strncpy( errMsg, "Trigger filter 1 barcode failed", MAX_STRING_SIZE-1);
                }

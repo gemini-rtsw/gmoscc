@@ -22,6 +22,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.3  2001/11/28 19:35:26  mbec
+ * *** empty log message ***
+ *
  * Revision 1.2  2001/08/08 01:06:12  gemvx
  * Version after commissioning. See RELEASE.NOTES
  *
@@ -1307,9 +1310,9 @@ long gmSeqAtmDemands (struct genSubRecord *pgsub)
  *   b => Temperature reference point (deg C)
  *   c => Unused
  *   d => Mode flag (long)
- *   e => Focus offset for filter 1 (microns)
- *   f => Focus offset for filter 2 (microns)
- *   g => Focus offset for current grating (microns)
+ *   e => Unused 
+ *   f => Unused 
+ *   g => Focus offset for current grating (microns), filter 1, filter 2 and IFU
  *   h => Focus offset for filter 1 effective wavelength (microns)
  *   i => Focus offset for filter 1 effective wavelength (microns)
  *   j => Focus offset for grating effective wavelength (microns)
@@ -1413,10 +1416,11 @@ long gmSeqDtaDemands (struct genSubRecord *pgsub)
    refTemp   = *(double *)pgsub->b ;
    trackMode = *(long *)pgsub->d ;
 
-   filt1Offset = *(double *)pgsub->e ;
+/* filt1Offset = *(double *)pgsub->e ;
    filt2Offset = *(double *)pgsub->f ;
    grOffset    = *(double *)pgsub->g ;
-
+*/
+   powerFocusOffset = *(double *)pgsub->g;
    lambda1Offset   = *(double *)pgsub->h;
    lambda2Offset   = *(double *)pgsub->i;
    lambdaGrOffset  = *(double *)pgsub->j;
@@ -1562,7 +1566,9 @@ long gmSeqDtaDemands (struct genSubRecord *pgsub)
  * from the filters and grating.
  */
 
-   powerFocusOffset = filt1Offset + filt2Offset + grOffset;
+/*   This addition is done in the sumOffset record which also adds the ifu offset */
+
+/*   powerFocusOffset = filt1Offset + filt2Offset + grOffset;*/
 
 /*
  * In imaging mode the wavelength dependent focus offset is derived from

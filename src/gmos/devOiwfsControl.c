@@ -49,6 +49,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:47  mbec
+ * *** empty log message ***
+ *
  * Revision 1.2  2001/04/23 18:24:43  smb
  * DEBUG macro changed from logMsg to printf so it can display floating point values (bug 196)
  *
@@ -1360,25 +1363,10 @@ static long oiCheckAttributes
 
         dir = DAR_DEV_DIR_CHECK;
 
-/*        CHECKSTAT( (status = recGblPutLinkValue (&(par->odr1), 
-                (void *) par, DBR_SHORT,
-                &dir, &nRequest)),
-                return DAR_ACK_VAL_REJECT);
-*/
-
-
 	CHECKSTAT((status = dbPutLink(&(par->odr1),DBR_SHORT,&dir,nRequest)),return DAR_ACK_VAL_REJECT);
-        if (returnedAck != DAR_DEV_VAL_ACCEPT )
-/*
-        CHECKSTAT( (status = recGblGetFastLink ( &(par->ack1), 
-                (void *) par, &returnedAck)),
-                return DAR_ACK_VAL_REJECT);
-*/
-
-
         CHECKSTAT((status = dbGetLink(&(par->ack1),DBR_USHORT,&returnedAck,0,0)),return DAR_ACK_VAL_REJECT);
 
-
+	if (returnedAck != DAR_DEV_VAL_ACCEPT )
         {
             DEBUG(DAR_MSG_ERROR, 
                   "<%ld> %s:oiCheckAttributes: Base command rejected%c\n",' ');
@@ -1386,15 +1374,7 @@ static long oiCheckAttributes
             return DAR_ACK_VAL_REJECT;
         }
 
-        /*CHECKSTAT( (status = recGblPutLinkValue (&(par->odr2), 
-                (void *) par, DBR_SHORT,
-                &dir, &nRequest)),
-                return DAR_ACK_VAL_REJECT);*/
         CHECKSTAT((status = dbPutLink(&(par->odr2),DBR_SHORT,&dir,nRequest)),return DAR_ACK_VAL_REJECT);
-
-        /*CHECKSTAT( (status = recGblGetFastLink( &(par->ack2), 
-                (void *) par, &returnedAck)),
-                return DAR_ACK_VAL_REJECT);*/
         CHECKSTAT((status = dbGetLink(&(par->ack2),DBR_USHORT,&returnedAck,0,0)),return DAR_ACK_VAL_REJECT);
 
         if (returnedAck != DAR_DEV_VAL_ACCEPT )

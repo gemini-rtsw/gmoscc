@@ -12,7 +12,7 @@
 #set testlist = `find ${HOME} -name "test" | grep gmos`
 #set testdir = `echo $testlist | awk '{print $1}'`
 
-set testdir = /home/gemvx/tpaz/gmosDev/gmos/test
+set testdir = /gemini/epics3.13.4/gmos/gmos/test
 if ( $#testdir == 1 ) then
 
   cd ${testdir}

@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.3  2001/11/28 19:35:26  mbec
+ * *** empty log message ***
+ *
  * Revision 1.2  2001/04/25 19:51:09  smb
  * Fixed bug in which PAUSE/CONTINUE/STOP/ABORT commands could return a garbage status.
  *
@@ -2172,6 +2175,7 @@ long gmSeqMaskLUTread( char * lutfilename )
     long n;                  /* Status return for fscanf */
     long lcount;             /* Input line count */
     long status;             /* Return status */
+    int fscanret;
 
     status = CAD_ACCEPT;
     maskInitOK = FALSE;
@@ -2239,8 +2243,11 @@ long gmSeqMaskLUTread( char * lutfilename )
 
           lstAdd ((LIST *) gmSeqMaskLutPtr, (NODE *) p);
           strncpy (p->tag, tag, LUT_TAG_SZ-1);
-          if (fscanf(fp,"%ld", &(p->barcodeId)) != 1 )
+          fscanret = fscanf(fp,"%ld%lf", &(p->barcodeId), &(p->focusOffset));
+          if (fscanret!=2 )
           {
+             printf("DEBUG MESSAGE: %d \n",fscanret);
+             printf("DEBUG MESSAGE: %ld  %f\n",  p->barcodeId, p->focusOffset);
              printf("gmSeqMaskLUTread: Missing value(s) in %s line %ld\n",
                     lutfilename, lcount);
              status = CAD_REJECT;
@@ -2289,6 +2296,7 @@ long gmSeqMaskLUTread( char * lutfilename )
  *      valb => Target mask/IFU location as an integer:
  *               0 = in beam
  *               1 = out of beam
+        valc => Mask IFU offset
  *
  *   Function value:
  *   (<)  status  (long) Return status, 0 = OK
@@ -2307,6 +2315,7 @@ long gmSeqCadMask(struct cadRecord *pcad)
     static char maskLocationIn[MAX_STRING_SIZE];
     static long barcodeID;
     static long maskLocation;
+    static long focusOffset;
     int found;
 
     DBGMSGINT(DBG_MIN,"CAD mskPos. Directive = ", pcad->dir);
@@ -2376,6 +2385,9 @@ long gmSeqCadMask(struct cadRecord *pcad)
                       break;     /* Breaks out of "for" statement, not "case". */
                    }
                 }
+                focusOffset = p->focusOffset;
+                printf("DEBUG MESSAGE : Lut table read. Focus offset for mask is %ld\
+n", focusOffset);
              }
 
 /*
@@ -2401,9 +2413,12 @@ long gmSeqCadMask(struct cadRecord *pcad)
           if (status == CAD_ACCEPT)
           {
 
-/*          Output the location and barcode ID  */
+          /* Output the location and barcode ID  */
              if (maskLocation == 0) *(long *) pcad->vala = barcodeID;
              *(long *)pcad->valb = maskLocation;
+          /* Output mask offset */
+             *(long *) pcad->valc = focusOffset;
+             printf("DEBUG MESSAGE: Focus offset written to record. pcad->valc\n");
           }
           break ;
 

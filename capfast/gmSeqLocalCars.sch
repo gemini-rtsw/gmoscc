@@ -2,10 +2,10 @@
 uniq 361
 [tools]
 [detail]
-w -70 5691 100 0 n#338 elongouts.ObsCarDisconVal.OUT 96 4976 192 4976 192 5680 -272 5680 -272 5568 junction
 w -366 5571 100 0 n#338 gmSeqObserveCar.gmSeqObserveCar#337.CVAL -560 5488 -448 5488 -448 5568 -224 5568 ecars.observeC.IVAL
-w -198 5203 100 0 n#341 elongouts.ObsCarDisconVal.FLNK 96 5040 144 5040 144 5200 -480 5200 -480 5344 junction
+w -70 5691 100 0 n#338 elongouts.ObsCarDisconVal.OUT 96 4976 192 4976 192 5680 -272 5680 -272 5568 junction
 w -486 5347 100 0 n#341 gmSeqObserveCar.gmSeqObserveCar#337.CFLK -560 5344 -352 5344 -352 5376 -224 5376 ecars.observeC.SLNK
+w -198 5203 100 0 n#341 elongouts.ObsCarDisconVal.FLNK 96 5040 144 5040 144 5200 -480 5200 -480 5344 junction
 w -254 4283 100 0 n#359 ecalcouts.waitForDcDisconnected.FLNK -464 4272 16 4272 16 4896 -304 4896 -304 5008 -160 5008 elongouts.ObsCarDisconVal.SLNK
 w -269 5104 100 0 n#355 hwin.hwin#354.in -368 5136 -368 5040 -160 5040 elongouts.ObsCarDisconVal.DOL
 w -502 5395 100 0 n#340 gmSeqObserveCar.gmSeqObserveCar#337.CERR -560 5392 -384 5392 -384 5472 -224 5472 ecars.observeC.IERR
@@ -34,10 +34,11 @@ p -712 4120 100 0 -1 CALC:A
 p -184 4908 100 0 0 DESC:calcout record
 p 48 4638 100 0 0 DOPT:Use CALC
 p 48 4670 100 0 0 OOPT:Transition To Non-zero
-p -696 4320 100 0 1 SCAN:I/O Intr
+p -696 4320 100 0 1 SCAN:Passive
 p -368 4464 60 0 0 def(INPA):$(gm)dcDisabled.VAL
 p -368 4464 60 0 0 def(INPB):0.0
 p -368 4464 60 0 0 def(INPC):0.0
+p -832 4280 75 0 -1 pproc(INPA):CP
 use hwin -560 5095 100 0 hwin#354
 xform 0 -464 5136
 p -592 5120 100 0 -1 val(in):$(CAR_ERROR)
@@ -49,26 +50,26 @@ xform 0 432 4832
 p 1692 3776 120 256 -1 Title:GMOS Instrument Sequencer CAR records
 use gmSeqObserveCar -800 5287 100 0 gmSeqObserveCar#337
 xform 0 -680 5440
-use ecars -224 5287 100 0 observeC
-xform 0 -64 5456
-use ecars 928 4887 100 0 initC
-xform 0 1088 5056
-use ecars 928 4487 100 0 datumC
-xform 0 1088 4656
-use ecars 928 4055 100 0 parkC
-xform 0 1088 4224
 use ecars 928 5319 100 0 testC
 xform 0 1088 5488
-use gmSeqSeqCommandCar 408 5367 100 0 gmSeqSeqCommandCar#282
-xform 0 520 5504
-p 424 5344 100 0 -1 seta:seqcommand test
-use gmSeqSeqCommandCar 408 4535 100 0 gmSeqSeqCommandCar#283
-xform 0 520 4672
-p 428 4508 100 0 -1 seta:seqcommand datum
-use gmSeqSeqCommandCar 408 4935 100 0 gmSeqSeqCommandCar#284
-xform 0 520 5072
-p 428 4908 100 0 -1 seta:seqcommand init
+use ecars 928 4055 100 0 parkC
+xform 0 1088 4224
+use ecars 928 4487 100 0 datumC
+xform 0 1088 4656
+use ecars 928 4887 100 0 initC
+xform 0 1088 5056
+use ecars -224 5287 100 0 observeC
+xform 0 -64 5456
 use gmSeqSeqCommandCar 408 4103 100 0 gmSeqSeqCommandCar#285
 xform 0 520 4240
 p 428 4076 100 0 -1 seta:seqcommand park
+use gmSeqSeqCommandCar 408 4935 100 0 gmSeqSeqCommandCar#284
+xform 0 520 5072
+p 428 4908 100 0 -1 seta:seqcommand init
+use gmSeqSeqCommandCar 408 4535 100 0 gmSeqSeqCommandCar#283
+xform 0 520 4672
+p 428 4508 100 0 -1 seta:seqcommand datum
+use gmSeqSeqCommandCar 408 5367 100 0 gmSeqSeqCommandCar#282
+xform 0 520 5504
+p 424 5344 100 0 -1 seta:seqcommand test
 [comments]
