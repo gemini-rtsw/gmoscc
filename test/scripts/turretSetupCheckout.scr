@@ -176,8 +176,8 @@ OUTPUT *.MRND*
 DESC "Get the indexing algorithm number - should be 4 for the grating turret"
 DESC "INDEXING ALGORITHM 0 IS USED WHILE TURRET LIMIT SWITCHES ARE BROKEN"
 GETVAL devIndexType
-#OUTPUT *.IALG* 4*
-OUTPUT *.IALG* 0*
+#OUTPUT *.IALG* LOWLIM*
+OUTPUT *.IALG* NONE*
 
 DESC "Using Power status? Should be YES for the grating turret"
 GETVAL devUsePwrStatus

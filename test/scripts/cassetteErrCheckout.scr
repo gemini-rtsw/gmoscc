@@ -198,7 +198,7 @@ OUTPUT *reject*
 DESC "check for correct cassette error message"
 
 GETVAL cassetteMess
-OUTPUT *MESS*Can not translate named position*
+OUTPUT *MESS*Cannot translate named position*
 
 PUTVAL cassetteNamedTarget "c1s1"
 OUTPUT *VALS*
@@ -217,13 +217,21 @@ OUTPUT *reject*
 DESC "check for correct cassette error message"
 
 GETVAL cassetteMess
-OUTPUT *MESS*Can not translate named position*
+OUTPUT *MESS*Cannot translate named position*
 
 PUTVAL cassetteNamedTarget "c1s1"
 OUTPUT *VALS*
 
 CMD "checkCommand cassetteDir cassetteAck"
 OUTPUT *accept*
+
+DESC "Initializing cassette to clear SVAL field"
+
+PUTVAL cassetteMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
 
 ENDTEST
 
@@ -259,7 +267,7 @@ DESC "Reject top limit position"
 PUTVAL cassetteMode "1"
 OUTPUT *MODE*
 
-PUTVAL cassetteTarget "275.1"
+PUTVAL cassetteTarget "276.1"
 OUTPUT *VAL*
 
 CMD "checkCommand cassetteDir cassetteAck"

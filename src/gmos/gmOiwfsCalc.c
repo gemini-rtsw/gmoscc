@@ -175,6 +175,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:48  mbec
+ * *** empty log message ***
+ *
  * Revision 1.3  2001/05/17 04:11:45  smb
  * Malcolm Smith's correction to CalcApproxProbePosition applied.
  *
@@ -219,7 +222,13 @@
 
 #include <stdio.h>
 #include <math.h>
+
+#ifdef SOLARIS
+#define logMsg(fmt,a,b,c,d,e,f)  printf(fmt, a, b, c, d, e, f)
+#else
 #include <logLib.h>
+#endif
+
 #include "gmOiwfsCalc.h"
 
 

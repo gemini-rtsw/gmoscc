@@ -52,9 +52,10 @@ endif
 # Update the barcode files in the simulation directory from the ones
 # in the main directory.
 #
-\cp /gemini/gmos/lut/msk.lut /gemini/gmos/lut/sim
-\cp /gemini/gmos/lut/flt.lut /gemini/gmos/lut/sim
-\cp /gemini/gmos/lut/gr.lut /gemini/gmos/lut/sim
+
+\cp /gemini/epics3.13.4/gmos/gmos/data/msk.lut /gemini/epics3.13.4/gmos/gmos/data/sim
+\cp /gemini/epics3.13.4/gmos/gmos/data/flt.lut /gemini/epics3.13.4/gmos/gmos/data/sim
+\cp /gemini/epics3.13.4/gmos/gmos/data/gr.lut /gemini/epics3.13.4/gmos/gmos/data/sim
 
 #
 # Define the environment variable pointing to the config files

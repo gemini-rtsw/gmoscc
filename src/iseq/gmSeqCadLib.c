@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.2  2002/05/01 21:02:38  gemvx
+ * Clear the 250 micron offset when IFU is out of beam
+ *
  * Revision 1.1  2002/04/24 05:26:18  ajf
  * Added for epics3.13.4GEM8.4.
  *
@@ -2303,7 +2306,7 @@ long gmSeqMaskLUTread( char * lutfilename )
  *      valb => Target mask/IFU location as an integer:
  *               0 = in beam
  *               1 = out of beam
-        valc => Mask IFU offset
+        valc => Mask IFU offset in microns
  *
  *   Function value:
  *   (<)  status  (long) Return status, 0 = OK
@@ -2322,7 +2325,7 @@ long gmSeqCadMask(struct cadRecord *pcad)
     static char maskLocationIn[MAX_STRING_SIZE];
     static long barcodeID;
     static long maskLocation;
-    static long focusOffset;
+    static double focusOffset;
     int found;
 
     DBGMSGINT(DBG_MIN,"CAD mskPos. Directive = ", pcad->dir);
@@ -2392,9 +2395,13 @@ long gmSeqCadMask(struct cadRecord *pcad)
                       break;     /* Breaks out of "for" statement, not "case". */
                    }
                 }
+
+		/* Obtain a focus offset for this mask/IFU. */
+
                 focusOffset = p->focusOffset;
-                printf("DEBUG MESSAGE : Lut table read. Focus offset for mask is %ld\
-n", focusOffset);
+		DBGMSGREAL(DBG_MAX,"Focus offset for mask from LUT is", focusOffset);
+                /*printf("DEBUG MESSAGE : Lut table read. Focus offset for mask is %ld\
+n", focusOffset);*/
              }
 
 /*
@@ -2425,7 +2432,7 @@ n", focusOffset);
 		/* Output mask offset */
 		if (maskLocation == 0)
 		{
-		*(long *) pcad->valc = focusOffset;
+		*(double *) pcad->valc = focusOffset;
  		printf("DEBUG MESSAGE: Focus offset written to record. pcad->valc\n");
 		}
 		else
@@ -2438,9 +2445,10 @@ n", focusOffset);
 
       case menuDirectiveSTART:
    
-         DBGMSG(DBG_FULL,"CAD mskPos. Output values A..B: ");
+         DBGMSG(DBG_FULL,"CAD mskPos. Output values A,B,C: ");
          DBGMSGINT(DBG_FULL,"A: ", *(long *)pcad->vala);
          DBGMSGINT(DBG_FULL,"B: ", *(long *)pcad->valb);
+         DBGMSGREAL(DBG_FULL,"C: ", *(double *)pcad->valc);
 
          status = CAD_ACCEPT;
          break;

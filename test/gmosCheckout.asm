@@ -6,7 +6,7 @@ This script makes the following assumptions:
 
 * The GMOS components controller database is loaded and ready for use.
 
-* Suitable lookup tables exist in the /gemini/gmos/lut directory.
+* Suitable lookup tables exist in the /gemini/epics3.13.4/gmos/gmos/data directory.
 
 * It is safe to move all the GMOS components.
 

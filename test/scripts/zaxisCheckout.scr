@@ -441,10 +441,10 @@ FATAL
 
 DESC "Adjust upper and lower target limits"
 
-PUTVAL devMinPosition "-50.0"
+PUTVAL devMinPosition "-100.0"
 OUTPUT *.PLLM*
 
-PUTVAL devMaxPosition "5000.0"
+PUTVAL devMaxPosition "6000.0"
 OUTPUT *.PHLM*
 
 ENDTEST
@@ -461,8 +461,8 @@ DESC "Moving to upper soft limit"
 PUTVAL devMode "1"
 OUTPUT *MODE*MODE*MOVE*
 
-PUTVAL devTarget "4950"
-OUTPUT *VAL*VAL* 4950*
+PUTVAL devTarget "5900"
+OUTPUT *VAL*VAL* 5900*
 
 CMD "deviceCommand devDir devAck devBusy"
 OUTPUT *Failed*
@@ -558,8 +558,8 @@ DESC "Requesting position well below lower limit for translation stage Z axis"
 PUTVAL devMode "1"
 OUTPUT *MODE*MODE*MOVE*
 
-PUTVAL devTarget "-100"
-OUTPUT *VAL*VAL* -100*
+PUTVAL devTarget "-110"
+OUTPUT *VAL*VAL* -110*
 
 CMD "deviceCommand devDir devAck devBusy"
 OUTPUT *Command rejected*

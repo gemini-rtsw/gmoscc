@@ -39,6 +39,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:49  mbec
+ * *** empty log message ***
+ *
  * Revision 1.3  2001/05/09 19:20:39  smb
  * New focus settings: Changed to pass the Z offset, which is now a 75.0mm nominal) in with the rest of the offsets using gmOiwfsSetOffsets. Removed z-offset subtraction since it now happens in gmOiwfsCalc.c.
  *
@@ -849,6 +852,17 @@ long oiFollowA
             xTarget = tcsDemands[3];
             yTarget = tcsDemands[4];
             zTarget = tcsDemands[5];
+
+              /*
+              *  Copy the follow targets to the move targets inputs to
+        .     *  show updates on the engineering screens.
+              */
+ 
+             IN_X_TARGET = xTarget;
+             IN_Y_TARGET = yTarget;
+             db_post_events(pgs, &IN_X_TARGET, DBE_VALUE);
+             db_post_events(pgs, &IN_Y_TARGET, DBE_VALUE);
+
 
             /*
              *  Set new track ID flag if new ID differs from old ID

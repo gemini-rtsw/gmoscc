@@ -45,11 +45,12 @@
 # ------------------------------------------------------------------------
 #
 
-if (!($?EPICS)) then
+setenv EPICS /gemini/external/GEM8.4
+setenv HOST_ARCH solaris
+setenv LD_LIBRARY_PATH  /gemini/epics3.13.4/lib/solaris:$EPICS/base/lib/${HOST_ARCH}:${EPICS}/extensions/lib/${HOST_ARCH}:/gemini/ocs/ocs-15/packages/tcl8.3/lib:${LD_LIBRARY_PATH}
+setenv TCL_LIBRARY /gemini/ocs/ocs-15/packages/tcl8.3/lib/tcl8.3
 
-   source /usr/local/epics/epics3.12.2GEM5/config/epics.csh
-   setenv EPICS_DISPLAY_PATH ".:.applTop/data"
-endif
+setenv EPICS_DISPLAY_PATH "/gemini/gmos/data" 
 
 #
 # ------------------------------------------------------------------------
@@ -59,21 +60,21 @@ endif
 
 # Define the location of the operational and development directories
 # and the location of the GMOS detector controller software.
-
-setenv GMOS_OP      /gemini/gmos/gmos
+setenv GMOS_OP      /gemini/epics3.13.4/gmos/gmos
 setenv GMOS_DEV     /gemini/epics3.13.4/gmos/gmos
 setenv GMOS_DC      /gemini/epics3.13.4/gmosdc/gmosdc
 
 # Add the GMOS solaris binary directories to the PATH
 
-setenv PATH ${PATH}:.applTop/bin/solaris:${GMOS_OP}/bin/solaris:${GMOS_DC}/bin/solaris
+
+setenv PATH  ${EPICS}/base/bin/${HOST_ARCH}:${EPICS}/extensions/bin/${HOST_ARCH}:/gemini/gmos/bin/solaris:${GMOS_OP}/bin/solaris:${GMOS_DC}/bin/solaris:${GMOS_OP}/test:${PATH}
 
 # Add the GMOS data directories to the search path for edd and dm.
 
 if ( ${?EPICS_DISPLAY_PATH} ) then
-      setenv EPICS_DISPLAY_PATH ${EPICS_DISPLAY_PATH}:${GMOS_OP}/data:${GMOS_DC}/data
+      setenv EPICS_DISPLAY_PATH ${EPICS_DISPLAY_PATH}:/gemini/gmos/data:${GMOS_DC}/data
 else
-      setenv EPICS_DISPLAY_PATH .:./data:${GMOS_OP}/data:${GMOS_DC}/data
+      setenv EPICS_DISPLAY_PATH .:./data:/gemini/gmos/data:${GMOS_DC}/data
 endif
 
 #
@@ -85,6 +86,7 @@ endif
 # Add the "./scripts" directories to the PATH so that dhsTestCmdr can
 # pick up its test scripts. (It is assumed that "." is already in the PATH).
 
+
 setenv PATH ${PATH}:./scripts
 
 # Define the default configuration directory for the dhsTestCmdr
@@ -94,24 +96,24 @@ setenv DEFAULT_CONFIG_DIR ./configFiles
 # Define the version of Tcl required by the dhsTestCmdr
 # and add it to the PATH and LD_LIBRARY_PATH
 
-setenv TCL_LIBRARY /usr/local/lib/tcl7.6
-setenv TK_LIBRARY  /usr/local/lib/tk4.2
+#setenv TCL_LIBRARY /usr/local/lib/tcl7.6
+#setenv TK_LIBRARY  /usr/local/lib/tk4.2
 
-if ( ${?LD_LIBRARY_PATH} ) then
-      setenv LD_LIBRARY_PATH /usr/local/lib:${LD_LIBRARY_PATH}
-else
-      setenv LD_LIBRARY_PATH /usr/local/lib
-endif
+#if ( ${?LD_LIBRARY_PATH} ) then
+#      setenv LD_LIBRARY_PATH /usr/local/lib:${LD_LIBRARY_PATH}
+#else
+#      setenv LD_LIBRARY_PATH /usr/local/lib
+#endif
 
 # Define device initialisation command aliases
 
-if ( -e ${GMOS_OP}/bin/solaris/gmosSetResetAliases ) then
-   source ${GMOS_OP}/bin/solaris/gmosSetResetAliases
+if ( -e /gemini/gmos/bin/solaris/gmosSetResetAliases ) then
+   source /gemini/gmos/bin/solaris/gmosSetResetAliases
 endif
 
 # Define gmosTest command alias
 
-if ( -e ${GMOS_OP}/bin/solaris/gmosTest ) then
+if ( -e /gemini/gmos/bin/solaris/gmosTest ) then
    alias gmosTest 'source ${GMOS_OP}/bin/solaris/gmosTest'
 endif
 
@@ -131,8 +133,6 @@ setenv GMOS_EDITOR textedit
 # ------------------------------------------------------------------------
 #      ALIASES FOR ACCESS CONTROL AND SAFETY COMMANDS
 # ------------------------------------------------------------------------
-#
-
 # Define the commands to make access to the GMOS MK and CP hardware explicit
 # rather than accidental.
 
@@ -143,30 +143,27 @@ alias gmosNoCP 'unsetenv GMOS_CP_ACCESS && set prompt = "`uname -n`% " && echo "
 
 # Define aliases for setting the DISPLAY variable on various workstations
 
-#alias  ayla     'setenv DISPLAY ayla:0.0'
-#alias  manta    'setenv DISPLAY manta:0.0'
-#alias  pisces   'setenv DISPLAY pisces:0.0'
-
 #
 # ------------------------------------------------------------------------
 #      EXTRA ALIASES FOR CAPFAST AND EPICS (OPTIONAL)
 # ------------------------------------------------------------------------
 #
 
-# Redefine "gmake" (because the new version does not work with EPICS)
-
-#alias gmake /usr/local/bin/gnumake
-
 # Redefine edd to V2.4 (which is used from V004 of the software onwards)
 
-#alias edd edd2.4
+ alias edd edd2.4
 
 # Define aliases for useful commands
- 
+
 # Command for printing a CAPFAST diagram
 
-#alias schprint  "schplot -Nb '\!^'.sch | schps -wc 26 -d | lp" 
+alias schprint  "schplot -Nb '\!^'.sch | schps -wc 26 -d | lp"
 
 # Command for dumping an X window screen (e.g. "dm" screen) into Postscript
 
-#alias x2ps       "xwd -nobdrs | xpr -device ps -height 7.5 -width 6.5 -compact -portrait"
+alias x2ps       "xwd -nobdrs | xpr -device ps -height 7.5 -width 6.5 -compact -portrait"
+
+setenv GMOS_CP_ACCESS
+set prompt = "`uname -n `(GMOS CP)% "
+
+

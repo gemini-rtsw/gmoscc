@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2002/04/24 05:24:56  ajf
+ * New directory for port to epics3.13.4GEM8.4.
+ *
  * Revision 1.1  2001/11/28 20:08:46  mbec
  * *** empty log message ***
  *
@@ -343,7 +346,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 /*
  *  Local Defines
  */
-
+#define MK                       0              /* Defined for different grating positons in GMOS-S */
 #define GR_LUT_FIRST_STRING     "grating"	/* The first line of the grating lookup		*/
 						/* table file must contain this string.		*/
 #define GR_AUX_LUT_FIRST_STRING "aux_grating"	/* The first line of the auxilliary lookup	*/
@@ -3200,7 +3203,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 
 	       pGrPriv->mode = DAR_MODE_MOVE;
 	       pGrPriv->velocity[TRT] = GR_VELOCITY_TURRET;     /* Correct turret move velocity */
-
+#if (MK) 
 	       switch (pGrPriv->parkPosition)
 	       {
 	       case (GRA):
@@ -3224,15 +3227,49 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 		    break;
 
 	       default:
-		    /* If the grating number is not recognised use the default parking position */
+                    /* If the grating number is not recognised use the default parking position */
 
                     GRDEBUG(DAR_MSG_WARNING, "grDoTask: Invalid parking position=%d. Using default.\n",
                        pGrPriv->parkPosition );
                     (void) strncpy( pGrPriv->position[TRT], GR_NAME_POS_PARK, MAX_STRING_SIZE-1 );
-		    pDevConfig->newTurretPos = GRB;	/* Default position is assumed to be B */
-		    break;
-	       }
+                    pDevConfig->newTurretPos = GRB;     /* Default position is assumed to be B */
+                    break;
 
+	       }
+#else
+
+switch (pGrPriv->parkPosition)
+               {
+               case (GRA):
+                    (void) strncpy( pGrPriv->position[TRT], GR_NAME_POS_POSLDA, MAX_STRING_SIZE-1 );
+                    pDevConfig->newTurretPos = GRD;
+                    break;
+
+               case (GRB):
+                    (void) strncpy( pGrPriv->position[TRT], GR_NAME_POS_POSLDB, MAX_STRING_SIZE-1 );
+                    pDevConfig->newTurretPos = GRA;
+                    break;
+
+               case (GRC):
+                    (void) strncpy( pGrPriv->position[TRT], GR_NAME_POS_POSLDC, MAX_STRING_SIZE-1 );
+                    pDevConfig->newTurretPos = GRB;
+                    break;
+
+               case (GRD):
+                    (void) strncpy( pGrPriv->position[TRT], GR_NAME_POS_POSLDD, MAX_STRING_SIZE-1 );
+                    pDevConfig->newTurretPos = GRC;
+                    break;
+
+               default:
+                    /* If the grating number is not recognised use the default parking position */
+
+                    GRDEBUG(DAR_MSG_WARNING, "grDoTask: Invalid parking position=%d. Using default.\n",
+                       pGrPriv->parkPosition );
+                    (void) strncpy( pGrPriv->position[TRT], GR_NAME_POS_PARK, MAX_STRING_SIZE-1 );
+                    pDevConfig->newTurretPos = GRB;     /* Default position is assumed to be B */
+                    break;
+               }
+#endif
                semGive (pGrPriv->mutexSem);
                break;
 

@@ -119,7 +119,7 @@ OUTPUT *.SIMM*NONE*
 
 DESC "Get the indexing algorithm number - should be 4 for the grating turret"
 GETVAL devIndexType
-OUTPUT *.IALG* 4*
+OUTPUT *.IALG* LOWLIM*
 
 DESC "Using Power status? Should be YES for the grating turret"
 GETVAL devUsePwrStatus

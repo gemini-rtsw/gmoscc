@@ -17,11 +17,11 @@
  *
  *INDENT-OFF*
  * $Log$
- * Revision 1.1  2002/04/24 05:25:35  ajf
- * Added for port to epics3.13.4GEM8.4.
+ * Revision 1.3  2002/07/23 14:44:36  gmos
+ * Before Cold tests and addition of SMB's ADC software mods
  *
- * Revision 1.1  2001/11/28 20:08:50  mbec
- * *** empty log message ***
+ * Revision 1.4  2001/07/10 13:45:20  gmos
+ * V2-6 imported from Gemini.
  *
  * Revision 1.3  2001/04/20 02:12:19  smb
  * Lifter cycle time changed again from 10 to 8 seconds.
@@ -71,7 +71,7 @@
 #define GR_VALVE_ACTIVE    0
 #define GR_PRESSURE_OK     0
 
-#define GR_LIFTER_CYCLE_TIME  9		/* Lifter cycle time in seconds			*/
+#define GR_LIFTER_CYCLE_TIME  6		/* Lifter cycle time in seconds			*/
 #define GR_LIFTER_SHORT_TIME  2		/* Lifter short reprocessing time in seconds	*/
 #define GR_LIFTER_MAX_CYCLES  1		/* Maximum number of lifter cycles		*/
 

@@ -13,6 +13,9 @@
 */
 /*
  * $Log$
+ * Revision 1.1  2002/04/24 05:26:18  ajf
+ * Added for epics3.13.4GEM8.4.
+ *
  * Revision 1.3  2002/01/15 21:06:07  mbec
  * *** empty log message ***
  *
@@ -84,12 +87,12 @@
 #define DTAYBORDER    30.0  /* Size of Y border (microns) */
 #define DTAZBORDER    30.0  /* Size of Z border (microns) */
 
-#define DTAABSXMAX   230.0  /* Maximum X of detector translation stage (microns) */
-#define DTAABSXMIN   -25.0  /* Minimum X of detector translation stage (microns) */
-#define DTAABSYMAX   230.0  /* Maximum Y of detector translation stage (microns) */
-#define DTAABSYMIN   -15.0  /* Minimum Y of detector translation stage (microns) */
-#define DTAABSZMAX  4735.0  /* Maximum Z of detector translation stage (microns) */
-#define DTAABSZMIN     0.0  /* Minimum Z of detector translation stage (microns) */
+#define DTAABSXMAX   243.0  /* Maximum X of detector translation stage (microns) */
+#define DTAABSXMIN   -17.0  /* Minimum X of detector translation stage (microns) */
+#define DTAABSYMAX   258.0  /* Maximum Y of detector translation stage (microns) */
+#define DTAABSYMIN   -14.0  /* Minimum Y of detector translation stage (microns) */
+#define DTAABSZMAX  4950.0  /* Maximum Z of detector translation stage (microns) */
+#define DTAABSZMIN    30.0  /* Minimum Z of detector translation stage (microns) */
 
 #define DTAXMAX   (DTAABSXMAX - DTAXBORDER)
 #define DTAXMIN   (DTAABSXMIN + DTAXBORDER)

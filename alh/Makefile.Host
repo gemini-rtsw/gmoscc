@@ -8,7 +8,7 @@ TOPMKRR	= gm
 TOPMKSR	= g5
 TOPMKRS	= g6
 TOPMKSS	= g7
-TOPCP	= g3
+TOPCP	= gm
 
 # Alarm handler files to put into the DATA directory
 

@@ -17,44 +17,23 @@ set arg = "$1"
 # variable has been defined.
 #
 
-if (!("$arg" == "SS" || "$arg" == "SIM" || "$arg" == "SIM2" || "$arg" == "CP")) then
+if (!("$arg" == "SS" || "$arg" == "SIM" || "$arg" == "SIM2" )) then
 
     #
     # Check for gmos safety
     #
 
-    if (!($?GMOS_MK_ACCESS)) then
+    if (!($?GMOS_MK_ACCESS) && !($?GMOS_CP_ACCESS)) then
 	echo ""
-	echo "GMOS MK safety check failed."
+	echo "GMOS safety check failed."
 	echo ""
 	echo "Before starting these screens, which will allow control of real MK hardware,"
-	echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+	echo 'you must type "gmosMK or gmosCP" to confirm that it is safe to do so.'
 	echo ""
 	exit
     else
-	echo "GMOS MK safety check passed."
+	echo "GMOS safety check passed."
     endif
-endif
-
-if ("$arg" == "CP") then
-
-    #
-    # Check for gmos safety
-    #
-
-    if (!($?GMOS_CP_ACCESS)) then
-	echo ""
-	echo "GMOS CP safety check failed."
-	echo ""
-	echo "Before starting these screens, which will allow control of real CP hardware,"
-	echo 'you must type "gmosCP" to confirm that it is safe to do so.'
-	echo ""
-	exit
-    else
-	echo "GMOS CP safety check passed."
-    endif
-endif
-
 cd ${GMOS_OP};
 
 if "$arg" == "CP" then
@@ -82,7 +61,7 @@ else if "$arg" == "SIM2" then
    echo "Connecting to GMOS Mauna Kea database - simulated 2"
    gmosStartMKSS2
 else
-   echo "Connecting to GMOS Mauna Kea database"
+   echo "Connecting to GMOS"
    gmosStartMKRR
 endif
 

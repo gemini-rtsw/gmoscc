@@ -145,7 +145,7 @@ OUTPUT *.ACCL*
 
 DESC "Get the indexing algorithm number"
 GETVAL devIndexType
-OUTPUT *.IALG* 2*
+OUTPUT *.IALG* UPPHOME*
 
 DESC "Using Power status?"
 GETVAL devUsePwrStatus

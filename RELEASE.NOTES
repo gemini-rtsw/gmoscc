@@ -348,3 +348,8 @@ V3-7 May 2nd 2002 ajf/tpaz:
    (b) The gmosStart script needed to "cd" to the correct directory
        before starting the "dm" screens.
 -  LUT files have been updated in CVS.
+
+
+V4-0 January 2003  pgigoux/tpaz:
+--------------------------------
+- Merged atc changes for gmos south

@@ -64,16 +64,13 @@ w 1600 3 100 0 ack1 easscontj.Assembly.ACK1 416 -96 656 -96 656 0 2592 0 devTran
 w 1538 67 100 0 position1 easscontj.Assembly.POS1 416 -32 592 -32 592 64 2592 64 devTranslation.devTranslation#108.vals
 w 1546 99 100 0 mode1 easscontj.Assembly.MOD1 416 0 560 0 560 96 2592 96 devTranslation.devTranslation#108.mode
 w 1536 131 100 0 dir1 easscontj.Assembly.ODR1 416 32 528 32 528 128 2592 128 devTranslation.devTranslation#108.dir
-s -176 -1760 100 0 model is finalized ----------->
 s -176 -1728 100 0 These five records can be removed once the thermal
+s -176 -1760 100 0 model is finalized ----------->
 [cell use]
-use edfans 1616 -1360 100 0 Simulate
-xform 0 1536 -1568
-p 1424 -1360 100 0 1 PV:$(top)$(dev)
-p 1664 -1504 75 768 -1 pproc(OUTA):NPP
-p 1664 -1536 75 768 -1 pproc(OUTB):NPP
-p 1664 -1568 75 768 -1 pproc(OUTC):NPP
-p 1664 -1600 75 768 -1 pproc(OUTD):NPP
+use edfans -848 -400 100 0 IlFan
+xform 0 -720 -208
+p -832 -448 100 768 1 OMSL:closed_loop
+p -832 -480 100 0 1 PV:$(top)$(dev)
 use edfans 2064 -1648 100 0 Debug
 xform 0 1984 -1856
 p 1872 -1648 100 0 1 PV:$(top)$(dev)
@@ -81,10 +78,13 @@ p 2112 -1792 75 768 -1 pproc(OUTA):NPP
 p 2112 -1824 75 768 -1 pproc(OUTB):NPP
 p 2112 -1856 75 768 -1 pproc(OUTC):NPP
 p 2112 -1888 75 768 -1 pproc(OUTD):NPP
-use edfans -848 -400 100 0 IlFan
-xform 0 -720 -208
-p -832 -448 100 768 1 OMSL:closed_loop
-p -832 -480 100 0 1 PV:$(top)$(dev)
+use edfans 1616 -1360 100 0 Simulate
+xform 0 1536 -1568
+p 1424 -1360 100 0 1 PV:$(top)$(dev)
+p 1664 -1504 75 768 -1 pproc(OUTA):NPP
+p 1664 -1536 75 768 -1 pproc(OUTB):NPP
+p 1664 -1568 75 768 -1 pproc(OUTC):NPP
+p 1664 -1600 75 768 -1 pproc(OUTD):NPP
 use ukatcBorderD -1424 -2441 100 0 ukatcBorderD#192
 xform 0 1216 -736
 p 3444 -2128 120 256 -1 Project:Gemini Multi-object Optical Spectrograph
@@ -92,40 +92,40 @@ p 1536 -2304 150 0 -1 Rev:$Revision$
 p 3436 -2192 120 256 -1 Title:Translation assembly
 p 3152 -2256 100 768 -1 author:S M Beard and Chris Tierney
 p 3152 -2288 100 768 -1 date:$Date$
-use eaos 768 -2121 100 0 offsetTemp
-xform 0 896 -2032
-p 512 -2050 100 0 0 OMSL:closed_loop
-p 512 -2178 100 0 0 PREC:1
-p 532 -2614 100 0 0 PV:$(top)$(dev)
-use eaos 768 -1657 100 0 crossy
-xform 0 896 -1568
-p 512 -1586 100 0 0 OMSL:closed_loop
-p 512 -1714 100 0 0 PREC:1
-p 532 -2150 100 0 0 PV:$(top)$(dev)
-use eaos 768 -1433 100 0 crossx
-xform 0 896 -1344
-p 512 -1362 100 0 0 OMSL:closed_loop
-p 512 -1490 100 0 0 PREC:1
-p 532 -1926 100 0 0 PV:$(top)$(dev)
-use eaos 768 -1897 100 0 resetTemp
-xform 0 896 -1808
-p 512 -1826 100 0 0 OMSL:closed_loop
-p 512 -1954 100 0 0 PREC:1
-p 532 -2390 100 0 0 PV:$(top)$(dev)
 use eaos 768 -2345 100 0 filteredTemp
 xform 0 896 -2256
 p 512 -2274 100 0 0 OMSL:closed_loop
 p 512 -2402 100 0 0 PREC:1
 p 532 -2838 100 0 0 PV:$(top)$(dev)
-use hwin -928 -672 100 0 time_constant1
-xform 0 -800 -704
-p -893 -712 100 0 -1 val(in):120.0
+use eaos 768 -1897 100 0 resetTemp
+xform 0 896 -1808
+p 512 -1826 100 0 0 OMSL:closed_loop
+p 512 -1954 100 0 0 PREC:1
+p 532 -2390 100 0 0 PV:$(top)$(dev)
+use eaos 768 -1433 100 0 crossx
+xform 0 896 -1344
+p 512 -1362 100 0 0 OMSL:closed_loop
+p 512 -1490 100 0 0 PREC:1
+p 532 -1926 100 0 0 PV:$(top)$(dev)
+use eaos 768 -1657 100 0 crossy
+xform 0 896 -1568
+p 512 -1586 100 0 0 OMSL:closed_loop
+p 512 -1714 100 0 0 PREC:1
+p 532 -2150 100 0 0 PV:$(top)$(dev)
+use eaos 768 -2121 100 0 offsetTemp
+xform 0 896 -2032
+p 512 -2050 100 0 0 OMSL:closed_loop
+p 512 -2178 100 0 0 PREC:1
+p 532 -2614 100 0 0 PV:$(top)$(dev)
+use hwin -1216 -937 100 0 hwin#91
+xform 0 -1120 -896
+p -1213 -904 100 0 -1 val(in):#C0 S06
 use hwin -928 -768 100 0 time_constant2
 xform 0 -800 -800
 p -893 -808 100 0 -1 val(in):12925.27
-use hwin -1216 -937 100 0 hwin#91
-xform 0 -1120 -896
-p -1213 -904 100 0 -1 val(in):#C0 S08
+use hwin -928 -672 100 0 time_constant1
+xform 0 -800 -704
+p -893 -712 100 0 -1 val(in):120.0
 use embbos -176 112 100 0 OffsetSel
 xform 0 -256 32
 p -224 -2 100 0 0 FRST:Thermal XY only
@@ -173,87 +173,55 @@ use elongouts -896 487 100 0 Dir
 xform 0 -768 576
 p -832 432 100 0 1 OMSL:closed_loop
 p -832 400 100 0 1 PV:$(top)$(dev)
-use outhier 704 -969 100 0 FLNK
-xform 0 720 -928
-use outhier 1696 407 100 0 OMSS
-xform 0 1712 448
-use outhier 1696 279 100 0 OERR
-xform 0 1712 320
-use outhier 1696 151 100 0 CFLK
-xform 0 1712 192
-use outhier 992 695 100 0 VAL
-xform 0 1008 736
-use outhier 992 631 100 0 MESS
-xform 0 1008 672
-use outhier 992 567 100 0 HLTH
-xform 0 1008 608
 use outhier 1696 535 100 0 CAR
 xform 0 1712 576
-use inhier -1200 631 100 0 DIR
-xform 0 -1184 672
-use inhier -1200 439 100 0 MODE
-xform 0 -1184 480
-use inhier -1200 183 100 0 X
-xform 0 -1184 224
-use inhier -1200 87 100 0 Y
-xform 0 -1184 128
-use inhier -1200 -9 100 0 Z
-xform 0 -1184 32
-use inhier 1168 -1609 100 0 SIMM
-xform 0 1184 -1568
+use outhier 992 567 100 0 HLTH
+xform 0 1008 608
+use outhier 992 631 100 0 MESS
+xform 0 1008 672
+use outhier 992 695 100 0 VAL
+xform 0 1008 736
+use outhier 1696 151 100 0 CFLK
+xform 0 1712 192
+use outhier 1696 279 100 0 OERR
+xform 0 1712 320
+use outhier 1696 407 100 0 OMSS
+xform 0 1712 448
+use outhier 704 -969 100 0 FLNK
+xform 0 720 -928
 use inhier 1616 -1897 100 0 DBUG
 xform 0 1632 -1856
+use inhier 1168 -1609 100 0 SIMM
+xform 0 1184 -1568
+use inhier -1200 -9 100 0 Z
+xform 0 -1184 32
+use inhier -1200 87 100 0 Y
+xform 0 -1184 128
+use inhier -1200 183 100 0 X
+xform 0 -1184 224
+use inhier -1200 439 100 0 MODE
+xform 0 -1184 480
+use inhier -1200 631 100 0 DIR
+xform 0 -1184 672
 use ebis -1200 -233 100 0 Ilock
 xform 0 -1072 -160
 p -1136 -256 100 0 1 ONAM:INTERLOCK
 p -1136 -320 100 0 1 PV:$(top)$(dev)
 p -1136 -288 100 0 1 ZNAM:OK
-use hwout -496 -281 100 0 hwout#119
-xform 0 -400 -240
-p -400 -249 100 0 -1 val(outp):$(top)$(dev)3Device.FLT NPP NMS
-use hwout -496 -249 100 0 hwout#116
-xform 0 -400 -208
-p -400 -217 100 0 -1 val(outp):$(top)$(dev)2Device.FLT NPP NMS
 use hwout -496 -217 100 0 hwout#115
 xform 0 -400 -176
 p -400 -185 100 0 -1 val(outp):$(top)$(dev)1Device.FLT NPP NMS
+use hwout -496 -249 100 0 hwout#116
+xform 0 -400 -208
+p -400 -217 100 0 -1 val(outp):$(top)$(dev)2Device.FLT NPP NMS
+use hwout -496 -281 100 0 hwout#119
+xform 0 -400 -240
+p -400 -249 100 0 -1 val(outp):$(top)$(dev)3Device.FLT NPP NMS
 use snlLink 480 439 100 0 snlLink#112
 xform 0 784 512
 use ecars 1120 231 100 0 C
 xform 0 1280 400
 p 1200 208 100 0 1 PV:$(top)$(dev)
-use devTranslation 2592 -153 100 0 devTranslation#108
-xform 0 2752 16
-p 2656 -160 100 0 -1 seta:dev $(dev)1
-p 2656 -192 100 0 -1 setb:motor $(dtaXMotor)
-p 2656 -224 100 0 -1 setc:power $(dtXPower)
-p 2656 -256 100 0 -1 setd:ialg 2
-p 2912 -192 100 0 -1 sete:mres 2.5
-p 2912 -160 100 0 -1 setf:axis X
-p 2912 -224 100 0 -1 setg:pllm -31.0
-p 2912 -256 100 0 -1 seth:phlm 230.0
-p 3072 -224 100 0 -1 seti:vllm 5.0
-p 3072 -256 100 0 -1 setj:vhlm 800.0
-p 3072 -160 100 0 -1 setk:vbas 80.0
-p 3072 -192 100 0 -1 setl:accl 240.0
-p 3232 -160 100 0 -1 setm:velo 110.0
-p 3232 -192 100 0 -1 setn:fivl 80.4
-use devTranslation 2592 -665 100 0 devTranslation#109
-xform 0 2752 -496
-p 2656 -672 100 0 -1 seta:dev $(dev)2
-p 2656 -704 100 0 -1 setb:motor $(dtaYMotor)
-p 2656 -736 100 0 -1 setc:power $(dtYPower)
-p 2656 -768 100 0 -1 setd:ialg 2
-p 2912 -704 100 0 -1 sete:mres 6.25
-p 2912 -672 100 0 -1 setf:axis Y
-p 2912 -736 100 0 -1 setg:pllm -19.0
-p 2912 -768 100 0 -1 seth:phlm 235.0
-p 3072 -736 100 0 -1 seti:vllm 2.0
-p 3072 -768 100 0 -1 setj:vhlm 320.0
-p 3072 -672 100 0 -1 setk:vbas 32.0
-p 3072 -704 100 0 -1 setl:accl 96.0
-p 3232 -672 100 0 -1 setm:velo 40.0
-p 3232 -704 100 0 -1 setn:fivl 32.2
 use devTranslation 2592 -1177 100 0 devTranslation#110
 xform 0 2752 -1008
 p 2656 -1184 100 0 -1 seta:dev $(dev)3
@@ -270,6 +238,38 @@ p 3072 -1184 100 0 -1 setk:vbas 400.0
 p 3072 -1216 100 0 -1 setl:accl 1200.0
 p 3232 -1184 100 0 -1 setm:velo 1200.0
 p 3232 -1216 100 0 -1 setn:fivl 402.0
+use devTranslation 2592 -665 100 0 devTranslation#109
+xform 0 2752 -496
+p 2656 -672 100 0 -1 seta:dev $(dev)2
+p 2656 -704 100 0 -1 setb:motor $(dtaYMotor)
+p 2656 -736 100 0 -1 setc:power $(dtYPower)
+p 2656 -768 100 0 -1 setd:ialg 2
+p 2912 -704 100 0 -1 sete:mres 6.25
+p 2912 -672 100 0 -1 setf:axis Y
+p 2912 -736 100 0 -1 setg:pllm -19.0
+p 2912 -768 100 0 -1 seth:phlm 235.0
+p 3072 -736 100 0 -1 seti:vllm 2.0
+p 3072 -768 100 0 -1 setj:vhlm 320.0
+p 3072 -672 100 0 -1 setk:vbas 32.0
+p 3072 -704 100 0 -1 setl:accl 96.0
+p 3232 -672 100 0 -1 setm:velo 40.0
+p 3232 -704 100 0 -1 setn:fivl 32.2
+use devTranslation 2592 -153 100 0 devTranslation#108
+xform 0 2752 16
+p 2656 -160 100 0 -1 seta:dev $(dev)1
+p 2656 -192 100 0 -1 setb:motor $(dtaXMotor)
+p 2656 -224 100 0 -1 setc:power $(dtXPower)
+p 2656 -256 100 0 -1 setd:ialg 2
+p 2912 -192 100 0 -1 sete:mres 2.5
+p 2912 -160 100 0 -1 setf:axis X
+p 2912 -224 100 0 -1 setg:pllm -31.0
+p 2912 -256 100 0 -1 seth:phlm 230.0
+p 3072 -224 100 0 -1 seti:vllm 5.0
+p 3072 -256 100 0 -1 setj:vhlm 800.0
+p 3072 -160 100 0 -1 setk:vbas 80.0
+p 3072 -192 100 0 -1 setl:accl 240.0
+p 3232 -160 100 0 -1 setm:velo 110.0
+p 3232 -192 100 0 -1 setn:fivl 80.4
 use easscontj 304 592 100 0 Assembly
 xform 0 256 -192
 p -32 224 100 0 1 AAHL:240.0

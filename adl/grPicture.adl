@@ -6,8 +6,8 @@ display {
 	majv="2"
 	mnrv="4"
 	ndyng="59"
-	npc="56"
-	nstr="87"
+	npc="52"
+	nstr="88"
 	ndynamic="21"
 	nplot="0"
 	nrd="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="9170"
+	nwords_dspy="9136"
 	nwords_sta="1420"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="3080"
-	osta="1660"
-	odynamic="7772"
-	oplot="9158"
-	ord="9158"
-	oes="9158"
-	okd="9158"
-	opd="9170"
-	opo="9170"
+	odyng="3046"
+	osta="1626"
+	odynamic="7738"
+	oplot="9124"
+	ord="9124"
+	oes="9124"
+	okd="9124"
+	opd="9136"
+	opo="9136"
 	opc="68"
-	ostr="948"
-	ocmap="1660"
-	ocrules="1660"
+	ostr="890"
+	ocmap="1626"
+	ocrules="1626"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -49,8 +49,8 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
+	pixwid="1280"
+	pixht="1024"
 	mmwid="320"
 	mmht="240"
 }
@@ -270,7 +270,7 @@ display {
 		height="20"
 		groupid="0"
 	}
-	textix="Grating Assembly Pictorial Status"
+	textix="GMOS-S Grating Assembly Pictorial Status"
 	align="horiz. centered"
 }
 "rectangle" {
@@ -634,7 +634,7 @@ display {
 		height="20"
 		groupid="0"
 	}
-	textix="A"
+	textix="D"
 	align="horiz. right"
 }
 "text" {
@@ -645,7 +645,7 @@ display {
 		height="20"
 		groupid="0"
 	}
-	textix="D"
+	textix="A"
 	align="horiz. right"
 }
 "text" {
@@ -656,7 +656,7 @@ display {
 		height="20"
 		groupid="0"
 	}
-	textix="B"
+	textix="C"
 	align="horiz. right"
 }
 "text" {
@@ -667,7 +667,7 @@ display {
 		height="20"
 		groupid="0"
 	}
-	textix="C"
+	textix="B"
 	align="horiz. right"
 }
 "<<basic attribute>>" {

@@ -242,7 +242,7 @@ ENDFATAL
 STOP
 
 DESC "Loading mask 1"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 1"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 1"
 OUTPUT *Success*
 PUTVAL mskMode "1"
 OUTPUT *MODE*MODE*MOVE*
@@ -268,7 +268,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 2"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 2"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 2"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -290,7 +290,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 3"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 3"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 3"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -312,7 +312,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 4"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 4"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 4"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -334,7 +334,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 5"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 5"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 5"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -356,7 +356,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 6"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 6"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 6"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -378,7 +378,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 7"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 7"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 7"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -400,7 +400,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 8"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 8"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 8"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -422,7 +422,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 9"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 9"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 9"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -444,7 +444,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 10"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 10"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 10"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -466,7 +466,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 11"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 11"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 11"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -488,7 +488,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 12"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 12"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 12"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -510,7 +510,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 13"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 13"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 13"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -532,7 +532,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 14"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 14"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 14"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -554,7 +554,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 15"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 15"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 15"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -576,7 +576,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 16"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 16"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 16"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -598,7 +598,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 17"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 17"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 17"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -620,7 +620,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 18"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 18"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 18"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -642,7 +642,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 19"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 19"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 19"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*
@@ -664,7 +664,7 @@ OUTPUT *VAL* 0*
 
 
 DESC "Loading mask 20"
-CMD "getMaskId mskSelect  /gemini/gmos/lut/msk.lut 20"
+CMD "getMaskId mskSelect  /gemini/epics3.13.4/gmos/gmos/data/msk.lut 20"
 OUTPUT *Success*
 CMD "executeCommand cmdDir cmdAck cmdAction"
 OUTPUT *Success*

@@ -273,9 +273,9 @@ ENDTEST
 TEST "Verify error message"
 FATAL
 
-DESC "Look for error message 'Requested Mask cannot be found'"
+DESC "Look for error message 'Barcode invalid - out of range'"
 GETVAL cmdError
-OUTPUT *Requested Mask cannot be found*
+OUTPUT *Barcode invalid - out of range*
 
 ENDTEST
 
@@ -286,9 +286,8 @@ ENDTEST
 TEST "Restore with valid mask ID attribute"
 # FATAL
 
-DESC "Restore mask ID attribute to 78"
-PUTVAL mskSelect "78"
-OUTPUT *Assembly.A*Assembly.A* 78*
+CMD "getFirstMaskId mskSelect /gemini/epics3.13.4/gmos/gmos/data/msk.lut"
+OUTPUT *Success*
 
 DESC "Check command with PRESET directive"
 CMD "presetCommand cmdDir cmdAck"
@@ -320,9 +319,9 @@ ENDTEST
 TEST "Verify error message"
 FATAL
 
-DESC "Look for error message 'Requested Mask cannot be found'"
+DESC "Look for error message 'This mask is not installed'"
 GETVAL cmdError
-OUTPUT *Requested Mask cannot be found*
+OUTPUT *This mask is not installed*
 
 ENDTEST
 
@@ -333,10 +332,9 @@ ENDTEST
 TEST "Enter a valid mask ID attribute to restore"
 # FATAL
 
-DESC "Restore mask ID attribute to 78"
-PUTVAL mskSelect "78"
-OUTPUT *Assembly.A*Assembly.A* 78*
-
+CMD "getFirstMaskId mskSelect /gemini/epics3.13.4/gmos/gmos/data/msk.lut"
+OUTPUT *Success*
+  
 DESC "Check command with PRESET directive"
 CMD "presetCommand cmdDir cmdAck"
 OUTPUT *accept*
@@ -711,7 +709,7 @@ FATAL
 
 DESC "Loading first mask"
 
-CMD "getFirstMaskId mskSelect /gemini/data/msk.lut"
+CMD "getFirstMaskId mskSelect /gemini/epics3.13.4/gmos/gmos/data/msk.lut"
 OUTPUT *Success*
 
 PUTVAL mskMode "1"
@@ -1058,6 +1056,7 @@ FATAL
 
 GETVAL cmdError
 OUTPUT *.MESS * Mask gripper must be released first*
+#OUTPUT *.MESS * Grip has not been released* - IT MIGHT BE THIS!
 
 ENDTEST
 
@@ -1318,7 +1317,7 @@ FATAL
 
 DESC "Loading mask (last entry in table)"
 
-CMD "getLastMaskId mskSelect /gemini/data/msk.lut"
+CMD "getLastMaskId mskSelect /gemini/epics3.13.4/gmos/gmos/data/msk.lut"
 OUTPUT *Success*
 
 PUTVAL mskLocation "0"
@@ -1434,7 +1433,7 @@ FATAL
 
 DESC "STOP issued during mask change"
 
-CMD "getFirstMaskId mskSelect /gemini/data/msk.lut"
+CMD "getFirstMaskId mskSelect /gemini/epics3.13.4/gmos/gmos/data/msk.lut"
 OUTPUT *Success*
 
 PUTVAL mskMode "1"

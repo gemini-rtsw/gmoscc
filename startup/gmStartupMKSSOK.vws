@@ -98,8 +98,8 @@ dbpf "g7:cc:msEnableEnable","0"
 dbpf "g7:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "g7:sad:name.VAL","GMOS-N (simulated) (V3-0)"
-dbpf "g7:sad:cc:name.VAL","GMOS-N (V3-0) - simulated"
+dbpf "g7:sad:name.VAL","GMOS-N (simulated) (V4-0)"
+dbpf "g7:sad:cc:name.VAL","GMOS-N (V4-0) - simulated"
 
 # Load initialization files
 pvload "$(iocpath)/data/gmosCcSim.pv","top=g7:, sadtop=g7:sad:"

@@ -36,6 +36,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  *   $Log$
+ *   Revision 1.1  2002/04/24 05:24:55  ajf
+ *   New directory for port to epics3.13.4GEM8.4.
+ *
  *   Revision 1.1  2001/11/28 20:08:45  mbec
  *   *** empty log message ***
  *
@@ -75,7 +78,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 #include        <stdlib.h>
 #include        <wdLib.h>
 #include        <taskLib.h>
-
+#include        <math.h>
 #include        <alarm.h>
 #include        <callback.h>
 #include        <dbDefs.h>

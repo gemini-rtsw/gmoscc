@@ -5,9 +5,9 @@ display {
 	magic="305419896"
 	majv="2"
 	mnrv="4"
-	ndyng="0"
-	npc="37"
-	nstr="114"
+	ndyng="2"
+	npc="39"
+	nstr="121"
 	ndynamic="27"
 	nplot="0"
 	nrd="3"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="10"
 	bclr="13"
-	nwords_dspy="4198"
-	nwords_sta="176"
+	nwords_dspy="4468"
+	nwords_sta="196"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1924"
-	osta="1748"
-	odynamic="1924"
-	oplot="3706"
-	ord="3706"
-	oes="4186"
-	okd="4186"
-	opd="4198"
-	opo="4198"
+	odyng="2086"
+	osta="1890"
+	odynamic="2194"
+	oplot="3976"
+	ord="3976"
+	oes="4456"
+	okd="4456"
+	opd="4468"
+	opo="4468"
 	opc="68"
-	ostr="594"
-	ocmap="1748"
-	ocrules="1748"
+	ostr="626"
+	ocmap="1890"
+	ocrules="1890"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -110,7 +110,7 @@ display {
 		height="15"
 		groupid="0"
 	}
-	textix="0: FOSS/ISS interface ...."
+	textix="0: CCD assembly body ....."
 	align="horiz. left"
 }
 "text" {
@@ -143,7 +143,7 @@ display {
 		height="15"
 		groupid="0"
 	}
-	textix="4: Filter Assembly/CCD Body"
+	textix="4: Filter Assembly ......."
 	align="horiz. left"
 }
 "text" {
@@ -222,6 +222,120 @@ display {
 	}
 	textix="Rate of change"
 	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="3"
+	}
+}
+"oval" {
+	object {
+		x="17"
+		y="14"
+		width="32"
+		height="31"
+		groupid="0"
+	}
+}
+"oval" {
+	object {
+		x="56"
+		y="14"
+		width="32"
+		height="31"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="0"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="rule"
+			vis="static"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan=""
+			rulechan[0] = "$(T)$(CC)tempHealth.VAL"
+			rulechan[1] = "$(T)$(CC)tempHealth.VAL"
+			rulechan[2] = "$(T)$(CC)tempHealth.VAL"
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="health"
+			clrargs="C=$(T)$(CC)tempHealth"
+		}
+	}
+}
+"oval" {
+	object {
+		x="18"
+		y="15"
+		width="30"
+		height="30"
+		groupid="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="rule"
+			vis="static"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan=""
+			rulechan[0] = "$(T)$(CC)tempSevr.SEVR"
+			rulechan[1] = "$(T)$(CC)tempSevr.SEVR"
+			rulechan[2] = "$(T)$(CC)tempSevr.SEVR"
+			rulechan[3] = "$(T)$(CC)tempSevr.SEVR"
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs="C=$(T)$(CC)tempSevr"
+		}
+	}
+}
+"oval" {
+	object {
+		x="57"
+		y="15"
+		width="30"
+		height="30"
+		groupid="0"
+	}
 }
 "text update" {
 	object {

@@ -10,6 +10,9 @@ GROUP NULL MAIN
       Detector controller temperature alarms.
       --------------------------------------------
       Check dewar vacuum if too warm.
+      If the detector temperature is static at around 201C,
+      the GMOS DC needs re-initialising. Use initCad from
+      the DC screens.
       $END
 
       CHANNEL TEMPERATURES $(top)sad:dc:detTemp

@@ -741,7 +741,7 @@ ENDTEST
 TEST "Move translation stage X axis to park position"
 FATAL
 
-DESC "Moving to barcode reading position"
+DESC "Moving to park position"
 
 PUTVAL devMode "1"
 OUTPUT *MODE*MODE*MOVE*

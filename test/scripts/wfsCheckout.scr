@@ -315,8 +315,8 @@ OUTPUT *Success*
 
 DESC "Attempt to move pickoff beyond upper limit"
 
-PUTVAL pickoffTarget "-45.0"
-OUTPUT *.VAL*.VAL*-45.0*
+PUTVAL pickoffTarget "-50.0"
+OUTPUT *.VAL*.VAL*-50.0*
 
 PUTVAL pickoffMode "1"
 OUTPUT *MODE*INDEX*MODE*MOVE*

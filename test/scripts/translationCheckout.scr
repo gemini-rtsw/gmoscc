@@ -223,12 +223,12 @@ ENDTEST
 # Move close to bottom left hand corner
 #
 
-TEST "Test edges of patrol area: Move to (-25,-10,100) microns - no lut conversion"
+TEST "Test edges of patrol area: Move to (-10,-10,100) microns - no lut conversion"
 FATAL
 
 DESC "Moving Translation Assembly"
 
-PUTVAL dtaTargetX "-25.0"
+PUTVAL dtaTargetX "-10.0"
 OUTPUT *
 
 PUTVAL dtaTargetY "-10.0"
@@ -857,12 +857,12 @@ ENDTEST
 # Move close to top left hand corner
 #
 
-TEST "Move to (-25,225,4500) microns - no lut conversion"
+TEST "Move to (-10,225,4500) microns - no lut conversion"
 FATAL
 
 DESC "Moving Translation Assembly"
 
-PUTVAL dtaTargetX "-25.0"
+PUTVAL dtaTargetX "-10.0"
 OUTPUT *
 
 PUTVAL dtaTargetY "225.0"
@@ -963,12 +963,12 @@ ENDTEST
 # Move to middle of left hand edge
 #
 
-TEST "Move to (-25,108,50) microns - no lut conversion"
+TEST "Move to (-10,108,50) microns - no lut conversion"
 FATAL
 
 DESC "Moving Translation Assembly"
 
-PUTVAL dtaTargetX "-25.0"
+PUTVAL dtaTargetX "-10.0"
 OUTPUT *
 
 PUTVAL dtaTargetY "108.0"
@@ -1069,12 +1069,12 @@ ENDTEST
 # Return close to bottom left hand corner
 #
 
-TEST "Return to (-25,-10,100) microns - no lut conversion"
+TEST "Return to (-10,-10,100) microns - no lut conversion"
 FATAL
 
 DESC "Moving Translation Assembly"
 
-PUTVAL dtaTargetX "-25.0"
+PUTVAL dtaTargetX "-10.0"
 OUTPUT *
 
 PUTVAL dtaTargetY "-10.0"
