@@ -74,8 +74,6 @@ s 1824 96 100 0 ***  optSensorEnable is turned OFF at end of
 s 1824 64 100 0 bootup and controlled via Mask Assembly SOR
 s 1824 32 100 0 output thereafter.
 s 1600 352 100 0 ***
-s -1728 2288 100 0 XYCOM driver bug means interrupts are sometimes missed.
-s -1728 2256 100 0 "I/O Intr" scan replaced by 10Hz to overcome this problem.
 [cell use]
 use inhier -1968 128 100 512 DOORS
 xform 0 -1952 128
@@ -159,7 +157,7 @@ p -1728 624 100 0 1 DTYP:$(xycom)
 p -1728 528 100 0 1 ONAM:SHUTDOWN
 p -1504 528 100 0 1 OSV:MAJOR
 p -1728 784 100 0 1 PV:$(top)$(cc)
-p -1728 592 100 0 1 SCAN:.1 second
+p -1728 592 100 0 1 SCAN:$(iointr)
 p -1728 560 100 0 1 ZNAM:OK
 p -1504 560 100 0 1 ZSV:NO_ALARM
 use ebis 1456 1840 100 0 wdgBuffer
@@ -334,7 +332,7 @@ p -2244 2416 100 0 -1 COMMENT4:changes. To prevent a whole cascade of
 p -2244 2384 100 0 -1 COMMENT5:processing whenever a single bit changes,
 p -2244 2352 100 0 -1 COMMENT6:only one of the records is triggered by
 p -2244 2320 100 0 -1 COMMENT7:an I/O interrupt, and the others are
-p -2244 2288 100 0 -1 COMMENT8:forward linked. BUT SEE BUG REPORT -->
+p -2244 2288 100 0 -1 COMMENT8:forward linked
 use egenSub -560 2032 100 0 ilockDecision
 xform 0 -656 1616
 p -704 1984 70 256 -1 FTA:LONG

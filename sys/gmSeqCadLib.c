@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.4  2002/01/15 21:06:07  mbec
+ * *** empty log message ***
+ *
  * Revision 1.3  2001/11/28 19:35:26  mbec
  * *** empty log message ***
  *
@@ -1716,21 +1719,22 @@ long gmSeqConfigBegin (struct cadRecord *cad)
     {
 
        case menuDirectiveCLEAR:
+                 printf("gmSeqConfigBegin: case menuDirectiveCLEAR\n");
        case menuDirectivePRESET:
-
+                 printf("gmSeqConfigBegin: case menuDirectivePRESET\n");
 /* Clear the CAD condition test mask for PRESET and CLEAR */
-
           gmSeqClearCADTest();
     
 /* Directive START : check for interlock */
        case menuDirectiveSTART:
-
+             printf("gmSeqConfigBegin: case menuDirectiveSTART\n");
           strncpy(interlock, cad->a, MAX_STRING_SIZE-1);
     
           DBGMSGSTRING(DBG_FULL,"ConfigBegin: interlock status = ", interlock);
     
           if (strncmp(interlock, "OK", 2))
           {
+             printf("gmSeqConfigBegin: strncmp interlock OK");
              strncpy(cad->mess, "GMOS is interlocked", MAX_STRING_SIZE-1);
              return CAD_REJECT;
           }

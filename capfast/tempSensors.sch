@@ -1,7 +1,20 @@
 [schematic2]
-uniq 175
+uniq 202
 [tools]
 [detail]
+w 1828 1307 100 0 n#201 ecalcs.tempIfMajor.FLNK 1792 1344 1824 1344 1824 1280 1888 1280 embbis.tempHealth.SLNK
+w 1810 1323 100 0 n#200 ecalcs.tempIfMajor.VAL 1792 1312 1888 1312 embbis.tempHealth.INP
+w 1476 1403 100 0 n#199 ecalcs.tempSevr.VAL 1408 1312 1472 1312 1472 1504 1504 1504 ecalcs.tempIfMajor.INPA
+w 1444 1227 100 0 n#198 ecalcs.tempSevr.FLNK 1408 1344 1440 1344 1440 1120 1504 1120 ecalcs.tempIfMajor.SLNK
+w 1010 1507 100 0 n#183 hwin.hwin#184.in 960 1504 1120 1504 ecalcs.tempSevr.INPA
+w 1010 1475 100 0 n#182 hwin.hwin#185.in 960 1472 1120 1472 ecalcs.tempSevr.INPB
+w 1010 1443 100 0 n#181 hwin.hwin#186.in 960 1440 1120 1440 ecalcs.tempSevr.INPC
+w 1010 1411 100 0 n#180 hwin.hwin#187.in 960 1408 1120 1408 ecalcs.tempSevr.INPD
+w 1010 1379 100 0 n#179 hwin.hwin#188.in 960 1376 1120 1376 ecalcs.tempSevr.INPE
+w 1010 1347 100 0 n#178 hwin.hwin#189.in 960 1344 1120 1344 ecalcs.tempSevr.INPF
+w 1010 1315 100 0 n#177 hwin.hwin#190.in 960 1312 1120 1312 ecalcs.tempSevr.INPG
+w 1010 1283 100 0 n#176 hwin.hwin#191.in 960 1280 1120 1280 ecalcs.tempSevr.INPH
+w 1010 1251 100 0 n#175 hwin.hwin#192.in 960 1248 1120 1248 ecalcs.tempSevr.INPI
 w 2276 883 100 0 n#174 egenSub.temperatureChange.FLNK 2112 -96 2272 -96 2272 1872 3008 1872 eais.tempChange0.SLNK
 w 2436 -445 100 0 n#173 egenSub.temperatureChange.VALI 2112 128 2432 128 2432 -1008 3008 -1008 eais.tempChange8.INP
 w 2500 -237 100 0 n#172 egenSub.temperatureChange.VALH 2112 192 2496 192 2496 -656 3008 -656 eais.tempChange7.INP
@@ -47,7 +60,110 @@ w 34 411 100 0 n#107 eais.temp4.INP 64 400 64 400 hwin.hwin#85.in
 w 34 763 100 0 n#105 eais.temp3.INP 64 752 64 752 hwin.hwin#82.in
 w 34 1115 100 0 n#103 eais.temp2.INP 64 1104 64 1104 hwin.hwin#79.in
 w 40 1915 100 0 n#50 hwin.hwin#49.in 64 1904 64 1904 eais.temp0.INP
+s 1024 1632 100 0 MAJOR or INVALID alarm. MINOR alarms are ok.
+s 1024 1664 100 0 The resultant health record is WARNING if any temperature is in a
+s 1024 1696 100 0 This calc record combines the severities of all the temperature records.
+s 800 1568 100 0 INVALID = 3
+s 800 1600 100 0 MAJOR = 2
+s 800 1632 100 0 MINOR = 1
+s 800 1664 100 0 NO_ALARM = 0
 [cell use]
+use ecalcs 1712 1568 100 0 tempIfMajor
+xform 0 1648 1296
+p 1568 960 100 0 1 CALC:A=2 || A=3
+p 1216 1182 100 0 0 EGU:severity
+p 1568 1568 100 0 1 PV:$(top)
+p 1504 1504 75 1280 -1 palrm(INPA):MS
+p 1504 1472 75 1280 -1 palrm(INPB):MS
+p 1504 1440 75 1280 -1 palrm(INPC):MS
+p 1504 1408 75 1280 -1 palrm(INPD):MS
+p 1504 1376 75 1280 -1 palrm(INPE):MS
+p 1504 1344 75 1280 -1 palrm(INPF):MS
+p 1504 1312 75 1280 -1 palrm(INPG):MS
+p 1504 1280 75 1280 -1 palrm(INPH):MS
+p 1504 1248 75 1280 -1 palrm(INPI):MS
+use ecalcs 1328 1568 100 0 tempSevr
+xform 0 1264 1296
+p 1184 1008 100 0 1 CALC:A | B | C | D | E | F | G | H | I
+p 832 1182 100 0 0 EGU:severity
+p 1184 944 100 0 1 PHAS:1
+p 1184 1568 100 0 1 PV:$(top)
+p 1184 976 100 0 1 SCAN:$(scanRate)
+p 1120 1504 75 1280 -1 palrm(INPA):MS
+p 1120 1472 75 1280 -1 palrm(INPB):MS
+p 1120 1440 75 1280 -1 palrm(INPC):MS
+p 1120 1408 75 1280 -1 palrm(INPD):MS
+p 1120 1376 75 1280 -1 palrm(INPE):MS
+p 1120 1344 75 1280 -1 palrm(INPF):MS
+p 1120 1312 75 1280 -1 palrm(INPG):MS
+p 1120 1280 75 1280 -1 palrm(INPH):MS
+p 1120 1248 75 1280 -1 palrm(INPI):MS
+use embbis 2016 1360 100 0 tempHealth
+xform 0 2016 1280
+p 1792 1451 100 0 0 DESC:Temperature health
+p 1952 1152 100 0 1 ONST:WARNING
+p 2112 1152 100 0 1 ONSV:MINOR
+p 1888 1360 100 0 1 PV:$(top)
+p 1952 1088 100 0 1 THST:INVALID
+p 2112 1088 100 0 1 THSV:INVALID
+p 1952 1120 100 0 1 TWST:BAD
+p 2112 1120 100 0 1 TWSV:MAJOR
+p 1952 1184 100 0 1 ZRST:GOOD
+p 2112 1184 100 0 1 ZRSV:NO_ALARM
+use hwin -128 -1049 100 0 hwin#97
+xform 0 -32 -1008
+p -125 -1016 100 0 -1 val(in):#C0 S12
+use hwin -128 -697 100 0 hwin#94
+xform 0 -32 -656
+p -125 -664 100 0 -1 val(in):#C0 S11
+use hwin -128 -345 100 0 hwin#91
+xform 0 -32 -304
+p -125 -312 100 0 -1 val(in):#C0 S10
+use hwin -128 7 100 0 hwin#88
+xform 0 -32 48
+p -125 40 100 0 -1 val(in):#C0 S9
+use hwin -128 359 100 0 hwin#85
+xform 0 -32 400
+p -125 392 100 0 -1 val(in):#C0 S8
+use hwin -128 711 100 0 hwin#82
+xform 0 -32 752
+p -125 744 100 0 -1 val(in):#C0 S7
+use hwin -128 1063 100 0 hwin#79
+xform 0 -32 1104
+p -125 1096 100 0 -1 val(in):#C0 S6
+use hwin -128 1447 100 0 hwin#76
+xform 0 -32 1488
+p -125 1480 100 0 -1 val(in):#C0 S5
+use hwin -128 1863 100 0 hwin#49
+xform 0 -32 1904
+p -125 1896 100 0 -1 val(in):#C0 S4
+use hwin 768 1463 100 0 hwin#184
+xform 0 864 1504
+p 771 1496 100 0 -1 val(in):$(top)temp0.SEVR NPP MS
+use hwin 768 1431 100 0 hwin#185
+xform 0 864 1472
+p 771 1464 100 0 -1 val(in):$(top)temp1.SEVR NPP MS
+use hwin 768 1399 100 0 hwin#186
+xform 0 864 1440
+p 771 1432 100 0 -1 val(in):$(top)temp2.SEVR NPP MS
+use hwin 768 1367 100 0 hwin#187
+xform 0 864 1408
+p 771 1400 100 0 -1 val(in):$(top)temp3.SEVR NPP MS
+use hwin 768 1335 100 0 hwin#188
+xform 0 864 1376
+p 771 1368 100 0 -1 val(in):$(top)temp4.SEVR NPP MS
+use hwin 768 1303 100 0 hwin#189
+xform 0 864 1344
+p 771 1336 100 0 -1 val(in):$(top)temp5.SEVR NPP MS
+use hwin 768 1271 100 0 hwin#190
+xform 0 864 1312
+p 771 1304 100 0 -1 val(in):$(top)temp6.SEVR NPP MS
+use hwin 768 1239 100 0 hwin#191
+xform 0 864 1280
+p 771 1272 100 0 -1 val(in):$(top)temp7.SEVR NPP MS
+use hwin 768 1207 100 0 hwin#192
+xform 0 864 1248
+p 771 1240 100 0 -1 val(in):$(top)temp8.SEVR NPP MS
 use eais 3248 1936 100 0 tempChange0
 xform 0 3136 1872
 p 2976 1550 100 0 0 AOFF:0.0000000e+00
@@ -475,31 +591,4 @@ p -352 1504 100 0 1 PV:$(top)
 use ebis -416 1783 100 0 temp0disable
 xform 0 -288 1856
 p -352 1920 100 0 1 PV:$(top)
-use hwin -128 -1049 100 0 hwin#97
-xform 0 -32 -1008
-p -125 -1016 100 0 -1 val(in):#C0 S12
-use hwin -128 -697 100 0 hwin#94
-xform 0 -32 -656
-p -125 -664 100 0 -1 val(in):#C0 S11
-use hwin -128 -345 100 0 hwin#91
-xform 0 -32 -304
-p -125 -312 100 0 -1 val(in):#C0 S10
-use hwin -128 7 100 0 hwin#88
-xform 0 -32 48
-p -125 40 100 0 -1 val(in):#C0 S9
-use hwin -128 359 100 0 hwin#85
-xform 0 -32 400
-p -125 392 100 0 -1 val(in):#C0 S8
-use hwin -128 711 100 0 hwin#82
-xform 0 -32 752
-p -125 744 100 0 -1 val(in):#C0 S7
-use hwin -128 1063 100 0 hwin#79
-xform 0 -32 1104
-p -125 1096 100 0 -1 val(in):#C0 S6
-use hwin -128 1447 100 0 hwin#76
-xform 0 -32 1488
-p -125 1480 100 0 -1 val(in):#C0 S5
-use hwin -128 1863 100 0 hwin#49
-xform 0 -32 1904
-p -125 1896 100 0 -1 val(in):#C0 S4
 [comments]

@@ -43,8 +43,6 @@ w -784 224 100 768 Exit_Prism_Angle inhier.EXP.P -1152 160 -800 160 -800 224 -16
 w -784 256 100 768 Entrance_Prism_Angle inhier.ENP.P -1152 256 -160 256 easscontj.Assembly.A
 w -680 523 100 0 Mode inhier.MODE.P -1152 512 -160 512 easscontj.Assembly.MODE
 w -1062 619 100 0 Directive inhier.DIR.P -1152 608 -864 608 elongouts.Dir.SLNK
-s -1216 -464 100 0 XYCOM driver bug means interrupts are sometimes missed.
-s -1216 -496 100 0 "I/O Intr" scan replaced by 1Hz to overcome this problem.
 [cell use]
 use ebos -496 -560 100 0 PresentLnk
 xform 0 -512 -640
@@ -58,12 +56,13 @@ xform 0 -864 -592
 p -928 -672 100 0 1 DTYP:$(xycom)
 p -928 -768 100 0 1 ONAM:YES
 p -848 -528 100 512 -1 PV:$(top)$(dev)
-p -928 -704 100 0 1 SCAN:1 second
+p -928 -704 100 0 1 SCAN:.1 second
 p -928 -736 100 0 1 ZNAM:NO
 use ebis -1072 -48 100 0 Ilock
 xform 0 -1072 -112
 p -1248 -192 100 0 1 ONAM:INTERLOCK
 p -1072 -48 100 512 1 PV:$(top)$(dev)
+p -1424 -114 100 0 0 SCAN:Passive
 p -1248 -224 100 0 1 ZNAM:OK
 use edfans -592 32 100 0 Ilfan
 xform 0 -656 -160
@@ -152,6 +151,6 @@ p 224 -384 80 768 -1 pproc(ODR3):PP
 use ukatcBorderC -1440 -1657 100 0 ukatcBorderC#89
 xform 0 240 -352
 p 1500 -1408 120 256 -1 Title:AtmDC assembly
-p 1540 -1472 100 1024 -1 author:S M Beard, R Wooff
+p 1540 -1472 100 1024 -1 author:S M Beard, B.Wooff
 p 1540 -1504 100 1024 -1 date:$Date$
 [comments]

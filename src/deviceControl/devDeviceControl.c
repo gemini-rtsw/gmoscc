@@ -46,6 +46,9 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2002/02/05 00:52:03  mbec
+ * GCAL specifics ommited
+ *
  * Revision 1.3  2001/07/12 19:11:00  gemvx
  * Re-enabled power check
  *
@@ -235,9 +238,8 @@ static char rcsid[] = "$Id$";
 #include    <recDeviceControl.h>
 #include    <devDeviceControl.h>
 #include    <drvOmsVme.h>
-
 #include    <ddrMessageLevels.h>      /* Device record message level definitions. */
-
+#include    <choiceDeviceControl.h>
 
 /*
  *  Local Defines

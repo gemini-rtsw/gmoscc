@@ -65,7 +65,7 @@ p 1216 1022 100 0 0 DOPT:Use CALC
 p 1216 1054 100 0 0 OOPT:Every Time
 p 472 704 100 0 1 SCAN:Passive
 p 800 848 60 0 0 def(INPA):$(prefix)apply.VAL
-p 336 664 75 0 -1 pproc(INPA):CP
+p 336 664 75 0 -1 pproc(INPA):CPP
 use elongouts 2880 583 100 0 getSubapplyC
 xform 0 3008 672
 p 2928 752 100 0 1 OMSL:closed_loop

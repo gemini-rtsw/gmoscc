@@ -55,6 +55,9 @@
 /* *INDENT-OFF* */
 /*
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:44  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -98,7 +101,7 @@ option +r;
 %%#include <carRecord.h>
 %%#include <menuCarstates.h>
 
-
+#define VERBOSE
 /*
  * The following declarations assign variables to fields in the EPICS database.
  */
@@ -172,7 +175,6 @@ ss assembly_ss
  */
  
 /* Wait until all the appropriate connections have been made. */
-
     when ( pvConnectCount( ) == pvChannelCount( ) )
     {
       pvGet( assemblyName );
@@ -181,7 +183,9 @@ ss assembly_ss
       /* Carry out any initialisation here. */
 
       /* Jump to the "idle" state. */
-
+	#ifdef VERBOSE
+		 printf("assemblyCar: INIT-IDLE\n");
+      	#endif
     } state idle
   }
  
@@ -195,13 +199,13 @@ ss assembly_ss
  *              When this happens set the CAR record to busy and jump to
  *              the BUSY state.
  */
-
     when ( assemblyBusy == menuCarstatesBUSY )
     {
-
       carIval = menuCarstatesBUSY;
       pvPut( carIval );
-
+     	#ifdef VERBOSE
+       		printf("assemblyCar: IDLE-BUSY\n");	
+	#endif
     } state busy
   }
 
@@ -213,7 +217,6 @@ ss assembly_ss
 /*
  * state busy - Remain in this state until the assembly record goes IDLE or ERROR.
  */
-
     when ( assemblyBusy == menuCarstatesIDLE )
     {
 
@@ -224,6 +227,9 @@ ss assembly_ss
 
       carIval = menuCarstatesIDLE;
       pvPut( carIval );
+     	#ifdef VERBOSE
+		printf("assemblyCar: BUSY-IDLE\n");
+	#endif
 
     } state idle
 
@@ -247,6 +253,10 @@ ss assembly_ss
       carIval = menuCarstatesERROR;
       pvPut( carIval );
 
+	#ifdef VERBOSE
+		printf("assemblyCar: BUSY-ERROR\n");
+	#endif
+
     } state error
   }
 
@@ -259,7 +269,6 @@ ss assembly_ss
  * state error - Remain in this state until the assembly record goes BUSY again
  * or back to IDLE.
  */
-
     when ( assemblyBusy == menuCarstatesIDLE )
     {
       /*
@@ -272,7 +281,10 @@ ss assembly_ss
 
       carIval = menuCarstatesIDLE;
       pvPut( carIval );
-
+	
+	#ifdef VERBOSE 
+		printf("assemblyCar: ERROR-IDLE\n");
+	#endif
     } state idle
 
 /*                               --  --  --                              */
@@ -290,6 +302,9 @@ ss assembly_ss
 
       carIval = menuCarstatesBUSY;
       pvPut( carIval );
+	#ifdef VERBOSE	
+		printf("assemblyCar: ERROR-BUSY");
+	#endif
 
     } state busy
   }

@@ -75,6 +75,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 /* *INDENT-OFF* */
 /*
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:49  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -124,8 +127,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 
 #include  "gmosCcCadLib.h"
 #include <menuDirective.h>
+#include <menuCarstates.h>
 
-/* #define   VERBOSE */              /* Define this for verbose messages */
+#define   VERBOSE               /* Define this for verbose messages */
 
 /* Global veriables from external modules */
 

@@ -14,6 +14,10 @@ DEPLIBS =
 # USR_LDFLAGS  =
 # USR_LDLIBS   =
 
+
+# Menus
+MENUS += 
+
 # Add the record include (*.h) files to this variable.
 # This causes the record *.h file to be built from the record *.dbd file.
 RECTYPES = deviceControlRecord.h

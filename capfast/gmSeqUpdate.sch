@@ -22,48 +22,49 @@ w 288 802 100 0 n#30 ecad4.update.MESS 224 800 400 800 400 928 528 928 outhier.M
 w 370 944 100 0 n#29 ecad4.update.VAL 224 832 368 832 368 1008 528 1008 outhier.VAL.p
 w -296 770 100 0 n#28 inhier.ICID.P -336 768 -208 768 -208 800 -96 800 ecad4.update.ICID
 w -224 834 100 0 n#27 inhier.DIR.P -336 848 -304 848 -304 832 -96 832 ecad4.update.DIR
-s 2320 1264 150 0 gmSeqUpdate
-s 816 1024 180 0 Update Sequence Command
 s 720 928 150 0 MARK command to Components Controller only
+s 816 1024 180 0 Update Sequence Command
+s 2320 1264 150 0 gmSeqUpdate
 [cell use]
 use ecalcouts 368 -665 100 0 ecalcouts#129
 xform 0 528 -544
 p 440 -632 100 0 -1 CALC:A
 p 1200 -114 100 0 0 DOPT:Use CALC
-p 456 -432 100 0 1 SCAN:I/O Intr
+p 456 -432 100 0 1 SCAN:Passive
 p 784 -288 60 0 0 def(INPA):$(cc)updateC.VAL 
 p 784 -288 60 0 0 def(SDIS):0.0
 p 352 -600 75 0 -1 palrm(SDIS):NMS
-use outhier 520 968 100 0 VAL
-xform 0 512 1008
-use outhier 520 888 100 0 MESS
-xform 0 512 928
-use outhier 1680 535 100 0 FLNK
-xform 0 1696 576
-use outhier 2272 -352 100 0 CAR
-xform 0 2224 -352
-use outhier 2272 -432 100 0 OMSS
-xform 0 2224 -416
+p 320 -472 75 0 -1 pproc(INPA):CPP
 use outhier 2272 -512 100 0 OERR
 xform 0 2224 -496
-use elongouts 1168 -144 100 0 updateOerrIn
-xform 0 1248 -224
-p 960 -82 100 0 0 EGU:CAR value
-p 1184 -336 100 0 1 OMSL:closed_loop
-p 896 -160 100 0 -1 def(DOL):$(cc)updateC.OERR
-p 1376 -256 75 768 -1 pproc(OUT):PP
+use outhier 2272 -432 100 0 OMSS
+xform 0 2224 -416
+use outhier 2272 -352 100 0 CAR
+xform 0 2224 -352
+use outhier 1680 535 100 0 FLNK
+xform 0 1696 576
+use outhier 520 888 100 0 MESS
+xform 0 512 928
+use outhier 520 968 100 0 VAL
+xform 0 512 1008
 use elongouts 1024 455 100 0 updatedcCadMark
 xform 0 1152 544
 p 864 686 100 0 0 EGU:CAD directive
 p 1104 400 100 0 1 OMSL:closed_loop
 p 1328 464 100 0 -1 def(OUT):$(cc)update.DIR
 p 1280 512 75 768 -1 pproc(OUT):PP
-use lboat 960 -233 100 0 c#113
-xform 0 1040 -192
-use lboat 944 -601 100 0 c#110
-xform 0 1024 -560
+use elongouts 1168 -144 100 0 updateOerrIn
+xform 0 1248 -224
+p 960 -82 100 0 0 EGU:CAR value
+p 1184 -336 100 0 1 OMSL:closed_loop
+p 896 -160 100 0 -1 def(DOL):$(cc)updateC.OERR
+p 1376 -256 75 768 -1 pproc(OUT):PP
 use lboat 208 -521 100 0 c#109
 xform 0 288 -480
+use lboat 944 -601 100 0 c#110
+xform 0 1024 -560
+use lboat 960 -233 100 0 c#113
+xform 0 1040 -192
 use estringouts 1104 -665 100 0 updateMessIn
 xform 0 1232 -592
 p 1184 -704 100 0 1 OMSL:closed_loop
@@ -86,8 +87,8 @@ p 128 -96 100 0 0 def(OUTA):0.0
 p 128 -128 100 0 0 def(OUTB):0.0
 p 128 -160 100 0 0 def(OUTC):0.0
 p 128 -192 100 0 0 def(OUTD):0.0
-use inhier -328 808 100 0 DIR
-xform 0 -336 848
 use inhier -328 728 100 0 ICID
 xform 0 -336 768
+use inhier -328 808 100 0 DIR
+xform 0 -336 848
 [comments]

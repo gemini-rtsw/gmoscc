@@ -50,6 +50,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 /* *INDENT-OFF* */
 /*
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:50  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -153,9 +156,10 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 #include  <recSup.h>
 
 #include <menuDirective.h>
+#include <menuCarstates.h>
 #include  "recAssControl.h"
 
-/* #define VERBOSE */     /* Define this for verbose messages */
+#define VERBOSE      /* Define this for verbose messages */
 
 /* Pass and fail values returned by genSub functions. */
 
@@ -327,8 +331,8 @@ long gmosCarCombineBusy( struct genSubRecord *pgensub )
     curStates[6] = (pgensub->s != NULL) ? *(long *)pgensub->s : 0;
 
 #ifdef VERBOSE
-    printf ("gmosCarCombineBusy: ");
-    for ( i=0; i<7; i++) printf ("%d ", curStates[i]);
+    printf ("gmosCarCombineBusy: (%s) \n ", pgensub->name);
+    for ( i=0; i<7; i++) printf ("%ld ", curStates[i]);
     printf ("\n");
 #endif
 
@@ -345,16 +349,19 @@ long gmosCarCombineBusy( struct genSubRecord *pgensub )
         {
             if ( curStates[i] == menuCarstatesBUSY )
             {
+                printf("menuCarstatesBUSY %d \n",i);
                 outVal = curStates[i];
                 outIndex = i;
             }
             else if ( (curStates[i] == menuCarstatesERROR) && (outVal != menuCarstatesBUSY) )
             {
+                printf("menuCarstatesERROR&&(menuCarstatesBUSY %d \n",i);
                 outVal = curStates[i];
                 outIndex = i;
             }
             else if ( (curStates[i] == menuCarstatesPAUSED) && (outVal != menuCarstatesBUSY) && (outVal != menuCarstatesERROR))
             {
+                printf("menuCarstatesPAUSED && menuCarstatesBUSY && menuCarstatesERROR %d \n",i);
                 outVal = curStates[i];
                 outIndex = i;
             }
@@ -364,41 +371,49 @@ long gmosCarCombineBusy( struct genSubRecord *pgensub )
         {
             case (0):
                 outErr = *(long *)pgensub->c;
+                printf("case0 \n");
                 strncpy ( outMess, (char *)pgensub->b, MAX_STRING_SIZE-1 );
                 break;
 
             case (1):
                 outErr = *(long *)pgensub->f;
+                printf("case1 \n");
                 strncpy ( outMess, (char *)pgensub->e, MAX_STRING_SIZE-1 );
                 break;
 
             case (2):
                 outErr = *(long *)pgensub->i;
+                printf("case2 \n");
                 strncpy ( outMess, (char *)pgensub->h, MAX_STRING_SIZE-1 );
                 break;
 
             case (3):
                 outErr = *(long *)pgensub->l;
+                printf("case3 \n");
                 strncpy ( outMess, (char *)pgensub->k, MAX_STRING_SIZE-1 );
                 break;
 
             case (4):
                 outErr = *(long *)pgensub->o;
+                printf("case4 \n");
                 strncpy ( outMess, (char *)pgensub->n, MAX_STRING_SIZE-1 );
                 break;
 
             case (5):
                 outErr = *(long *)pgensub->r;
+                printf("case5 \n");
                 strncpy ( outMess, (char *)pgensub->q, MAX_STRING_SIZE-1 );
                 break;
 
             case (6):
                 outErr = *(long *)pgensub->u;
+                printf("case6 \n");
                 strncpy ( outMess, (char *)pgensub->t, MAX_STRING_SIZE-1 );
                 break;
 
             default:
                 strncpy ( outMess, "CAR combination failure", MAX_STRING_SIZE-1 );
+                printf("case default \n");
                 status = BAD;
                 break;
         }
@@ -532,7 +547,7 @@ long gmosCarCombineMax( struct genSubRecord *pgensub )
 
 #ifdef VERBOSE
     printf ("gmosCarCombineMax: ");
-    for ( i=0; i<7; i++) printf ("%d ", curStates[i]);
+    for ( i=0; i<7; i++) printf ("%ld ", curStates[i]);
     printf ("\n");
 #endif
 
@@ -1236,7 +1251,7 @@ long gmosHealthCombineInt( struct genSubRecord *pgensub )
  */
 
     outHealth = *(long *)pgensub->a;
-    strncmp ( outMess, (char *)pgensub->b, MAX_STRING_SIZE-1 );
+    strncpy ( outMess, (char *)pgensub->b, MAX_STRING_SIZE-1 );
     outIndex = 1;
 
     if ( (pgensub->c != NULL) && (*(long *)pgensub->c > outHealth) )

@@ -60,7 +60,7 @@ p 3472 -338 100 0 0 DOPT:Use CALC
 p 3472 -306 100 0 0 OOPT:Transition To Zero
 p 2728 -656 100 0 1 SCAN:Passive
 p 3056 -512 60 0 0 def(SDIS):0.0
-p 2592 -696 75 0 -1 pproc(INPA):CP
+p 2592 -696 75 0 -1 pproc(INPA):CPP
 use eaos 2496 455 100 0 grEffWavelenSad
 xform 0 2624 544
 p 2276 730 100 0 0 DESC:Output of CAD

@@ -64,6 +64,9 @@
 /* *INDENT-OFF* */
 /*
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:53  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -106,7 +109,7 @@ option +r;
 %%#include <menuCarstates.h>
 
 
-/* #define VERBOSE */        /* Define this for verbose output */
+#define VERBOSE         /* Define this for verbose output */
 
 /*
  * The following declarations assign variables to fields in the EPICS database.

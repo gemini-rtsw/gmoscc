@@ -16,7 +16,7 @@ p 2480 1934 100 0 0 DOPT:Use CALC
 p 2480 1966 100 0 0 OOPT:On Change
 p 1736 1616 100 0 1 SCAN:Passive
 p 2064 1760 60 0 -1 def(INPA):$(cc)ilock.VAL
-p 1600 1576 75 0 -1 pproc(INPA):CP
+p 1600 1576 75 0 -1 pproc(INPA):CPP
 use ebos 2480 1431 100 0 interlockVal
 xform 0 2608 1520
 p 2544 1392 100 0 1 OMSL:closed_loop

@@ -18,9 +18,9 @@ p 1080 1304 100 0 -1 CALC:A
 p 1840 1822 100 0 0 DOPT:Use CALC
 p 1840 1854 100 0 0 OOPT:On Change
 p 1096 1504 100 0 1 SCAN:Passive
-p 1424 1648 60 0 0 def(INPA): $(dc)observeC.VAL
+p 1424 1648 60 0 0 def(INPA):$(dc)observeC.VAL
 p 1072 1272 100 0 -1 name:$(gm)observeDcWaitCar
-p 960 1464 75 0 -1 pproc(INPA):CP
+p 960 1464 75 0 -1 pproc(INPA):CPP
 use elongouts 1984 1223 100 0 elongouts#14
 xform 0 2112 1312
 p 1824 1230 100 0 0 OMSL:closed_loop

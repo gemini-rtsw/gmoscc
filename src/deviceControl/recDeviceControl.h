@@ -34,9 +34,6 @@
  *
  *INDENT-OFF*
  * $Log$
- * Revision 1.1  2001/08/10 14:01:49  ptaylor
- * Restructured src directory with 4 sub-directories, including pv and lut which were previously in pv as well as deviceControl and gcal previously in src
- *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -102,6 +99,80 @@
 #ifndef REC_DEVICE_CONTROL_INC
 #define REC_DEVICE_CONTROL_INC
 
+
+/*
+ *  Definitions for deviceControl record recChoice fields
+ */
+
+
+/*
+ *  Directive (DIR) field (does not match the Gemini CAD record enumeration)
+ */
+
+#define DDR_DIR_STOP            0       /* stop command execution           */
+#define DDR_DIR_CHECK           1       /* check inputs for validity        */
+#define DDR_DIR_GO              2       /* start command execution          */
+
+
+/*
+ *  Mode (MODE) field 
+ */
+
+#define DDR_MODE_INIT           0       /* re-initialize record             */
+#define DDR_MODE_MOVE           1       /* move to given position           */
+#define DDR_MODE_TRACK          2       /* move to and hold given position  */
+#define DDR_MODE_INDEX          3       /* find index position              */
+#define DDR_MODE_PARK           4       /* park device is a safe position   */
+#define DDR_MODE_TEST           5       /* test device without moving it    */
+
+
+/*
+ * Command action state (BUSY) field (does not match Gemini CAR enumeration
+ */
+
+#define DDR_CMD_IDLE            0       /* command completed successfully   */ 
+#define DDR_CMD_BUSY            1       /* command execution in progress    */
+#define DDR_CMD_ERROR           2       /* command failed during execution  */
+
+
+/*
+ *  Simulation mode (SIMM) field 
+ */
+
+#define DDR_SIM_NONE            0       /* no simulation, normal operation  */
+#define DDR_SIM_VSM             1       /* BUSY/IDLE transition only        */
+#define DDR_SIM_FAST            2       /* quickly update major outputs     */
+#define DDR_SIM_FULL            3       /* realistic motion simulation      */
+
+
+/*
+ *  Debugging mode (DBUG) field
+ */
+
+#define DDR_DBUG_QUIET          0       /* no messages at all               */
+#define DDR_DBUG_NONE           1       /* no debugging information         */
+#define DDR_DBUG_MIN            2       /* advanced error information only  */
+#define DDR_DBUG_FULL           3       /* plus program flow messages       */
+#define DDR_DBUG_MAX            4       /* plus all entry/exit points       */
+
+
+/*
+ *  Motion state (MIP) field
+ */
+
+#define DDR_MIP_STOPPED         0       /* Idle, awaiting new cammand       */
+#define DDR_MIP_BEGINNING       1       /* removing brake, powering motor   */
+#define DDR_MIP_MOVING          2       /* moving to target position        */
+#define DDR_MIP_HOLDING         3       /* holding position with power on   */
+#define DDR_MIP_ENDING          4       /* applying brake, depowering motor */
+#define DDR_MIP_ERROR           5       /* hardware fault detected          */
+
+
+
+/*
+ *  Other definitions
+ */
+
 /*
  *  motor control mnemonics
  */
@@ -109,6 +180,19 @@
 #define DDR_MOVE_GO             0       /* start moving to position         */
 #define DDR_MOVE_STOP           1       /* bring motor to a stop            */
 #define DDR_MOVE_ABORT          2       /* abort motion immediately         */
+
+
+/*
+ * Indexing Algorithms
+ */
+
+#define DDR_INDEX_NONE          0       /* move without re-indexing         */
+#define DDR_INDEX_LHSW          1       /* use the lower home switch        */
+#define DDR_INDEX_UHSW          2       /* use the upper home switch        */
+#define DDR_INDEX_CHSW          3       /* use the center home switch       */
+#define DDR_INDEX_LLSW          4       /* use the lower limit switch       */
+#define DDR_INDEX_ULSW          5       /* use the upper limit switch       */
+
 
 /*
  * define a mnemonic for the deviceControl record database structure
