@@ -253,6 +253,24 @@ This version is the same as V2-5 with
   building the dm screens for the first time. The screens are built
   twice.
 
+
+
+V2-7 26 June 2001 ROBERT WOOFF:
+-----------------
+This version is based based on V2-6 with the following improvements:
+- the deviceControl record files were changed to implement a more 
+  reliable method for determining when a motion stopped,  
+- the drvOmsVme.c error debugging is now always enabled whereas before 
+  both error and informational debugging were off by default (the 
+  informational debugging must still be enabled with the IOC console 
+  command "drvOmsVmeDebug=1"),
+- since the deviceControl changes should fix the chronic power status 
+  problems, this version all re-enables power status checking via the
+  appropriate *.pv files and checks to see that they are enabled in
+  the appropriate *.scr checkout scripts,
+- the deviceControl changes should also make the values of LSWA and
+  HSWA more reliable, but the latter has not been fully tested. 
+
 V?-? ?? ??? 2001 ???
 --------------------
 A future version will need to contain Malcolm Smith's ADC correction code
