@@ -217,7 +217,7 @@ In addition:
   name, which is GMOS-N.
 THIS IS THE VERSION USED TO TEST THE TRANSLATION STAGE ON 02 MAY 2001.
 
-V2-5 16 May 2001 SMB:
+V2-5 15 May 2001 SMB:
 ---------------------
 This version is the same as V2-4 with
 - All references to HSWA field removed from checkout scripts,
@@ -234,10 +234,17 @@ This version is the same as V2-4 with
   to change the focal surface when the AtmDC is fitted, but this part
   of the code is will be tested later.
 - More on-line help.
+THIS IS THE VERSION RICK USED TO CHECK THE OIWFS FOCUS OFFSETS ON 15 MAY
+2001
 
 V2-6 17 May 2001 SMB:
 -------------------------
 This version is the same as V2-5 with
 - GMOS sequencer startup changed so the detector controller apply record
   is not activated during a reboot.
-- gmOiwfsCalibrate.c function modified so it will build correctly
+- gmOiwfsCalibrate.c function modified so it will build correctly.
+- Malcolm Smith's bug fix to CalcApproxProbePosition in gmOiwfsCalc.c.
+
+V2-7 ?? May 2001 ???
+--------------------
+A future version will contain Malcolm Smith's ADC correction code.
