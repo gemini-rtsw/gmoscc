@@ -21,10 +21,13 @@ string $(top)debug.DIR     = "CLEAR" ;
 string $(top)grSelect.A = "WLEN" ;
 string $(top)grSelect.D = "1" ;
 string $(top)grSelect.DIR = "CLEAR" ;
+
 #
 # Initialise names of mask, filter and grating lookup tables
 #
-string $(top)dirLUT.VAL          = "/gemini/epics3.13.4/gmos/gmos/data" ;
+
+string $(top)dirLUT.VAL          = "./data" ;
+
 group {
    string $(top)mskNamesLUT.VAL  = "masks.lut" ;
    string $(top)mskLUT.VAL       = "msk.lut" ;

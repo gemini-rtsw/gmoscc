@@ -101,7 +101,7 @@ seq &systemCar,   "top=gm:cc:, cad=update, priority=75"
 seq &systemCar,   "top=gm:cc:, cad=park, priority=75"
 
 # Wait while the database initialises and sequences start.
-taskDelay(300)
+taskDelay(210)
 
 # Trigger the initialisation of the instrument sequencer and components
 # controller, disabling initdcCadMark and avoiding the use of the top level
@@ -115,7 +115,7 @@ dbpf "gm:cc:init.DIR", "0"
 dbpf "gm:cc:apply.DIR", "3"
 
 # Wait while the filter, grating and mask data are read, cc inits.
-taskDelay(300)
+taskDelay(210)
 
 dbpf "gm:initdcCadMark.DISA", "0"
 

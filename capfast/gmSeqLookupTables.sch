@@ -17,7 +17,7 @@ xform 0 3088 2640
 p 2960 2528 100 0 1 VAL:lambdaFocus.lut
 use estringins 2960 3463 100 0 dirLUT
 xform 0 3088 3536
-p 2960 3424 100 0 1 VAL:/gemini/epics3.13.4/gmos/gmos/data
+p 2960 3424 100 0 1 VAL:./data
 use estringins 3392 2791 100 0 mskLUT
 xform 0 3520 2864
 p 3392 2752 100 0 1 VAL:msk.lut

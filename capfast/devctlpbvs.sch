@@ -56,7 +56,7 @@ use edevctlm 832 912 100 0 Device
 xform 0 736 608
 p 640 160 100 0 0 EGU:units
 p 736 336 100 256 1 PREC:2
-p 640 224 100 0 1 TDIR:/gemini/epics3.13.4/gmos/gmos/data
+p 640 224 100 0 1 TDIR:./data
 use gmosBorderC -1120 -825 100 0 gmosBorderC#40
 xform 0 560 480
 p 2132 -696 100 512 1 File:/data/nimpkish/1/daoinsw/dev/gmos/current/develop/gmDeviceControl/capfast/devctlpbvs.sch
