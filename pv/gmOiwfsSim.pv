@@ -5,7 +5,7 @@
 #
 # Set name in SAD (this should be moved into the startup script)
 #
-string $(top)name = "GMOS OIWFS CC (sim)";
+string $(top)name = "GMOS-N OIWFS CC (sim)";
 
 # Set default deviceControl configuration parameters:
 #
