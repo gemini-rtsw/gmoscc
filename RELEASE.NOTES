@@ -314,3 +314,8 @@ V3-2 April 24 2002 ajf/tpaz:
 ----------------------------
 -  Tidy up of CVS.
 -  Some things left out of the V3-1 release.
+
+V3-3 April 24 2002 ajf/tpaz:
+----------------------------
+-  Fixed incorrect path macro for pv and lut files
+   $(iocpath) should not be used. It should be $(version).
