@@ -36,6 +36,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  *   $Log$
+ *   Revision 1.5  2001/03/20 13:40:25  gmos
+ *   Modified DEBUG macro. All files now use printf() rather than logMsg(). All also print the output from taskName(0).
+ *
  *   Revision 1.4  2001/02/28 15:15:15  gmos
  *   A couple of strcpy calls converted to strncpy.
  *
@@ -65,6 +68,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 #include        <string.h>
 #include        <stdlib.h>
 #include        <wdLib.h>
+#include        <taskLib.h>
 
 #include        <alarm.h>
 #include        <callback.h>
@@ -207,11 +211,11 @@ typedef struct {
  *            the "<%d> %s:" format throughout the code.
  */
 
-#define DEBUG(l,FMT,V)						\
-{								\
-    int k=l;							\
-    if (k <= pdr->dbug)						\
-	logMsg (FMT, (int) tickGet(), (int) pdr->name, (int) V, 0, 0, 0); \
+#define DEBUG(l,FMT,V)						  \
+{								  \
+    int k=l;							  \
+    if (k <= pdr->dbug)						  \
+	printf ("%s: "FMT, taskName(0), tickGet(), pdr->name, V); \
 }
 
 
@@ -344,7 +348,7 @@ static long atmActivateDevice
 
         CHECKSTAT( (status = recGblPutLinkValue( velLink, (void *) pdr,
 		DBR_DOUBLE, &(pDevAss->velocity), &nRequest)), return(status) );
-	ATMDEBUG(DAR_DBUG_MIN, "atmActivateDevice: Putting VEL, %ld\n", 
+	ATMDEBUG(DAR_DBUG_MIN, "atmActivateDevice: Putting VEL, %f\n", 
 		pDevAss->velocity  );
 
 
@@ -629,7 +633,7 @@ static long	atmCheckAttributes
             }
             else if ( pdr->fta != DBF_DOUBLE )
             {
-                ATMDEBUG(DAR_DBUG_NONE, "atmCheckAttributes: Attr A is not DOUBLE\n", ' ');
+                ATMDEBUG(DAR_DBUG_NONE, "atmCheckAttributes: Attr A is not DOUBLE%c\n", ' ');
                 sprintf (pdr->mess, "Attr A is not DOUBLE");
                 status = DAR_E_ATT;
             }
@@ -668,7 +672,7 @@ static long	atmCheckAttributes
             }
             else if ( pdr->ftb != DBF_DOUBLE )
             {
-                ATMDEBUG(DAR_DBUG_NONE, "atmCheckAttributes: Attr B is not DOUBLE\n", ' ');
+                ATMDEBUG(DAR_DBUG_NONE, "atmCheckAttributes: Attr B is not DOUBLE%c\n", ' ');
                 sprintf (pdr->mess, "Attr B is not DOUBLE");
                 status = DAR_E_ATT;
             }
@@ -715,7 +719,7 @@ static long	atmCheckAttributes
          */
 
         ATMDEBUG(DAR_DBUG_NONE,
-          "atmCheckAttributes: TRACK mode not implemented\n", ' ');
+          "atmCheckAttributes: TRACK mode not implemented%c\n", ' ');
         strncpy (pdr->mess, "TRACK mode not implemented", MAX_STRING_SIZE-1);
         status = DAR_E_MODE;
     }
@@ -726,7 +730,7 @@ static long	atmCheckAttributes
          */
 
         ATMDEBUG(DAR_DBUG_NONE,
-          "atmCheckAttributes: UPDATE mode not appropriate for this assembly\n", ' ');
+          "atmCheckAttributes: UPDATE mode not appropriate for this assembly%c\n", ' ');
         strncpy (pdr->mess, "UPDATE mode not appropriate", MAX_STRING_SIZE-1);
         status = DAR_E_MODE;
     }

@@ -77,6 +77,9 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.24  2001/03/20 13:40:31  gmos
+ * Modified DEBUG macro. All files now use printf() rather than logMsg(). All also print the output from taskName(0).
+ *
  * Revision 1.23  2001/03/07 13:43:35  gmos
  * Further HEALTH developments - Set health BAD if a TEST command fails. Set health WARNING is a general motion commands results in a loss of index.
  *
@@ -255,6 +258,7 @@ static char rcsid[] = "$Id$";
 #include        <string.h>
 #include        <stdlib.h>
 #include        <wdLib.h>
+#include        <taskLib.h>
 
 #include        <alarm.h>
 #include        <callback.h>
@@ -462,7 +466,7 @@ struct rset assemblyControlRSET = {
 {                                                                       \
     int k=l;                                                            \
     if ( k <= par->dbug)                                                \
-    logMsg (FMT, (int) tickGet(), (int) par->name, (int) V, 0, 0, 0);   \
+    printf ("%s: "FMT, taskName(0), tickGet(), par->name, V);                              \
 }
 
 
@@ -861,7 +865,7 @@ void *assGetPrivateStruct
      if ( pPriv->magic != DAR_MAGIC )
      {
 
-        DEBUG(DAR_MSG_FATAL, "<%d> %s:assGetPrivateStruct: magic value not seen, pPriv=%d\n", pPriv);
+        DEBUG(DAR_MSG_FATAL, "<%d> %s:assGetPrivateStruct: magic value not seen, pPriv=%p\n", pPriv);
         return ( NULL );
      }
 
@@ -1465,7 +1469,7 @@ static long cvtDbaddr
 
     par = (ASSEMBLY_CONTROL_RECORD *)paddr->precord;
    
-    DEBUG(DAR_MSG_MAX, "<%d> %s:cvtDbAddr: entry, paddr=%x\n", paddr );
+    DEBUG(DAR_MSG_MAX, "<%d> %s:cvtDbAddr: entry, paddr=%p\n", paddr );
    
     pdesc = (struct fldDes *)paddr->pfldDes;
     name = (char *)strtok((char *)pdesc->fldname, " ");

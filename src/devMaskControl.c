@@ -67,6 +67,9 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.27  2001/03/20 13:40:28  gmos
+ * Modified DEBUG macro. All files now use printf() rather than logMsg(). All also print the output from taskName(0).
+ *
  * Revision 1.26  2001/03/01 21:22:51  gmos
  * Removed all references to the MK_NO_TASKS status.  In MOVE mode commands,
  * a debug message will appear to say nothing needs to be done when the
@@ -1059,15 +1062,15 @@ typedef struct {
 {                                                                       \
     int k=l;                                                            \
     if (k <= par->dbug)                                                 \
-    logMsg (FMT, (int) tickGet(), (int) par->name, (int) V, 0, 0, 0);   \
+    printf ("%s: "FMT, taskName(0), tickGet(), par->name, V);                              \
 }
 
 #define DEBUG4(l,FMT,V1,V2,V3,V4)                                       \
 {                                                                       \
     int k=l;                                                            \
     if (k <= par->dbug)                                                 \
-    logMsg (FMT, (int) tickGet(), (int) par->name,                      \
-            (int) V1, (int) V2, (int) V3, (int) V4);                    \
+    printf  ("%s: "FMT, taskName(0), tickGet(), par->name,                                 \
+            V1, V2, V3, V4);                                            \
 }
 
 /*
@@ -2028,7 +2031,7 @@ static long mkBuildNewList
 
         default:
 
-        DEBUG(DAR_MSG_ERROR, "<%d> %s:mkBuildNewList: invalid mode=%s\n", mode );
+        DEBUG(DAR_MSG_ERROR, "<%d> %s:mkBuildNewList: invalid mode=%d\n", mode );
         status = MK_INVALID_MODE;
         SET_ERR_MSG("Invalid Mask assembly mode");
 
@@ -2508,7 +2511,7 @@ static long mkCheckBarcodeId
         {
             /* ID and target are different */
             DEBUG4(DAR_MSG_ERROR,
-                  "<%d> %s:mkCheckBarcodeId:Wrong mask found! Expected %ld but found %ld\n", pMkPriv->currentBC, value,' ' ,' ' );
+                  "<%d> %s:mkCheckBarcodeId:Wrong mask found! Expected %ld but found %ld%c%c\n", pMkPriv->currentBC, value,' ' ,' ' );
             SET_ERR_MSG("Wrong mask found in this slot");
             status = MK_WRONG_BARCODE;
         }
@@ -2757,7 +2760,7 @@ static long    mkCheckCassette
              pMkPriv->quickUpdate == TRUE )
         {
             DEBUG4(DAR_MSG_MIN, 
-                  "<%d> %s:mkCheckCassette:Quick Update - skipping C%d_S%d  Barcode:%ld\n", casNum, slotNum, barCodeNum, ' ');
+                  "<%d> %s:mkCheckCassette:Quick Update - skipping C%d_S%d  Barcode:%ld%c\n", casNum, slotNum, barCodeNum, ' ');
             goToNextSlot = TRUE;
         }
         else
@@ -2852,7 +2855,7 @@ static long    mkCheckCassette
                      pMkPriv->quickUpdate == TRUE   )
                 {
                     DEBUG4(DAR_MSG_MIN, 
-                          "<%d> %s:mkCheckCassette:Quick Update - skipping C%d_S%d  Barcode:%ld\n", casNum, slotNum, barCodeNum, ' ');
+                          "<%d> %s:mkCheckCassette:Quick Update - skipping C%d_S%d  Barcode:%ld%c\n", casNum, slotNum, barCodeNum, ' ');
                     goToNextSlot = TRUE;
                 }
                 else
@@ -3733,7 +3736,7 @@ static long mkDoTask
          
             case MK_CAS_TO_SLOT:
                 DEBUG4(DAR_MSG_FULL, 
-                      "<%d> %s:mkDoTask:** Move cassette to C%d_S%d\n", 
+                      "<%d> %s:mkDoTask:** Move cassette to C%d_S%d%c%c\n", 
                       pMkPriv->barCodeList[pMkPriv->barNodeNum].casNum,
                       pMkPriv->barCodeList[pMkPriv->barNodeNum].slotNum,' ',' ' );
                 status = mkCommandDevice (par, 
@@ -5270,7 +5273,7 @@ static long mkReadBarList
                             if (pMkPriv->barCodeList[i].barCodeNum == barCode)
                             {
                                 DEBUG4(DAR_MSG_ERROR,
-                                      "<%d> %s:mkReadBarList: Found duplicate mask ID for C%d_S%d ID:%ld\n",
+                                      "<%d> %s:mkReadBarList: Found duplicate mask ID for C%d_S%d ID:%ld%c\n",
                                       casNum, slotNum, barCode, ' ' );
                                 SET_ERR_MSG("Duplicate mask ID in lookup table");
                                 status = MK_FILE_FORMAT_ERROR;
@@ -5290,7 +5293,7 @@ static long mkReadBarList
                         pMkPriv->barListEmpty = FALSE;
                         semGive (pMkPriv->mutexSem);;
                         DEBUG4(DAR_MSG_FULL,
-       	                      "<%d> %s:mkReadBarList: Creating entry for mask in C%d_S%d ID:%ld\n", 
+       	                      "<%d> %s:mkReadBarList: Creating entry for mask in C%d_S%d ID:%ld%c\n", 
                               casNum, slotNum, barCode, ' ' );
                     }
                     else 
@@ -5322,7 +5325,7 @@ static long mkReadBarList
         else
         {
             DEBUG4(DAR_MSG_MIN, 
-                  "<%d> %s:mkReadBarList: Saved contents of %s/%s to internal barcode list\n",
+                  "<%d> %s:mkReadBarList: Saved contents of %s/%s to internal barcode list%c%c\n",
                   par->tdir, par->tfil,' ', ' ');
         }        
     }
@@ -5642,7 +5645,7 @@ static long mkTaskFinished
                      */
 
                     DEBUG4(DAR_MSG_ERROR, 
-                          "<%d> %s:mkTaskFinished, UPDATE failed, reader status:%d, file write status: %d\n",
+                          "<%d> %s:mkTaskFinished, UPDATE failed, reader status:%d, file write status: %d%c%c\n",
                           pMkPriv->status, lutStatus,' ',' ');
 
                     /* The assembly record shouldn't lose it's index */
@@ -5895,7 +5898,7 @@ static long mkTaskPostCheck
                 if (pMkPriv->currentCmd == DAR_MODE_UPDATE)
                 {
                     DEBUG4(DAR_MSG_WARNING,
-                            "<%d> %s:mkTaskPostCheck: WARNING! UPDATE aborted at C%d_S%d!%c\n", 
+                            "<%d> %s:mkTaskPostCheck: WARNING! UPDATE aborted at C%d_S%d!%c%c\n", 
                             pMkPriv->barCodeList[pMkPriv->barNodeNum].casNum, 
                             pMkPriv->barCodeList[pMkPriv->barNodeNum].slotNum, 
                             ' ', ' ');
@@ -6210,7 +6213,7 @@ static long mkTaskPostCheck
                 if (pMkPriv->currentCmd == DAR_MODE_UPDATE)
                 {
                     DEBUG4(DAR_MSG_WARNING,
-                            "<%d> %s:mkTaskPostCheck: WARNING! UPDATE aborted at C%d_S%d!%c\n", 
+                            "<%d> %s:mkTaskPostCheck: WARNING! UPDATE aborted at C%d_S%d!%c%c\n", 
                             pMkPriv->barCodeList[pMkPriv->barNodeNum].casNum, 
                             pMkPriv->barCodeList[pMkPriv->barNodeNum].slotNum, 
                             ' ', ' ');
@@ -6262,7 +6265,7 @@ static long mkTaskPostCheck
                 if (pMkPriv->currentCmd == DAR_MODE_UPDATE)
                 {
                     DEBUG4(DAR_MSG_WARNING,
-                            "<%d> %s:mkTaskPostCheck: WARNING! UPDATE aborted at C%d_S%d!%c\n", 
+                            "<%d> %s:mkTaskPostCheck: WARNING! UPDATE aborted at C%d_S%d!%c%c\n", 
                             pMkPriv->barCodeList[pMkPriv->barNodeNum].casNum, 
                             pMkPriv->barCodeList[pMkPriv->barNodeNum].slotNum, 
                             ' ', ' ');
@@ -6341,7 +6344,7 @@ static long mkTaskPostCheck
                 if (pMkPriv->currentCmd == DAR_MODE_UPDATE)
                 {
                     DEBUG4(DAR_MSG_WARNING,
-                            "<%d> %s:mkTaskPostCheck: WARNING! UPDATE aborted at C%d_S%d!%c\n", 
+                            "<%d> %s:mkTaskPostCheck: WARNING! UPDATE aborted at C%d_S%d!%c%c\n", 
                             pMkPriv->barCodeList[pMkPriv->barNodeNum].casNum, 
                             pMkPriv->barCodeList[pMkPriv->barNodeNum].slotNum, 
                             ' ', ' ');
@@ -7067,14 +7070,14 @@ static long mkTestMode
     {
         if ( pMkPriv->barCodeList[barCount].barCodeNum != MK_NO_ENTRY )
         {
-            DEBUG4(DAR_MSG_MIN, "<%d> %s:mkTestMode: C%d_S%d barcode: %ld\n",
+            DEBUG4(DAR_MSG_MIN, "<%d> %s:mkTestMode: C%d_S%d barcode: %ld%c\n",
             pMkPriv->barCodeList[barCount].casNum, 
             pMkPriv->barCodeList[barCount].slotNum, 
             pMkPriv->barCodeList[barCount].barCodeNum, ' ' );
         }
         else
         {
-            DEBUG4(DAR_MSG_MIN, "<%d> %s:mkTestMode: C%d_S%d no barcode entry\n",
+            DEBUG4(DAR_MSG_MIN, "<%d> %s:mkTestMode: C%d_S%d no barcode entry%c%c\n",
             pMkPriv->barCodeList[barCount].casNum, 
             pMkPriv->barCodeList[barCount].slotNum, ' ', ' ' );
         }

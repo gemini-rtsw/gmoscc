@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.36  2001/03/20 13:40:30  gmos
+ * Modified DEBUG macro. All files now use printf() rather than logMsg(). All also print the output from taskName(0).
+ *
  * Revision 1.35  2001/02/28 17:24:13  gmos
  * Renamed gmMessageLevels.h to darMessageLevels.h.
  *
@@ -197,6 +200,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 #include        <string.h>
 #include        <stdlib.h>
 #include        <wdLib.h>
+#include        <taskLib.h>
 
 #include        <alarm.h>
 #include        <callback.h>
@@ -381,7 +385,7 @@ typedef struct {
     int k=l;							\
     if (k <= par->dbug)						\
     {                                                           \
-        printf ((FMT), tickGet(), par->name, (V));		\
+        printf ("%s: "FMT, taskName(0), tickGet(), par->name, V);		\
     }								\
 }
 

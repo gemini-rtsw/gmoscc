@@ -50,6 +50,9 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.9  2001/03/20 13:40:26  gmos
+ * Modified DEBUG macro. All files now use printf() rather than logMsg(). All also print the output from taskName(0).
+ *
  * Revision 1.8  2001/03/01 11:23:04  gmos
  * Introduced devBarcodeSimValue global variable, so simulated barcode readings can be requested on demand from the VxWorks console.
  *
@@ -315,7 +318,7 @@ int              devBarcodePortInitialized = 0;     /* initialization done  */
 #define DEBUGBAR(L,FMT,V)                                        \
 if (L <= devBarcodeDebug)                                        \
 {                                                                \
-    logMsg ((FMT), (int)pbar[V].device, (int)V, 0, 0, 0, 0);     \
+    printf ("%s: "FMT, taskName(0), pbar[V].device, V);          \
 };
 
 /* 
@@ -326,7 +329,7 @@ if (L <= devBarcodeDebug)                                        \
 #define DEBUG(L,FMT,V)                                           \
 if (L <= devBarcodeDebug)                                        \
 {                                                                \
-    logMsg ((FMT), (int)V, 0, 0, 0, 0, 0);                       \
+    printf ("%s: "FMT, taskName(0), V);                          \
 };
 
 

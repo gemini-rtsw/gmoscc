@@ -50,6 +50,9 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.12  2001/03/20 13:40:29  gmos
+ * Modified DEBUG macro. All files now use printf() rather than logMsg(). All also print the output from taskName(0).
+ *
  * Revision 1.11  2001/03/20 10:04:31  gmos
  * PARK position changed from top left to bottom right corner of patrol area, to keep probe safe from wrenches.
  *
@@ -195,6 +198,7 @@ static char rcsid[] = "$Id$";
 #include        <logLib.h>
 #include        <tickLib.h>
 #include        <sysLib.h>
+#include        <taskLib.h>
 
 #include        <assemblyControlRecord.h>
 #include        <recAssControl.h>
@@ -359,7 +363,7 @@ typedef struct {
 {                                                                       \
     int k=l;                                                            \
     if (k <= par->dbug)                                                 \
-    logMsg (FMT, (int) tickGet(), (int) par->name, (int) V, 0, 0, 0);   \
+    printf ("%s: "FMT, taskName(0), tickGet(), par->name, V);           \
 }
 
 
@@ -764,13 +768,13 @@ static long oiBusyStateChange
              */
 
             DEBUG(DAR_MSG_FULL, 
-                  "<%d> %s:oiBusyStateChange: base target:%d\n", baseTarget);
+                  "<%d> %s:oiBusyStateChange: base target:%f\n", baseTarget);
             DEBUG(DAR_MSG_FULL, 
-                  "<%d> %s:oiBusyStateChange: base velocity:%d\n", basIndexVel);
+                  "<%d> %s:oiBusyStateChange: base velocity:%f\n", basIndexVel);
             DEBUG(DAR_MSG_FULL, 
-                  "<%d> %s:oiBusyStateChange: pickoff target:%d\n", pickoffTarget);
+                  "<%d> %s:oiBusyStateChange: pickoff target:%f\n", pickoffTarget);
             DEBUG(DAR_MSG_FULL, 
-                  "<%d> %s:oiBusyStateChange: pickoff velocity:%d\n", pkoIndexVel);
+                  "<%d> %s:oiBusyStateChange: pickoff velocity:%f\n", pkoIndexVel);
 
             CHECKSTAT( (status = recGblPutLinkValue (&(par->pos1), 
                     (void *) par, DBR_DOUBLE, &(baseTarget), &nRequest)),
@@ -903,19 +907,19 @@ static long oiBusyStateChange
              *  base and pickoff stage device control records.
              */
             DEBUG(DAR_MSG_FULL, 
-                  "<%d> %s:oiBusyStateChange: base target:%d\n", 
+                  "<%d> %s:oiBusyStateChange: base target:%f\n", 
                   pDevPvt->baseAngle);
 
             DEBUG(DAR_MSG_FULL, 
-                  "<%d> %s:oiBusyStateChange: base velocity:%d\n", 
+                  "<%d> %s:oiBusyStateChange: base velocity:%f\n", 
                   pDevPvt->baseVelocity);
 
             DEBUG(DAR_MSG_FULL, 
-                  "<%d> %s:oiBusyStateChange: pickoff target:%d\n", 
+                  "<%d> %s:oiBusyStateChange: pickoff target:%f\n", 
                   pDevPvt->pickoffAngle);
 
             DEBUG(DAR_MSG_FULL, 
-                  "<%d> %s:oiBusyStateChange: pickoff velocity:%d\n", 
+                  "<%d> %s:oiBusyStateChange: pickoff velocity:%f\n", 
                   pDevPvt->pickoffVelocity);
 
             CHECKSTAT( (status = recGblPutLinkValue (&(par->pos1), 
@@ -1248,7 +1252,7 @@ static long oiCheckAttributes
          */
 
         DEBUG(DAR_MSG_FULL, 
-              "<%d> %s:oiCheckAttributes: base target:%d\n", 
+              "<%d> %s:oiCheckAttributes: base target:%f\n", 
               pDevPvt->baseAngle);
 
         CHECKSTAT( (status = recGblPutLinkValue (&(par->pos1), 
@@ -1257,7 +1261,7 @@ static long oiCheckAttributes
                 return DAR_ACK_VAL_REJECT);
 
         DEBUG(DAR_MSG_FULL, 
-              "<%d> %s:oiCheckAttributes: pickoff target:%d\n", 
+              "<%d> %s:oiCheckAttributes: pickoff target:%f\n", 
               pDevPvt->pickoffAngle);
 
         CHECKSTAT( (status = recGblPutLinkValue (&(par->pos2), 
@@ -1266,7 +1270,7 @@ static long oiCheckAttributes
                 return DAR_ACK_VAL_REJECT);
 
         DEBUG(DAR_MSG_FULL, 
-              "<%d> %s:oiCheckAttributes: base velocity:%d\n", 
+              "<%d> %s:oiCheckAttributes: base velocity:%f\n", 
               pDevPvt->baseVelocity);
 
         CHECKSTAT( (status = recGblPutLinkValue (&(par->vel1), 
@@ -1275,7 +1279,7 @@ static long oiCheckAttributes
                 return DAR_ACK_VAL_REJECT);
 
         DEBUG(DAR_MSG_FULL, 
-              "<%d> %s:oiCheckAttributes: pickoff velocity:%d\n", 
+              "<%d> %s:oiCheckAttributes: pickoff velocity:%f\n", 
               pDevPvt->pickoffVelocity);
 
         CHECKSTAT( (status = recGblPutLinkValue (&(par->vel2), 
@@ -2093,13 +2097,13 @@ static long oiIndexMode
      */
 
     DEBUG(DAR_MSG_FULL, 
-          "<%d> %s:oiIndexMode: base target:%d\n", baseTarget);
+          "<%d> %s:oiIndexMode: base target:%f\n", baseTarget);
     DEBUG(DAR_MSG_FULL, 
-          "<%d> %s:oiIndexMode: base velocity:%d\n", basVel);
+          "<%d> %s:oiIndexMode: base velocity:%f\n", basVel);
     DEBUG(DAR_MSG_FULL, 
-          "<%d> %s:oiIndexMode: pickoff target:%d\n", pickoffTarget);
+          "<%d> %s:oiIndexMode: pickoff target:%f\n", pickoffTarget);
     DEBUG(DAR_MSG_FULL, 
-          "<%d> %s:oiIndexMode: pickoff velocity:%d\n", pkoVel);
+          "<%d> %s:oiIndexMode: pickoff velocity:%f\n", pkoVel);
 
     CHECKSTAT( (status = recGblPutLinkValue (&(par->pos1), 
             (void *) par, DBR_DOUBLE,
@@ -2372,9 +2376,9 @@ static long oiMoveMode
               "<%d> %s:oiMoveMode: intermediate move required%c\n", ' ');
 
         DEBUG(DAR_MSG_FULL, 
-              "<%d> %s:oiMoveMode: current base:%d\n", OI_BAS_INCR);
+              "<%d> %s:oiMoveMode: current base:%f\n", OI_BAS_INCR);
         DEBUG(DAR_MSG_FULL, 
-              "<%d> %s:oiMoveMode: current pickoff:%d\n", OI_PKO_INCR);
+              "<%d> %s:oiMoveMode: current pickoff:%f\n", OI_PKO_INCR);
         /*
          *  Save the original target positoins to be recovered after the
          *  intermediate motion is finished.
@@ -2432,13 +2436,13 @@ static long oiMoveMode
                 return(oiCancelCommand (par)) );
 
         DEBUG(DAR_MSG_FULL, 
-              "<%d> %s:oiMoveMode: base target:%d\n", basMid);
+              "<%d> %s:oiMoveMode: base target:%f\n", basMid);
         DEBUG(DAR_MSG_FULL, 
-              "<%d> %s:oiMoveMode: base velocity:%d\n", basVel);
+              "<%d> %s:oiMoveMode: base velocity:%f\n", basVel);
         DEBUG(DAR_MSG_FULL, 
-              "<%d> %s:oiMoveMode: pickoff target:%d\n", pkoMid);
+              "<%d> %s:oiMoveMode: pickoff target:%f\n", pkoMid);
         DEBUG(DAR_MSG_FULL, 
-              "<%d> %s:oiMoveMode: pickoff velocity:%d\n", pkoVel);
+              "<%d> %s:oiMoveMode: pickoff velocity:%f\n", pkoVel);
 
     }
 
