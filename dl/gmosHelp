@@ -34,6 +34,9 @@ gmosdc         - Create an xterm window and connect it to the GMOS
                  detector controller VxWorks console. (A log file is
                  written to $HOME/consoleLogs).
 
+gmosannex      - Create an xterm window and connect it to the GMOS
+                 annex - prompting for the I/O port.
+
 gmosStartMK    - A combination of gmosStart, gmoscc and gmosdc.
 
 gmosTest       - Start a series of GMOS checkout scripts
