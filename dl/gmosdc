@@ -44,11 +44,11 @@ pushd ${HOME}/gmos/consoleLogs/$day/gmosdc
 
 if ( $1 == "nolog" ) then
 
-   xterm -geometry 80x50-0+0 -sb -sl 128 -n gmosdc -T "GMOS Detector Controller Console" -e gmosIocAnnex 10.1.5.66 7002 gmosdc &
+   xterm -geometry 80x50-0+0 -sb -sl 256 -n gmosdc -T "GMOS Detector Controller Console" -e gmosIocAnnex 10.1.5.66 7002 gmosdc &
    echo "No log file will be created."
 else
 
-   xterm -l -geometry 80x50-0+0 -sb -sl 128 -n gmosdc -T "GMOS Detector Controller Console" -e gmosIocAnnex 10.1.5.66 7002 gmosdc &
+   xterm -l -geometry 80x50-0+0 -sb -sl 256 -n gmosdc -T "GMOS Detector Controller Console" -e gmosIocAnnex 10.1.5.66 7002 gmosdc &
    echo "A log file will be created in the `pwd`"
    echo "directory. Check for files called XtermLog.*"
 endif
