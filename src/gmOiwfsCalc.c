@@ -69,7 +69,8 @@ static char rcsid[] = "$Id$";
  * CalcApproxProbePosition       - Calculates the approximate position
  *                                 of the probe from the stage angles.
  *                                 This approximation ignores the effects
- *                                 of stage tilt.
+ *                                 of stage tilt therefore focus is always
+ *                                 zero..
  *
  * CalcExactProbePosition        - Calculates the position from the stage
  *                                 angles (taking into account the stage
@@ -105,25 +106,73 @@ static char rcsid[] = "$Id$";
  *                                 for debugging purposes only.
  *
  *
- *  Three coordinate systems are used in the calculations....
+ *  There are at least five coordinate systems used in the calculations....
  *
- *  1)  The base coordinate system.  This system has its origin at the 
- *      center of the base stage rotation axis and is used when manipulating
- *      the base and pickoff stages directly.
+ *  1)  The telescope frame {T}.   This is a fixed frame in the slit plane 
+ *      along the central axis of the telescope focal plane 
+ *           X - across slit plane (follows extractor stage) with positive 
+ *               toward cassette and negative toward OIWFS mount.
+ *           Y - The optical axis from slit plane, pointing toward the 
+ *               centre of exit pupil.
+ *           Z - Up/dwn slit plane with positive up.
+ *
+ *  2)  The base frame {B} is a fixed frame centred on the axis of the base 
+ *      stage bearing.  From the origin of {T} it is:
+ *           - offset in X,Y and Z
+ *           - rotated about Y by BETA_TB
+ *           - about Z by GAMMA_TB (so that Y points to the centre
+ *             of the exit pupil).
  * 
- *  2)  The probe coordinate system. This system describes the probe tip
- *      physical position in relation to the mask surface.   It has its 
- *      origin at the optical axis in front of the mask.
+ *  3)  The pickoff frame is a moving frame centred on the axis of the pickoff 
+ *      stage bearing.  It's origin is moving relative to {T} but fixed 
+ *      relative to the origin of {B}:
+ *           - rotated about Y by the current base angle
+ *           - offset in X by the length of the base stage arm 
+ *           - offset in Y by the height of the base stage arm
+ *           - rotated about Z by GAMMA_BP (so that Y points to the centre
+ *             of the exit pupil).
  *
- *  3)  The telescope coordinate system.   This system describes the probe
- *      tip position in relation to the ISS interface port and is the frame
- *      of reference used by the Telescope Control and the Acquisiton
- *      and Guiding systems.
+ *  4)  The probe mirror frame {M} is a moving frame centred on the optical 
+ *      axis of probe optic.  Again the origin is moving relative to {T} but 
+ *      fixed relative to the origin of {P}:
+ *           - rotated about Y by the current pickoff angle
+ *           - rotated about Z by GAMMA_PM (so that Y points to the centre
+ *             of the exit pupil).
+ *           - offset in X by the length of the pickoff stage arm
+ *           - offset in Y by the height of the pickoff stage arm.
+ *      By design, at the optical axis the origin of {M} will be offset 75 mm
+ *      in front of the slit plane. 
  *
- *  At the time of writing this code the transformation between the 
- *  telescope cordinate system and the mask coordinate system has not been
- *  defined.   A simple axis transformation is used to align the two
- *  coordinate systems.
+ *  5)  The Mask Coordinates Systems Frame {MC} is the frame of reference 
+ *      used by the Telescope Control and the Acquisition and Guiding 
+ *      systems.  If we ignore the {MC} Z (focus) axis and the effects of 
+ *      the Atmospheric Dispersion Compensator (AtmDC) altogether, then 
+ *      {MC} is a fixed frame relative to {T} (they share the same origin 
+ *      but with axes going in different directions.  From {T} it is:
+ *           - rotated 180 degrees about Y,
+ *           - rotated 180 degrees about X. 
+ *      The net effect is that X for {MC} goes in the opposite direction 
+ *      and the Y & Z axes are swapped.  
+ *
+ *      What about focus?
+ *
+ *      For a given X,Y coordinate, the {MC} focus (Z axis) will be 
+ *      displayed as a focus error (the difference between the actual 
+ *      probe (Z) position minus the ideal focal surface position for 
+ *      that X,Y coordinate.  This one is a little confusing.
+ *      The ideal focal surface follows a 1.9 meter radius and the probe
+ *      mirror follows a 16.4 meter radius.  At the optical axis, the 
+ *      ideal focal surface will be offset 1.3 mm behind the slit plane.
+ *      From the description of the probe mirror frame we know that
+ *      at the optical axis the origin of {M} will be offset 75 mm
+ *      in front of the slit plane, therefore the focus error AT THE
+ *      OPTICAL AXIS is +1.30 mm.  As the probe moves away from the
+ *      optical axis, the focus error will pass through zero (75 mm off-
+ *      axis) and then go negative (to about -6.4 mm at X,Y = 125,133).
+ *
+ *      What the the effects of the AtmDC?
+ *
+ *      [BMW - someone else needs to add this]
  *
  *INDENT-OFF*
  * $Log$
@@ -171,34 +220,73 @@ static char rcsid[] = "$Id$";
 
 
 
-#define  SQR(X)  ((X) * (X))            /* Hard definiton for square funct  */
+#define  SQR(X)  ((X) * (X))            /* Hard definition for square funct */
 
 #define  EMERGENCY_X  60.0              /* Fixed midpoint X coordinate      */
 #define  EMERGENCY_Y  60.0              /* Filed midpoint Y coordinate      */
 
-#define  T_XZ  (-sqrt(T_X * T_X + T_Z * T_Z))  /* vector length X->Z        */
 
 
 /*
  *  Coordinate system transformations
- *  TB -> telescope to base
- *  BP -> base to pickoff
- *  PM -> pickoff to mask (probe)
+ *  TB -> Telescope to Base stage
+ *  BP -> Base stage to Pickoff stage
+ *  PM -> Pickoff stage to probe Mirror
  */
 
+
+ /*  
+  *  X/Z vector offset from origin of telescope {T} to origin of base {B}
+  *  (ignores Y offset). 
+  */
+#define  T_XZ  (-sqrt(T_X * T_X + T_Z * T_Z))
+
+
+ /*  
+  *  Distance in mm along T frame Y axis (the optical axis) from
+  *  telescope exit pupil to slit plane.
+  */
 #define  D_P       16400.0
+
+
+ /*
+  *  Angle offset in radians for base {B} Y axis from {T} Y axis (the
+  *  optical axis) so that {B} Y always points to the centre of the 
+  *  exit pupil.  Rotate {B} Y axis GAMMA_TB radians about {B} Z axis.
+  */ 
 #define  GAMMA_TB  atan(T_XZ / D_P)
-#define  GAMMA_BP  (atan((T_XZ + BASE_ARM_LENGTH) / D_P) - GAMMA_TB)
-#define  GAMMA_PM  (atan((T_XZ + BASE_ARM_LENGTH + PICKOFF_ARM_LENGTH) / D_P) \
-                     - GAMMA_TB - GAMMA_BP)
+
+
+ /*
+  *  Angle offset in radians for {B} X axis from {T} X axis such that
+  *  {B} X points at the origin of {T} when {B} Z axis (the base stage
+  *  angle) is zero.   Rotate {B} X axis BETA_TB radians about {B} Y
+  *  axis. 
+  */
 #define  BETA_TB    (-atan(T_Z / T_X))
 
 
-/*
- *  Distance to move the virtual probe between each iteration of the 
- *  vertical range calculation algorithm.
- */
+ /*
+  *  Angle offset in radians for pickoff {P} Y axis from {B} Y axis
+  *  such that {P} Y always points to the centre of the exit pupil.
+  *  Rotate {P} Y axis GAMMA_BP radians about {P} Z axis.
+  */
+#define  GAMMA_BP  atan(BASE_ARM_LENGTH / D_P)
 
+
+ /*
+  *  Angle offset in radians for probe mirror {M} Y axis from 
+  *  {P} Y axis such that {M} Y always points to the centre of 
+  *  the exit pupil.  Rotate {M} Y axis GAMMA_PM radians about 
+  *  {M} Z axis. 
+  */
+#define  GAMMA_PM  atan(PICKOFF_ARM_LENGTH / D_P)
+
+
+ /*
+  *  Distance to move the virtual probe between each iteration of the 
+  *  vertical range calculation algorithm.
+  */
 #define  CALC_VERT_RANGE_STEP_SIZE   (0.5 * M_PI / 180.0)
 
 
@@ -218,6 +306,7 @@ int gmOiwfsRefineSteps = 2;           /* Set to 2, but 1 is okay too   */
 int gmOiwfsStageTiltCorrection = 1;   /* 0 to ignore stage tilt        */
 int gmOiwfsSolutionId = 3;            /* default to "best orientation" */
 
+int gmAtmdcInstalled = 0;             /* Assume no ADC is present      */
 
 /*
  *  Local storage for the calibration offsets
@@ -227,7 +316,58 @@ static GM_OIWFS_RAD baseOffset;
 static GM_OIWFS_RAD pickoffOffset;
 static GM_OIWFS_MM  xOffset;
 static GM_OIWFS_MM  yOffset;
+static GM_OIWFS_MM  zOffset;
 
+
+static GM_OIWFS_REG_COEF xRegADC = {  1.555421140,
+                                      0.994747066,
+                                     -0.000479298,
+                                     -0.202183761,
+                                     -0.000016549,
+                                     -0.000002054,
+                                     -0.000003612,
+                                      0.000799779 };
+
+static GM_OIWFS_REG_COEF yRegADC = {  0.055298607,
+                                     -0.000312211,
+                                      0.992598001,
+                                     -0.042147889,
+                                     -0.000003746,
+                                     -0.000008379,
+                                     -0.000023389,
+                                      0.000100735 };
+
+static GM_OIWFS_REG_COEF zRegADC = { -1.300822402, 
+                                      0.000244166,
+                                      0.000030318,
+                                      0.000193407,
+                                      0.000000127,
+                                      0.000125000,  /* 1 / (2 * 4000) */
+                                      0.000125000,  /* 1 / (2 * 4000) */
+                                     -0.000066935  };
+
+static GM_OIWFS_REG_COEF zRegNoADC = { -1.3, 0.0, 0.0, 0.0, 0.0,
+                                       1.0 / (2 * 1910.0),    /* x^2 */
+                                       1.0 / (2 * 1910.0),    /* y^2 */
+                                       0.0 };
+
+static GM_OIWFS_REG_COEF xInvADC = { -1.562497670,
+                                      1.005273182,
+                                      0.000458782,
+                                      0.202580379,
+                                      0.000016759,
+                                      0.000002064,
+                                      0.000003644,
+                                     -0.000806020 };
+                                      
+static GM_OIWFS_REG_COEF yInvADC = { -0.055752589,
+                                      0.000296093,
+                                      1.007454868,
+                                      0.042320689,
+                                      0.000003826,
+                                      0.000008482,
+                                      0.000023830,
+                                     -0.000109104 };
 
 /*
  *  Transformation algorithm array definitions
@@ -275,6 +415,8 @@ static int PickBestOrientation(double orient1, double orient2);
 
 static double sign(double x);
 
+static double regEval(const GM_OIWFS_REG_COEF * coef,
+                      double x, double y, double zenith);
 
 /*
  * Print matrix debugging info if matrix printing is enabled
@@ -305,6 +447,8 @@ static void PrintMatrix(char * s, MATRIX A);
  *  (>) x (double)       Offset required to convert X coordinate to
  *                       mask reference frame (mm).
  *  (>) y (double)       Offset required to convert Y coordinate to
+ *                       mask reference frame (mm).
+ *  (>) z (double)       Offset required to convert Z coordinate to
  *                       mask reference frame (mm).
  *
  * FUNCTION VALUE:
@@ -344,7 +488,8 @@ void gmOiwfsSetOffsets
     GM_OIWFS_RAD  base,      /* (in) baseOffset coefficient     */
     GM_OIWFS_RAD  pickoff,   /* (in) pickoffOffset coefficient  */
     GM_OIWFS_MM   x,         /* (in) xOffset coefficient        */
-    GM_OIWFS_MM   y          /* (in) yOffset coefficient        */
+    GM_OIWFS_MM   y,         /* (in) yOffset coefficient        */
+    GM_OIWFS_MM   z          /* (in) zOffset coefficient        */
 )
 {
     /*
@@ -355,6 +500,7 @@ void gmOiwfsSetOffsets
     pickoffOffset = pickoff;
     xOffset = x;
     yOffset = y;
+    zOffset = z;
 }
 
 
@@ -375,6 +521,8 @@ void gmOiwfsSetOffsets
  *  (>) x (double *)       Offset required to convert X coordinate to
  *                         mask reference frame (mm).
  *  (>) y (double *)       Offset required to convert Y coordinate to
+ *                         mask reference frame (mm).
+ *  (>) z (double *)       Offset required to convert Z coordinate to
  *                         mask reference frame (mm).
  *
  * FUNCTION VALUE:
@@ -419,7 +567,8 @@ int gmOiwfsGetOffsets
     GM_OIWFS_RAD * base,      /* (out) Pointer to baseOffset coefficient     */
     GM_OIWFS_RAD * pickoff,   /* (out) Pointer to pickoffOffset coefficient  */
     GM_OIWFS_MM  * x,         /* (out) Pointer to xOffset coefficient        */
-    GM_OIWFS_MM  * y          /* (out) Pointer to yOffset coefficient        */
+    GM_OIWFS_MM  * y,         /* (out) Pointer to yOffset coefficient        */
+    GM_OIWFS_MM  * z          /* (out) Pointer to yOffset coefficient        */
 )
 {
     int error_bits = 0;
@@ -480,6 +629,21 @@ int gmOiwfsGetOffsets
     else
     {
         *y = yOffset;
+    }
+
+
+    /*
+     *  If Z offset return pointer is valid then return the current
+     *  base offset value.
+     */
+
+    if (z == NULL)
+    {
+        error_bits = error_bits + 16;
+    }
+    else
+    {
+        *z = zOffset;
     }
 
 
@@ -689,8 +853,26 @@ int gmOiwfsCalculateProbePosition
 
     if (status == 0)
     {
+
+        /*
+         *  Adjust X and Y for the effects of the ADC.
+         */
+
+        if (gmAtmdcInstalled == 1)
+        {
+
+            /*
+             *  Use a dummy value of zenith = 0 for now.
+             */
+
+            *xPos = regEval(&xRegADC, *xPos, *yPos, 0.0);
+            *yPos = regEval(&yRegADC, *xPos, *yPos, 0.0);
+        }
+
         *xPos = *xPos - xOffset;
         *yPos = *yPos - yOffset;
+
+        *focus = *focus - zOffset;
 
 
         /*
@@ -707,6 +889,27 @@ int gmOiwfsCalculateProbePosition
         {
             *probeAngle = *probeAngle - M_PI;
         }
+
+
+        /*
+         *  Now adjust the focus error by the curved focal surface.
+         */
+
+        if (gmAtmdcInstalled == 1)
+        {
+            *focus = *focus - regEval(&zRegADC, *xPos, *yPos, 0.0);
+        }
+        else
+        {
+
+            /*
+             *  Subtract the focal surface from the probe position.
+             *  Temporarily use 0.0 as zenith angle.
+             */
+
+            *focus = *focus - regEval(&zRegNoADC, *xPos, *yPos, 0.0);
+        }
+
     }
 
     return status;
@@ -1407,7 +1610,7 @@ static int CalcApproxProbePosition
     *yPos = BASE_ORIGIN_Y + BASE_ARM_LENGTH * sin(baseAngle) +
             PICKOFF_ARM_LENGTH * sin(baseAngle+pickoffAngle);
 
-    *focus = 0.0;
+    *focus = *focus - regEval(&zRegNoADC, *xPos, *yPos, 0.0);
 
     return 0;  /* always a success */
 }
@@ -1472,7 +1675,7 @@ static int CalcExactProbePosition
     /*
      * Remove encoder offsets
      */
-                                                                            
+
     baseAngle = baseAngle - baseOffset - BETA_TB;
     pickoffAngle = pickoffAngle - pickoffOffset;
 
@@ -1983,7 +2186,7 @@ int solutionIndex
  * PrintMatrix
  *
  * INVOCATION:
- * PRINT_MATRIX("Pickoff -> Probe", A);
+ * PrintMatrix("Pickoff -> Probe", A);
  *
  * PARAMETERS: (">" input, "!" modified, "<" output)
  * (>) s (char *)  String to be printed along with matrix.
@@ -2124,4 +2327,75 @@ static void MatVecMult4
     {
         X[r] = b[r];
     }
+}
+
+/*
+ ************************************************************************
+ *+
+ * FUNCTION NAME:
+ * regEval
+ *
+ * INVOCATION:
+ * xCorrected = regEval(xRegADC, x, y, zenith);
+ *
+ * PARAMETERS: (">" input, "!" modified, "<" output)
+ * (>) coef   (GM_OIWFS_REG_COEF *)  Pointer to regression coefficients.
+ * (>) x      (double)               X position of probe in mask coordinates
+ * (>) y      (double)               Y position of probe in mask coordinates
+ * (>) zenith (double)               ADC setting (telescope zenith angle)
+ *
+ * FUNCTION VALUE:
+ * Returns the value of the function listed below (represented by the 
+ * coefficients stored in *coef) at location x, y, zenith.
+ * 
+ *
+ * PURPOSE:
+ * Evaluates the following function:
+ *
+ *   coef->offset + x * coef->xSlope + y * coef->ySlope
+ *   + coef->tanZen2 * tan(zenith) * tan(zenith)
+ *   + coef->xyQuad * x * y + coef->xxQuad * x * x + coef->yyQuad * y * y
+ *   + coef->xCos2zen * x * cos(2.0 * zenith)
+ *
+ * DESCRIPTION:
+ * Evaluates a regression function at the given x, y and zenith values.
+ *
+ * EXTERNAL VARIABLES:
+ * None.
+ *
+ * PRIOR REQUIREMENTS:
+ * The pointer coef must point to a valid set of regression coefficients.
+ * The regression coefficients must have been previously computed.
+ *
+ * SEE ALSO:
+ *
+ * DEFICIENCIES:
+ * None.
+ *-
+ ************************************************************************
+ */
+
+static double regEval
+(
+    const GM_OIWFS_REG_COEF * coef,
+    double x,
+    double y,
+    double zenith   /* zenith angle in radians */
+)
+{
+    double sum;
+    double tanZen;
+
+    tanZen = tan(zenith);
+
+    sum = coef->offset
+        + coef->xSlope * x 
+        + coef->ySlope * y
+        + coef->tanZen2 * tanZen * tanZen
+        + coef->xyQuad * x * y
+        + coef->xxQuad * x * x
+        + coef->yyQuad * y * y
+        + coef->xCos2zen * x * cos(2.0 * zenith);
+
+    return sum;
 }
