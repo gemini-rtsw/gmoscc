@@ -1,0 +1,139 @@
+	GMOS COMPONENTS CONTROLLER SOURCE CODE DIRECTORY
+	================================================
+
+This directory contains the C code and header files for the GMOS Instrument
+Sequencer and Components Controller software. The following files are
+contained:
+
+Instrument Sequencer Header files
+----------------------------------
+gmSeq.h               - All definitions for instrument sequencer
+
+Instrument Sequencer C code
+---------------------------
+dbMatchField.c        - Utility to search for all record fields
+                        with a particular value (engineering only).
+gmSeqCadLib.c         - All the functions implementing the high level
+                        CAD commands.
+gmSeqDisplayMenus.c   - Functions for generating arrays of strings
+                        used to populate the filter, grating and mask
+                        name menus. (Only present to make the "dm"
+                        screens easier to use).
+gmSeqLib.c            - All the general purpose functions.
+gmSeqTracking.c       - All the functions relating to AtmDC tracking
+                        and flexure control.
+
+
+Components Controller Header files
+----------------------------------
+darMessageLevels.h   - Message type definitions for assembly level software
+devAssControl.h      - General device support entry table for assemblyControl
+                       record software.
+devDeviceControl.h   - Device support entry tables for deviceControl record.
+drvOmsVme.h          - Constants and function definitions for OMS-VME8/44 motor
+                       control device driver.
+gmOiwfsCalc.h        - Global variables and definitions for OIWFS calculation
+                       functions
+gmosCcCadLib.h       - Function definitions for GMOS components controller CAD
+                       functions.
+gmosLutLib.h         - Global variables and definitions for lookup table
+                       functions.
+lifter.h             - Constants for the GMOS grating lifter
+recAssControl.h      - Constants and data structures for assemblyControl record
+                       software.
+recDeviceControl.h   - Constants and data structures for deviceControl record
+                       software.
+tcs_simulator.h      - Function definitions for OIWFS TCS simulator.
+
+
+Components Controller C code
+----------------------------
+devApplyLocal.c      - Private copy of the local device support for apply
+                       record developed by Chris Mayer.
+devApplyRemote.c     - Private copy of the remote device support for apply
+                       record developed by Chris Mayer. This works between two
+                       IOCs.
+devAtmdcControl.c    - Assembly record device support for the AtmDC assembly.
+devBarcode.c         - Barcode reader driver software.
+devDeviceControl.c   - Universal device support for the deviceControl record.
+                       All devices use this device support.
+devFilterAss.c       - Assembly record device support for the filter assembly.
+devGratingAss.c      - Assembly record device support for the grating
+                       assembly.
+devMaskControl.c     - Assembly record device support for the mask assembly.
+devOiwfsControl.c    - Assembly record device support for the OIWFS assembly.
+devTranslationAss.c  - Assembly record device support for the detector
+                       translation assembly.
+drvOmsVme.c          - Driver software for the OMS-VME8 and OMS-VME44 motor
+                       control cards. All devices use this driver.
+gmMaskGenSubs.c      - Gensub functions used by the mask assembly.
+gmOiwfsCadSupport.c  - CAD record functions used by the OIWFS software.
+gmOiwfsCalc.c        - Calculation functions used by the OIWFS software.
+gmOiwfsCalibrate.c   - Calibration functions used by the OIWFS software.
+gmOiwfsGenSubs.c     - Gensub functions used by the OIWFS software.
+gmosCcCadLib.c       - General CAD functions used by the GMOS components
+                       controller.
+gmosGensubLib.c      - General gensub functions used by the GMOS components
+                       controller.
+gmosLutLib.c         - General purpose lookup table handling functions.
+lifter.c             - GMOS grating lifter control software.
+mult.c               - Multiplication function used by test scripts in
+                       gmoscc/test.
+rand.c               - Random number generator used by test scripts in
+                       gmoscc/test.
+recApply.c           - Private copy of the record support for the apply record
+                       developed by Chris Mayer.
+recAssControl.c      - Record support for the assemblyControl record.
+recDeviceControl.c   - Record support for the deviceControl record.
+rngShow.c            - Utility function for displaying ther contents of a
+                       ring buffer (engineering only).
+tcs_simulator.c      - TCS simulator used by OIWFS software.
+testOms844.c         - Utility functions for testing the OMS-VME8 and OMS-VME44
+                       motor control cards (engineering only).
+tolower.c            - Lowercase function used by test scripts in gmoscc/test.
+
+
+Components Controller EPICS state notation language
+---------------------------------------------------
+assemblyCar.stpp     - Copies the state changes from the BUSY field of an
+                       assembly record to the IVAL field of a CAR record
+                       without forcing the two records into the same lock
+                       set.
+commandCar.stpp      - Manages the probeC CAR record for the OIWFS software.
+dtaAssemblyCar.stpp  - Manages the CAR record for an assembly, in a similar
+                       way to assemblyCar.stpp, except the control is
+                       switched off during periods when the assembly is in
+                       a tracking mode.
+lifterSim.stpp       - A simulator for the GMOS grating lifter. DO NOT LOAD
+                       UNLESS OPERATING GMOS IN SIMULATION MODE.
+softCar.stpp         - Manages the CAR records associated with trivial GMOS
+                       commands.
+systemCar.stpp       - Manages the CAR records associated with GMOS system
+                       commands, where the activation of a CAD record makes
+                       the CAR go BUSY but the CAR does not go IDLE until
+                       all the GMOS assemblies are IDLE.
+
+
+	GMOS INSTRUMENT SEQUENCER SOURCE CODE DIRECTORY
+	================================================
+
+This directory contains the C code and header files for the GMOS Instrument
+Sequencer software. The following files are contained:
+
+Header files
+------------
+gmSeq.h               - All definitions for instrument sequencer
+
+C code
+------
+dbMatchField.c        - Utility to search for all record fields
+                        with a particular value (engineering only).
+gmSeqCadLib.c         - All the functions implementing the high level
+                        CAD commands.
+gmSeqDisplayMenus.c   - Functions for generating arrays of strings
+                        used to populate the filter, grating and mask
+                        name menus. (Only present to make the "dm"
+                        screens easier to use).
+gmSeqLib.c            - All the general purpose functions.
+gmSeqTracking.c       - All the functions relating to AtmDC tracking
+                        and flexure control.
