@@ -712,7 +712,7 @@ ENDTEST
 #  All Grip functions check out OK!
 #
 
-COMMENT "Grip checks out OK"
+COMMENT "Grip checks out OK - please reboot when tests are complete"
 
 
  

@@ -792,7 +792,7 @@ ENDTEST
 #  All translation stage X axis functions check out OK!
 #
 
-COMMENT "Translation X axis checks out OK"
+COMMENT "Translation X axis checks out OK - please reboot after tests"
 
 
  

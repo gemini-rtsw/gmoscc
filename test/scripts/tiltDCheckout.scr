@@ -694,7 +694,7 @@ ENDTEST
 #  All grating A functions check out OK!
 #
 
-COMMENT "Grating cell D checks out OK"
+COMMENT "Grating cell D checks out OK - please reboot when tests are complete"
 
 
  

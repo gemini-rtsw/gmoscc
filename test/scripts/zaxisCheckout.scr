@@ -694,7 +694,7 @@ ENDTEST
 #  All translation stage Z axis functions check out OK!
 #
 
-COMMENT "Translation Z axis checks out OK"
+COMMENT "Translation Z axis checks out OK - please reboot after tests"
 
 
  

@@ -770,5 +770,5 @@ ENDTEST
 #  All cassette functions check out OK!
 #
 
-COMMENT "cassette checks out OK - remember to load configuration file!"
+COMMENT "Cassette checks out OK - please reboot when tests are complete"
  

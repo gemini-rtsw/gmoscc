@@ -1314,5 +1314,5 @@ ENDTEST
 #  All Extractor functions check out OK!
 #
 
-COMMENT "Extractor checks out OK - remember to load configuration file!"
+COMMENT "Extractor checks out OK - please reboot when tests are complete"
  
