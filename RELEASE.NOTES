@@ -25,7 +25,6 @@ are currently four versions available: A full version for the real hardware,
 databases with simulated post or pre focal-plane hardware, and a fully
 simulated database. Saved 15 April 2000.  ARCHIVED.
 
-
 V0-8 01 Jun 2000 SMB:
 ---------------------
 gmos008 - Version containing commented code from William Rambold with serious
@@ -36,7 +35,6 @@ V0-9 12 Jul 2000 SMB:
 ---------------------
 gmos009 - Version with the memory corruption problems contained in gmos008
 fixed. Saved 12 July 2000.  ARCHIVED.
-
 
 V1-0 31 Jul 2000 SMB:
 ---------------------
@@ -141,11 +139,21 @@ be used for GMOS acceptance tests and for post shipping evaluation. Saved 8
 March 2001.
 FIRST VERSION SAVED TO CVS REPOSITORY AT GEMINI HBF - gmoscc and gmosis merged.
 
+V2-3 13 Apr 2001 SMB:
+---------------------
+This version is identical to V2-2 except additional housekeeping changes
+were made to allow the software work properly at HBF:
+- Top level gmosIocAnnex and sim2 scripts were added, for VME crates
+  contacted through an annex.
+- The lookup tables directory was changed from /home/smb/gmos/lut
+  back to /gemini/gmos/lut.
+- dm screen colours were changed to match the descriptions in the 
 
-V2-3 ?? Apr 2001 SMB:
+V2-4 ?? Apr 2001 SMB:
 ---------------------
 gmos023 - This version is under development and may be modified to allow an
 INIT command to be executed while GMOS is interlocked. Any power status problem
 fix, plus fixes for significant problems seen during acceptance tests, will go
 into this version. It will be released under change control in consultation
 with the Gemini project.
+THIS VERSION MERGED WITH V2-3.
