@@ -9,7 +9,7 @@
 
 set updateLine = `tail -1 $2`
 if ( $#updateLine != 3 ) then
-	echo "Update file parse error"
+	echo "Update file parse error - is the last line blank"
 	exit
 endif
 
