@@ -2185,7 +2185,7 @@ display {
 	align="horiz. left"
 	format="decimal"
 }
-"text update" {
+"text entry" {
 	object {
 		x="134"
 		y="495"
@@ -2193,10 +2193,10 @@ display {
 		height="20"
 		groupid="0"
 	}
-	monitor {
+	control {
 		chan="$(T)$(D)Device.TDIR"
 		clr="0"
-		bclr="7"
+		bclr="6"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -2228,10 +2228,9 @@ display {
 		convertFunc=""
 		convertParams=""
 	}
-	align="horiz. right"
 	format="decimal"
 }
-"text update" {
+"text entry" {
 	object {
 		x="400"
 		y="495"
@@ -2239,10 +2238,10 @@ display {
 		height="20"
 		groupid="0"
 	}
-	monitor {
+	control {
 		chan="$(T)$(D)Device.TFIL"
 		clr="0"
-		bclr="7"
+		bclr="6"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -2274,7 +2273,6 @@ display {
 		convertFunc=""
 		convertParams=""
 	}
-	align="horiz. left"
 	format="decimal"
 }
 "text entry" {
