@@ -1,7 +1,6 @@
-DIRS += capfast
 DIRS += adl
+DIRS += alh
+DIRS += capfast
 DIRS += src
-DIRS += sys
 DIRS += startup
-DIRS += db
-DIRS += pv
+DIRS += db 

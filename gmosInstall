@@ -10,71 +10,13 @@ else
     site=CP;
 fi
 
-#
-# Create the "gmosdc" directory link, destroying any existing link first.
-#
-
-#echo "Creating gmosdc link to " ${GMOS_DC}
-rm -f `find . -name "gmosdc" -type l -prune`
-ln -s ${GMOS_DC} ./gmosdc
-
-#
-# Set up the UAE environment.
-#
-
 slalib_dir=/gemini/epics3.13.4/slalib/slalib
 timelib_dir=/gemini/epics3.13.4/timelib/timelib
 astlib_dir=/gemini/epics3.13.4/astlib/astlib
 
-applSetup.pl -T mv167 \
-          -I alh -I capfast -I adl -I pv -I src -I startup -I db  \
-          -S $site \
-	  -d $astlib_dir -d $slalib_dir \
-	  -d $timelib_dir \
-          > gmosBuild.log 2>&1 
+applSetup.pl -T mv167 -I adl -I alh -I capfast -I src -I startup -I db \
+	     -d $astlib_dir -d $slalib_dir -d $timelib_dir -S $site $1 > $2 2>&1
 
-applSetup.pl  >> gmosBuild.log 2>&1
-
-# Test scripts installation
-
-cd ./startup
-
-ed UAE.dist << eof >/dev/null
-/^FILES5
-a
-FILES99 = ( \${APPLIC_INSTALL}/test )
-.
-w
-$
-a
-
-(\${FILES99}) -> (\${HOSTS})
-        install -R \${DIST_PATH}/test;
-.
-w
-q
-eof
-
-cd ..
-
-#
-# Go to the dl directory and explicitly make the color templates.
-
-cd adl; adl2dl2-4 gmColors.adl; adl2dl2-4 colors.adl; cd ..
-
-#
-# Build everything.
-#
-
-gmake >> gmosBuild.log 2>&1
-
-#
-# Bug work around. Sometimes the adl2dl2.4 converter core dumps when
-# attempting to build some of the dm screens. Building them a second time
-# recovers the missing screens. This recovery needs to be done in a
-# C shell script so that "touch" works properly
-#
-
-./gmosInstallExtra >> gmosBuild.log 2>&1
+gmake >> $2 2>&1
 
 exit 0

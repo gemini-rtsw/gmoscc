@@ -297,5 +297,15 @@ CJT changes :
 
 V3-0 October 2001 TPAZ:
 ----------------------
- Ported component controler code to epics 3.13.4GEM8
+-  Ported component controler code to epics 3.13.4GEM8
+-  Changed lifter.h for pneumatic upgrade conformance.
 
+V3-1 April 24 2002 ajf/tpaz:
+----------------------------
+-  Completed port to epics3.13.4GEM8.4.
+-  Uses new applyRecord (from EPICS release) which works
+   correctly between IOC's.
+-  Split pv and lut files for Gemini North and South
+-  Restructuring of application directories to make this 
+   system look more like the Gemini standard
+-  Fixed the install script so that it works with "instRelease"
