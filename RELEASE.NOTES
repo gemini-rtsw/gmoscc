@@ -324,3 +324,7 @@ V3-4 April 27 2002 ajf/tpaz:
 ----------------------------
 -  Path names to "luts" too long in assemblyControl Records.
    Use relative path instead i.e. "./data".
+
+V3-5 April 29 2002 ajf/tpaz:
+----------------------------
+-  Change LIFTER CYCLE TIME from 6 to 9 seconds.
