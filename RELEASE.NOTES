@@ -139,21 +139,37 @@ be used for GMOS acceptance tests and for post shipping evaluation. Saved 8
 March 2001.
 FIRST VERSION SAVED TO CVS REPOSITORY AT GEMINI HBF - gmoscc and gmosis merged.
 
-V2-3 13 Apr 2001 SMB:
----------------------
+V2-2-1 16 Apr 2001 SMB:
+-----------------------
 This version is identical to V2-2 except additional housekeeping changes
 were made to allow the software work properly at HBF:
 - Top level gmosIocAnnex and sim2 scripts were added, for VME crates
   contacted through an annex.
 - The lookup tables directory was changed from /home/smb/gmos/lut
   back to /gemini/gmos/lut.
-- dm screen colours were changed to match the descriptions in the 
+- dm screen colours were changed to match the descriptions in the
+  "GMOS Software User Manual".
+- Startup scripts were edited to refer to "$(iocpath)" rather than
+  "$(version)" or "$(install)".
+
+V2-3 ?? Apr 2001 SMB:
+---------------------
+gmos023 - This version contains fixes to the following problems
+- #168 spontaneous motion error: OIWFS devices will no longer time out
+  after being moved manually by a significant amount.
+- #196 DEBUG macro cannot display floating point values: All DEBUG macros
+  now use printf and can display floating point values.
+- #218 Device control HSWA field can stick: A field monitoring problem
+  that may have caused this bug has been identified and fixed. The result
+  still needs to be tested.
+- #258 Device control record does not fully simulate: A problem that
+  caused the simulation mode to be set up incorrectly if the mode
+  is changed after the device has already executed an INIT has been fixed.
+THIS VERSION MERGED WITH V2-2-1. It will be released under change control
+in consultation with the Gemini project.
 
 V2-4 ?? Apr 2001 SMB:
 ---------------------
-gmos023 - This version is under development and may be modified to allow an
-INIT command to be executed while GMOS is interlocked. Any power status problem
-fix, plus fixes for significant problems seen during acceptance tests, will go
-into this version. It will be released under change control in consultation
-with the Gemini project.
-THIS VERSION MERGED WITH V2-3.
+This version is the same as V2-3 with power status checking switched back
+on. It will also contain any fixes to bugs identified during the GMOS
+software acceptance tests.
