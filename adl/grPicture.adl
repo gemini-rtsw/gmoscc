@@ -270,7 +270,7 @@ display {
 		height="20"
 		groupid="0"
 	}
-	textix="GMOS-S Grating Assembly Pictorial Status"
+	textix="GMOS Grating Assembly Pictorial Status"
 	align="horiz. centered"
 }
 "rectangle" {

@@ -419,4 +419,24 @@ V4-3 Nov 2003 tpaz
 - "ignore barcode" feature modified not to go back to FALSE automaticaly. 
    Files modified: devMaskCtrl.c 
 
+V4-4 Dec 2003 tpaz
+-------------------
+- a small patch:
 
+  incremented maximum number of grating lut entries from 100 to 1500.
+  Files modified: gmosLutLib.h
+
+- changes for electronic offsets:
+  files changed: gmOiwfsGenSubs.c
+                 gmOiwfsFollowA.sch
+                 gmOiwfsCmd.adl
+                 MK/gmOiwfs.pv 
+                 CP/gmOiwfs.pv
+
+  minimum tolerance changed from 1 to 0.05 
+  default X/Y tolerance changed from 1 to 0.06
+  files changed: MK/gmOiwfs.pv
+                 CP/gmOiwfs.pv
+
+- tuning of extractor release postion due to gripper/extractor failures with ifu
+  files changed: MK/gmMask.pv

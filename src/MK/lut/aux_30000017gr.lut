@@ -32,3 +32,20 @@ aux_grating
 3  65.000        6905
 3  77.069        8179
 3  89.745        9517
+#
+# Grating R600:
+# Values for R600 in position 4 are based on measurement of only
+# the 65 deg point, Dec 04, 2003 (KR, PG).
+# The rest are offset +60 relative to R600
+# in cell 3 (C);  (0,0) is left in place.
+
+# Cell  Tilt    Steps
+
+4   0.0000000       0
+4   7.755         922.5
+4  26.025        2852
+4  40.231        4350.5
+4  52.912        5689
+4  65.000        6965
+4  77.069        8239
+4  89.745        9577

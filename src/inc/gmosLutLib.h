@@ -22,6 +22,9 @@
  * HISTORY
  * -------
  * $Log$
+ * Revision 1.1  2002/04/24 05:25:35  ajf
+ * Added for port to epics3.13.4GEM8.4.
+ *
  * Revision 1.1  2001/11/28 20:08:50  mbec
  * *** empty log message ***
  *
@@ -59,7 +62,7 @@
 
 /* Public constants */
 
-#define MAX_GMOS_LUT_ENTRIES 100             /* Max number of entries in lookup table */
+#define MAX_GMOS_LUT_ENTRIES  1500             /* Max number of entries in lookup table */
 
 /* Error status codes */
 

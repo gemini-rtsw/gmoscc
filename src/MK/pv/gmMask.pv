@@ -173,15 +173,16 @@ group {
 #
 #     grip position is 3.15 adjust for +-0.15
 #     15/12/01 grip position changed to 3.20 +-0.15 after maintenance
+#     values changed after tuning due to gripper problem 2/27/2004
 #
-   double $(top)mskExtAtGrpLo   =    3.05; # Extractor at Grip position lo limit
-   double $(top)mskExtAtGrpHi   =    3.35; # Extractor at Grip position hi limit
+   double $(top)mskExtAtGrpLo   =    2.85; # Extractor at Grip position lo limit
+   double $(top)mskExtAtGrpHi   =    3.15; # Extractor at Grip position hi limit
 #
 #     release position is 3.80 adjust for +-0.15
 #     15/12/01 release position changed to 3.85 +-0.15 after maintenance
 #
-   double $(top)mskExtAtRelLo   =    3.70; # Extractor at Release position lo limit
-   double $(top)mskExtAtRelHi   =    4.00; # Extractor at Release position hi limit
+   double $(top)mskExtAtRelLo   =    3.85; # Extractor at Release position lo limit
+   double $(top)mskExtAtRelHi   =    4.15; # Extractor at Release position hi limit
 }
 
 #

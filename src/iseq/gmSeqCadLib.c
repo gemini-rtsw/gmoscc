@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.5  2003/11/18 18:53:55  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.4  2003/07/21 21:37:20  gemvx
  * V4-2 follow in z only version
  *
@@ -172,7 +175,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 #include "gmSeq.h"
 #include "gmosLutLib.h"
 
-/* #define VERBOSE */    /* Define to enable extra printf statements */
+#define VERBOSE    /* Define to enable extra printf statements */
 
 /*
  * NOTE: The global pointers declared below are shared with gmSeqDisplayMenus.c

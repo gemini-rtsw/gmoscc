@@ -5,17 +5,19 @@ aux_grating
 # Based on measurement of only the 65deg point, July 20, 2003 (KR, PG)
 # The rest are offset 6938-6950=-12 relative to B1200 in cell 3 (C)
 # (0,0) is left in place
+#
+# Revised 11/27/2003 KR,PG
 
 # Cell  Tilt    Steps
 
 2   0.0000000       0
-2   7.755         895.5
-2  26.025        2825
-2  40.231        4323.5
-2  52.912        5662
-2  65.000        6938
-2  77.069        8212
-2  89.745        9550
+2   7.755         890.5
+2  26.025        2820
+2  40.231        4318.5
+2  52.912        5657
+2  65.000        6933
+2  77.069        8207
+2  89.745        9545
 #
 # Grating B1200:
 # Values for B1200 in position 3 are
@@ -26,10 +28,28 @@ aux_grating
 # Cell  Tilt    Steps
 
 3   0.0000000       0
-3   7.755         907.5
-3  26.025        2837
-3  40.231        4335.5
-3  52.912        5674
-3  65.000        6950
-3  77.069        8224
-3  89.745        9562
+3   7.755         901.5
+3  26.025        2831
+3  40.231        4329.5
+3  52.912        5668
+3  65.000        6944
+3  77.069        8218
+3  89.745        9556
+#
+# Grating B1200:
+# Values for B1200 in position 4 are
+# Based on measurement of only the 65deg point, Dec 03, 2003 (KR, PG)
+# The rest are offset of +55.5 from cell 3
+# (0,0) is left in place
+
+# Cell  Tilt    Steps
+
+4   0.0000000       0
+4   7.755         958
+4  26.025        2887.5
+4  40.231        4386
+4  52.912        5724.5
+4  65.000        7000.5
+4  77.069        8274.5
+4  89.745        9612.5
+

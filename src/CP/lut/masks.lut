@@ -5,7 +5,6 @@
 # Database of available GMOS masks.
 #
 # This file contains a list of all the NAMED masks known to GMOS.
-# It does not include science masks identified only by their barcodes.
 #
 # NS longslits added; 19/01/03 MAH & BM
 
@@ -28,7 +27,7 @@ OIWFS                  10005386     0.0
 off_tel_calib          10005387     0.0
 GM2001B-SV-79-7        10097907     0.0
 paper_mask	       10000001     0.0
-IFU                    10000002     0.0
+IFU                    10000002     160.0
 IFU_mask               10000003     0.0
 NS0.5arcsec	       10005388     0.0
 NS0.75arcsec  	       10005389     0.0
@@ -77,3 +76,21 @@ GS2003BQ004-05         11000405     0.0
 GS2003BQ018-02         11001802     0.0
 GS2003BQ018-03         11001803     0.0
 GS2003BQ020-01         11002001     0.0
+GS2003BQ006-05         11000605     0.0
+GS2003BQ006-06         11000606     0.0 
+GS2003BQ046-01         11004601     0.0
+GS2003BQ007-01         11000701     0.0
+GS2003BQ007-02         11000702     0.0
+GS2003BQ007-03         11000703     0.0
+GS2003BQ007-04         11000704     0.0
+GS2003BQ007-05         11000705     0.0
+GS2004AQ016-01         10001601     0.0 
+GS2004AQ016-02         10001602     0.0 
+GS2004AQ016-03         10001603     0.0 
+GS2004AQ016-04         10001604     0.0 
+GS2004AQ016-05         10001605     0.0 
+GS2004AQ066-01         10006601     0.0 
+GS2004ADD003-01        10900301     0.0 
+GS2004ADD003-02        10900302     0.0 
+GS2004ADD003-03        10900303     0.0 
+GS2004ADD003-04        10900304     0.0 
