@@ -11,6 +11,9 @@ w 626 1803 100 0 n#420 eaos.ExtAtGrpHi.VAL 544 1792 768 1792 768 1728 960 1728 e
 w 786 1675 100 0 n#419 eaos.ExtAtRelLo.VAL 544 1600 672 1600 672 1664 960 1664 egenSub.LvdtZones.INPD
 w 818 1611 100 0 n#418 eaos.ExtAtRelHi.VAL 544 1408 736 1408 736 1600 960 1600 egenSub.LvdtZones.INPE
 w 210 1275 100 0 n#417 eais.Lvdt.INP 288 1264 192 1264 hwin.hwin#332.in
+s 192 896 100 0 to cope with noisy electronics.
+s 192 928 100 0 factor, which may be set to a non-zero value
+s 192 960 100 0 The LVDT record has an optional smoothing
 [cell use]
 use outhier 1472 1815 100 0 zones
 xform 0 1488 1856
@@ -31,26 +34,26 @@ p 1168 1568 70 512 -1 FTVF:LONG
 p 1168 1504 70 512 -1 FTVG:LONG
 p 960 1952 100 0 1 PV:$(top)$(dev)
 p 1024 1088 100 0 1 SNAM:mkExtLvdtZones
-use eaos 544 2256 100 0 ExtAtLvdtLo
-xform 0 416 2176
-p 256 1902 100 0 0 EGU:lvdt position
-p 352 2256 100 0 1 PV:$(top)$(dev)
-use eaos 544 1872 100 0 ExtAtGrpHi
-xform 0 416 1792
-p 256 1518 100 0 0 EGU:lvdt position
-p 352 1872 100 0 1 PV:$(top)$(dev)
-use eaos 544 2064 100 0 ExtAtGrpLo
-xform 0 416 1984
-p 256 1710 100 0 0 EGU:lvdt position
-p 352 2064 100 0 1 PV:$(top)$(dev)
-use eaos 544 1488 100 0 ExtAtRelHi
-xform 0 416 1408
-p 256 1134 100 0 0 EGU:lvdt position
-p 352 1488 100 0 1 PV:$(top)$(dev)
 use eaos 544 1680 100 0 ExtAtRelLo
 xform 0 416 1600
 p 256 1326 100 0 0 EGU:lvdt position
 p 352 1680 100 0 1 PV:$(top)$(dev)
+use eaos 544 1488 100 0 ExtAtRelHi
+xform 0 416 1408
+p 256 1134 100 0 0 EGU:lvdt position
+p 352 1488 100 0 1 PV:$(top)$(dev)
+use eaos 544 2064 100 0 ExtAtGrpLo
+xform 0 416 1984
+p 256 1710 100 0 0 EGU:lvdt position
+p 352 2064 100 0 1 PV:$(top)$(dev)
+use eaos 544 1872 100 0 ExtAtGrpHi
+xform 0 416 1792
+p 256 1518 100 0 0 EGU:lvdt position
+p 352 1872 100 0 1 PV:$(top)$(dev)
+use eaos 544 2256 100 0 ExtAtLvdtLo
+xform 0 416 2176
+p 256 1902 100 0 0 EGU:lvdt position
+p 352 2256 100 0 1 PV:$(top)$(dev)
 use hwin 0 1223 100 0 hwin#332
 xform 0 96 1264
 p 112 1200 100 1280 -1 val(in):#<$(lvdt)>
@@ -70,4 +73,5 @@ p 288 1088 100 0 1 EGUL:-5.0000000e+00
 p 32 1070 100 0 0 PREC:3
 p 352 1296 100 0 1 PV:$(top)$(dev)
 p 288 1056 100 0 1 SCAN:.1 second
+p 288 1024 100 0 1 SMOO:0.7
 [comments]
