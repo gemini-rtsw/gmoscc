@@ -101,8 +101,8 @@ dbpf "g3:cc:msEnableEnable","0"
 dbpf "g3:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "g3:sad:name.VAL","GMOS Cerro Pachon (V2-4)"
-dbpf "g3:sad:cc:name.VAL","GMOS Cerro Pachon (V2-4)"
+dbpf "g3:sad:name.VAL","GMOS Cerro Pachon (V2-5)"
+dbpf "g3:sad:cc:name.VAL","GMOS Cerro Pachon (V2-5)"
 
 # Load initialization files
 pvload "$(iocpath)/data/gmosCc.pv","top=g3:, sadtop=g3:sad:"
