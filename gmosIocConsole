@@ -3,6 +3,9 @@
 # Script to connect to GMOS VxWorks console when it becomes
 # available.
 #
+# Invocation:
+#    gmosIocConsole vmeCrateAddress
+#
 
 start:
 
