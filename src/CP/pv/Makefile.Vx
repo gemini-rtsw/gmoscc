@@ -50,27 +50,27 @@ MAN1	=
 DOCS	=
 
 # DATA are installed in INSTALL_DATA
-DATA  = ../ssrOn.pv
-DATA += ../ssrOff.pv
-DATA += ../gmosCc.pv
-DATA += ../gmTranslationSim.pv
-DATA += ../gmMaskSim.pv
-DATA += ../gmLifterSim.pv
-DATA += ../gmInterlockSim.pv
-DATA += ../gmGratingSim.pv
-DATA += ../gmFilterSim.pv
-DATA += ../gmosCcSim.pv
-DATA += ../gmSeqSim.pv
-DATA += ../gmSeq.pv
-DATA += ../gmLutSim.pv
-DATA += ../gmOiwfsSim.pv
-DATA += ../gmGrating.pv
-DATA += ../gmFilter.pv
-DATA += ../gmTranslation.pv
-DATA += ../gmMask.pv
-DATA += ../gmSeqTracking.pv
-DATA += ../gmTempCalibrate.pv
-DATA += ../gmOiwfs.pv
+#DATA  = ../ssrOn.pv
+#DATA += ../ssrOff.pv
+#DATA += ../gmosCc.pv
+#DATA += ../gmTranslationSim.pv
+#DATA += ../gmMaskSim.pv
+#DATA += ../gmLifterSim.pv
+#DATA += ../gmInterlockSim.pv
+#DATA += ../gmGratingSim.pv
+#DATA += ../gmFilterSim.pv
+#DATA += ../gmosCcSim.pv
+#DATA += ../gmSeqSim.pv
+#DATA += ../gmSeq.pv
+#DATA += ../gmLutSim.pv
+#DATA += ../gmOiwfsSim.pv
+#DATA += ../gmGrating.pv
+#DATA += ../gmFilter.pv
+#DATA += ../gmTranslation.pv
+#DATA += ../gmMask.pv
+#DATA += ../gmSeqTracking.pv
+#DATA += ../gmTempCalibrate.pv
+#DATA += ../gmOiwfs.pv
 
 # Any extra targets can be placed in a TARGETS macro (the build target
 # builds only pre_build, LIBNAME, TARGETS and PROD, not SCRIPTS, INC etc)
