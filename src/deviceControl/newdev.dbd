@@ -1,2 +1,0 @@
-include "deviceControlRecord.dbd"
-device(deviceControl,VME_IO,devDeviceControlOMS,"DEV CTL OMS 8/44")

@@ -1,0 +1,3 @@
+include "deviceControlRecord.dbd"
+device(deviceControl, VME_IO, devDcOms844, "DEV CTL OMS 8/44")
+device(bo,            VME_IO, devBoOms844, "DEV OMS POWER")

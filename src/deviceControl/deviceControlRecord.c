@@ -1,4 +1,3 @@
-static char rcsid[] = "$Id$";
 /*
  ************************************************************************
  ****      D A O   I N S T R U M E N T A T I O N   G R O U P        ***
@@ -25,10 +24,7 @@ static char rcsid[] = "$Id$";
  ************************************************************************
  *
  * FILENAME
- * recDeviceControl.c
- *
- * EPICS 3.13 version, originally adapted from gmos source code 
- * file src/recDeviceControl.c, dated July 12 2001.
+ * deviceControlRecord.c
  *
  * PURPOSE:
  * EPICS Record Support code for the deviceControl record.
@@ -66,6 +62,9 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2001/11/28 20:15:07  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1  2001/08/10 14:01:49  ptaylor
  * Restructured src directory with 4 sub-directories, including pv and lut which were previously in pv as well as deviceControl and gcal previously in src
  *
@@ -345,8 +344,8 @@ static char rcsid[] = "$Id$";
 #include    <deviceControlRecord.h>
 #undef GEN_SIZE_OFFSET
 
-#include    <recDeviceControl.h>
-#include    <devDeviceControl.h>
+#include    <deviceControlRecord.h>
+#include    <devDcOms844.h>
 
 #include    <ddrMessageLevels.h>      /* Device record message level definitions. */
 
@@ -1094,7 +1093,7 @@ static long calculateTimeout
 
     if (accel <= 0.0 || velo <= 0.0)
     {
-        logMsg("recDeviceControl:calculateTimeout: accel=%d, velo=\n", 
+        logMsg("deviceControlRecord:calculateTimeout: accel=%d, velo=\n", 
                accel,velo,0,0,0,0);
         return 0;
     }
@@ -1121,7 +1120,7 @@ static long calculateTimeout
         timeout = (long)(ceil (10.0 * (rampTime + (2.0 * rampTime) * 
                      sqrt( fabs(end - start) / (2 * rampDistance)))));
 /*
-        logMsg("recDeviceControl:calculateTimeout: short move timeout=%d\n", 
+        logMsg("deviceControlRecord:calculateTimeout: short move timeout=%d\n", 
                timeout,0,0,0,0,0 );
 */
     }
@@ -1138,7 +1137,7 @@ static long calculateTimeout
         timeout = (long) (ceil (10.0 * ((3.0 * rampTime) + 
                   ((fabs (end - start) - (2 * rampDistance) ) / velo))));
 /*
-        logMsg("recDeviceControl:calculateTimeout: long move timeout=%d\n", 
+        logMsg("deviceControlRecord:calculateTimeout: long move timeout=%d\n", 
                timeout ,0,0,0,0,0);
 */
     }
@@ -5311,6 +5310,7 @@ static long processDirective
                               ' ');
                     }
 
+/* Unnecessary check - ajf
                     else if (pdr->ialg < DDR_INDEX_NONE ||
                              pdr->ialg > DDR_INDEX_ULSW )
                     {
@@ -5320,6 +5320,7 @@ static long processDirective
                               "<%ld> %s:processDirective:index with bad mode=%d\n",
                               pPriv->index );
                     }
+*/
 
                     else if (pdr->velo > pdr->vhlm || pdr->velo < pdr->vllm)
                     {

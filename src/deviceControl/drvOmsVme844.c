@@ -1,4 +1,3 @@
-static char rcsid[] = "$Id$";
 /*
  ************************************************************************
  ****      D A O   I N S T R U M E N T A T I O N   G R O U P        *****
@@ -26,7 +25,7 @@ static char rcsid[] = "$Id$";
  ************************************************************************
  *
  * FILENAME
- * drvOmsVme
+ * drvOmsVme844
  *               
  * PURPOSE:
  * Handle communications with OMS VME motion control cards
@@ -45,6 +44,9 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2001/11/28 20:15:07  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1  2001/08/10 14:01:48  ptaylor
  * Restructured src directory with 4 sub-directories, including pv and lut which were previously in pv as well as deviceControl and gcal previously in src
  *
@@ -148,7 +150,7 @@ static char rcsid[] = "$Id$";
 
 #include    <devLib.h>
 
-#include    <drvOmsVme.h>
+#include    <drvOmsVme844.h>
 
 
 /*

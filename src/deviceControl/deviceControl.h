@@ -1,4 +1,3 @@
-
 /*
  ************************************************************************
  ****      D A O   I N S T R U M E N T A T I O N   G R O U P        *****
@@ -26,14 +25,17 @@
  ************************************************************************
  *
  * FILENAME
- * recDeviceControl.h
+ * deviceControl.h
  *
  * PURPOSE:
  * Publish epics deviceControl record public information for the
- * recDeviceControl module.
+ * deviceControlRecord module.
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2002/03/25 19:44:49  mbec
+ * epics 3.13 debugging
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
