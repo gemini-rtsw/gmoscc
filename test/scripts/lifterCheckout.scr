@@ -160,7 +160,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 14"
+CMD "sleep 12"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
@@ -313,7 +313,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 14"
+CMD "sleep 12"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
@@ -368,7 +368,7 @@ FATAL
 
 DESC "Lifter acknowledgement should indicate failure"
 
-CMD "sleep 14"
+CMD "sleep 12"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* -1*
@@ -415,7 +415,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 14"
+CMD "sleep 12"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
@@ -464,7 +464,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 14"
+CMD "sleep 12"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
@@ -617,7 +617,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 14"
+CMD "sleep 12"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
@@ -666,7 +666,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 14"
+CMD "sleep 12"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
@@ -765,7 +765,7 @@ OUTPUT *
 ENDTEST
 
 #
-# Wait for 25 seconds for the lifter to go through the emrgency UP process
+# Wait for 30 seconds for the lifter to go through the emrgency UP process
 # and then check the lifter has NOT lowered.
 #
 
@@ -774,7 +774,7 @@ FATAL
 
 DESC "Lifter acknowledgement should indicate failure"
 
-CMD "sleep 25"
+CMD "sleep 30"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* -1*
@@ -883,7 +883,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 14"
+CMD "sleep 12"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
