@@ -7,10 +7,10 @@ display {
 	mnrv="4"
 	ndyng="10"
 	npc="27"
-	nstr="74"
+	nstr="94"
 	ndynamic="16"
 	nplot="0"
-	nrd="0"
+	nrd="1"
 	nes="0"
 	nkd="1"
 	npd="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="2934"
+	nwords_dspy="3336"
 	nwords_sta="208"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1342"
-	osta="1134"
-	odynamic="1866"
-	oplot="2922"
-	ord="2922"
-	oes="2922"
-	okd="2922"
-	opd="2934"
-	opo="2934"
+	odyng="1584"
+	osta="1376"
+	odynamic="2108"
+	oplot="3164"
+	ord="3164"
+	oes="3324"
+	okd="3324"
+	opd="3336"
+	opo="3336"
 	opc="68"
 	ostr="454"
-	ocmap="1134"
-	ocrules="1134"
+	ocmap="1376"
+	ocrules="1376"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -118,7 +118,7 @@ display {
 	object {
 		x="24"
 		y="7"
-		width="460"
+		width="539"
 		height="23"
 		groupid="0"
 	}
@@ -1417,6 +1417,140 @@ display {
 	}
 	align="horiz. left"
 	format="decimal"
+}
+"related display" {
+	object {
+		x="22"
+		y="425"
+		width="410"
+		height="24"
+		groupid="0"
+	}
+	selfkill="off"
+	display[0] {
+		label="More CC Messages"
+		name="gmMessages.dl"
+		args="T=$(T),S=$(S),C1=$(C1),C2=$(C2),CC=$(CC),DC=$(DC)"
+	}
+	display[1] {
+		label=""
+		name=""
+		args=""
+	}
+	display[2] {
+		label=""
+		name=""
+		args=""
+	}
+	display[3] {
+		label=""
+		name=""
+		args=""
+	}
+	display[4] {
+		label=""
+		name=""
+		args=""
+	}
+	display[5] {
+		label=""
+		name=""
+		args=""
+	}
+	display[6] {
+		label=""
+		name=""
+		args=""
+	}
+	display[7] {
+		label=""
+		name=""
+		args=""
+	}
+	display[8] {
+		label=""
+		name=""
+		args=""
+	}
+	display[9] {
+		label=""
+		name=""
+		args=""
+	}
+	display[10] {
+		label=""
+		name=""
+		args=""
+	}
+	display[11] {
+		label=""
+		name=""
+		args=""
+	}
+	display[12] {
+		label=""
+		name=""
+		args=""
+	}
+	display[13] {
+		label=""
+		name=""
+		args=""
+	}
+	display[14] {
+		label=""
+		name=""
+		args=""
+	}
+	display[15] {
+		label=""
+		name=""
+		args=""
+	}
+	display[16] {
+		label=""
+		name=""
+		args=""
+	}
+	display[17] {
+		label=""
+		name=""
+		args=""
+	}
+	display[18] {
+		label=""
+		name=""
+		args=""
+	}
+	display[19] {
+		label=""
+		name=""
+		args=""
+	}
+	display[20] {
+		label=""
+		name=""
+		args=""
+	}
+	display[21] {
+		label=""
+		name=""
+		args=""
+	}
+	display[22] {
+		label=""
+		name=""
+		args=""
+	}
+	display[23] {
+		label=""
+		name=""
+		args=""
+	}
+	clr="0"
+	bclr="6"
+	menu_title=""
+	decorate="outward"
 }
 "kill display" {
 	object {
