@@ -233,5 +233,4 @@ This version is the same as V2-4 with
   than the flat mask plane. The software has also been given the ability
   to change the focal surface when the AtmDC is fitted, but this part
   of the code is will be tested later.
-- Any adjustments to the OIWFS probe control as a result of the
-  tests with the TCS and A&G simulators.
+- More on-line help.
