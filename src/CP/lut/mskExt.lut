@@ -1,0 +1,25 @@
+#
+# Named positions for the GMOS mask extractor stage.
+#
+#
+# name      target     index
+index         0.0       2
+i0            0.0       0
+i1            0.0       1
+i2            0.0       2
+i3            0.0       3
+i4            0.0       4
+i5            0.0       5
+#i4release     1.2       0
+i4release     1.90       0
+#i4gripper     2.5       0
+i4gripper     3.28       0
+ifu           2.83      0
+mask         -0.37      0
+clear      -350.0       0
+park          4.0       0
+#id         -419.0       0
+id         -409.0       0
+grip       -446.5       0
+#grip       -446.3       0
+release    -447.8       0

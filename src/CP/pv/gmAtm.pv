@@ -1,0 +1,120 @@
+#
+# Gmos AtmDC setup
+#
+
+# Set default deviceControl configuration parameters:
+#
+#    ACCL  Acceleration (& deceleration) in EGUs/sec/sec 
+#          Motors will execute a linear ramp from VBAS to VELO
+#          and unless a move is aborted with finish with a linear ramp 
+#          down from VELO to VBAS.  See also VBAS, VELO & FIVL.
+#    BLCO  Backlash compensation
+#    BTMO  Brake status check timeout in 0.1 second units - set to 0 if no 
+#          brake. Also used to delay motion after brakes are removed or  
+#          delay power-off after brakes are applied (uses timeout instead 
+#          status).  See UBSB. 
+#    EDBD  Encoder deadband (in counts). Encoder changes within range of 
+#          EDBD is considered acceptable noise.  See ERES & UEIP.
+#    EGU   Engineering units for target position
+#    ERES  Encoder resolution, number of encoder counts per EGU 
+#          See also UEIP & EDBD
+#    FIVL  Final indexing velocity in EGUs/sec., which is used for the final 
+#          critical indexing sequence when home switches are used.
+#          Must work out to less than 1024 steps per second when 
+#          the OMS VME-8/44 cards are used
+#    IALG  Indexing algorithm
+#             0 - move without indexing
+#             1 - go in the negative direction and index on the home switch 
+#             2 - go in the positive direction and index on the home switch
+#             3 - index on the centre home switch
+#             4 - go negative and index on the lower soft limit switch
+#             5 - go positive and index on the upper soft limit switch
+#    MDBD  Motion deadband in EGUs, moves within the range of MDBD will 
+#          show as completed without moving
+#    MRES  Motor resolution, number of steps per EGU
+#    MRND  Rounding
+#    PHLM  Target position high limit in EGUs
+#    PLLM  Target position low limit in EGUs
+#    PTMO  Power status check timeout in 0.1 second units, used as a delay
+#          before checking power status bit after turning drive on/off
+#          See also UPSB & UAPB.
+#    UAPB  Use auxilliary power bit (0 | 1), 1 means the AUX power bit will 
+#          be used to control the drive enable.  See PTMO & UPSB.
+#    UBSB  Use brake status check (0 | 1), 1 means status is used to 
+#          indicate when the brakes are applied.
+#    UEIP  Use encoder if one is detected (0 | 1), 1 means an encoder will
+#          be used to determine current position.  See ERES.
+#    UPSB  Use power status check (0 | 1), 1 means that drive enable status
+#          is monitored.
+#    VBAS  Minimum velocity in EGUs/sec, defines the starting velocity for
+#          ramping up to VELO and the ending velocity for ramping down.
+#          The OMS VME 8/44 requires that VBAS is greater than zero and
+#          less than the programmed velocity and must be set because the 
+#          default is zero.  See VELO, FIVL & ACCL.
+#    VELO  Target velocity in EGUs/sec, or at least the default at startup
+#    VHLM  Velocity high limit in EGUs/sec.  Target velocity (VELO) must
+#          be within VLLM & VHLM but not VBAS or FIVL.
+#    VLLM  Velocity low limit in EGUs/sec
+#
+
+# AtmDC Assembly Configuration
+#
+group {
+   double $(top)atmAssembly.C     =     20.0; # Prism velocity
+   long   $(top)atmAssembly.SIMM  =        0; # Set simmulation level to NONE
+   long   $(top)atmAssembly.DBUG  =        1; # Set debug level to NONE
+   double $(top)atmPosition.D     =    -15.0; # Entrance prism homing offset
+   double $(top)atmPosition.E     =     15.0; # Exit prism homing offset
+}
+# deviceControl configuration
+#
+#   Entrance Prism device
+#
+group {
+   double $(top)atmEnpDevice.ACCL =     30.0; # Acceleration
+   double $(top)atmEnpDevice.BLCO =     0.50; # Backlash compensation
+   double $(top)atmEnpDevice.EDBD =        2; # Encoder deadband
+   string $(top)atmEnpDevice.EGU  =   "Deg."; # Engineering units
+   double $(top)atmEnpDevice.ERES =  22.2222; # Encoder resolution
+   double $(top)atmEnpDevice.FIVL =     3.01; # Final indexing velocity
+   long   $(top)atmEnpDevice.IALG =        3; # Indexing algorithm
+   double $(top)atmEnpDevice.MDBD =      0.0; # Motion deadband
+   double $(top)atmEnpDevice.MRES =  22.2222; # Motor steps per EGU
+   double $(top)atmEnpDevice.PHLM =  36000.0; # Device level high limit
+   double $(top)atmEnpDevice.PLLM = -36000.0; # Device level low limit
+#  long   $(top)atmEnpDevice.SIMM =        0; # simulation NONE
+#  Use VSM simulation until we have an ADC
+   long   $(top)atmEnpDevice.SIMM =        1; # VSM simulation
+   long   $(top)atmEnpDevice.UEIP =        1; # Use encoder if present
+   long   $(top)atmEnpDevice.UPSB =        1; # Use power status
+   double $(top)atmEnpDevice.VBAS =     3.00; # Base velocity
+   double $(top)atmEnpDevice.VELO =     10.0; # Velocity at startup
+   double $(top)atmEnpDevice.VHLM =     30.0; # Maximum target velocity
+   double $(top)atmEnpDevice.VLLM =     10.0; # Minimum target velocity 
+}
+#
+#   Exit Prism device
+#
+group {
+   double $(top)atmExpDevice.ACCL =     30.0; # Acceleration
+   double $(top)atmExpDevice.BLCO =    -0.50; # Backlash compensation
+   double $(top)atmExpDevice.EDBD =        2; # Encoder deadband
+   string $(top)atmExpDevice.EGU  =   "Deg."; # Engineering units
+   double $(top)atmExpDevice.ERES =  22.2222; # Encoder resolution
+   double $(top)atmExpDevice.FIVL =     3.01; # Final indexing velocity
+   long   $(top)atmExpDevice.IALG =        3; # Indexing algorithm
+   double $(top)atmExpDevice.MDBD =      0.0; # Motion deadband
+   double $(top)atmExpDevice.MRES =  22.2222; # Motor steps per EGU
+   double $(top)atmExpDevice.PHLM =  36000.0; # Device level high limit
+   double $(top)atmExpDevice.PLLM = -36000.0; # Device level low limit
+#  long   $(top)atmExpDevice.SIMM =        0; # simulation NONE
+#  Use VSM simulation until we have an ADC
+   long   $(top)atmExpDevice.SIMM =        1; # VSM simulation
+   long   $(top)atmExpDevice.UEIP =        1; # Use encoder if present
+   long   $(top)atmExpDevice.UPSB =        1; # Use power status
+   double $(top)atmExpDevice.VBAS =     3.00; # Base velocity
+   double $(top)atmExpDevice.VELO =     10.0; # Velocity at startup
+   double $(top)atmExpDevice.VHLM =     30.0; # Maximum target velocity
+   double $(top)atmExpDevice.VLLM =     10.0; # Minimum target velocity 
+}
+

@@ -1,0 +1,32 @@
+#
+# File: gratings.lut
+#
+# Database of available GMOS gratings.
+#
+# This file contains a list of all the gratings known to GMOS,
+# whether fitted or not. Each time a new grating is purchased
+# it should be assigned two barcodes (one for each possible
+# orientation) and added to this list.
+#
+# Gratings whose barcodes start with 5000... in this table still
+# need to have a barcode assigned.
+#
+# Grating focus offsets have not been measured and are assumed
+# to be zero, as of 30 January 2001.
+#
+# New names suggested by Inger Jorgensen adopted on 22 Feb 2001.
+#
+
+# name            barcodeId     linesPerMm     blazeDir   focusOffset (microns)
+
+mirror             30000012              0           0        0.0
+Mirror1_rev        30000020              0           0        0.0
+
+B1200+_G5321       30000016	      1200          +1      -50.6
+B1200-_G5321       30000015           1200          -1      -50.6
+R600+_G5324        30000018            600          +1      -54.4
+R600-_G5324        30000017            600          -1      -54.4
+B600-_G5323        30000013            600          -1        0.0
+B600+_G5323        30000014            600          +1        0.0
+
+

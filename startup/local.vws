@@ -1,0 +1,20 @@
+#
+# This file contains site-specific information
+# 
+
+routeAdd "0.0.0.0" , "172.17.2.1"
+
+#hostAdd ("aguila",      "172.16.5.10")
+#hostAdd ("icarus",      "172.17.2.10")
+#hostAdd ("reggie",      "172.17.2.12")
+#hostAdd ("reggie-data", "172.17.3.12")
+
+nfsMount "icarus",  "/export/gemini",      "/gemini"
+#nfsMount "reggie",  "/staging",            "/staging"
+
+# Tell VxWorks the unix user ID and group ID of "gemvx",
+# so that file access over NFS works.
+
+nfsAuthUnixSet "icarus", 2966, 10, 0
+
+cd "$(iocpath)"

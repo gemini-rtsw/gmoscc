@@ -1,0 +1,93 @@
+#
+# File: filters.lut
+#
+# Database of available GMOS filters.
+#
+# This file contains a list of all the filters known to GMOS,
+# whether fitted or not. Each time a new filter is purchased
+# it should be assigned a barcode and added to this list.
+#
+# Surface curvature focus offsets come from measurements by Jeremy
+# Allington-Smith, Isobel Hook and Stephanie Juneau on 7 July 2000.
+# Effective wavelengths supplied by Isobel Hook on 24 January 2001.
+# Names suggested by Inger Jorgensen on 31 January 2001.
+#
+
+#                                 surface curvature
+# name            barcodeId       focusOffset (microns)   effWavelength (nm)
+
+# GMOS North empty filter cells - to be filled and barcodes reused
+open1-0           20000024          0.0                    0.0
+open1-7           20000019          0.0                    0.0
+open1-8           20000020          0.0                    0.0
+open1-9           20000021          0.0                    0.0
+open1-10          20000022          0.0                    0.0
+open1-11          20000023          0.0                    0.0
+open2-0           20000012          0.0                    0.0
+open2-5           20000005          0.0                    0.0
+open2-6           20000006          0.0                    0.0
+open2-7           20000007          0.0                    0.0
+#open2-8           20000008          0.0                    0.0
+open2-9           20000009          0.0                    0.0
+open2-10          20000010          0.0                    0.0
+open2-11          20000011          0.0                    0.0
+
+# GMOS North Hartmann masks
+HartmannA_G0313   20000013          0.0                    0.0
+HartmannB_G0314   20000014          0.0                    0.0
+HartmannC_G0315   20000015          0.0                    0.0
+HartmannD_G0316   20000016          0.0                    0.0
+
+# GMOS North science filters
+g_G0301           20000001         93.0                  480.0
+r_G0303           20000003         10.6                  625.0
+i_G0302           20000002         14.1                  770.0
+z_G0304           20000004        -19.2                  910.0
+
+# GMOS South Hartmann masks
+Clear_G0349       20000049          0.0                    0.0
+HartmannA_G0337   20000037          0.0                    0.0
+HartmannB_G0338   20000038          0.0                    0.0
+HartmannC_G0339   20000039          0.0                    0.0
+HartmannD_G0340   20000040          0.0                    0.0
+
+# GMOS South SLOAN filters
+g_G0325           20000026        118.2                  480.0
+r_G0326           20000027         -5.9                  625.0
+i_G0327           20000028         11.2                  770.0
+z_G0328           20000029         -5.2                  910.0
+#'old' focus offsets from ATC can be removed once we are on the telescope, MAH
+#g_G0325           20000026        128.8                  480.0
+#r_G0326           20000027          2.4                  625.0
+#i_G0327           20000028         -1.7                  770.0
+#z_G0328           20000029        -21.6                  910.0
+
+# GMOS South CaTriplet filter
+#CaT_G0333          20000009        181.0                  860.0
+
+# GMOS South order sorting filters 
+GG455_G0329       20000044       -139.0                  650.0
+OG515_G0330       20000045       -230.0                  650.0
+RG610_G0331       20000046       -238.0                  650.0
+
+# GMOS South Empty filter cells - to be filled and barcodes reused
+
+empty_00          20000030          0.0                    0.0
+empty_01          20000031          0.0                    0.0
+empty_02          20000032          0.0                    0.0
+empty_03          20000033          0.0                    0.0
+empty_04          20000034          0.0                    0.0
+empty_05          20000035          0.0                    0.0
+empty_06          20000042          0.0                    0.0
+open1-6            20000043          0.0                    0.0
+#empty_07          20000043          0.0                    0.0
+open2-8           20000041          0.0                    0.0
+#empty_08          20000041          0.0                    0.0
+#empty_09          20000044          0.0                    0.0
+#empty_10          20000045          0.0                    0.0
+#empty_11          20000046          0.0                    0.0
+empty_12          20000047          0.0                    0.0
+empty_13          20000048          0.0                    0.0
+empty_14          20000036          0.0                    0.0
+empty-15          20000017          0.0                    0.0
+empty-16          20000018          0.0                    0.0

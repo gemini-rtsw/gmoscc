@@ -1,0 +1,6 @@
+#
+# Named positions for the GMOS AtmDC assembly
+#
+# name      Entr.    Exit
+null         0.0      0.0
+park       180.0    180.0

@@ -1,0 +1,172 @@
+#
+#+
+#  Name:
+#     gmosCshrc
+#
+#  Purpose:
+#     Define everything needed for running the GMOS software.
+#
+#  Language:
+#     csh
+#
+#  Type of Module:
+#     Resource file.
+#
+#  Invocation:
+#     source gmosCshrc
+#
+#  Arguments:
+#     None.
+#
+#  Description:
+#     This C shell script is executed from .cshrc and defines all the
+#     GMOS-specific environment variables and command aliases.
+#
+#
+#  Authors:
+#     SMB: Steven Beard      (smb@roe.ac.uk)
+#
+#  History:
+#     11-May-1999 (SMB):
+#        Original version extracted from GMOS .login script.
+#     01-Mar-2001: (SMB):
+#        Moved to GMOS software release. UKATC specific things removed.
+#     11-Apr-1901: (SMB)
+#        Modified for use at Gemini Northern Operations Centre, Hilo.
+#        echo commands removed - it upset applSetup.
+#     16-Apr-1901: (SMB)
+#        Further non-essential commands removed. Set up PATH so that
+#        GMOS commands may be executed from /gemini/gmos/gmos/bin/solaris.
+#-
+
+#
+# ------------------------------------------------------------------------
+#      SET UP FOR EPICS IF NOT ALREADY SET UP
+# ------------------------------------------------------------------------
+#
+
+if (!($?EPICS)) then
+
+   source /usr/local/epics/epics3.12.2GEM5/config/epics.csh
+   setenv EPICS_DISPLAY_PATH ".:.applTop/data"
+endif
+
+#
+# ------------------------------------------------------------------------
+#      LOCATION OF DIRECTORIES AND LATEST VERSIONS OF GMOS SOFTWARE
+# ------------------------------------------------------------------------
+#
+
+# Define the location of the operational and development directories
+# and the location of the GMOS detector controller software.
+
+setenv GMOS_OP      /gemini/gmos/gmos
+setenv GMOS_DEV     /gemini/epics3.13.4/gmos/gmos
+setenv GMOS_DC      /gemini/epics3.13.4/gmosdc/gmosdc
+
+# Add the GMOS solaris binary directories to the PATH
+
+setenv PATH ${PATH}:.applTop/bin/solaris:${GMOS_OP}/bin/solaris:${GMOS_DC}/bin/solaris
+
+# Add the GMOS data directories to the search path for edd and dm.
+
+if ( ${?EPICS_DISPLAY_PATH} ) then
+      setenv EPICS_DISPLAY_PATH ${EPICS_DISPLAY_PATH}:${GMOS_OP}/data:${GMOS_DC}/data
+else
+      setenv EPICS_DISPLAY_PATH .:./data:${GMOS_OP}/data:${GMOS_DC}/data
+endif
+
+#
+# ------------------------------------------------------------------------
+#      DEFINITIONS NEEDED BY THE dhsTestCmdr TEST SCRIPTS
+# ------------------------------------------------------------------------
+#
+
+# Add the "./scripts" directories to the PATH so that dhsTestCmdr can
+# pick up its test scripts. (It is assumed that "." is already in the PATH).
+
+setenv PATH ${PATH}:./scripts
+
+# Define the default configuration directory for the dhsTestCmdr
+
+setenv DEFAULT_CONFIG_DIR ./configFiles
+
+# Define the version of Tcl required by the dhsTestCmdr
+# and add it to the PATH and LD_LIBRARY_PATH
+
+setenv TCL_LIBRARY /usr/local/lib/tcl7.6
+setenv TK_LIBRARY  /usr/local/lib/tk4.2
+
+if ( ${?LD_LIBRARY_PATH} ) then
+      setenv LD_LIBRARY_PATH /usr/local/lib:${LD_LIBRARY_PATH}
+else
+      setenv LD_LIBRARY_PATH /usr/local/lib
+endif
+
+# Define device initialisation command aliases
+
+if ( -e ${GMOS_OP}/bin/solaris/gmosSetResetAliases ) then
+   source ${GMOS_OP}/bin/solaris/gmosSetResetAliases
+endif
+
+# Define gmosTest command alias
+
+if ( -e ${GMOS_OP}/bin/solaris/gmosTest ) then
+   alias gmosTest 'source ${GMOS_OP}/bin/solaris/gmosTest'
+endif
+
+#
+# ------------------------------------------------------------------------
+#      MISCELLANEOUS DEFINITIONS
+# ------------------------------------------------------------------------
+#
+
+# Define the default editor for the gmos account (useful editors are ones
+# which run in their own window - emacs and textedit are good, pico and vi
+# are not recommended).
+
+setenv GMOS_EDITOR textedit
+
+#
+# ------------------------------------------------------------------------
+#      ALIASES FOR ACCESS CONTROL AND SAFETY COMMANDS
+# ------------------------------------------------------------------------
+#
+
+# Define the commands to make access to the GMOS MK and CP hardware explicit
+# rather than accidental.
+
+alias gmosMK   'setenv   GMOS_MK_ACCESS && set prompt = "`uname -n` (GMOS MK)% " && echo "You are now set up for control of GMOS MK hardware"'
+alias gmosNoMK 'unsetenv GMOS_MK_ACCESS && set prompt = "`uname -n`% " && echo "You are no longer set up for control of GMOS MK hardware"'
+alias gmosCP   'setenv   GMOS_CP_ACCESS && set prompt = "`uname -n` (GMOS CP)% " && echo "You are now set up for control of GMOS CP hardware"'
+alias gmosNoCP 'unsetenv GMOS_CP_ACCESS && set prompt = "`uname -n`% " && echo "You are no longer set up for control of GMOS CP hardware"'
+
+# Define aliases for setting the DISPLAY variable on various workstations
+
+#alias  ayla     'setenv DISPLAY ayla:0.0'
+#alias  manta    'setenv DISPLAY manta:0.0'
+#alias  pisces   'setenv DISPLAY pisces:0.0'
+
+#
+# ------------------------------------------------------------------------
+#      EXTRA ALIASES FOR CAPFAST AND EPICS (OPTIONAL)
+# ------------------------------------------------------------------------
+#
+
+# Redefine "gmake" (because the new version does not work with EPICS)
+
+#alias gmake /usr/local/bin/gnumake
+
+# Redefine edd to V2.4 (which is used from V004 of the software onwards)
+
+#alias edd edd2.4
+
+# Define aliases for useful commands
+ 
+# Command for printing a CAPFAST diagram
+
+#alias schprint  "schplot -Nb '\!^'.sch | schps -wc 26 -d | lp" 
+
+# Command for dumping an X window screen (e.g. "dm" screen) into Postscript
+
+#alias x2ps       "xwd -nobdrs | xpr -device ps -height 7.5 -width 6.5 -compact -portrait"

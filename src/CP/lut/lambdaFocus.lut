@@ -1,0 +1,29 @@
+lambdaFocus
+#
+# File: lambdaFocus.lut
+#
+# This file contains the lookup table describing how the best GMOS
+# focus varies with wavelength, in terms of an offset from the focus
+# measured at 650 nanometres. The GMOS software will interpolate
+# between the entries in this table.
+#
+# Information from measurements by Morag Hastie, Chris Tierney and
+# David Lee at UKATC on 5th August 2002.
+#
+# Wavelength (nm)  focus offset (microns)
+#
+
+365.0              -136.6
+405.0                53.9
+450.0               195.3
+500.0               161.8
+550.0               112.5
+600.0                51.2
+650.0                 0.0
+700.0               -56.7
+750.0               -95.6
+800.0              -125.2
+850.0              -145.5
+900.0              -161.3
+950.0              -167.2
+1050.0             -159.9

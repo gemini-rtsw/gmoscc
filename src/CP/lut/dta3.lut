@@ -1,0 +1,12 @@
+#
+# Lookup table for detector translation Z axis
+#
+
+# name		target	 index
+
+park		2490.0	 0
+centre		2490.0	 0
+bestfocus       2450.0   0
+low               30.0	 0
+high            4950.0	 0
+index              0.0	 4

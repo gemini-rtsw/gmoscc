@@ -1,0 +1,20 @@
+# $Id$
+#
+# VxWorks startup script to load and execute system (iocCore) software.
+#
+# FULL STARTUP SCRIPT. This script starts the GMOS software automatically.
+#
+
+# Make delete key work for backspace
+tyBackspaceSet 0177
+
+# Set the shell prompt
+shellPromptSet "GMOS> "
+loginStringSet "MVME167 vxWorks (GMOS)\n\nlogin: "
+
+# The local file contains site-specific information
+# such as the default router and the vxWorks password file.
+< $(iocpath)/bin/$(arch)/local
+
+# Execute the GMOS startup script
+< $(iocpath)/bin/$(arch)/gmStartupCP

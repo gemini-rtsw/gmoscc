@@ -1,0 +1,11 @@
+#
+# Named positions for the GMOS OIWFS Base stage.
+#
+#
+# name  target  index
+i0         0      0
+i1         0      1
+i2         0      2
+i3         0      3
+i4         0      4
+i5         0      5
