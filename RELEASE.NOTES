@@ -309,3 +309,8 @@ V3-1 April 24 2002 ajf/tpaz:
 -  Restructuring of application directories to make this 
    system look more like the Gemini standard
 -  Fixed the install script so that it works with "instRelease"
+
+V3-2 April 24 2002 ajf/tpaz:
+----------------------------
+-  Tidy up of CVS.
+-  Some things left out of the V3-1 release.
