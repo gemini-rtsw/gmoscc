@@ -7,7 +7,7 @@ display {
 	mnrv="4"
 	ndyng="45"
 	npc="34"
-	nstr="82"
+	nstr="93"
 	ndynamic="8"
 	nplot="0"
 	nrd="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="0"
 	bclr="13"
-	nwords_dspy="4560"
-	nwords_sta="508"
+	nwords_dspy="4712"
+	nwords_sta="540"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1732"
-	osta="1224"
-	odynamic="4020"
-	oplot="4548"
-	ord="4548"
-	oes="4548"
-	okd="4548"
-	opd="4560"
-	opo="4560"
+	odyng="1884"
+	osta="1344"
+	odynamic="4172"
+	oplot="4700"
+	ord="4700"
+	oes="4700"
+	okd="4700"
+	opd="4712"
+	opo="4712"
 	opc="68"
 	ostr="554"
-	ocmap="1224"
-	ocrules="1224"
+	ocmap="1344"
+	ocrules="1344"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -51,8 +51,8 @@ display {
 	cmap="gmColors.dl"
 	pixwid="1280"
 	pixht="1024"
-	mmwid="320"
-	mmht="240"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -430,6 +430,44 @@ display {
 		height="20"
 		groupid="0"
 	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="298"
+		y="432"
+		width="320"
+		height="16"
+		groupid="0"
+	}
+	textix="Target positions in black"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="298"
+		y="456"
+		width="320"
+		height="16"
+		groupid="0"
+	}
+	textix="Current positions in blue"
+	align="horiz. left"
 }
 "<<basic attribute>>" {
 	attr {
