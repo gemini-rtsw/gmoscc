@@ -1,0 +1,44 @@
+#
+# GMOS interlock system initialization for simulation mode
+#
+# This pvload script loads the interlock records with default values
+# so the GMOS system starts in simulation mode without registering
+# an interlock.
+#
+# NOTE: This script should only be executed when running in simulation mode.
+#
+
+#
+# Put the interlock signal combining record into simulation mode
+# (Not needed while the signals below are set as they are).
+#
+#long $(top)ilockDecision.G = 1;
+
+#
+# Gemini/GMOS interlock system signals
+#
+group {
+   long $(top)gisDemand       = 0;
+   long $(top)gisError        = 0;
+   long $(top)gisEvent        = 1;	# Note that 1=OK for this signal
+   long $(top)gisEventError   = 1;	# Note that 1=OK for this signal
+
+#
+# GMOS electronics response
+#
+   long $(top)masterDisabled  = 0;
+}
+
+#
+# Door sensors
+#
+group {
+   long $(top)door1           = 0;	# 0=closed
+   long $(top)door2           = 0;
+   long $(top)door3           = 0;
+   long $(top)door4           = 0;
+   long $(top)door5           = 0;
+   long $(top)door6           = 0;
+   long $(top)door7           = 0;
+   long $(top)door8           = 0;
+}

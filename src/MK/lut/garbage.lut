@@ -1,0 +1,11 @@
+#
+# Garbage lookup table for test purposes
+#
+
+42 3.14159 2.71828 78 297462874 0x645
+
+This file contains a complete load of
+garbage which the GMOS assemblies should
+find unreadable. The file exists to ensure
+the software can cope if it accidentally
+reads the wrong file.

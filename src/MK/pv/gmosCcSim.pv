@@ -1,0 +1,95 @@
+#
+# GMOS Components Controller initialization
+#
+# SIMULATION MODE VERSION.
+#
+# This file is used by pvload to initialise the gemeral components controller
+# parameters on startup.
+#
+# NOTE: This script should only be executed when running in simulation mode.
+#
+
+#
+# Define the default debugging mode for the components controller.
+#
+long   $(top)cc:debugMenu.VAL  =      1;
+string $(top)cc:debug.A        = "NONE";
+long   $(top)cc:debug.DIR      =      0;    # MARK directive
+long   $(top)cc:debug.DIR      =      3;    # START directive - set debugging mode now
+
+#
+# The following additional parameters need to be set in simulation mode ...
+#
+
+#
+# Put the interlock signal combining record into simulation mode
+# (Not needed while the signals below are set as they are).
+#
+#long $(top)ilockDecision.G    = 1;
+
+#
+# Gemini/GMOS interlock system signals
+#
+group {
+   long $(top)cc:gisDemand       = 0;
+   long $(top)cc:gisError        = 0;
+   long $(top)cc:gisEvent        = 1;	# Note that 1=OK for this signal
+   long $(top)cc:gisEventError   = 1;	# Note that 1=OK for this signal
+
+#
+# GMOS electronics response
+#
+   long $(top)cc:masterDisabled  = 0;
+}
+
+#
+# Door sensors
+#
+group {
+   long $(top)cc:door1           = 0;	# 0=closed
+   long $(top)cc:door2           = 0;
+   long $(top)cc:door3           = 0;
+   long $(top)cc:door4           = 0;
+   long $(top)cc:door5           = 0;
+   long $(top)cc:door6           = 0;
+   long $(top)cc:door7           = 0;
+   long $(top)cc:door8           = 0;
+}
+
+#
+# Change GMOS lookup table directory for simulation mode
+#
+# These commands change the directory used by the GMOS
+# assemblies to maintain lookup tables, and ensures that a
+# different set of lookup tables is used in simulation mode.
+#
+
+string $(top)cc:atmAssembly.TDIR   = "/gemini/gmos/lut/sim" ;
+#string $(top)cc:atmEnpDevice.TDIR = "/gemini/gmos/lut/sim" ;
+#string $(top)cc:atmExpDevice.TDIR = "/gemini/gmos/lut/sim" ;
+
+string $(top)cc:mskAssembly.TDIR  = "/gemini/gmos/lut/sim" ;
+string $(top)cc:mskCasDevice.TDIR = "/gemini/gmos/lut/sim" ;
+string $(top)cc:mskExtDevice.TDIR = "/gemini/gmos/lut/sim" ;
+string $(top)cc:mskGrpDevice.TDIR = "/gemini/gmos/lut/sim" ;
+string $(top)cc:mskRelDevice.TDIR = "/gemini/gmos/lut/sim" ;
+
+string $(top)cc:fltAssembly.TDIR = "/gemini/gmos/lut/sim" ;
+string $(top)cc:flt1Device.TDIR  = "/gemini/gmos/lut/sim" ;
+string $(top)cc:flt2Device.TDIR  = "/gemini/gmos/lut/sim" ;
+
+string $(top)cc:grAssembly.TDIR  = "/gemini/gmos/lut/sim" ;
+string $(top)cc:grADevice.TDIR   = "/gemini/gmos/lut/sim" ;
+string $(top)cc:grBDevice.TDIR   = "/gemini/gmos/lut/sim" ;
+string $(top)cc:grCDevice.TDIR   = "/gemini/gmos/lut/sim" ;
+string $(top)cc:grDDevice.TDIR   = "/gemini/gmos/lut/sim" ;
+string $(top)cc:grtDevice.TDIR   = "/gemini/gmos/lut/sim" ;
+
+string $(top)cc:dtaAssembly.TDIR = "/gemini/gmos/lut/sim" ;
+string $(top)cc:dta1Device.TDIR  = "/gemini/gmos/lut/sim" ;
+string $(top)cc:dta2Device.TDIR  = "/gemini/gmos/lut/sim" ;
+string $(top)cc:dta3Device.TDIR  = "/gemini/gmos/lut/sim" ;
+
+string $(top)wfs:probeAssembly.TDIR  = "/gemini/gmos/lut/sim" ;
+string $(top)wfs:probeBasDevice.TDIR = "/gemini/gmos/lut/sim" ;
+string $(top)wfs:probePkoDevice.TDIR = "/gemini/gmos/lut/sim" ;

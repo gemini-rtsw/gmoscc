@@ -1,0 +1,11 @@
+#
+# Named positions for the GMOS mask release device.
+#
+#
+# name     target    index
+i4          0.0       4
+i5          0.0       5
+index       0.0       5
+release     0.0       4
+lock        0.0       5
+

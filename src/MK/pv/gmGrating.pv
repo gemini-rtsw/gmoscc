@@ -1,0 +1,160 @@
+#
+# GMOS grating assembly initialization
+#
+# This file is used by pvload to initialise the main grating assembly
+# parameters on startup. Any minor parameters not initialised here are
+# initialised in the devGrating.sch and devTurret.sch Capfast schematics.
+#
+
+#
+# Grating Assembly
+#
+group {
+   double $(top)grConfigTscale   =     106.867;  # Average number of motor steps per degree
+   double $(top)grConfigBlash    =     1.25;     # Backlash parameter (degrees)
+   double $(top)grConfigFlash    =     0.037;    # Forwardlash parameter (degrees)
+   double $(top)grAssembly.ACLL  =    -10.0;     # Minimum grating tilt in degrees
+   double $(top)grAssembly.ACHL  =     90.0;     # Maximum grating tilt in degrees
+}
+
+#
+# Grating tilt A
+#
+group {
+   double $(top)grADevice.ACCL =         500.0;  # Acceleration in whole steps/sec/sec
+   double $(top)grADevice.BLCO =           0.0;  # Backlash compensation (0.0 for none)
+   long   $(top)grADevice.BTMO =             0;  # Brake control timeout in 0.1 seconds (0=no brakes)
+   string $(top)grADevice.EGU  = "motor steps";  # Device units
+   double $(top)grADevice.FIVL =         126.0;  # Final indexing velocity
+   long   $(top)grADevice.IALG =             4;  # Index algorithm
+   double $(top)grADevice.MRES =           2.0;  # Motor resolution in motor steps per whole step
+   double $(top)grADevice.MRND =             1;  # Move to nearest whole step if 2
+   double $(top)grADevice.PHLM =        9800.0;  # Upper limit of travel in whole steps
+   double $(top)grADevice.PLLM =           0.0;  # Lower limit of travel in whole steps
+   long   $(top)grADevice.PREC =             4;  # Display precision for motor position
+   long   $(top)grADevice.PTMO =            30;  # Power control timeout in 0.1 seconds
+   long   $(top)grADevice.UAPB =             1;  # Control power with auxilliary power bit (0/1)?
+   long   $(top)grADevice.UBSB =             0;  # Monitor brake status bit (0/1)?
+   long   $(top)grADevice.UEIP =             0;  # Use encoders if present (0/1)?
+# DISABLE POWER STATUS CHECK UNTIL GRATING ELECTRONICS PROBLEM FIXED
+   long   $(top)grADevice.UPSB =             1;  # Monitor power status bit (0/1)?
+   double $(top)grADevice.VBAS =         125.0;  # Base velocity in whole steps/sec
+   double $(top)grADevice.VELO =         500.0;  # Default velocity in whole steps/sec
+   double $(top)grADevice.VHLM =        1000.0;  # Absolute maximum velocity in whole steps/sec
+   double $(top)grADevice.VLLM =          10.0;  # Absolute minimum velocity in whole steps/sec
+}
+
+#
+# Grating tilt B
+#
+group {
+   double $(top)grADevice.ACCL =         500.0;  # Acceleration in whole steps/sec/sec
+   double $(top)grBDevice.BLCO =           0.0;  # Backlash compensation (0.0 for none)
+   long   $(top)grBDevice.BTMO =             0;  # Brake control timeout in 0.1 seconds (0=no brakes)
+   string $(top)grBDevice.EGU  = "motor steps";  # Device units
+   double $(top)grBDevice.FIVL =         126.0;  # Final indexing velocity
+   long   $(top)grBDevice.IALG =             4;  # Index algorithm
+   double $(top)grBDevice.MRES =           2.0;  # Motor resolution in motor steps per whole step
+   double $(top)grBDevice.MRND =             1;  # Move to nearest whole step if 2
+   double $(top)grBDevice.PHLM =        9800.0;  # Upper limit of travel in whole steps
+   double $(top)grBDevice.PLLM =           0.0;  # Lower limit of travel in whole steps
+   long   $(top)grBDevice.PREC =             4;  # Display precision for motor position
+   long   $(top)grBDevice.PTMO =            30;  # Power control timeout in 0.1 seconds
+   long   $(top)grBDevice.UAPB =             1;  # Control power with auxilliary power bit (0/1)?
+   long   $(top)grBDevice.UBSB =             0;  # Monitor brake status bit (0/1)?
+   long   $(top)grBDevice.UEIP =             0;  # Use encoders if present (0/1)?
+# DISABLE POWER STATUS CHECK UNTIL GRATING ELECTRONICS PROBLEM FIXED
+   long   $(top)grBDevice.UPSB =             1;  # Monitor power status bit (0/1)?
+   double $(top)grBDevice.VBAS =         125.0;  # Base velocity in whole steps/sec
+   double $(top)grBDevice.VELO =         500.0;  # Default velocity in whole steps/sec
+   double $(top)grBDevice.VHLM =        1000.0;  # Absolute maximum velocity in whole steps/sec
+   double $(top)grBDevice.VLLM =          10.0;  # Absolute minimum velocity in whole steps/sec
+}
+
+#
+# Grating tilt C
+#
+group {
+   double $(top)grCDevice.ACCL =         500.0;  # Acceleration in whole steps/sec/sec
+   double $(top)grCDevice.BLCO =           0.0;  # Backlash compensation (0.0 for none)
+   long   $(top)grCDevice.BTMO =             0;  # Brake control timeout in 0.1 seconds (0=no brakes)
+   string $(top)grCDevice.EGU  = "motor steps";  # Device units
+   double $(top)grCDevice.FIVL =         126.0;  # Final indexing velocity
+   long   $(top)grCDevice.IALG =             4;  # Index algorithm
+   double $(top)grCDevice.MRES =           2.0;  # Motor resolution in motor steps per whole step
+   double $(top)grCDevice.MRND =             1;  # Move to nearest whole step if 2
+   double $(top)grCDevice.PHLM =        9800.0;  # Upper limit of travel in whole steps
+   double $(top)grCDevice.PLLM =           0.0;  # Lower limit of travel in whole steps
+   long   $(top)grCDevice.PREC =             4;  # Display precision for motor position
+   long   $(top)grCDevice.PTMO =            30;  # Power control timeout in 0.1 seconds
+   long   $(top)grCDevice.UAPB =             1;  # Control power with auxilliary power bit (0/1)?
+   long   $(top)grCDevice.UBSB =             0;  # Monitor brake status bit (0/1)?
+   long   $(top)grCDevice.UEIP =             0;  # Use encoders if present (0/1)?
+# DISABLE POWER STATUS CHECK UNTIL GRATING ELECTRONICS PROBLEM FIXED
+   long   $(top)grCDevice.UPSB =             1;  # Monitor power status bit (0/1)?
+   double $(top)grCDevice.VBAS =         125.0;  # Base velocity in whole steps/sec
+   double $(top)grCDevice.VELO =         500.0;  # Default velocity in whole steps/sec
+   double $(top)grCDevice.VHLM =        1000.0;  # Absolute maximum velocity in whole steps/sec
+   double $(top)grCDevice.VLLM =          10.0;  # Absolute minimum velocity in whole steps/sec
+}
+
+#
+# Grating tilt D
+#
+group {
+   double $(top)grDDevice.ACCL =         500.0;  # Acceleration in whole steps/sec/sec
+   double $(top)grDDevice.BLCO =           0.0;  # Backlash compensation (0.0 for none)
+   long   $(top)grDDevice.BTMO =             0;  # Brake control timeout in 0.1 seconds (0=no brakes)
+   string $(top)grDDevice.EGU  = "motor steps";  # Device units
+   double $(top)grDDevice.FIVL =         126.0;  # Final indexing velocity
+   long   $(top)grDDevice.IALG =             4;  # Index algorithm
+   double $(top)grDDevice.MRES =           2.0;  # Motor resolution in motor steps per whole step
+   double $(top)grDDevice.MRND =             1;  # Move to nearest whole step if 2
+   double $(top)grDDevice.PHLM =        9800.0;  # Upper limit of travel in whole steps
+   double $(top)grDDevice.PLLM =           0.0;  # Lower limit of travel in whole steps
+   long   $(top)grDDevice.PREC =             4;  # Display precision for motor position
+   long   $(top)grDDevice.PTMO =            30;  # Power control timeout in 0.1 seconds
+   long   $(top)grDDevice.UAPB =             1;  # Control power with auxilliary power bit (0/1)?
+   long   $(top)grDDevice.UBSB =             0;  # Monitor brake status bit (0/1)?
+   long   $(top)grDDevice.UEIP =             0;  # Use encoders if present (0/1)?
+# DISABLE POWER STATUS CHECK UNTIL GRATING ELECTRONICS PROBLEM FIXED
+   long   $(top)grDDevice.UPSB =             1;  # Monitor power status bit (0/1)?
+   double $(top)grDDevice.VBAS =         125.0;  # Base velocity in whole steps/sec
+   double $(top)grDDevice.VELO =         500.0;  # Default velocity in whole steps/sec
+   double $(top)grDDevice.VHLM =        1000.0;  # Absolute maximum velocity in whole steps/sec
+   double $(top)grDDevice.VLLM =          10.0;  # Absolute minimum velocity in whole steps/sec
+}
+
+#
+# Grating turret
+#
+group {
+   double $(top)grtDevice.ACCL =           5.0;  # Acceleration in whole steps/sec/sec
+   double $(top)grtDevice.BLCO =           2.0;  # Backlash compensation (0.0 for none)
+   long   $(top)grtDevice.BTMO =             1;  # Brake control timeout in 0.1 seconds (0=no brakes)
+   string $(top)grtDevice.EGU  =       "teeth";  # Device units
+   double $(top)grtDevice.FIVL =           2.5;  # Final indexing velocity
+   long   $(top)grtDevice.IALG =             4;  # Index algorithm
+   double $(top)grtDevice.MRES =         400.0;  # Motor resolution in motor steps per tooth
+   double $(top)grtDevice.MRND =             2;  # Move to nearest whole step if 2
+   double $(top)grtDevice.PHLM =         120.0;  # Upper limit of travel in teeth
+   double $(top)grtDevice.PLLM =           0.0;  # Lower limit of travel in teeth
+   long   $(top)grtDevice.PREC =             4;  # Display precision for motor position
+   long   $(top)grtDevice.PTMO =             0;  # Power control timeout in 0.1 seconds
+# The turret power is controlled separately in the grTurretPower record
+   long   $(top)grtDevice.UAPB =             0;  # Control power with auxilliary power bit (0/1)?
+# Brake status is used to indicate the status of the indexer
+   long   $(top)grtDevice.UBSB =             1;  # Monitor brake status bit (0/1)?
+   long   $(top)grtDevice.UEIP =             0;  # Use encoders if present (0/1)?
+   long   $(top)grtDevice.UPSB =             1;  # Monitor power status bit (0/1)?
+   double $(top)grtDevice.VBAS =          0.75;  # Base velocity in teeth/sec
+   double $(top)grtDevice.VELO =           5.0;  # Default velocity in teeth/sec
+   double $(top)grtDevice.VHLM =           5.0;  # Absolute maximum velocity in teeth/sec
+   double $(top)grtDevice.VLLM =          0.05;  # Absolute minimum velocity in teeth/sec
+}
+
+#
+# Grating lifter...
+#
+
+long $(top)grLifter.H     = 0;  # Lifter is not running in simulation mode

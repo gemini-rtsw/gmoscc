@@ -1,0 +1,250 @@
+#
+# GMOS temperature sensor calibration coefficients
+#
+#
+# The GMOS temperature sensors generate a voltage which is translated
+# by the analogue to digital convertors into a raw digital signal,
+# RVAL, in the range RMIN=0 to RMAX=2048. The signal is converted to
+# temperature with the aid of four coefficients:
+#
+# ASLO - Multiplication factor used to scale raw digital signal
+# AOFF - Offset added to scaled raw digital signal
+# EGUL - Temperature corresponding to RMIN
+# EGUF - Temperature corresponding to RMAX
+#
+# The temperature, VAL, is calculated using
+#
+#    VAL = (RVAL*ASLO + AOFF)*ESLO + EGUL
+#
+# where
+#
+#    ESLO = (EGUF-EGUL)/(RMAX-RMIN)
+#
+# Normally, AOFF and ASLO are left at their default values of 0.0 and
+# 1.0 and the temperatures are calibrated by setting EGUL and EGUF.
+#
+# SMOO defines a smoothing factor to reduce the noise in the readings.
+# SMOO ranges from 0.0 (no smoothing) to 1.0 (constant value).
+#
+# Alarms are generated as follows:
+# Temperature or temperature change below LOLO - MAJOR ALARM
+# Temperature or temperature change between LOLO and LOW - MINOR ALARM
+# Temperature or temperature change between LOW and HIGH - NO ALARM
+# Temperature or temperature change between HIGH and HIHI - MINOR ALARM
+# Temperature or temperature change above HIHI - MAJOR ALARM
+
+#
+# Temperature sensor 0 (FOSS/ISS)
+#
+group {
+   double $(top)temp0.EGUL =  40.0;
+   double $(top)temp0.EGUF = -60.0;
+   double $(top)temp0.LOLO = -10.0;
+   double $(top)temp0.LOW  =  -8.0;
+   double $(top)temp0.HIGH =  25.0;
+   double $(top)temp0.HIHI =  35.0;
+   double $(top)temp0.SMOO =   0.5;
+}
+group {
+   double $(top)tempChange0.LOLO = -10.0;
+   double $(top)tempChange0.LOW  = -5.0;
+   double $(top)tempChange0.HIGH =  5.0;
+   double $(top)tempChange0.HIHI =  10.0;
+}
+#
+# Use this field to disable a faulty temperature sensor
+# (0=enable, 1=disable).
+#
+long $(top)temp0disable.VAL = 1;
+
+#
+# Temperature sensor 1 (WFS CCD controller case)
+#
+group {
+   double $(top)temp1.EGUL =  40.0;
+   double $(top)temp1.EGUF = -60.0;
+   double $(top)temp1.LOLO = -10.0;
+   double $(top)temp1.LOW  =  -8.0;
+   double $(top)temp1.HIGH =  25.0;
+   double $(top)temp1.HIHI =  35.0;
+   double $(top)temp1.SMOO =   0.5;
+}
+group {
+   double $(top)tempChange1.LOLO = -10.0;
+   double $(top)tempChange1.LOW  = -5.0;
+   double $(top)tempChange1.HIGH =  5.0;
+   double $(top)tempChange1.HIHI =  10.0;
+}
+#
+# Use this field to disable a faulty temperature sensor
+# (0=enable, 1=disable).
+#
+long $(top)temp1disable.VAL = 0;
+
+#
+# Temperature sensor 2 (Collimator barrel)
+#
+group {
+   double $(top)temp2.EGUL =  40.0;
+   double $(top)temp2.EGUF = -60.0;
+   double $(top)temp2.LOLO = -10.0;
+   double $(top)temp2.LOW  =  -8.0;
+   double $(top)temp2.HIGH =  25.0;
+   double $(top)temp2.HIHI =  35.0;
+   double $(top)temp2.SMOO =   0.5;
+}
+group {
+   double $(top)tempChange2.LOLO = -10.0;
+   double $(top)tempChange2.LOW  = -5.0;
+   double $(top)tempChange2.HIGH =  5.0;
+   double $(top)tempChange2.HIHI =  10.0;
+}
+#
+# Use this field to disable a faulty temperature sensor
+# (0=enable, 1=disable).
+#
+long $(top)temp2disable.VAL = 0;
+
+#
+# Temperature sensor 3 - (Electronics Enclosure 2)
+#
+group {
+   double $(top)temp3.EGUL =  40.0;
+   double $(top)temp3.EGUF = -60.0;
+   double $(top)temp3.LOLO = -10.0;
+   double $(top)temp3.LOW  =  -8.0;
+   double $(top)temp3.HIGH =  25.0;
+   double $(top)temp3.HIHI =  35.0;
+   double $(top)temp3.SMOO =   0.5;
+}
+group {
+   double $(top)tempChange3.LOLO = -10.0;
+   double $(top)tempChange3.LOW  = -5.0;
+   double $(top)tempChange3.HIGH =  5.0;
+   double $(top)tempChange3.HIHI =  10.0;
+}
+#
+# Use this field to disable a faulty temperature sensor
+# (0=enable, 1=disable).
+#
+long $(top)temp3disable.VAL = 1;
+
+#
+# Temperature sensor 4 (Filter/CCD Body)
+#
+group {
+   double $(top)temp4.EGUL =  40.0;
+   double $(top)temp4.EGUF = -60.0;
+   double $(top)temp4.LOLO = -10.0;
+   double $(top)temp4.LOW  =  -8.0;
+   double $(top)temp4.HIGH =  25.0;
+   double $(top)temp4.HIHI =  35.0;
+   double $(top)temp4.SMOO =   0.5;
+}
+group {
+   double $(top)tempChange4.LOLO = -10.0;
+   double $(top)tempChange4.LOW  = -5.0;
+   double $(top)tempChange4.HIGH =  5.0;
+   double $(top)tempChange4.HIHI =  10.0;
+}
+#
+# Use this field to disable a faulty temperature sensor
+# (0=enable, 1=disable).
+#
+long $(top)temp4disable.VAL = 0;
+
+#
+# Temperature sensor 5 (Collimator air)
+#
+group {
+   double $(top)temp5.EGUL =  40.0;
+   double $(top)temp5.EGUF = -60.0;
+   double $(top)temp5.LOLO = -10.0;
+   double $(top)temp5.LOW  =  -8.0;
+   double $(top)temp5.HIGH =  25.0;
+   double $(top)temp5.HIHI =  35.0;
+   double $(top)temp5.SMOO =   0.5;
+}
+group {
+   double $(top)tempChange5.LOLO = -10.0;
+   double $(top)tempChange5.LOW  = -5.0;
+   double $(top)tempChange5.HIGH =  5.0;
+   double $(top)tempChange5.HIHI =  10.0;
+}
+#
+# Use this field to disable a faulty temperature sensor
+# (0=enable, 1=disable).
+#
+long $(top)temp5disable.VAL = 0;
+
+#
+# Temperature sensor 6 (Science CCD Controller case)
+#
+group {
+   double $(top)temp6.EGUL =  40.0;
+   double $(top)temp6.EGUF = -60.0;
+   double $(top)temp6.LOLO = -10.0;
+   double $(top)temp6.LOW  =  -8.0;
+   double $(top)temp6.HIGH =  25.0;
+   double $(top)temp6.HIHI =  35.0;
+   double $(top)temp6.SMOO =   0.5;
+}
+group {
+   double $(top)tempChange6.LOLO = -10.0;
+   double $(top)tempChange6.LOW  = -5.0;
+   double $(top)tempChange6.HIGH =  5.0;
+   double $(top)tempChange6.HIHI =  10.0;
+}
+#
+# Use this field to disable a faulty temperature sensor
+# (0=enable, 1=disable).
+#
+long $(top)temp6disable.VAL = 0;
+
+#
+# Temperature sensor 7 - (Electronics Enclosure 1)
+#
+group {
+   double $(top)temp7.EGUL =  40.0;
+   double $(top)temp7.EGUF = -60.0;
+   double $(top)temp7.LOLO = -10.0;
+   double $(top)temp7.LOW  =  -8.0;
+   double $(top)temp7.HIGH =  25.0;
+   double $(top)temp7.HIHI =  35.0;
+   double $(top)temp7.SMOO =   0.5;
+}
+group {
+   double $(top)tempChange7.LOLO = -10.0;
+   double $(top)tempChange7.LOW  = -5.0;
+   double $(top)tempChange7.HIGH =  5.0;
+   double $(top)tempChange7.HIHI =  10.0;
+}
+#
+# Use this field to disable a faulty temperature sensor
+# (0=enable, 1=disable).
+#
+long $(top)temp7disable.VAL = 0;
+
+#
+# Temperature sensor 8 (Camera Body)
+#
+group {
+   double $(top)temp8.EGUL =  40.0;
+   double $(top)temp8.EGUF = -60.0;
+   double $(top)temp8.LOLO = -10.0;
+   double $(top)temp8.LOW  =  -8.0;
+   double $(top)temp8.HIGH =  25.0;
+   double $(top)temp8.HIHI =  35.0;
+   double $(top)temp8.SMOO =   0.5;
+}
+group {
+   double $(top)tempChange8.LOLO = -10.0;
+   double $(top)tempChange8.LOW  = -5.0;
+   double $(top)tempChange8.HIGH =  5.0;
+   double $(top)tempChange8.HIHI =  10.0;
+}
+#
+# Use this field to disable a faulty temperature sensor
+# (0=enable, 1=disable).
+#
+long $(top)temp8disable.VAL = 0;

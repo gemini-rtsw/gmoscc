@@ -1,0 +1,76 @@
+#
+# File: masks.lut
+#
+# Database of available GMOS masks.
+#
+# This file contains a list of all the NAMED masks known to GMOS.
+# It does not include science masks identified only by their barcodes.
+#
+# name                 barcodeId        offset
+diffuser               69               0
+IFU                    10000004         250
+focus_array            10000001         0
+off_tel_calib          10000003         0
+test_sci_data          10000002         0
+oiwfs_calib            179              0
+Al_on_axis             180              0
+IFU_model              78               0
+0.25arcsec             10005351         0
+0.5arcsec              10005352         0
+0.75arcsec             10005353         0
+1.0arcsec              10005354         0
+1.5arcsec              10005355         0
+2.0arcsec              10005356         0
+5.0arcsec              10005357         0
+focus_array_new        10005360         0
+pincol1                10005361         0
+hole05c1               10005362         0
+pincol3                10005363         0
+hole05c3               10005364         0
+slithole               10005365         0
+OIWFS3x3               10005366         0
+Dummy                  19999999         0
+IFU_RIGHT              10005373         0
+IFU_MDF                10005371         0
+IFU_LEFT               10005372         0
+GN2002A-Q-2-1          10000201         0
+GN2002A-Q-2-2          10000202         0
+GN2002A-Q-15-4         10001504         0
+GN2002A-Q-15-5         10001505         0
+GN2002A-Q-15-6         10001506         0
+GN2002A-Q-15-7         10001507         0
+GN2002A-Q-17-1         10001701         0
+GN2002A-Q-19-1         10001901         0
+GN2002A-Q-19-2         10001902         0
+GN2002A-Q-26-1         10002601         0
+GN2002A-Q-34-1         10003401         0
+GN2002A-Q-34-2         10003402         0
+GN2002A-Q-44-1         10004401         0
+GN2002A-Q-44-2         10004402         0
+GN2002A-Q-44-3         10004403         0
+GN2002A-Q-44-4         10004404         0
+GN2002A-Q-44-5         10004405         0
+GN2002A-Q-44-6         10004406         0
+GN2002A-Q-52-1         10005201         0
+GN2002A-Q-57-1         10005701         0
+GN2002A-Q-57-2         10005702         0
+GN2002A-Q-57-3         10005703         0
+GN2002A-Q-58-1         10005801         0
+GN2002A-Q-58-2         10005802         0
+GN2002A-Q-58-3         10005803         0
+GN2002A-Q-62-1         10006201         0
+GN2002A-Q-62-2         10006202         0
+GN2002A-Q-62-3         10006203         0
+GN2002A-Q-71-1         10007101         0
+GN2002A-Q-89-1         10008901         0
+GN2002A-Q-89-2         10008902         0
+GN2002A-Q-89-3         10008903         0
+GN2002A-Q-89-4         10008904         0
+GN2002A-Q-89-5         10008905         0
+GN2002A-Q-89-6         10008906         0
+GN2002A-Q-89-7         10008907         0
+GN2002A-Q-89-8         10008908         0
+GN2002A-Q-89-9         10008909         0
+GN2002A-Q-89-10        10008910         0
+
+

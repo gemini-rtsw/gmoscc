@@ -1,0 +1,11 @@
+#
+# Lookup table for detector translation Y axis
+#
+
+# name		target	 index
+
+park		108.0	 0
+centre		108.0	 0
+low	        -19.0	 0
+high            235.0	 0
+index             0.0	 2

@@ -1,0 +1,49 @@
+#
+# Lookup table for filter wheel 2
+# Translates position names into motor positions
+# 
+# Recalibrated on 4 December 2000 after first refurbishment.
+# Recalibrated on 1 February 2001 after second refurbishment.
+#
+
+# name         target   index
+
+index           0.0     3     # index with standard index mode
+park            0.00    0     # go to default park position
+pos0          -12.58    0
+pos1          -10.48    0
+pos2           -8.39    0
+pos3           -6.29    0
+pos4           -4.19    0
+pos5           -2.09    0
+pos6            0.00    0
+pos7            2.10    0
+pos8            4.19    0
+pos9            6.29    0
+pos10           8.39    0
+pos11          10.49    0
+pos0Rotated    12.59    0    # pos0 rotated round one revolution
+pos0Barcode     0.00    0    # barcode reading position for pos0
+pos1Barcode     2.10    0
+pos2Barcode     4.19    0  
+pos3Barcode     6.29    0
+pos4Barcode     8.39    0
+pos5Barcode    10.49    0
+pos6Barcode   -12.58    0
+pos7Barcode   -10.48    0
+pos8Barcode    -8.39    0
+pos9Barcode    -6.29    0
+pos10Barcode   -4.19    0
+pos11Barcode   -2.09    0
+pos0Load      -10.48    0    # load position for filter at pos0
+pos1Load       -8.39    0
+pos2Load       -6.29    0
+pos3Load       -4.19    0
+pos4Load       -2.09    0
+pos5Load        0.00    0
+pos6Load        2.10    0
+pos7Load        4.19    0
+pos8Load        6.29    0
+pos9Load        8.39    0
+pos10Load      10.49    0
+pos11Load     -12.58    0
