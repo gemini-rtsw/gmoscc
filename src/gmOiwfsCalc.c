@@ -176,6 +176,9 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2001/05/09 19:18:35  smb
+ * New focus settings: Malcolm Smith added a transformation to account for ideal focal surface errors, and also added z offset to the gmOiwfsSetOffsets and gmOiwfsGetOffsets functions. Bob Wooff also made some additions and changes to comments.
+ *
  * Revision 1.5  2000/10/16 23:59:15  gmos
  * Moved some definitions into gmOiwfsCalc.h because gmOiwfsGenSubs.c
  * also uses them.
@@ -1610,7 +1613,7 @@ static int CalcApproxProbePosition
     *yPos = BASE_ORIGIN_Y + BASE_ARM_LENGTH * sin(baseAngle) +
             PICKOFF_ARM_LENGTH * sin(baseAngle+pickoffAngle);
 
-    *focus = *focus - regEval(&zRegNoADC, *xPos, *yPos, 0.0);
+    *focus = zOffset;
 
     return 0;  /* always a success */
 }
