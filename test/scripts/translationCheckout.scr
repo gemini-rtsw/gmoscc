@@ -286,16 +286,22 @@ OUTPUT *VAL*GOOD*
 # the actual position of the mechanism.
 #
 
-DESC "Record the actual XYZ position"
+DESC "Record actual XYZ position and verify it is within tolerance"
 
 GETVAL dta1Pos
 OUTPUT *
+CMD "diffField dtaTargetX dta1Pos 0.5"
+OUTPUT *Similar*
 
 GETVAL dta2Pos
 OUTPUT *
+CMD "diffField dtaTargetY dta2Pos 0.2"
+OUTPUT *Similar*
 
 GETVAL dta3Pos
 OUTPUT *
+CMD "diffField dtaTargetZ dta3Pos 2.5"
+OUTPUT *Similar*
 
 DESC "Verify XYZ records in SAD are correct"
 
@@ -385,16 +391,22 @@ OUTPUT *VAL*GOOD*
 # the actual position of the mechanism.
 #
 
-DESC "Record the actual XYZ position"
+DESC "Record actual XYZ position and verify it is within tolerance"
 
 GETVAL dta1Pos
 OUTPUT *
+CMD "diffField dtaTargetX dta1Pos 0.5"
+OUTPUT *Similar*
 
 GETVAL dta2Pos
 OUTPUT *
+CMD "diffField dtaTargetY dta2Pos 0.2"
+OUTPUT *Similar*
 
 GETVAL dta3Pos
 OUTPUT *
+CMD "diffField dtaTargetZ dta3Pos 2.5"
+OUTPUT *Similar*
 
 DESC "Verify XYZ records in SAD are correct"
 
@@ -484,16 +496,22 @@ OUTPUT *VAL*GOOD*
 # the actual position of the mechanism.
 #
 
-DESC "Record the actual XYZ position"
+DESC "Record actual XYZ position and verify it is within tolerance"
 
 GETVAL dta1Pos
 OUTPUT *
+CMD "diffField dtaTargetX dta1Pos 0.5"
+OUTPUT *Similar*
 
 GETVAL dta2Pos
 OUTPUT *
+CMD "diffField dtaTargetY dta2Pos 0.2"
+OUTPUT *Similar*
 
 GETVAL dta3Pos
 OUTPUT *
+CMD "diffField dtaTargetZ dta3Pos 2.5"
+OUTPUT *Similar*
 
 DESC "Verify XYZ records in SAD are correct"
 
@@ -584,16 +602,22 @@ OUTPUT *VAL*GOOD*
 # the actual position of the mechanism.
 #
 
-DESC "Record the actual XYZ position"
+DESC "Record actual XYZ position and verify it is within tolerance"
 
 GETVAL dta1Pos
 OUTPUT *
+CMD "diffField dtaTargetX dta1Pos 0.5"
+OUTPUT *Similar*
 
 GETVAL dta2Pos
 OUTPUT *
+CMD "diffField dtaTargetY dta2Pos 0.2"
+OUTPUT *Similar*
 
 GETVAL dta3Pos
 OUTPUT *
+CMD "diffField dtaTargetZ dta3Pos 2.5"
+OUTPUT *Similar*
 
 DESC "Verify XYZ records in SAD are correct"
 
@@ -684,16 +708,22 @@ OUTPUT *VAL*GOOD*
 # the actual position of the mechanism.
 #
 
-DESC "Record the actual XYZ position"
+DESC "Record actual XYZ position and verify it is within tolerance"
 
 GETVAL dta1Pos
 OUTPUT *
+CMD "diffField dtaTargetX dta1Pos 0.5"
+OUTPUT *Similar*
 
 GETVAL dta2Pos
 OUTPUT *
+CMD "diffField dtaTargetY dta2Pos 0.2"
+OUTPUT *Similar*
 
 GETVAL dta3Pos
 OUTPUT *
+CMD "diffField dtaTargetZ dta3Pos 2.5"
+OUTPUT *Similar*
 
 DESC "Verify XYZ records in SAD are correct"
 
@@ -784,16 +814,22 @@ OUTPUT *VAL*GOOD*
 # the actual position of the mechanism.
 #
 
-DESC "Record the actual XYZ position"
+DESC "Record actual XYZ position and verify it is within tolerance"
 
 GETVAL dta1Pos
 OUTPUT *
+CMD "diffField dtaTargetX dta1Pos 0.5"
+OUTPUT *Similar*
 
 GETVAL dta2Pos
 OUTPUT *
+CMD "diffField dtaTargetY dta2Pos 0.2"
+OUTPUT *Similar*
 
 GETVAL dta3Pos
 OUTPUT *
+CMD "diffField dtaTargetZ dta3Pos 2.5"
+OUTPUT *Similar*
 
 DESC "Verify XYZ records in SAD are correct"
 
@@ -884,16 +920,22 @@ OUTPUT *VAL*GOOD*
 # the actual position of the mechanism.
 #
 
-DESC "Record the actual XYZ position"
+DESC "Record actual XYZ position and verify it is within tolerance"
 
 GETVAL dta1Pos
 OUTPUT *
+CMD "diffField dtaTargetX dta1Pos 0.5"
+OUTPUT *Similar*
 
 GETVAL dta2Pos
 OUTPUT *
+CMD "diffField dtaTargetY dta2Pos 0.2"
+OUTPUT *Similar*
 
 GETVAL dta3Pos
 OUTPUT *
+CMD "diffField dtaTargetZ dta3Pos 2.5"
+OUTPUT *Similar*
 
 DESC "Verify XYZ records in SAD are correct"
 
@@ -984,16 +1026,22 @@ OUTPUT *VAL*GOOD*
 # the actual position of the mechanism.
 #
 
-DESC "Record the actual XYZ position"
+DESC "Record actual XYZ position and verify it is within tolerance"
 
 GETVAL dta1Pos
 OUTPUT *
+CMD "diffField dtaTargetX dta1Pos 0.5"
+OUTPUT *Similar*
 
 GETVAL dta2Pos
 OUTPUT *
+CMD "diffField dtaTargetY dta2Pos 0.2"
+OUTPUT *Similar*
 
 GETVAL dta3Pos
 OUTPUT *
+CMD "diffField dtaTargetZ dta3Pos 2.5"
+OUTPUT *Similar*
 
 DESC "Verify XYZ records in SAD are correct"
 
@@ -1084,16 +1132,22 @@ OUTPUT *VAL*GOOD*
 # the actual position of the mechanism.
 #
 
-DESC "Record the actual XYZ position"
+DESC "Record actual XYZ position and verify it is within tolerance"
 
 GETVAL dta1Pos
 OUTPUT *
+CMD "diffField dtaTargetX dta1Pos 0.5"
+OUTPUT *Similar*
 
 GETVAL dta2Pos
 OUTPUT *
+CMD "diffField dtaTargetY dta2Pos 0.2"
+OUTPUT *Similar*
 
 GETVAL dta3Pos
 OUTPUT *
+CMD "diffField dtaTargetZ dta3Pos 2.5"
+OUTPUT *Similar*
 
 DESC "Verify XYZ records in SAD are correct"
 
