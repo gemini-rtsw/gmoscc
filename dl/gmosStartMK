@@ -127,11 +127,11 @@ else
 
     echo ""
     echo "Starting GMOS components controller VxWorks console window."
-    gmoscrate $nolog
+    gmoscc $nolog
 
     echo ""
     echo "Starting GMOS detector controller VxWorks console window."
-    mordred $nolog
+    gmosdc $nolog
 endif
 
 #
