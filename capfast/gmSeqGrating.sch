@@ -1,8 +1,8 @@
 [schematic2]
-uniq 154
+uniq 155
 [tools]
 [detail]
-w 2522 -693 100 0 n#153 hwin.hwin#128.in 2432 -544 2464 -544 2464 -704 2640 -704 ecalcouts.grWaitForIdle.INPA
+w 2522 -693 100 0 n#153 hwin.hwin#128.in 2432 -544 2464 -544 2464 -704 2640 -704 ecalcouts.ecalcouts#154.INPA
 w 994 -1053 100 0 n#148 ecad20.grSelect.VALK -128 0 32 0 32 -1056 2016 -1056 2016 256 2368 256 2368 576 2496 576 eaos.grEffWavelenSad.DOL
 w 66 707 100 0 n#146 ecad20.grSelect.OUTA -128 608 16 608 16 704 176 704 hwout.hwout#141.outp
 w -54 547 100 0 n#145 ecad20.grSelect.OUTB -128 544 80 544 80 592 176 592 hwout.hwout#142.outp
@@ -13,7 +13,7 @@ w 1170 -597 100 0 n#137 elongouts.grAssemblyMode.FLNK 880 -576 1040 -576 1040 -6
 w 1288 -574 100 0 n#134 hwin.hwin#135.in 1264 -576 1360 -576 elongouts.grMarkDta.DOL
 w 530 -461 100 0 n#133 eaos.grFocusOffset.FLNK 1456 -208 1648 -208 1648 -464 208 -464 208 -880 464 -880 estringouts.grSirUnknown.SLNK
 w 180 -525 100 0 n#132 ecad20.grSelect.STLK -128 -800 176 -800 176 -240 512 -240 eaos.lambdaGrOffset.SLNK
-w 3274 -837 100 0 n#127 ecalcouts.grWaitForIdle.FLNK 2960 -704 3040 -704 3040 -848 3568 -848 eevents.grCadStartEvent.SLNK
+w 3274 -837 100 0 n#127 ecalcouts.ecalcouts#154.FLNK 2960 -704 3040 -704 3040 -848 3568 -848 eevents.grCadStartEvent.SLNK
 w 34 139 100 0 n#125 ecad20.grSelect.VALI -128 128 256 128 256 -208 512 -208 eaos.lambdaGrOffset.DOL
 w 162 1147 100 0 n#114 estringouts.gratingModeString.OUT 800 1296 992 1296 992 1136 -608 1136 -608 640 -448 640 ecad20.grSelect.A
 w 474 1355 100 0 n#112 ebos.gratingModeTranslate.VAL 400 1376 464 1376 464 1344 544 1344 estringouts.gratingModeString.DOL
@@ -32,68 +32,31 @@ w 976 835 100 0 n#46 ecad20.grSelect.VAL -128 832 2128 832 outhier.VAL.p
 w 1438 739 100 0 n#9 ecad20.grSelect.MESS -128 800 784 800 784 736 2128 736 outhier.MESS.p
 w -626 804 100 0 n#8 inhier.ICID.P -848 736 -768 736 -768 800 -448 800 ecad20.grSelect.ICID
 w -666 834 100 0 n#7 inhier.DIR.P -848 832 -448 832 ecad20.grSelect.DIR
-s 1184 -112 100 0 Grating focus offset
-s 1680 -336 100 0 Offset record now SCAN Passive rather than Event - SMB
-s 96 1552 100 0 Displayed strings are translated to WLEN/SEL
-s 96 1584 140 0 For dm menu: sets grSelect.A
-s -848 1296 140 0 For dm menu: sets grSelect.B
-s -928 384 100 0 D: Grating Order
-s -928 448 100 0 C: Grating central wavelength
-s -928 512 100 0 B: Grating name
-s -928 576 100 0 A: Grating positioning mode
-s -928 608 100 0 Input attributes are:
-s 3616 1744 140 0 gmSeqGrating.sch
-s 160 880 100 0 split any lock sets.
-s 160 912 100 0 Note that event scanning is used between the CAD and the SAD to
-s 160 944 100 0 As well as driving the CAD it also updates the specified SAD items.
-s 176 736 100 0 Select Grating Only? [0/1]
-s 176 624 100 0 Grating Barcode ID
-s 176 512 100 0 Tilt Angle
-s 464 -112 100 0 Wavelength dependent focus offset
-s -976 -16 100 0 K: name of all gratings LUT file
 s -976 -64 100 0 L: name of lamda vs focus LUT file
+s -976 -16 100 0 K: name of all gratings LUT file
+s 464 -112 100 0 Wavelength dependent focus offset
+s 176 512 100 0 Tilt Angle
+s 176 624 100 0 Grating Barcode ID
+s 176 736 100 0 Select Grating Only? [0/1]
+s 160 944 100 0 As well as driving the CAD it also updates the specified SAD items.
+s 160 912 100 0 Note that event scanning is used between the CAD and the SAD to
+s 160 880 100 0 split any lock sets.
+s 3616 1744 140 0 gmSeqGrating.sch
+s -928 608 100 0 Input attributes are:
+s -928 576 100 0 A: Grating positioning mode
+s -928 512 100 0 B: Grating name
+s -928 448 100 0 C: Grating central wavelength
+s -928 384 100 0 D: Grating Order
+s -848 1296 140 0 For dm menu: sets grSelect.B
+s 96 1584 140 0 For dm menu: sets grSelect.A
+s 96 1552 100 0 Displayed strings are translated to WLEN/SEL
+s 1680 -336 100 0 Offset record now SCAN Passive rather than Event - SMB
+s 1184 -112 100 0 Grating focus offset
 [cell use]
-use ecalcouts 2640 -889 100 0 grWaitForIdle
+use ecalcouts 2640 -889 100 0 ecalcouts#154
 xform 0 2800 -768
 p 2712 -856 100 0 -1 CALC:A
-p 3472 -338 100 0 0 DOPT:Use CALC
-p 3472 -306 100 0 0 OOPT:Transition To Zero
-p 2728 -656 100 0 1 SCAN:Passive
-p 3056 -512 60 0 0 def(SDIS):0.0
-p 2592 -696 75 0 -1 pproc(INPA):CPP
-use eaos 2496 455 100 0 grEffWavelenSad
-xform 0 2624 544
-p 2276 730 100 0 0 DESC:Output of CAD
-p 2560 384 100 0 1 EGU:nanometres
-p 2752 640 100 0 1 EVNT:$(event)
-p 2560 416 100 0 1 OMSL:closed_loop
-p 2560 352 100 0 1 PREC:2
-p 2560 640 100 0 1 SCAN:Event
-p 2720 480 100 0 -1 def(OUT):$(sad)grEffWavelen
-p 2608 448 100 1024 0 name:$(top)$(I)
-p 2752 512 75 768 -1 pproc(OUT):PP
-use eaos 1200 -329 100 0 grFocusOffset
-xform 0 1328 -240
-p 980 -54 100 0 0 DESC:Output of CAD
-p 1264 -400 100 0 1 EGU:microns
-p 1456 -144 100 0 1 EVNT:$(event)
-p 1264 -368 100 0 1 OMSL:closed_loop
-p 1264 -432 100 0 1 PREC:2
-p 1264 -144 100 0 1 SCAN:Passive
-p 1424 -304 100 0 0 def(OUT):0.0
-p 1312 -336 100 1024 0 name:$(top)$(I)
-p 1456 -272 75 768 -1 pproc(OUT):NPP
-use eaos 512 -329 100 0 lambdaGrOffset
-xform 0 640 -240
-p 292 -54 100 0 0 DESC:Output of CAD
-p 576 -400 100 0 1 EGU:microns
-p 768 -144 100 0 1 EVNT:$(event)
-p 576 -368 100 0 1 OMSL:closed_loop
-p 576 -432 100 0 1 PREC:2
-p 576 -144 100 0 1 SCAN:Passive
-p 736 -304 100 0 0 def(OUT):0.0
-p 624 -336 100 1024 0 name:$(top)$(I)
-p 768 -272 75 768 -1 pproc(OUT):NPP
+p 2704 -888 100 0 -1 name:$(top)grWaitForIdle
 use eaos 1360 471 100 0 grWavelenSad
 xform 0 1488 560
 p 1140 746 100 0 0 DESC:Output of CAD
@@ -105,118 +68,56 @@ p 1424 656 100 0 1 SCAN:Event
 p 1584 496 100 0 -1 def(OUT):$(sad)grWavelen
 p 1472 464 100 1024 0 name:$(top)$(I)
 p 1616 528 75 768 -1 pproc(OUT):PP
-use hwout 176 439 100 0 hwout#143
-xform 0 272 480
-p 272 471 100 0 -1 val(outp):$(cc)grAssembly.C
-use hwout 176 551 100 0 hwout#142
-xform 0 272 592
-p 272 583 100 0 -1 val(outp):$(cc)grAssembly.B
+use eaos 512 -329 100 0 lambdaGrOffset
+xform 0 640 -240
+p 292 -54 100 0 0 DESC:Output of CAD
+p 576 -400 100 0 1 EGU:microns
+p 768 -144 100 0 1 EVNT:$(event)
+p 576 -368 100 0 1 OMSL:closed_loop
+p 576 -432 100 0 1 PREC:2
+p 576 -144 100 0 1 SCAN:Passive
+p 736 -304 100 0 0 def(OUT):0.0
+p 624 -336 100 1024 0 name:$(top)$(I)
+p 768 -272 75 768 -1 pproc(OUT):NPP
+use eaos 1200 -329 100 0 grFocusOffset
+xform 0 1328 -240
+p 980 -54 100 0 0 DESC:Output of CAD
+p 1264 -400 100 0 1 EGU:microns
+p 1456 -144 100 0 1 EVNT:$(event)
+p 1264 -368 100 0 1 OMSL:closed_loop
+p 1264 -432 100 0 1 PREC:2
+p 1264 -144 100 0 1 SCAN:Passive
+p 1424 -304 100 0 0 def(OUT):0.0
+p 1312 -336 100 1024 0 name:$(top)$(I)
+p 1456 -272 75 768 -1 pproc(OUT):NPP
+use eaos 2496 455 100 0 grEffWavelenSad
+xform 0 2624 544
+p 2276 730 100 0 0 DESC:Output of CAD
+p 2560 384 100 0 1 EGU:nanometres
+p 2752 640 100 0 1 EVNT:$(event)
+p 2560 416 100 0 1 OMSL:closed_loop
+p 2560 352 100 0 1 PREC:2
+p 2560 640 100 0 1 SCAN:Event
+p 2720 480 100 0 -1 def(OUT):$(sad)grEffWavelen
+p 2608 448 100 1024 0 name:$(top)$(I)
+p 2752 512 75 768 -1 pproc(OUT):PP
 use hwout 176 663 100 0 hwout#141
 xform 0 272 704
 p 272 695 100 0 -1 val(outp):$(cc)grAssembly.A
-use elongouts 648 -696 100 0 grAssemblyMode
-xform 0 752 -608
-p 672 -514 100 0 -1 DESC:Set assembly record mode MOVE
-p 688 -736 100 0 1 OMSL:closed_loop
-p 960 -642 100 0 -1 def(OUT):$(cc)grAssembly.MODE
-p 848 -704 100 1024 0 name:$(top)$(I)
-p 880 -640 75 768 -1 pproc(OUT):NPP
-use elongouts 1968 471 100 0 grOrderSad
-xform 0 2096 560
-p 1808 510 100 0 0 ADEL:0
-p 1853 905 100 0 0 DESC:long output record
-p 1808 606 100 0 0 DISS:NO_ALARM
-p 1808 574 100 0 0 DISV:1
-p 1924 952 100 0 0 DTYP:Soft Channel
-p 1808 702 100 0 0 EGU:units
-p 2128 656 100 0 1 EVNT:$(event)
-p 2032 702 100 0 0 HHSV:NO_ALARM
-p 2032 766 100 0 0 HIGH:0
-p 2032 830 100 0 0 HIHI:0
-p 1808 670 100 0 0 HOPR:0
-p 2032 670 100 0 0 HSV:NO_ALARM
-p 1808 542 100 0 0 HYST:0
-p 1808 446 100 0 0 IVOA:Continue normally
-p 2032 510 100 0 0 IVOV:0
-p 2032 606 100 0 0 LLSV:NO_ALARM
-p 2032 798 100 0 0 LOLO:0
-p 1808 638 100 0 0 LOPR:0
-p 2032 734 100 0 0 LOW:0
-p 2032 638 100 0 0 LSV:NO_ALARM
-p 2032 542 100 0 0 MDEL:0
-p 2032 432 100 0 1 OMSL:closed_loop
-p 1808 798 100 0 0 PHAS:0
-p 1808 734 100 0 0 PINI:NO
-p 2032 574 100 0 0 PRIO:LOW
-p 1952 656 100 0 1 SCAN:Event
-p 1808 382 100 0 0 SIML:0.000000000000000e+00
-p 1808 350 100 0 0 SIMS:NO_ALARM
-p 1808 414 100 0 0 SIOL:0.000000000000000e+00
-p 2054 557 100 0 -1 Type:longout
-p 1808 300 100 0 0 def(DOL):0.000000000000000e+00
-p 1808 382 100 0 0 def(FLNK):0.000000000000000e+00
-p 2208 496 100 0 -1 def(OUT):$(sad)grOrder
-p 1808 268 100 0 0 def(SDIS):0.000000000000000e+00
-p 2080 464 100 1024 0 name:$(top)$(I)
-p 1968 592 75 1280 -1 palrm(DOL):NMS
-p 2256 528 75 768 -1 palrm(OUT):NMS
-p 1968 528 75 1280 -1 palrm(SDIS):NMS
-p 1936 592 75 1280 -1 pproc(DOL):NPP
-p 2224 528 75 768 -1 pproc(OUT):PP
-p 1936 528 75 1280 -1 pproc(SDIS):NPP
-p 1992 914 100 0 0 primitive:elongout
-p 1808 332 100 0 0 typ(DOL):path
-p 1808 364 100 0 0 typ(FLNK):path
-p 1808 172 100 0 0 typ(OUT):path
-p 1808 236 100 0 0 typ(SDIS):path
-use elongouts 1264 119 100 0 grBlazeDirSad
-xform 0 1392 208
-p 1104 158 100 0 0 ADEL:0
-p 1149 553 100 0 0 DESC:long output record
-p 1104 254 100 0 0 DISS:NO_ALARM
-p 1104 222 100 0 0 DISV:1
-p 1220 600 100 0 0 DTYP:Soft Channel
-p 1104 350 100 0 0 EGU:units
-p 1408 288 100 0 1 EVNT:$(event)
-p 1328 350 100 0 0 HHSV:NO_ALARM
-p 1328 414 100 0 0 HIGH:0
-p 1328 478 100 0 0 HIHI:0
-p 1104 318 100 0 0 HOPR:0
-p 1328 318 100 0 0 HSV:NO_ALARM
-p 1104 190 100 0 0 HYST:0
-p 1104 94 100 0 0 IVOA:Continue normally
-p 1328 158 100 0 0 IVOV:0
-p 1328 254 100 0 0 LLSV:NO_ALARM
-p 1328 446 100 0 0 LOLO:0
-p 1104 286 100 0 0 LOPR:0
-p 1328 382 100 0 0 LOW:0
-p 1328 286 100 0 0 LSV:NO_ALARM
-p 1328 190 100 0 0 MDEL:0
-p 1328 80 100 0 1 OMSL:closed_loop
-p 1104 446 100 0 0 PHAS:0
-p 1104 382 100 0 0 PINI:NO
-p 1328 222 100 0 0 PRIO:LOW
-p 1232 288 100 0 1 SCAN:Event
-p 1104 30 100 0 0 SIML:0.000000000000000e+00
-p 1104 -2 100 0 0 SIMS:NO_ALARM
-p 1104 62 100 0 0 SIOL:0.000000000000000e+00
-p 1350 205 100 0 -1 Type:longout
-p 1104 -52 100 0 0 def(DOL):0.000000000000000e+00
-p 1104 30 100 0 0 def(FLNK):0.000000000000000e+00
-p 1504 112 100 0 -1 def(OUT):$(sad)grBlazeDir
-p 1104 -84 100 0 0 def(SDIS):0.000000000000000e+00
-p 1376 112 100 1024 0 name:$(top)$(I)
-p 1264 240 75 1280 -1 palrm(DOL):NMS
-p 1552 176 75 768 -1 palrm(OUT):NMS
-p 1264 176 75 1280 -1 palrm(SDIS):NMS
-p 1232 240 75 1280 -1 pproc(DOL):NPP
-p 1520 176 75 768 -1 pproc(OUT):PP
-p 1232 176 75 1280 -1 pproc(SDIS):NPP
-p 1288 562 100 0 0 primitive:elongout
-p 1104 -20 100 0 0 typ(DOL):path
-p 1104 12 100 0 0 typ(FLNK):path
-p 1104 -180 100 0 0 typ(OUT):path
-p 1104 -116 100 0 0 typ(SDIS):path
+use hwout 176 551 100 0 hwout#142
+xform 0 272 592
+p 272 583 100 0 -1 val(outp):$(cc)grAssembly.B
+use hwout 176 439 100 0 hwout#143
+xform 0 272 480
+p 272 471 100 0 -1 val(outp):$(cc)grAssembly.C
+use elongouts 1384 -696 100 0 grMarkDta
+xform 0 1488 -608
+p 1408 -514 100 0 -1 DESC:Mark dtaTrack CAD
+p 1200 -466 100 0 0 EGU:CAD directive
+p 1424 -736 100 0 1 OMSL:closed_loop
+p 1696 -642 100 0 -1 def(OUT):$(gm)dtaTrack.DIR
+p 1584 -704 100 1024 0 name:$(top)$(I)
+p 1616 -640 75 768 -1 pproc(OUT):PP
 use elongouts 688 96 100 0 grRulingDensitySad
 xform 0 864 192
 p 576 142 100 0 0 ADEL:0
@@ -265,26 +166,134 @@ p 576 -36 100 0 0 typ(DOL):path
 p 576 -4 100 0 0 typ(FLNK):path
 p 576 -196 100 0 0 typ(OUT):path
 p 576 -132 100 0 0 typ(SDIS):path
-use elongouts 1384 -696 100 0 grMarkDta
-xform 0 1488 -608
-p 1408 -514 100 0 -1 DESC:Mark dtaTrack CAD
-p 1200 -466 100 0 0 EGU:CAD directive
-p 1424 -736 100 0 1 OMSL:closed_loop
-p 1696 -642 100 0 -1 def(OUT):$(gm)dtaTrack.DIR
-p 1584 -704 100 1024 0 name:$(top)$(I)
-p 1616 -640 75 768 -1 pproc(OUT):PP
-use hwin 2240 -585 100 0 hwin#128
-xform 0 2336 -544
-p 2243 -552 100 0 -1 val(in):$(cc)grC.VAL
-use hwin 360 -616 100 0 hwin#51
-xform 0 432 -576
-p 339 -584 100 0 -1 val(in):$(MODE_MOVE)
-use hwin 3216 -809 100 0 hwin#80
-xform 0 3312 -768
-p 3219 -776 100 0 -1 val(in):$(event)
+use elongouts 1264 119 100 0 grBlazeDirSad
+xform 0 1392 208
+p 1104 158 100 0 0 ADEL:0
+p 1149 553 100 0 0 DESC:long output record
+p 1104 254 100 0 0 DISS:NO_ALARM
+p 1104 222 100 0 0 DISV:1
+p 1220 600 100 0 0 DTYP:Soft Channel
+p 1104 350 100 0 0 EGU:units
+p 1408 288 100 0 1 EVNT:$(event)
+p 1328 350 100 0 0 HHSV:NO_ALARM
+p 1328 414 100 0 0 HIGH:0
+p 1328 478 100 0 0 HIHI:0
+p 1104 318 100 0 0 HOPR:0
+p 1328 318 100 0 0 HSV:NO_ALARM
+p 1104 190 100 0 0 HYST:0
+p 1104 94 100 0 0 IVOA:Continue normally
+p 1328 158 100 0 0 IVOV:0
+p 1328 254 100 0 0 LLSV:NO_ALARM
+p 1328 446 100 0 0 LOLO:0
+p 1104 286 100 0 0 LOPR:0
+p 1328 382 100 0 0 LOW:0
+p 1328 286 100 0 0 LSV:NO_ALARM
+p 1328 190 100 0 0 MDEL:0
+p 1328 80 100 0 1 OMSL:closed_loop
+p 1104 446 100 0 0 PHAS:0
+p 1104 382 100 0 0 PINI:NO
+p 1328 222 100 0 0 PRIO:LOW
+p 1232 288 100 0 1 SCAN:Event
+p 1104 30 100 0 0 SIML:0.000000000000000e+00
+p 1104 -2 100 0 0 SIMS:NO_ALARM
+p 1104 62 100 0 0 SIOL:0.000000000000000e+00
+p 1350 205 100 0 -1 Type:longout
+p 1104 -52 100 0 0 def(DOL):0.000000000000000e+00
+p 1104 30 100 0 0 def(FLNK):0.000000000000000e+00
+p 1504 112 100 0 -1 def(OUT):$(sad)grBlazeDir
+p 1104 -84 100 0 0 def(SDIS):0.000000000000000e+00
+p 1376 112 100 1024 0 name:$(top)$(I)
+p 1264 240 75 1280 -1 palrm(DOL):NMS
+p 1552 176 75 768 -1 palrm(OUT):NMS
+p 1264 176 75 1280 -1 palrm(SDIS):NMS
+p 1232 240 75 1280 -1 pproc(DOL):NPP
+p 1520 176 75 768 -1 pproc(OUT):PP
+p 1232 176 75 1280 -1 pproc(SDIS):NPP
+p 1288 562 100 0 0 primitive:elongout
+p 1104 -20 100 0 0 typ(DOL):path
+p 1104 12 100 0 0 typ(FLNK):path
+p 1104 -180 100 0 0 typ(OUT):path
+p 1104 -116 100 0 0 typ(SDIS):path
+use elongouts 1968 471 100 0 grOrderSad
+xform 0 2096 560
+p 1808 510 100 0 0 ADEL:0
+p 1853 905 100 0 0 DESC:long output record
+p 1808 606 100 0 0 DISS:NO_ALARM
+p 1808 574 100 0 0 DISV:1
+p 1924 952 100 0 0 DTYP:Soft Channel
+p 1808 702 100 0 0 EGU:units
+p 2128 656 100 0 1 EVNT:$(event)
+p 2032 702 100 0 0 HHSV:NO_ALARM
+p 2032 766 100 0 0 HIGH:0
+p 2032 830 100 0 0 HIHI:0
+p 1808 670 100 0 0 HOPR:0
+p 2032 670 100 0 0 HSV:NO_ALARM
+p 1808 542 100 0 0 HYST:0
+p 1808 446 100 0 0 IVOA:Continue normally
+p 2032 510 100 0 0 IVOV:0
+p 2032 606 100 0 0 LLSV:NO_ALARM
+p 2032 798 100 0 0 LOLO:0
+p 1808 638 100 0 0 LOPR:0
+p 2032 734 100 0 0 LOW:0
+p 2032 638 100 0 0 LSV:NO_ALARM
+p 2032 542 100 0 0 MDEL:0
+p 2032 432 100 0 1 OMSL:closed_loop
+p 1808 798 100 0 0 PHAS:0
+p 1808 734 100 0 0 PINI:NO
+p 2032 574 100 0 0 PRIO:LOW
+p 1952 656 100 0 1 SCAN:Event
+p 1808 382 100 0 0 SIML:0.000000000000000e+00
+p 1808 350 100 0 0 SIMS:NO_ALARM
+p 1808 414 100 0 0 SIOL:0.000000000000000e+00
+p 2054 557 100 0 -1 Type:longout
+p 1808 300 100 0 0 def(DOL):0.000000000000000e+00
+p 1808 382 100 0 0 def(FLNK):0.000000000000000e+00
+p 2208 496 100 0 -1 def(OUT):$(sad)grOrder
+p 1808 268 100 0 0 def(SDIS):0.000000000000000e+00
+p 2080 464 100 1024 0 name:$(top)$(I)
+p 1968 592 75 1280 -1 palrm(DOL):NMS
+p 2256 528 75 768 -1 palrm(OUT):NMS
+p 1968 528 75 1280 -1 palrm(SDIS):NMS
+p 1936 592 75 1280 -1 pproc(DOL):NPP
+p 2224 528 75 768 -1 pproc(OUT):PP
+p 1936 528 75 1280 -1 pproc(SDIS):NPP
+p 1992 914 100 0 0 primitive:elongout
+p 1808 332 100 0 0 typ(DOL):path
+p 1808 364 100 0 0 typ(FLNK):path
+p 1808 172 100 0 0 typ(OUT):path
+p 1808 236 100 0 0 typ(SDIS):path
+use elongouts 648 -696 100 0 grAssemblyMode
+xform 0 752 -608
+p 672 -514 100 0 -1 DESC:Set assembly record mode MOVE
+p 688 -736 100 0 1 OMSL:closed_loop
+p 960 -642 100 0 -1 def(OUT):$(cc)grAssembly.MODE
+p 848 -704 100 1024 0 name:$(top)$(I)
+p 880 -640 75 768 -1 pproc(OUT):NPP
 use hwin 1096 -616 100 0 hwin#135
 xform 0 1168 -576
 p 1075 -584 100 0 -1 val(in):$(CAD_MARK)
+use hwin 3216 -809 100 0 hwin#80
+xform 0 3312 -768
+p 3219 -776 100 0 -1 val(in):$(event)
+use hwin 360 -616 100 0 hwin#51
+xform 0 432 -576
+p 339 -584 100 0 -1 val(in):$(MODE_MOVE)
+use hwin 2240 -585 100 0 hwin#128
+xform 0 2336 -544
+p 2240 -504 100 0 -1 val(in):$(cc)grC.VAL .CP .NMS
+use estringouts 784 487 100 0 grNameSad
+xform 0 912 576
+p 564 762 100 0 0 DESC:Output of CAD
+p 752 302 100 0 0 EGU:degs
+p 1040 672 100 0 1 EVNT:$(event)
+p 848 448 100 0 1 OMSL:closed_loop
+p 848 672 100 0 1 SCAN:Event
+p 992 512 100 0 -1 def(OUT):$(sad)grName
+p 896 480 100 1024 0 name:$(top)$(I)
+p 1040 560 75 768 -1 pproc(OUT):PP
+use estringouts 544 1239 100 0 gratingModeString
+xform 0 672 1312
+p 608 1200 100 0 1 OMSL:closed_loop
 use estringouts 464 -969 100 0 grSirUnknown
 xform 0 592 -880
 p 244 -694 100 0 0 DESC:Output of CAD
@@ -297,19 +306,6 @@ p 528 -816 100 0 1 VAL:unknown
 p 672 -944 100 0 -1 def(OUT):$(sad)grName
 p 576 -976 100 1024 0 name:$(top)$(I)
 p 720 -896 75 768 -1 pproc(OUT):PP
-use estringouts 544 1239 100 0 gratingModeString
-xform 0 672 1312
-p 608 1200 100 0 1 OMSL:closed_loop
-use estringouts 784 487 100 0 grNameSad
-xform 0 912 576
-p 564 762 100 0 0 DESC:Output of CAD
-p 752 302 100 0 0 EGU:degs
-p 1040 672 100 0 1 EVNT:$(event)
-p 848 448 100 0 1 OMSL:closed_loop
-p 848 672 100 0 1 SCAN:Event
-p 992 512 100 0 -1 def(OUT):$(sad)grName
-p 896 480 100 1024 0 name:$(top)$(I)
-p 1040 560 75 768 -1 pproc(OUT):PP
 use oslBorderD -1088 -1497 100 0 oslBorderD#116
 xform 0 1552 208
 p 3772 -1248 120 256 -1 Title:GMOS IS - grating commands
@@ -457,12 +453,12 @@ use eevents 3568 -937 100 0 grCadStartEvent
 xform 0 3712 -848
 p 3632 -976 100 0 1 EVNT:0
 p 3680 -944 100 1024 0 name:$(top)$(I)
-use outhier 2120 792 100 0 VAL
-xform 0 2112 832
 use outhier 2120 696 100 0 MESS
 xform 0 2112 736
-use inhier -840 792 100 0 DIR
-xform 0 -848 832
+use outhier 2120 792 100 0 VAL
+xform 0 2112 832
 use inhier -840 696 100 0 ICID
 xform 0 -848 736
+use inhier -840 792 100 0 DIR
+xform 0 -848 832
 [comments]

@@ -332,3 +332,19 @@ V3-5 April 29 2002 ajf/tpaz:
 V3-6 April 29 2002 ajf/tpaz:
 ----------------------------
 -  Add "aux_gr_allgratings.lut" to the list of required LUTs.
+
+V3-7 May 2nd 2002 ajf/tpaz:
+----------------------------
+-  Fixed the problems found by Isobel during her tests:
+   (a) Focus did not change when moving the IFU in/out of beam.
+   (b) Headers have wrong values for FILTER1, FILTER2, GRATING
+       and some barcode ID's.
+   (c) Default port has gone back to upward looking.
+   (d) The gmos account cannot create files in /gemini/gmos/lut.
+   (e) "select grating and Tilt" had changed to "select grating and T".
+-  Found and fixed two more problems:
+   (a) The TCS and DC were always reported as connected even if they
+       were not.
+   (b) The gmosStart script needed to "cd" to the correct directory
+       before starting the "dm" screens.
+-  LUT files have been updated in CVS.

@@ -3,8 +3,8 @@ uniq 62
 [tools]
 [detail]
 w 992 555 100 0 n#61 elongouts.getSubHeartbeat.FLNK 48 1600 128 1600 128 864 544 864 544 544 1488 544 ecalcs.CalcDisv.SLNK
-w 228 1675 100 0 n#60 elongouts.getSubHeartbeat.VAL 48 1568 224 1568 224 1792 288 1792 eao.checkHeartBeat.DOL
 w 800 907 100 0 n#60 junction 160 1568 160 896 1488 896 ecalcs.CalcDisv.INPB
+w 228 1675 100 0 n#60 elongouts.getSubHeartbeat.VAL 48 1568 224 1568 224 1792 288 1792 eao.checkHeartBeat.DOL
 w -232 1611 100 0 c#54 lboat.c#54.p -208 1600 -208 1600 elongouts.getSubHeartbeat.DOL
 w 132 779 100 2 c#57 lboat.c#57.p 128 784 128 784 ecalcs.binHeartBeat.INPA
 w 1152 811 100 0 n#52 ebos.DisableSubsys.VAL 1024 800 1328 800 1328 832 1488 832 ecalcs.CalcDisv.INPD
@@ -16,40 +16,41 @@ w 1744 2082 100 0 n#37 eseqs.WaitheartBeat.LNK1 1648 2080 1888 2080 eaos.Oldhear
 w 1016 1986 100 0 n#35 eao.checkHeartBeat.FLNK 928 1984 1152 1984 1152 1760 1328 1760 eseqs.WaitheartBeat.SLNK
 w 1824 802 100 0 n#19 ecalcs.CalcDisv.VAL 1776 736 1808 736 1808 800 1888 800 elongouts.Disabled.DOL
 w 1808 770 100 0 n#18 ecalcs.CalcDisv.FLNK 1776 768 1888 768 elongouts.Disabled.SLNK
-s 1168 912 100 0 New
-s -96 1088 140 0 It outputs status showing if the subsystem is active.
-s -96 1120 140 0 Components or Detector Controllers.
-s -96 1152 140 0 This schematic handles the presence (or absence) of the 
-s 1696 480 100 0 Subsystem inactive if old = new heartbeat
-s 1696 448 100 0 or check heartbeat alarm raised
-s 1328 944 100 0 Old
-s 1168 848 100 0 Alarm
 s 2400 2304 150 0 gmSeqSubsysPresent
+s 1168 848 100 0 Alarm
+s 1328 944 100 0 Old
+s 1696 448 100 0 or check heartbeat alarm raised
+s 1696 480 100 0 Subsystem inactive if old = new heartbeat
+s -96 1152 140 0 This schematic handles the presence (or absence) of the 
+s -96 1120 140 0 Components or Detector Controllers.
+s -96 1088 140 0 It outputs status showing if the subsystem is active.
+s 1168 912 100 0 New
 [cell use]
-use elongouts 1912 680 100 0 Disabled
-xform 0 2016 768
-p 1856 862 100 0 -1 DESC:Indicates a disabled subsystem
-p 1952 624 100 0 1 OMSL:closed_loop
 use elongouts -208 1479 100 0 getSubHeartbeat
 xform 0 -80 1568
 p -176 1680 100 0 1 OMSL:closed_loop
 p -128 1520 100 0 1 SCAN:1 second
 p -368 1308 100 0 0 def(DOL):$(gm)sad:$(subsys):heartBeat.VAL
-use lboat -368 1559 100 0 c#54
-xform 0 -288 1600
+p -208 1600 75 1280 -1 palrm(DOL):MS
+use elongouts 1912 680 100 0 Disabled
+xform 0 2016 768
+p 1856 862 100 0 -1 DESC:Indicates a disabled subsystem
+p 1952 624 100 0 1 OMSL:closed_loop
 use lboat -32 743 100 0 c#57
 xform 0 48 784
-use ecalcs 1512 456 100 0 CalcDisv
-xform 0 1632 720
-p 1584 624 100 0 1 CALC:((A=B)||(C=3))||(D)
-p 1600 864 100 0 1 SCAN:Passive
-p 992 878 100 0 0 def(INPA):0.0
+use lboat -368 1559 100 0 c#54
+xform 0 -288 1600
 use ecalcs 128 311 100 0 binHeartBeat
 xform 0 272 576
 p 224 640 100 0 1 CALC:A%2
 p 224 480 100 0 1 SCAN:1 second
 p -95 181 100 0 0 def(FLNK):0.000000000000000e+00
 p -208 816 100 0 -1 def(INPA):$(gm)sad:$(subsys):heartBeat
+use ecalcs 1512 456 100 0 CalcDisv
+xform 0 1632 720
+p 1584 624 100 0 1 CALC:((A=B)||(C=3))||(D)
+p 1600 864 100 0 1 SCAN:Passive
+p 992 878 100 0 0 def(INPA):0.0
 use ebos 768 711 100 0 DisableSubsys
 xform 0 896 800
 p 832 656 100 0 1 OMSL:supervisory
