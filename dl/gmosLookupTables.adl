@@ -1,5 +1,5 @@
 file {
-	name="gmosLookupTables.adl"
+	name="gmosLookupTables.dl"
 }
 display {
 	magic="305419896"
@@ -7,7 +7,7 @@ display {
 	mnrv="4"
 	ndyng="0"
 	npc="9"
-	nstr="79"
+	nstr="82"
 	ndynamic="10"
 	nplot="0"
 	nrd="1"
@@ -18,28 +18,28 @@ display {
 	object {
 		x="0"
 		y="0"
-		width="723"
+		width="793"
 		height="583"
 	}
 	clr="1"
 	bclr="28"
-	nwords_dspy="3168"
+	nwords_dspy="3270"
 	nwords_sta="448"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1546"
-	osta="1098"
-	odynamic="1546"
-	oplot="2206"
-	ord="2206"
-	oes="2366"
-	okd="3156"
-	opd="3168"
-	opo="3168"
+	odyng="1648"
+	osta="1200"
+	odynamic="1648"
+	oplot="2308"
+	ord="2308"
+	oes="2468"
+	okd="3258"
+	opd="3270"
+	opo="3270"
 	opc="68"
 	ostr="200"
-	ocmap="1098"
-	ocrules="1098"
+	ocmap="1200"
+	ocrules="1200"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -64,9 +64,9 @@ display {
 }
 "rectangle" {
 	object {
-		x="8"
-		y="14"
-		width="700"
+		x="7"
+		y="9"
+		width="775"
 		height="39"
 		groupid="0"
 	}
@@ -81,8 +81,8 @@ display {
 }
 "text" {
 	object {
-		x="20"
-		y="21"
+		x="94"
+		y="16"
 		width="680"
 		height="25"
 		groupid="0"
@@ -100,9 +100,9 @@ display {
 }
 "rectangle" {
 	object {
-		x="8"
-		y="53"
-		width="700"
+		x="7"
+		y="48"
+		width="775"
 		height="100"
 		groupid="0"
 	}
@@ -135,9 +135,9 @@ display {
 }
 "rectangle" {
 	object {
-		x="8"
-		y="253"
-		width="700"
+		x="7"
+		y="248"
+		width="775"
 		height="175"
 		groupid="0"
 	}
@@ -152,13 +152,13 @@ display {
 }
 "text" {
 	object {
-		x="16"
-		y="59"
-		width="680"
+		x="12"
+		y="54"
+		width="765"
 		height="20"
 		groupid="0"
 	}
-	textix="Mask Assembly - List of loaded masks"
+	textix="Mask Assembly - List of loaded masks (max 39 characters)"
 	align="horiz. left"
 }
 "<<basic attribute>>" {
@@ -171,8 +171,8 @@ display {
 }
 "text" {
 	object {
-		x="353"
-		y="83"
+		x="427"
+		y="78"
 		width="17"
 		height="20"
 		groupid="0"
@@ -190,9 +190,9 @@ display {
 }
 "rectangle" {
 	object {
-		x="8"
-		y="153"
-		width="700"
+		x="7"
+		y="148"
+		width="775"
 		height="100"
 		groupid="0"
 	}
@@ -207,13 +207,13 @@ display {
 }
 "text" {
 	object {
-		x="16"
-		y="159"
-		width="680"
+		x="12"
+		y="154"
+		width="765"
 		height="20"
 		groupid="0"
 	}
-	textix="Filter Assembly - List of loaded filters"
+	textix="Filter Assembly - List of loaded filters (max 39 characters)"
 	align="horiz. left"
 }
 "<<basic attribute>>" {
@@ -226,8 +226,8 @@ display {
 }
 "text" {
 	object {
-		x="353"
-		y="183"
+		x="427"
+		y="178"
 		width="17"
 		height="20"
 		groupid="0"
@@ -245,13 +245,13 @@ display {
 }
 "text" {
 	object {
-		x="17"
-		y="259"
-		width="680"
+		x="12"
+		y="254"
+		width="765"
 		height="20"
 		groupid="0"
 	}
-	textix="Grating Assembly - List of loaded gratings"
+	textix="Grating Assembly - List of loaded gratings (max 39 characters)"
 	align="horiz. left"
 }
 "<<basic attribute>>" {
@@ -264,8 +264,8 @@ display {
 }
 "text" {
 	object {
-		x="354"
-		y="283"
+		x="428"
+		y="278"
 		width="17"
 		height="20"
 		groupid="0"
@@ -283,8 +283,8 @@ display {
 }
 "text" {
 	object {
-		x="18"
-		y="344"
+		x="12"
+		y="339"
 		width="680"
 		height="20"
 		groupid="0"
@@ -302,8 +302,8 @@ display {
 }
 "text" {
 	object {
-		x="355"
-		y="368"
+		x="429"
+		y="363"
 		width="70"
 		height="20"
 		groupid="0"
@@ -321,9 +321,9 @@ display {
 }
 "rectangle" {
 	object {
-		x="8"
-		y="428"
-		width="700"
+		x="7"
+		y="423"
+		width="775"
 		height="100"
 		groupid="0"
 	}
@@ -338,13 +338,13 @@ display {
 }
 "text" {
 	object {
-		x="16"
-		y="434"
-		width="680"
+		x="12"
+		y="429"
+		width="770"
 		height="20"
 		groupid="0"
 	}
-	textix="Translation Assembly - Thermal and cross talk calibration"
+	textix="Translation Assembly - Thermal and cross talk calibration (39 chars)"
 	align="horiz. left"
 }
 "<<basic attribute>>" {
@@ -357,8 +357,8 @@ display {
 }
 "text" {
 	object {
-		x="353"
-		y="458"
+		x="427"
+		y="453"
 		width="17"
 		height="20"
 		groupid="0"
@@ -368,10 +368,10 @@ display {
 }
 "text entry" {
 	object {
-		x="14"
-		y="82"
-		width="335"
-		height="22"
+		x="12"
+		y="77"
+		width="410"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -413,10 +413,10 @@ display {
 }
 "text entry" {
 	object {
-		x="367"
-		y="82"
+		x="441"
+		y="77"
 		width="335"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -458,10 +458,10 @@ display {
 }
 "text entry" {
 	object {
-		x="14"
-		y="182"
-		width="335"
-		height="22"
+		x="12"
+		y="177"
+		width="410"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -503,10 +503,10 @@ display {
 }
 "text entry" {
 	object {
-		x="367"
-		y="182"
+		x="441"
+		y="177"
 		width="335"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -548,10 +548,10 @@ display {
 }
 "text entry" {
 	object {
-		x="15"
-		y="282"
-		width="335"
-		height="22"
+		x="12"
+		y="277"
+		width="410"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -593,10 +593,10 @@ display {
 }
 "text entry" {
 	object {
-		x="368"
-		y="282"
+		x="442"
+		y="277"
 		width="335"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -638,10 +638,10 @@ display {
 }
 "text entry" {
 	object {
-		x="16"
-		y="367"
-		width="335"
-		height="22"
+		x="12"
+		y="362"
+		width="410"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -683,10 +683,10 @@ display {
 }
 "text update" {
 	object {
-		x="434"
-		y="367"
+		x="508"
+		y="362"
 		width="269"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	monitor {
@@ -729,10 +729,10 @@ display {
 }
 "text entry" {
 	object {
-		x="14"
-		y="457"
-		width="335"
-		height="22"
+		x="12"
+		y="452"
+		width="410"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -774,10 +774,10 @@ display {
 }
 "text entry" {
 	object {
-		x="367"
-		y="457"
+		x="441"
+		y="452"
 		width="335"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -819,8 +819,8 @@ display {
 }
 "related display" {
 	object {
-		x="543"
-		y="537"
+		x="617"
+		y="532"
 		width="75"
 		height="25"
 		groupid="0"
@@ -953,9 +953,9 @@ display {
 }
 "execute script" {
 	object {
-		x="14"
-		y="110"
-		width="335"
+		x="12"
+		y="105"
+		width="410"
 		height="25"
 		groupid="0"
 	}
@@ -1086,9 +1086,9 @@ display {
 }
 "execute script" {
 	object {
-		x="14"
-		y="210"
-		width="335"
+		x="12"
+		y="205"
+		width="410"
 		height="25"
 		groupid="0"
 	}
@@ -1219,9 +1219,9 @@ display {
 }
 "execute script" {
 	object {
-		x="15"
-		y="310"
-		width="335"
+		x="12"
+		y="305"
+		width="411"
 		height="25"
 		groupid="0"
 	}
@@ -1352,9 +1352,9 @@ display {
 }
 "execute script" {
 	object {
-		x="16"
-		y="395"
-		width="335"
+		x="12"
+		y="390"
+		width="410"
 		height="25"
 		groupid="0"
 	}
@@ -1485,9 +1485,9 @@ display {
 }
 "execute script" {
 	object {
-		x="14"
-		y="485"
-		width="335"
+		x="12"
+		y="480"
+		width="411"
 		height="25"
 		groupid="0"
 	}
@@ -1618,8 +1618,8 @@ display {
 }
 "kill display" {
 	object {
-		x="627"
-		y="537"
+		x="701"
+		y="532"
 		width="80"
 		height="35"
 		groupid="0"

@@ -7,7 +7,7 @@ display {
 	mnrv="4"
 	ndyng="2"
 	npc="11"
-	nstr="90"
+	nstr="91"
 	ndynamic="8"
 	nplot="0"
 	nrd="2"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="28"
-	nwords_dspy="3662"
+	nwords_dspy="3688"
 	nwords_sta="188"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1422"
-	osta="1234"
-	odynamic="1538"
-	oplot="2066"
-	ord="2066"
-	oes="2386"
-	okd="3650"
-	opd="3662"
-	opo="3662"
+	odyng="1448"
+	osta="1260"
+	odynamic="1564"
+	oplot="2092"
+	ord="2092"
+	oes="2412"
+	okd="3676"
+	opd="3688"
+	opo="3688"
 	opc="68"
 	ostr="198"
-	ocmap="1234"
-	ocrules="1234"
+	ocmap="1260"
+	ocrules="1260"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -64,13 +64,13 @@ display {
 }
 "text" {
 	object {
-		x="194"
+		x="53"
 		y="59"
-		width="335"
+		width="550"
 		height="15"
 		groupid="0"
 	}
-	textix="Lookup table directory."
+	textix="Lookup table directory (max 39 characters)."
 	align="horiz. left"
 }
 "text" {
@@ -360,10 +360,10 @@ display {
 }
 "text entry" {
 	object {
-		x="194"
+		x="53"
 		y="79"
-		width="335"
-		height="23"
+		width="550"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -408,7 +408,7 @@ display {
 		x="18"
 		y="243"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -453,7 +453,7 @@ display {
 		x="369"
 		y="243"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -498,7 +498,7 @@ display {
 		x="18"
 		y="338"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -543,7 +543,7 @@ display {
 		x="369"
 		y="338"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -588,7 +588,7 @@ display {
 		x="369"
 		y="149"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -633,7 +633,7 @@ display {
 		x="18"
 		y="437"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -678,7 +678,7 @@ display {
 		x="18"
 		y="149"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	control {
@@ -1124,7 +1124,7 @@ display {
 		x="18"
 		y="268"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	script[0] {
@@ -1257,7 +1257,7 @@ display {
 		x="18"
 		y="364"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	script[0] {
@@ -1390,7 +1390,7 @@ display {
 		x="18"
 		y="463"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	script[0] {
@@ -1523,7 +1523,7 @@ display {
 		x="369"
 		y="174"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	script[0] {
@@ -1656,7 +1656,7 @@ display {
 		x="369"
 		y="268"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	script[0] {
@@ -1789,7 +1789,7 @@ display {
 		x="369"
 		y="364"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	script[0] {
@@ -1922,7 +1922,7 @@ display {
 		x="18"
 		y="174"
 		width="335"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	script[0] {
