@@ -38,9 +38,9 @@ ld < $(base)/bin/$(arch)/seq
 ld < $(iocpath)/bin/$(arch)/gemini.Support
 ld < $(iocpath)/bin/$(arch)/libDeviceRecord
 
-ld < /gemini/GEM8.5/slalib/slalib/bin/$(arch)/slalib
-ld < /gemini/GEM8.5/timelib/timelib/bin/$(arch)/timelib
-ld < /gemini/GEM8.5/astlib/astlib/bin/$(arch)/astlib
+ld < /gemini/epics3.13.4/slalib/slalib/bin/$(arch)/slalib
+ld < /gemini/epics3.13.4/timelib/timelib/bin/$(arch)/timelib
+ld < /gemini/epics3.13.4/astlib/astlib/bin/$(arch)/astlib
 
 ld < $(iocpath)/bin/$(arch)/devDeviceControl.o
 ld < $(iocpath)/bin/$(arch)/devBarcode.o
@@ -65,7 +65,7 @@ ld < $(iocpath)/bin/$(arch)/devTranslationAss.o
 ld < $(iocpath)/bin/$(arch)/gmosCcCadLib.o
 
 # Load sequences here
-ld < /gemini/GEM8.5/timelib/timelib/bin/mv167/timeSeq
+ld < /gemini/epics3.13.4/timelib/timelib/bin/mv167/timeSeq
 
 ld < $(iocpath)/bin/$(arch)/assemblyCar.o
 ld < $(iocpath)/bin/$(arch)/systemCar.o
@@ -94,7 +94,7 @@ dbpf "gm:cc:msEnableEnable","0"
 dbpf "gm:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "gm:sad:cc:name.VAL","GMOS CC Mauna Kea (V5-0)"
+dbpf "gm:sad:cc:name.VAL","GMOS CC Mauna Kea (V6-2)"
 taskDelay(60)
 # Load initialization files
 pvload "$(iocpath)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"

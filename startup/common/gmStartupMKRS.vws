@@ -1,9 +1,8 @@
 #
 # VxWorks startup script to load and execute system (iocCore) software.
 #
-# First, vxWorks startup issues:
-#
-# DESCRIPTION:  Loads the GMOS Components Controller database.
+# DESCRIPTION:  Loads the GMOS Components Controller and Instrument Sequencer
+# databases.
 #
 #
 
@@ -11,8 +10,8 @@
 tyBackspaceSet 0177
 
 # Set the shell prompt
-shellPromptSet "GMOS-N - sim > "
-loginStringSet "MVME167 vxWorks (GMOS-N - sim)\n\nlogin: "
+shellPromptSet "GMOS - sim post f/p > "
+loginStringSet "MVME167 vxWorks (GMOS - sim post f/p)\n\nlogin: "
 
 # cd to application install directory (beware automounter problems)
 cd "$(iocpath)"
@@ -25,6 +24,12 @@ pwd
 
 # Load EPICS core and record stuff
 ld < $(base)/bin/$(arch)/iocCore
+ld < $(base)/bin/$(arch)/drvSup
+ld < $(base)/bin/$(arch)/recSup
+ld < $(iocpath)/bin/$(arch)/recApply.o
+ld < $(base)/bin/$(arch)/devSup
+ld < $(iocpath)/bin/$(arch)/devApplyLocal.o
+ld < $(iocpath)/bin/$(arch)/devApplyRemote.o
 
 # Add this for pvload
 ld < $(base)/../extensions/bin/$(arch)/pvload
@@ -36,13 +41,11 @@ ld < $(base)/bin/$(arch)/seq
 # or code for subroutine records. It is assumed that Gemini
 # libraries are available in the standard /gemini directory).
 
-ld < $(iocpath)/bin/$(arch)/gemini.Support
-ld < $(iocpath)/bin/$(arch)/libDeviceRecord
+ld < /gemini/slalib/bin/$(arch)/slalib
+ld < /gemini/timelib/bin/$(arch)/timelib
+ld < /gemini/astlib/bin/$(arch)/astlib
 
-ld < /gemini/GEM8.5/slalib/slalib/bin/$(arch)/slalib
-ld < /gemini/GEM8.5/timelib/timelib/bin/$(arch)/timelib
-ld < /gemini/GEM8.5/astlib/astlib/bin/$(arch)/astlib
-
+ld < $(iocpath)/bin/$(arch)/drvOmsVme.o
 ld < $(iocpath)/bin/$(arch)/devDeviceControl.o
 ld < $(iocpath)/bin/$(arch)/devBarcode.o
 ld < $(iocpath)/bin/$(arch)/recAssControl.o
@@ -66,9 +69,8 @@ ld < $(iocpath)/bin/$(arch)/gmosCcCadLib.o
 
 ld < $(iocpath)/bin/$(arch)/gmSeqAppl
 
-
 # Load sequences here
-ld </gemini/GEM8.5/timelib/timelib/bin/$(arch)/timeSeq 
+ld < /gemini/timelib/bin/mv167/timeSeq
 
 ld < $(iocpath)/bin/$(arch)/assemblyCar.o
 ld < $(iocpath)/bin/$(arch)/dtaAssemblyCar.o
@@ -76,92 +78,83 @@ ld < $(iocpath)/bin/$(arch)/systemCar.o
 ld < $(iocpath)/bin/$(arch)/commandCar.o
 ld < $(iocpath)/bin/$(arch)/lifterSim.o
 
-
 # Initialise the Gemini Time System (1=master, 1=simulate, intPerSecond, intPerTick, timeOffset)
 timeClockInit 0, 1, 60, 1, 0
 
 # Configure the Timestamp system, 1=Master IOC
 TSconfigure 1, 0, 0, 0, 0, 0
 
-# Put the barcode reading software into simulation mode
-devBarcodeSimulate = 3
-
-
-# Load one or more ASCII databases
-dbLoadDatabase "$(iocpath)/dbd/gemini.dbd"
-dbLoadRecords "$(iocpath)/data/gmosCcTopMKSS.db"
-dbLoadRecords "$(iocpath)/data/gmosCcSadTopMKSS.db"
-dbLoadRecords "$(iocpath)/data/gmSeqTopMKSS.db"
-dbLoadRecords "$(iocpath)/data/gmSeqSadTopMKSS.db"
+# Load one or more ASCII databases here
+dbLoad "$(iocpath)/data/default.dctsdr"
+dbLoadRecords "$(iocpath)/data/gmosCcTopMKRS.db"
+dbLoadRecords "$(iocpath)/data/gmosCcSadTopMKRS.db"
+dbLoadRecords "$(iocpath)/data/gmSeqTopMKRS.db"
+dbLoadRecords "$(iocpath)/data/gmSeqSadTopMKRS.db"
 
 # This turns off logging
 # iocLogDisable=1
 
 iocInit "$(iocpath)/data/resource.def"
 
-#Wait for 5 seconds
-taskDelay(300)
-
 # Ensure master enable is disabled while startup script executes
-dbpf "g7:cc:msEnableEnable","0"
+dbpf "g6:cc:msEnableEnable","0"
 
-dbpf "g7:sad:cc:historyLog","Booting..."
+dbpf "g6:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "g7:sad:name.VAL","GMOS-N (simulated) (V5-0)"
-dbpf "g7:sad:cc:name.VAL","GMOS-N (V5-0) - simulated"
+dbpf "g6:sad:name.VAL","GMOS-N (V6-2)"
+dbpf "g6:sad:cc:name.VAL","GMOS-N (V6-2) - sim post fp"
 
 # Load initialization files
-pvload "$(iocpath)/data/gmosCcSim.pv","top=g7:, sadtop=g7:sad:"
-pvload "$(iocpath)/data/gmOiwfsSim.pv","top=g7:wfs:"
-pvload "$(iocpath)/data/gmMaskSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmFilterSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmGratingSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmTranslationSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmTempCalibrate.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmSeqSim.pv","top=g7:, sadtop=g7:sad:"
-pvload "$(iocpath)/data/gmSeqTracking.pv","top=g7:, sadtop=g7:sad:"
+pvload "$(iocpath)/data/gmosCc.pv","top=g6:, sadtop=g6:sad:"
+pvload "$(iocpath)/data/gmOiwfs.pv","top=g6:wfs:"
+pvload "$(iocpath)/data/gmMask.pv","top=g6:cc:"
+pvload "$(iocpath)/data/gmFilterSim.pv","top=g6:cc:"
+pvload "$(iocpath)/data/gmGratingSim.pv","top=g6:cc:"
+pvload "$(iocpath)/data/gmTranslationSim.pv","top=g6:cc:"
+pvload "$(iocpath)/data/gmTempCalibrate.pv","top=g6:cc:"
+pvload "$(iocpath)/data/gmSeq.pv","top=g6:, sadtop=g6:sad:"
+pvload "$(iocpath)/data/gmSeqTracking.pv","top=g6:, sadtop=g6:sad:"
 
 # Start sequences
-seq &timeSeq, "sys=g7:cc:"
+seq &timeSeq, "sys=g6:cc:"
 
-seq &assemblyCar, "top=g7:cc:, dev=msk, priority=75"
-seq &assemblyCar, "top=g7:, dev=wfs:probe, priority=75"
-seq &commandCar, "top=g7:, dev=wfs:, priority=75"
-seq &assemblyCar, "top=g7:cc:, dev=flt, priority=75"
-seq &assemblyCar, "top=g7:cc:, dev=gr, priority=75"
-
-
-seq &lifterSim,   "top=g7:cc:, dev=gr, priority=75"
-seq &dtaAssemblyCar, "top=g7:, dev=dta, priority=75"
-seq &systemCar,   "top=g7:cc:, cad=init, priority=75"
-seq &systemCar,   "top=g7:cc:, cad=test, priority=75"
-seq &systemCar,   "top=g7:cc:, cad=datum, priority=75"
-seq &systemCar,   "top=g7:cc:, cad=update, priority=75"
-seq &systemCar,   "top=g7:cc:, cad=park, priority=75"
+seq &assemblyCar, "top=g6:cc:, dev=msk, priority=75"
+seq &assemblyCar, "top=g6:, dev=wfs:probe, priority=75"
+seq &commandCar, "top=g6:, dev=wfs:, priority=75"
+seq &assemblyCar, "top=g6:cc:, dev=flt, priority=75"
+seq &assemblyCar, "top=g6:cc:, dev=gr, priority=75"
+seq &lifterSim,   "top=g6:cc:, dev=gr, priority=75"
+seq &dtaAssemblyCar, "top=g6:, dev=dta, priority=75"
+seq &systemCar,   "top=g6:cc:, cad=init, priority=75"
+seq &systemCar,   "top=g6:cc:, cad=test, priority=75"
+seq &systemCar,   "top=g6:cc:, cad=datum, priority=75"
+seq &systemCar,   "top=g6:cc:, cad=update, priority=75"
+seq &systemCar,   "top=g6:cc:, cad=park, priority=75"
 
 # Wait while the database initialises and sequences start.
-taskDelay(300)
+taskDelay(210)
 
 # Trigger the initialisation of the instrument sequencer and components
 # controller, disabling initdcCadMark and avoiding the use of the top level
 # apply record to prevent the detector controller being initialised.
-dbpf "g7:initdcCadMark.DISA", "1"
-dbpf "g7:init.DIR", "0"
-dbpf "g7:init.DIR", "3"
+dbpf "g6:initdcCadMark.DISA", "1"
+dbpf "g6:init.DIR", "0"
+dbpf "g6:init.DIR", "3"
 # An extra components controller start is needed.
-dbpf "g7:cc:init.DIR", "0"
-dbpf "g7:cc:apply.DIR", "3"
+dbpf "g6:cc:init.DIR", "0"
+dbpf "g6:cc:apply.DIR", "3"
 
 # Wait while the filter, grating and mask data are read, cc inits.
-taskDelay(300)
+taskDelay(210)
 
-dbpf "g7:initdcCadMark.DISA", "0"
+dbpf "g6:initdcCadMark.DISA", "0"
 
-dbpf "g7:sad:cc:historyLog","Master enable switched on"
+dbpf "g6:sad:cc:historyLog.VAL","Master enable switched on"
 
 # Enable master enable on completion of startup script
-dbpf "g7:cc:msEnableEnable","1"
+dbpf "g6:cc:msEnableEnable","1"
 
 # Finally, display the startup time in UTC.
+#timeClockReport
 timePrint "UTC"

@@ -21,55 +21,42 @@ pwd
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
 # (Commented out, since already done in startup_MINIMAL)
-# < $(iocpath)/bin/$(arch)/local
+# < $(version)/bin/$(arch)/local
 
 # Load EPICS core and record stuff
-ld < $(base)/bin/$(arch)/iocCore
+ld < /gemini/external/GEM8.6/base/bin/$(arch)/iocCore
 
 # Add this for pvload
-ld < $(base)/../extensions/bin/$(arch)/pvload
+ld < /gemini/external/GEM8.6/extensions/bin/$(arch)/pvload
 
 # If using state programs, load the sequencer
-ld < $(base)/bin/$(arch)/seq
+ld < /gemini/external/GEM8.6/base/bin/$(arch)/seq
 
 # Load any application records, device support or drivers here,
 # or code for subroutine records. It is assumed that Gemini
 # libraries are available in the standard /gemini directory).
 
-ld < /gemini/slalib/bin/$(arch)/slalib
-ld < /gemini/timelib/bin/$(arch)/timelib
-ld < /gemini/astlib/bin/$(arch)/astlib
+ld < $(version)/bin/$(arch)/gemini.Support
 
-ld < $(iocpath)/bin/$(arch)/drvOmsVme.o
-ld < $(iocpath)/bin/$(arch)/devDeviceControl.o
-ld < $(iocpath)/bin/$(arch)/devBarcode.o
-ld < $(iocpath)/bin/$(arch)/recAssControl.o
-ld < $(iocpath)/bin/$(arch)/gmosGensubLib.o
+ld < /gemini/GEM8.6/slalib/slalib/bin/$(arch)/slalib
+ld < /gemini/GEM8.6/timelib/timelib/bin/$(arch)/timelib
+ld < /gemini/GEM8.6/astlib/astlib/bin/$(arch)/astlib
+ld < /gemini/GEM8.6/timelib/timelib/bin/$(arch)/timeSeq
 
-ld < $(iocpath)/bin/$(arch)/gmMaskGenSubs.o
-ld < $(iocpath)/bin/$(arch)/devMaskControl.o
-ld < $(iocpath)/bin/$(arch)/gmOiwfsCalc.o
-ld < $(iocpath)/bin/$(arch)/gmOiwfsGenSubs.o
-ld < $(iocpath)/bin/$(arch)/gmOiwfsCadSupport.o
-ld < $(iocpath)/bin/$(arch)/tcs_simulator.o
-ld < $(iocpath)/bin/$(arch)/devOiwfsControl.o
-ld < $(iocpath)/bin/$(arch)/devAtmdcControl.o
-ld < $(iocpath)/bin/$(arch)/devFilterAss.o
-ld < $(iocpath)/bin/$(arch)/gmosLutLib.o
-ld < $(iocpath)/bin/$(arch)/devGratingAss.o
-ld < $(iocpath)/bin/$(arch)/lifter.o
-ld < $(iocpath)/bin/$(arch)/devTranslationAss.o
-ld < $(iocpath)/bin/$(arch)/gmosCcCadLib.o
-
+ld < $(version)/bin/$(arch)/deviceControlLib.a
+ld < $(version)/bin/$(arch)/gmosLib.a
+ld < $(version)/bin/$(arch)/assemblyControlLib.a
+ld < $(version)/bin/$(arch)/gmSeqLib.a
 
 # Load sequences here
-ld < /gemini/timelib/bin/mv167/timeSeq
+ld </gemini/GEM8.6/timelib/timelib/bin/$(arch)/timeSeq 
 
-ld < $(iocpath)/bin/$(arch)/assemblyCar.o
-ld < $(iocpath)/bin/$(arch)/dtaAssemblyCar.o
-ld < $(iocpath)/bin/$(arch)/systemCar.o
-ld < $(iocpath)/bin/$(arch)/commandCar.o
-ld < $(iocpath)/bin/$(arch)/lifterSim.o
+ld < $(version)/bin/$(arch)/assemblyCar
+ld < $(version)/bin/$(arch)/dtaAssemblyCar
+ld < $(version)/bin/$(arch)/systemCar
+ld < $(version)/bin/$(arch)/commandCar
+ld < $(version)/bin/$(arch)/lifterSim
+
 
 # Initialise the Gemini Time System (1=master, 1=simulate, intPerSecond, intPerTick, timeOffset)
 timeClockInit 0, 1, 60, 1, 0
@@ -80,8 +67,9 @@ TSconfigure 1, 0, 0, 0, 0, 0
 # Put the barcode reading software into simulation mode
 devBarcodeSimulate = 3
 
-# Load one or more ASCII databases here
-dbLoad "$(iocpath)/data/default.dctsdr"
+
+# Load one or more ASCII databases
+dbLoadDatabase "$(iocpath)/dbd/gemini.dbd"
 dbLoadRecords "$(iocpath)/data/gmosCcTopMKSS.db"
 dbLoadRecords "$(iocpath)/data/gmosCcSadTopMKSS.db"
 dbLoadRecords "$(iocpath)/data/gmSeqTopMKSS.db"
@@ -92,25 +80,28 @@ dbLoadRecords "$(iocpath)/data/gmSeqSadTopMKSS.db"
 
 iocInit "$(iocpath)/data/resource.def"
 
+#Wait for 5 seconds
+taskDelay(300)
+
 # Ensure master enable is disabled while startup script executes
 dbpf "g7:cc:msEnableEnable","0"
 
 dbpf "g7:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "g7:sad:name.VAL","GMOS-N (simulated) (V5-0)"
-dbpf "g7:sad:cc:name.VAL","GMOS-N (V5-0) - simulated"
+dbpf "g7:sad:name.VAL","GMOS-N (simulated) (V6-2)"
+dbpf "g7:sad:cc:name.VAL","GMOS-N (V6-2) - simulated"
 
 # Load initialization files
-pvload "$(iocpath)/data/gmosCcSim.pv","top=g7:, sadtop=g7:sad:"
-pvload "$(iocpath)/data/gmOiwfsSim.pv","top=g7:wfs:"
-pvload "$(iocpath)/data/gmMaskSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmFilterSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmGratingSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmTranslationSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmTempCalibrate.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmSeqSim.pv","top=g7:, sadtop=g7:sad:"
-pvload "$(iocpath)/data/gmSeqTracking.pv","top=g7:, sadtop=g7:sad:"
+pvload "$(version)/data/gmosCcSim.pv","top=g7:, sadtop=g7:sad:"
+pvload "$(version)/data/gmOiwfsSim.pv","top=g7:wfs:"
+pvload "$(version)/data/gmMaskSim.pv","top=g7:cc:"
+pvload "$(version)/data/gmFilterSim.pv","top=g7:cc:"
+pvload "$(version)/data/gmGratingSim.pv","top=g7:cc:"
+pvload "$(version)/data/gmTranslationSim.pv","top=g7:cc:"
+pvload "$(version)/data/gmTempCalibrate.pv","top=g7:cc:"
+pvload "$(version)/data/gmSeqSim.pv","top=g7:, sadtop=g7:sad:"
+pvload "$(version)/data/gmSeqTracking.pv","top=g7:, sadtop=g7:sad:"
 
 # Start sequences
 seq &timeSeq, "sys=g7:cc:"
@@ -120,6 +111,8 @@ seq &assemblyCar, "top=g7:, dev=wfs:probe, priority=75"
 seq &commandCar, "top=g7:, dev=wfs:, priority=75"
 seq &assemblyCar, "top=g7:cc:, dev=flt, priority=75"
 seq &assemblyCar, "top=g7:cc:, dev=gr, priority=75"
+
+
 seq &lifterSim,   "top=g7:cc:, dev=gr, priority=75"
 seq &dtaAssemblyCar, "top=g7:, dev=dta, priority=75"
 seq &systemCar,   "top=g7:cc:, cad=init, priority=75"
@@ -129,7 +122,7 @@ seq &systemCar,   "top=g7:cc:, cad=update, priority=75"
 seq &systemCar,   "top=g7:cc:, cad=park, priority=75"
 
 # Wait while the database initialises and sequences start.
-taskDelay(210)
+taskDelay(300)
 
 # Trigger the initialisation of the instrument sequencer and components
 # controller, disabling initdcCadMark and avoiding the use of the top level
@@ -142,7 +135,7 @@ dbpf "g7:cc:init.DIR", "0"
 dbpf "g7:cc:apply.DIR", "3"
 
 # Wait while the filter, grating and mask data are read, cc inits.
-taskDelay(210)
+taskDelay(300)
 
 dbpf "g7:initdcCadMark.DISA", "0"
 
@@ -152,5 +145,4 @@ dbpf "g7:sad:cc:historyLog","Master enable switched on"
 dbpf "g7:cc:msEnableEnable","1"
 
 # Finally, display the startup time in UTC.
-#timeClockReport
 timePrint "UTC"

@@ -6,21 +6,24 @@
 # DESCRIPTION:  Loads the GMOS Components Controller database.
 #
 #
+#
 
 # Make delete key work for backspace
 tyBackspaceSet 0177
 
 # Set the shell prompt
-shellPromptSet "GMOS CC MK - no sad > "
+shellPromptSet "GMOS CC CP > "
 
 # cd to application install directory (beware automounter problems)
 cd "$(iocpath)"
 pwd
 
+
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
 # (Commented out, since already done in startup_MINIMAL)
 # < $(iocpath)/bin/$(arch)/local
+
 
 # Load EPICS core and record stuff
 ld < $(base)/bin/$(arch)/iocCore
@@ -81,10 +84,13 @@ timeClockInit 0, 1, 60, 1, 0
 # Configure the Timestamp system, 1=Master IOC
 TSconfigure 1, 0, 0, 0, 0, 0
 
+# Put the barcode reading software into simulation mode
+devBarcodeSimulate = 3
+
 # Load one or more ASCII databases here
 dbLoad "$(iocpath)/data/default.dctsdr"
-dbLoadRecords "$(iocpath)/data/gmosCcTopMKRR.db"
-#dbLoadRecords "$(iocpath)/data/gmosCcSadTopMKRR.db"
+dbLoadRecords "$(iocpath)/data/gmosCcTopCP.db"
+dbLoadRecords "$(iocpath)/data/gmosCcSadTopCP.db"
 
 # This turns off logging
 # iocLogDisable=1
@@ -92,51 +98,49 @@ dbLoadRecords "$(iocpath)/data/gmosCcTopMKRR.db"
 iocInit "$(iocpath)/data/resource.def"
 
 # Ensure master enable is disabled while startup script executes
-dbpf "gm:cc:msEnableEnable","0"
-
-#dbpf "g6:sad:cc:historyLog","Booting..."
+#dbpf "g3:cc:msEnableEnable","0"
+dbpf "g3:sad:cc:historyLog","Booting..."
 
 #Define the database name
-#dbpf "gm:sad:cc:name.VAL","GMOS CC Mauna Kea (V5-0) - no sad"
+dbpf "g3:sad:cc:name.VAL","GMOS Cerro Pachon (V6-0)"
 
 # Load initialization files
-pvload "$(iocpath)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"
-pvload "$(iocpath)/data/gmOiwfs.pv","top=gm:wfs:"
-pvload "$(iocpath)/data/gmMask.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmFilter.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmGrating.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmTranslation.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmTempCalibrate.pv","top=gm:cc:"
-pvload "$(iocpath)/data/gmSeq.pv","top=gm:, sadtop=gm:sad:"
-pvload "$(iocpath)/data/gmSeqTracking.pv","top=gm:, sadtop=gm:sad:"
+pvload "$(iocpath)/data/gmosCc.pv","top=g3:, sadtop=g3:sad:"
+pvload "$(iocpath)/data/gmOiwfs.pv","top=g3:wfs:"
+pvload "$(iocpath)/data/gmMaskSim.pv","top=g3:cc:"
+pvload "$(iocpath)/data/gmFilter.pv","top=g3:cc:"
+pvload "$(iocpath)/data/gmGrating.pv","top=g3:cc:"
+pvload "$(iocpath)/data/gmTranslation.pv","top=g3:cc:"
+pvload "$(iocpath)/data/gmTempCalibrate.pv","top=g3:cc:"
+pvload "$(iocpath)/data/gmLifterSim.pv","top=g3:cc:"
 
 # Start sequences
-seq &timeSeq, "sys=gm:cc:"
+seq &timeSeq, "sys=g3:cc:"
 
-seq &assemblyCar, "top=gm:cc:, dev=msk, priority=75"
-seq &assemblyCar, "top=gm:, dev=wfs:probe, priority=75"
-seq &commandCar, "top=gm:, dev=wfs:, priority=75"
-seq &assemblyCar, "top=gm:cc:, dev=flt, priority=75"
-seq &assemblyCar, "top=gm:cc:, dev=gr, priority=75"
-#seq &lifterSim,   "top=gm:cc:, dev=gr, priority=75"
-seq &assemblyCar, "top=gm:cc:, dev=dta, priority=75"
-seq &systemCar,   "top=gm:cc:, cad=init, priority=75"
-seq &systemCar,   "top=gm:cc:, cad=test, priority=75"
-seq &systemCar,   "top=gm:cc:, cad=datum, priority=75"
-seq &systemCar,   "top=gm:cc:, cad=update, priority=75"
-seq &systemCar,   "top=gm:cc:, cad=park, priority=75"
+seq &assemblyCar, "top=g3:cc:, dev=msk, priority=75"
+seq &assemblyCar, "top=g3:, dev=wfs:probe"
+seq &commandCar, "top=g3:, dev=wfs:"
+seq &assemblyCar, "top=g3:cc:, dev=flt, priority=75"
+seq &assemblyCar, "top=g3:cc:, dev=gr, priority=75"
+#seq &lifterSim,   "top=g3:cc:, dev=gr, priority=75"
+seq &assemblyCar, "top=g3:cc:, dev=dta, priority=75"
+seq &systemCar,   "top=g3:cc:, cad=init, priority=75"
+seq &systemCar,   "top=g3:cc:, cad=test, priority=75"
+seq &systemCar,   "top=g3:cc:, cad=datum, priority=75"
+seq &systemCar,   "top=g3:cc:, cad=update, priority=75"
+seq &systemCar,   "top=g3:cc:, cad=park, priority=75"
 
 # Trigger the initialisation of the components controller
-dbpf "gm:cc:init.DIR","0"
-dbpf "gm:cc:apply.DIR","3"
+dbpf "g3:cc:init.DIR","0"
+dbpf "g3:cc:apply.DIR","3"
 
 # Wait while the initialisation completes
 taskDelay(180)
 
-#dbpf "gm:sad:cc:historyLog","Master enable switched on"
+dbpf "g3:sad:cc:historyLog","Master enable switched on"
 
 # Enable master enable on completion of startup script
-#dbpf "gm:cc:msEnableEnable","1"
+dbpf "g3:cc:msEnableEnable","1"
 
 # Finally, display the startup time in UTC.
 #timeClockReport

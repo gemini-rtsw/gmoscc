@@ -11,7 +11,8 @@
 tyBackspaceSet 0177
 
 # Set the shell prompt
-shellPromptSet "GMOS CC CP > "
+shellPromptSet "GMOS-N - sim > "
+loginStringSet "MVME167 vxWorks (GMOS-N - sim)\n\nlogin: "
 
 # cd to application install directory (beware automounter problems)
 cd "$(iocpath)"
@@ -24,12 +25,6 @@ pwd
 
 # Load EPICS core and record stuff
 ld < $(base)/bin/$(arch)/iocCore
-ld < $(base)/bin/$(arch)/drvSup
-ld < $(base)/bin/$(arch)/recSup
-ld < $(iocpath)/bin/$(arch)/recApply.o
-ld < $(base)/bin/$(arch)/devSup
-ld < $(iocpath)/bin/$(arch)/devApplyLocal.o
-ld < $(iocpath)/bin/$(arch)/devApplyRemote.o
 
 # Add this for pvload
 ld < $(base)/../extensions/bin/$(arch)/pvload
@@ -43,12 +38,12 @@ ld < $(base)/bin/$(arch)/seq
 
 ld < /gemini/slalib/bin/$(arch)/slalib
 ld < /gemini/timelib/bin/$(arch)/timelib
+ld < /gemini/astlib/bin/$(arch)/astlib
 
 ld < $(iocpath)/bin/$(arch)/drvOmsVme.o
 ld < $(iocpath)/bin/$(arch)/devDeviceControl.o
 ld < $(iocpath)/bin/$(arch)/devBarcode.o
 ld < $(iocpath)/bin/$(arch)/recAssControl.o
-ld < $(iocpath)/bin/$(arch)/recDeviceControl.o
 ld < $(iocpath)/bin/$(arch)/gmosGensubLib.o
 
 ld < $(iocpath)/bin/$(arch)/gmMaskGenSubs.o
@@ -64,16 +59,17 @@ ld < $(iocpath)/bin/$(arch)/gmosLutLib.o
 ld < $(iocpath)/bin/$(arch)/devGratingAss.o
 ld < $(iocpath)/bin/$(arch)/lifter.o
 ld < $(iocpath)/bin/$(arch)/devTranslationAss.o
-
 ld < $(iocpath)/bin/$(arch)/gmosCcCadLib.o
+
 
 # Load sequences here
 ld < /gemini/timelib/bin/mv167/timeSeq
 
 ld < $(iocpath)/bin/$(arch)/assemblyCar.o
+ld < $(iocpath)/bin/$(arch)/dtaAssemblyCar.o
 ld < $(iocpath)/bin/$(arch)/systemCar.o
 ld < $(iocpath)/bin/$(arch)/commandCar.o
-#ld < $(iocpath)/bin/$(arch)/lifterSim.o
+ld < $(iocpath)/bin/$(arch)/lifterSim.o
 
 # Initialise the Gemini Time System (1=master, 1=simulate, intPerSecond, intPerTick, timeOffset)
 timeClockInit 0, 1, 60, 1, 0
@@ -86,8 +82,10 @@ devBarcodeSimulate = 3
 
 # Load one or more ASCII databases here
 dbLoad "$(iocpath)/data/default.dctsdr"
-dbLoadRecords "$(iocpath)/data/gmosCcTopCP.db"
-dbLoadRecords "$(iocpath)/data/gmosCcSadTopCP.db"
+dbLoadRecords "$(iocpath)/data/gmosCcTopMKSS.db"
+dbLoadRecords "$(iocpath)/data/gmosCcSadTopMKSS.db"
+dbLoadRecords "$(iocpath)/data/gmSeqTopMKSS.db"
+dbLoadRecords "$(iocpath)/data/gmSeqSadTopMKSS.db"
 
 # This turns off logging
 # iocLogDisable=1
@@ -95,49 +93,63 @@ dbLoadRecords "$(iocpath)/data/gmosCcSadTopCP.db"
 iocInit "$(iocpath)/data/resource.def"
 
 # Ensure master enable is disabled while startup script executes
-#dbpf "g3:cc:msEnableEnable","0"
-dbpf "g3:sad:cc:historyLog","Booting..."
+dbpf "g7:cc:msEnableEnable","0"
+
+dbpf "g7:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "g3:sad:cc:name.VAL","GMOS Cerro Pachon (V5-0)"
+dbpf "g7:sad:name.VAL","GMOS-N (simulated) (V6-2)"
+dbpf "g7:sad:cc:name.VAL","GMOS-N (V6-2) - simulated"
 
 # Load initialization files
-pvload "$(iocpath)/data/gmosCc.pv","top=g3:, sadtop=g3:sad:"
-pvload "$(iocpath)/data/gmOiwfs.pv","top=g3:wfs:"
-pvload "$(iocpath)/data/gmMaskSim.pv","top=g3:cc:"
-pvload "$(iocpath)/data/gmFilter.pv","top=g3:cc:"
-pvload "$(iocpath)/data/gmGrating.pv","top=g3:cc:"
-pvload "$(iocpath)/data/gmTranslation.pv","top=g3:cc:"
-pvload "$(iocpath)/data/gmTempCalibrate.pv","top=g3:cc:"
-pvload "$(iocpath)/data/gmLifterSim.pv","top=g3:cc:"
+pvload "$(iocpath)/data/gmosCcSim.pv","top=g7:, sadtop=g7:sad:"
+pvload "$(iocpath)/data/gmOiwfsSim.pv","top=g7:wfs:"
+pvload "$(iocpath)/data/gmMaskSim.pv","top=g7:cc:"
+pvload "$(iocpath)/data/gmFilterSim.pv","top=g7:cc:"
+pvload "$(iocpath)/data/gmGratingSim.pv","top=g7:cc:"
+pvload "$(iocpath)/data/gmTranslationSim.pv","top=g7:cc:"
+pvload "$(iocpath)/data/gmTempCalibrate.pv","top=g7:cc:"
+pvload "$(iocpath)/data/gmSeqSim.pv","top=g7:, sadtop=g7:sad:"
+pvload "$(iocpath)/data/gmSeqTracking.pv","top=g7:, sadtop=g7:sad:"
 
 # Start sequences
-seq &timeSeq, "sys=g3:cc:"
+seq &timeSeq, "sys=g7:cc:"
 
-seq &assemblyCar, "top=g3:cc:, dev=msk, priority=75"
-seq &assemblyCar, "top=g3:, dev=wfs:probe"
-seq &commandCar, "top=g3:, dev=wfs:"
-seq &assemblyCar, "top=g3:cc:, dev=flt, priority=75"
-seq &assemblyCar, "top=g3:cc:, dev=gr, priority=75"
-#seq &lifterSim,   "top=g3:cc:, dev=gr, priority=75"
-seq &assemblyCar, "top=g3:cc:, dev=dta, priority=75"
-seq &systemCar,   "top=g3:cc:, cad=init, priority=75"
-seq &systemCar,   "top=g3:cc:, cad=test, priority=75"
-seq &systemCar,   "top=g3:cc:, cad=datum, priority=75"
-seq &systemCar,   "top=g3:cc:, cad=update, priority=75"
-seq &systemCar,   "top=g3:cc:, cad=park, priority=75"
+seq &assemblyCar, "top=g7:cc:, dev=msk, priority=75"
+seq &assemblyCar, "top=g7:, dev=wfs:probe, priority=75"
+seq &commandCar, "top=g7:, dev=wfs:, priority=75"
+seq &assemblyCar, "top=g7:cc:, dev=flt, priority=75"
+seq &assemblyCar, "top=g7:cc:, dev=gr, priority=75"
+seq &lifterSim,   "top=g7:cc:, dev=gr, priority=75"
+seq &dtaAssemblyCar, "top=g7:, dev=dta, priority=75"
+seq &systemCar,   "top=g7:cc:, cad=init, priority=75"
+seq &systemCar,   "top=g7:cc:, cad=test, priority=75"
+seq &systemCar,   "top=g7:cc:, cad=datum, priority=75"
+seq &systemCar,   "top=g7:cc:, cad=update, priority=75"
+seq &systemCar,   "top=g7:cc:, cad=park, priority=75"
 
-# Trigger the initialisation of the components controller
-dbpf "g3:cc:init.DIR","0"
-dbpf "g3:cc:apply.DIR","3"
+# Wait while the database initialises and sequences start.
+taskDelay(210)
 
-# Wait while the initialisation completes
-taskDelay(180)
+# Trigger the initialisation of the instrument sequencer and components
+# controller, disabling initdcCadMark and avoiding the use of the top level
+# apply record to prevent the detector controller being initialised.
+dbpf "g7:initdcCadMark.DISA", "1"
+dbpf "g7:init.DIR", "0"
+dbpf "g7:init.DIR", "3"
+# An extra components controller start is needed.
+dbpf "g7:cc:init.DIR", "0"
+dbpf "g7:cc:apply.DIR", "3"
 
-dbpf "g3:sad:cc:historyLog","Master enable switched on"
+# Wait while the filter, grating and mask data are read, cc inits.
+taskDelay(210)
+
+dbpf "g7:initdcCadMark.DISA", "0"
+
+dbpf "g7:sad:cc:historyLog","Master enable switched on"
 
 # Enable master enable on completion of startup script
-dbpf "g3:cc:msEnableEnable","1"
+dbpf "g7:cc:msEnableEnable","1"
 
 # Finally, display the startup time in UTC.
 #timeClockReport

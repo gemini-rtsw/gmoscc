@@ -11,7 +11,7 @@
 tyBackspaceSet 0177
 
 # Set the shell prompt
-shellPromptSet "GMOS CC - sim > "
+shellPromptSet "GMOS CC - sim Pre f/p > "
 
 # cd to application install directory (beware automounter problems)
 cd "$(iocpath)"
@@ -38,7 +38,7 @@ ld < $(base)/../extensions/bin/$(arch)/pvload
 ld < $(base)/bin/$(arch)/seq
 
 # Load any application records, device support or drivers here,
-# or code for subroutine records. It is assumed that Gemini
+# or code for subroutine records. It is also assumed that Gemini
 # libraries are available in the standard /gemini directory).
 
 ld < /gemini/slalib/bin/$(arch)/slalib
@@ -73,7 +73,7 @@ ld < /gemini/timelib/bin/mv167/timeSeq
 ld < $(iocpath)/bin/$(arch)/assemblyCar.o
 ld < $(iocpath)/bin/$(arch)/systemCar.o
 ld < $(iocpath)/bin/$(arch)/commandCar.o
-ld < $(iocpath)/bin/$(arch)/lifterSim.o
+#ld < $(iocpath)/bin/$(arch)/lifterSim.o
 
 # Initialise the Gemini Time System (1=master, 1=simulate, intPerSecond, intPerTick, timeOffset)
 timeClockInit 0, 1, 60, 1, 0
@@ -81,13 +81,10 @@ timeClockInit 0, 1, 60, 1, 0
 # Configure the Timestamp system, 1=Master IOC
 TSconfigure 1, 0, 0, 0, 0, 0
 
-# Put the barcode reading software into simulation mode
-devBarcodeSimulate = 3
-
 # Load one or more ASCII databases here
 dbLoad "$(iocpath)/data/default.dctsdr"
-dbLoadRecords "$(iocpath)/data/gmosCcTopMKSS.db"
-dbLoadRecords "$(iocpath)/data/gmosCcSadTopMKSS.db"
+dbLoadRecords "$(iocpath)/data/gmosCcTopMKSR.db"
+dbLoadRecords "$(iocpath)/data/gmosCcSadTopMKSR.db"
 
 # This turns off logging
 # iocLogDisable=1
@@ -95,49 +92,49 @@ dbLoadRecords "$(iocpath)/data/gmosCcSadTopMKSS.db"
 iocInit "$(iocpath)/data/resource.def"
 
 # Ensure master enable is disabled while startup script executes
-dbpf "g7:cc:msEnableEnable","0"
+dbpf "g5:cc:msEnableEnable","0"
 
-dbpf "g7:sad:cc:historyLog","Booting..."
+dbpf "g5:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "g7:sad:cc:name.VAL","GMOS CC Mauna Kea (V5-0) - simulated"
+dbpf "g5:sad:cc:name.VAL","GMOS CC Mauna Kea (V6-2) - sim pre fp"
 
 # Load initialization files
-pvload "$(iocpath)/data/gmosCcSim.pv","top=g7:, sadtop=g7:sad:"
-pvload "$(iocpath)/data/gmOiwfsSim.pv","top=g7:wfs:"
-pvload "$(iocpath)/data/gmMaskSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmFilterSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmGratingSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmTranslationSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmTempCalibrate.pv","top=g7:cc:"
+pvload "$(iocpath)/data/gmosCc.pv","top=g5:, sadtop=g5:sad:"
+pvload "$(iocpath)/data/gmOiwfsSim.pv","top=g5:wfs:"
+pvload "$(iocpath)/data/gmMaskSim.pv","top=g5:cc:"
+pvload "$(iocpath)/data/gmFilter.pv","top=g5:cc:"
+pvload "$(iocpath)/data/gmGrating.pv","top=g5:cc:"
+pvload "$(iocpath)/data/gmTranslation.pv","top=g5:cc:"
+pvload "$(iocpath)/data/gmTempCalibrate.pv","top=g5:cc:"
 
 # Start sequences
-seq &timeSeq, "sys=g7:cc:"
+seq &timeSeq, "sys=g5:cc:"
 
-seq &assemblyCar, "top=g7:cc:, dev=msk, priority=75"
-seq &assemblyCar, "top=g7:, dev=wfs:probe, priority=75"
-seq &commandCar, "top=g7:, dev=wfs:, priority=75"
-seq &assemblyCar, "top=g7:cc:, dev=flt, priority=75"
-seq &assemblyCar, "top=g7:cc:, dev=gr, priority=75"
-seq &lifterSim,   "top=g7:cc:, dev=gr, priority=75"
-seq &assemblyCar, "top=g7:cc:, dev=dta, priority=75"
-seq &systemCar,   "top=g7:cc:, cad=init, priority=75"
-seq &systemCar,   "top=g7:cc:, cad=test, priority=75"
-seq &systemCar,   "top=g7:cc:, cad=datum, priority=75"
-seq &systemCar,   "top=g7:cc:, cad=update, priority=75"
-seq &systemCar,   "top=g7:cc:, cad=park, priority=75"
+seq &assemblyCar, "top=g5:cc:, dev=msk, priority=75"
+seq &assemblyCar, "top=g5:, dev=wfs:probe, priority=75"
+seq &commandCar, "top=g5:, dev=wfs:, priority=75"
+seq &assemblyCar, "top=g5:cc:, dev=flt, priority=75"
+seq &assemblyCar, "top=g5:cc:, dev=gr, priority=75"
+#seq &lifterSim,   "top=g5:cc:, dev=gr, priority=75"
+seq &assemblyCar, "top=g5:cc:, dev=dta, priority=75"
+seq &systemCar,   "top=g5:cc:, cad=init, priority=75"
+seq &systemCar,   "top=g5:cc:, cad=test, priority=75"
+seq &systemCar,   "top=g5:cc:, cad=datum, priority=75"
+seq &systemCar,   "top=g5:cc:, cad=update, priority=75"
+seq &systemCar,   "top=g5:cc:, cad=park, priority=75"
 
 # Trigger the initialisation of the components controller
-dbpf "g7:cc:init.DIR","0"
-dbpf "g7:cc:apply.DIR","3"
+dbpf "g5:cc:init.DIR","0"
+dbpf "g5:cc:apply.DIR","3"
 
 # Wait while the initialisation completes
 taskDelay(180)
 
-dbpf "g7:sad:cc:historyLog","Master enable switched on"
+dbpf "g5:sad:cc:historyLog","Master enable switched on"
 
 # Enable master enable on completion of startup script
-dbpf "g7:cc:msEnableEnable","1"
+dbpf "g5:cc:msEnableEnable","1"
 
 # Finally, display the startup time in UTC.
 #timeClockReport

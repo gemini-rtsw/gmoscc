@@ -1,0 +1,18 @@
+#
+# This file contains site-specific information
+# 
+
+< /gemini/external/vxWorks/tornado2.0/vxUsers
+
+routeAdd "0.0.0.0" , "172.17.2.1"
+
+hostAdd ("icarus",  "172.17.2.10")
+
+nfsMount "icarus",  "/export/gemini",      "/gemini"
+
+# Tell VxWorks the unix user ID and group ID of "gemvx",
+# so that file access over NFS works.
+
+nfsAuthUnixSet "icarus", 2966, 10, 0
+
+cd "$(iocpath)"
