@@ -1,0 +1,35 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: diffField
+#
+# Purpose: 
+#	To compare contents of an epics record field with the value of
+#	another field and report whether the difference is within a
+#       defined tolerance.
+#
+# NOTE:
+#       This script assumes the EPICS field contains a single number.
+#
+
+set value1 = `caget -t $1`
+if ( $#value1 != 1 ) then
+	echo "Cannot read first value"
+	exit
+endif
+
+set value2 = `caget -t $2`
+if ( $#value2 != 1 ) then
+	echo "Cannot read second value"
+	exit
+endif
+
+set result = `checktol $value1 $value2 $3`
+
+if ( $result == 0 ) then
+	echo "Similar"
+	exit
+endif
+
+echo "Different"
+exit
+

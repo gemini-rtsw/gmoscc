@@ -15,7 +15,8 @@ include .applTop/config/CONFIG
 
 # Add the source code files to this variable. The default has all .c files 
 # SRCS.c	= $(wildcard ../*.c) 
-SRCS.c	= ../add.c  ../mult.c ../tolower.c ../rand.c ../twolines.c ../gmosLutLib.c
+SRCS.c	= ../add.c ../checktol.c ../mult.c ../tolower.c ../rand.c \
+	  ../twolines.c ../gmosLutLib.c
 
 # Add the object files in one of these two variables. 
 # LIBOBJS += test.o
