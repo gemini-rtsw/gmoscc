@@ -27,6 +27,9 @@ static char rcsid[] = "$Id$";
  * FILENAME
  * recDeviceControl.c
  *
+ * EPICS 3.13 version, originally adapted from gmos source code 
+ * file src/recDeviceControl.c, dated July 12 2001.
+ *
  * PURPOSE:
  * EPICS Record Support code for the deviceControl record.
  *
@@ -63,6 +66,12 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2001/08/10 14:01:49  ptaylor
+ * Restructured src directory with 4 sub-directories, including pv and lut which were previously in pv as well as deviceControl and gcal previously in src
+ *
+ * Revision 1.3  2001/07/12 19:11:00  gemvx
+ * Re-enabled power check
+ *
  * Revision 1.2  2001/04/23 18:23:09  smb
  * OIWFS will no longer time out after being moved manually a significant amount 
  * (bug 168).  HSWA field monitoring problem fixed (bug 218). Problem with setting 
@@ -332,7 +341,10 @@ static char rcsid[] = "$Id$";
 #include    <devSup.h>
 #include    <recSup.h>
 
+#define GEN_SIZE_OFFSET
 #include    <deviceControlRecord.h>
+#undef GEN_SIZE_OFFSET
+
 #include    <recDeviceControl.h>
 #include    <devDeviceControl.h>
 
@@ -544,7 +556,7 @@ typedef struct {
  *  integer variable.   For example:
  *
  *  DEBUG(DDR_MSG_MAX,
- *        "<%d> %s:movingState: encoder check...deadband:%d\n", pdr->edbd);
+ *        "<%ld> %s:movingState: encoder check...deadband:%d\n", pdr->edbd);
  *  
  *  Would result in the following log message if debugging is set to MAX:
  *
@@ -686,7 +698,7 @@ static long abortingState
     long delay = 0;                 /* delay time in 0.1s units             */
     long status = 0;                /* function status return               */
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s: abortingState:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s: abortingState:entry%c\n", ' ');
 
 
     /*
@@ -698,7 +710,7 @@ static long abortingState
     if ( pdr->osta != DDR_FAILING )
     {
         DEBUG(DDR_MSG_FULL,
-                 "<%d> %s: abortingState: from osta:%d\n", pdr->osta);
+                 "<%ld> %s: abortingState: from osta:%d\n", pdr->osta);
         pdr->osta = DDR_FAILING;
 
         /*
@@ -757,7 +769,7 @@ static long abortingState
                 if (status)
                 {
                     DEBUG(DDR_MSG_ERROR, 
-                          "<%d> %s:abortingState: power control fault%c\n",
+                          "<%ld> %s:abortingState: power control fault%c\n",
                           ' ');
                     SET_ERR_MSG( pPriv->errorMessage);
                 }
@@ -811,7 +823,7 @@ static long abortingState
         {
             (*pdset->setDelay) (pPriv, delay);
             DEBUG(DDR_MSG_FULL,
-                   "<%d> %s:abortingState: setting timeout:%d\n",
+                   "<%ld> %s:abortingState: setting timeout:%ld\n",
                    delay);
             return (status);
         }
@@ -847,7 +859,7 @@ static long abortingState
     {
         (*pdset->setDelay) (pPriv, 0);    
         DEBUG(DDR_MSG_MAX,
-                "<%d> %s:abortingState: pwr/brk OK cancel timeout%c\n", ' ');
+                "<%ld> %s:abortingState: pwr/brk OK cancel timeout%c\n", ' ');
 
         return idleState (pdr);   
     }
@@ -874,11 +886,11 @@ static long abortingState
         {
             SET_ERR_MSG( "motor didn't power off in time");
             DEBUG(DDR_MSG_FULL,
-                  "<%d> %s:abortingState: motor didn't power off, retry%c\n",
+                  "<%ld> %s:abortingState: motor didn't power off, retry%c\n",
                   ' ');
-            if ( status = ((*pdset->controlPower) (pPriv, FALSE)) )
+            if ( (status = ((*pdset->controlPower) (pPriv, FALSE))) )
             {
-                DEBUG(DDR_MSG_ERROR, "<%d> %s:abortingState: Power fault%c\n",
+                DEBUG(DDR_MSG_ERROR, "<%ld> %s:abortingState: Power fault%c\n",
                 ' ');
                 SET_ERR_MSG( pPriv->errorMessage );
             }
@@ -894,7 +906,7 @@ static long abortingState
         {
             SET_ERR_MSG( "brake did not engage in time");
             DEBUG(DDR_MSG_ERROR,
-               "<%d> %s:abortingState: brake did not engage in time%c\n", ' ');
+               "<%ld> %s:abortingState: brake did not engage in time%c\n", ' ');
         }
 
         return idleState (pdr);
@@ -1216,7 +1228,7 @@ static long checkVals
 
     if ( strlen( pdr->vals ) )
     {
-        DEBUG(DDR_MSG_MAX, "<%d> %s:checkVals: vals=%s\n", pdr->vals );
+        DEBUG(DDR_MSG_MAX, "<%ld> %s:checkVals: vals=%s\n", pdr->vals );
 
 
         /*
@@ -1234,7 +1246,7 @@ static long checkVals
         if (*end == '\0')
         {
             DEBUG(DDR_MSG_MAX, 
-                  "<%d> %s:checkVals: decodes as %f\n",
+                  "<%ld> %s:checkVals: decodes as %f\n",
                   *position );
             found = TRUE;
         }
@@ -1267,10 +1279,10 @@ static long checkVals
                     *index = pNode->index;
 
                     DEBUG(DDR_MSG_MAX,
-                          "<%d> %s:checkVals: translates to %f\n",
+                          "<%ld> %s:checkVals: translates to %f\n",
                           *position );
                     DEBUG(DDR_MSG_MAX, 
-                          "<%d> %s:checkVals: index mode %d\n",
+                          "<%ld> %s:checkVals: index mode %ld\n",
                           *index );
                     break;
                 }
@@ -1398,7 +1410,7 @@ static long depoweringState
     long    status = 0;             /* Return function status.              */
 
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:depoweringState:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:depoweringState:entry%c\n", ' ');
 
 
     /*
@@ -1408,7 +1420,7 @@ static long depoweringState
     if ( pdr->osta != DDR_DEPOWERING )
     {
         DEBUG(DDR_MSG_FULL,
-              "<%d> %s:depoweringState: from osta:%d\n", pdr->osta);
+              "<%ld> %s:depoweringState: from osta:%d\n", pdr->osta);
         pdr->osta = DDR_DEPOWERING;
 
 
@@ -1445,7 +1457,7 @@ static long depoweringState
                 if (status)
                 {
                     DEBUG(DDR_MSG_ERROR,
-                          "<%d> %s:depoweringState: Power control fault%c\n",
+                          "<%ld> %s:depoweringState: Power control fault%c\n",
                           ' ');
                     SET_ERR_MSG( pPriv->errorMessage);
                     return abortingState (pdr);  /* command fails here      */
@@ -1484,7 +1496,7 @@ static long depoweringState
     {
         SET_ERR_MSG("Unexpected motion while depowering");
         DEBUG(DDR_MSG_ERROR, 
-              "<%d> %s:depoweringState:moving flag set after powering down%c\n", ' ');
+              "<%ld> %s:depoweringState:moving flag set after powering down%c\n", ' ');
         return abortingState (pdr);
     }
 
@@ -1549,7 +1561,7 @@ static long depoweringState
         else                   
         {
             DEBUG(DDR_MSG_ERROR,
-                  "<%d> %s:depoweringState, power still on after timeout%c\n",
+                  "<%ld> %s:depoweringState, power still on after timeout%c\n",
                   ' ');
             SET_ERR_MSG( "motor did not power off in time");
             return abortingState (pdr);
@@ -1615,7 +1627,7 @@ static long getAlarmDouble
 
     DEVICE_CONTROL_RECORD *pdr = (DEVICE_CONTROL_RECORD *) paddr->precord;
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:getAlarmDouble entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:getAlarmDouble entry%c\n", ' ');
 
 
     /*
@@ -1696,7 +1708,7 @@ static long getControlDouble
 
     DEVICE_CONTROL_RECORD *pdr = (DEVICE_CONTROL_RECORD *) paddr->precord;
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:getControlDouble entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:getControlDouble entry%c\n", ' ');
 
 
     /*
@@ -1775,7 +1787,7 @@ static long getGraphicDouble
 
     DEVICE_CONTROL_RECORD *pdr = (DEVICE_CONTROL_RECORD *) paddr->precord;
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:getGraphicDouble entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:getGraphicDouble entry%c\n", ' ');
 
 
     /*
@@ -1853,7 +1865,7 @@ static long getPrecision
 
     DEVICE_CONTROL_RECORD *pdr = (DEVICE_CONTROL_RECORD *) paddr->precord;
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:getPrecision entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:getPrecision entry%c\n", ' ');
 
 
     /*
@@ -1939,7 +1951,7 @@ static long getUnits
 
     DEVICE_CONTROL_RECORD *pdr = (DEVICE_CONTROL_RECORD *) paddr->precord;
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:getUnits entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:getUnits entry%c\n", ' ');
 
 
     /*
@@ -1996,7 +2008,7 @@ static long getValue
     struct valueDes *pvdes          /* value field description structure    */
 )
 {
-    DEBUG(DDR_MSG_MAX, "<%d> %s:getValue: entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:getValue: entry%c\n", ' ');
 
     /*
      *  Load value field information into the description structure.
@@ -2090,7 +2102,7 @@ static long holdingState
         *pPriv = pdr->dpvt;
     long status = 0;                /* function return status               */
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:holdingState:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:holdingState:entry%c\n", ' ');
 
 
     /*
@@ -2104,7 +2116,7 @@ static long holdingState
     if (pdr->osta != DDR_HOLDING)
     {
         DEBUG(DDR_MSG_FULL,
-               "<%d> %s: holdingState: from osta:%d\n", pdr->osta);
+               "<%ld> %s: holdingState: from osta:%d\n", pdr->osta);
         if ( pPriv->mode == DDR_MODE_TRACK )
         {
             pdr->pp = TRUE;
@@ -2153,7 +2165,7 @@ static long holdingState
             pPriv->moving = TRUE;
             semGive (pPriv->mutexSem);
             DEBUG(DDR_MSG_FULL,
-                  "<%d> %s:holdingState:motion < motor deadband%c\n", ' ');
+                  "<%ld> %s:holdingState:motion < motor deadband%c\n", ' ');
             status = movingState (pdr);
         }
 
@@ -2276,7 +2288,7 @@ static long idleState
         *pdset = (DEVICE_CONTROL_DSET *) (pdr->dset);
     long    status = 0;             /* function status return               */
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:idleState:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:idleState:entry%c\n", ' ');
 
 
     /*
@@ -2288,7 +2300,7 @@ static long idleState
     {
 
         DEBUG(DDR_MSG_FULL,
-             "<%d> %s:idleState: from osta:%d\n", pdr->osta);
+             "<%ld> %s:idleState: from osta:%d\n", pdr->osta);
         pdr->osta = DDR_IDLE;          
        
         /*
@@ -2300,7 +2312,7 @@ static long idleState
         if ( pPriv->move_while_busy )
         {
             DEBUG(DDR_MSG_FULL,
-                  "<%d> %s:idleState: Motion parameter change while moving%c\n",
+                  "<%ld> %s:idleState: Motion parameter change while moving%c\n",
                   ' ');
             semTake (pPriv->mutexSem, WAIT_FOREVER);
             pPriv->move_while_busy = FALSE;
@@ -2329,12 +2341,12 @@ static long idleState
         if (pdr->uapb)
         {
             DEBUG(DDR_MSG_FULL,
-                   "<%d> %s:idleState: turning power off%c\n", ' ');
+                   "<%ld> %s:idleState: turning power off%c\n", ' ');
             status = (*pdset->controlPower) (pPriv, FALSE);
             if (status)
             {
                 DEBUG(DDR_MSG_ERROR, 
-                      "<%d> %s:idleState: Cannot turn off power:%c\n", ' ');
+                      "<%ld> %s:idleState: Cannot turn off power:%c\n", ' ');
                 SET_ERR_MSG( pPriv->errorMessage);
             }
         }
@@ -2412,7 +2424,7 @@ static long idleState
                 if (status)
                 {
                     DEBUG(DDR_MSG_ERROR, 
-                          "<%d> %s:idleState:Cannot turn off power:%c\n",' ');
+                          "<%ld> %s:idleState:Cannot turn off power:%c\n",' ');
                     SET_ERR_MSG(pPriv->errorMessage);
                 }
             }
@@ -2420,7 +2432,7 @@ static long idleState
             if (pdr->flt)
             {
                 DEBUG(DDR_MSG_ERROR, 
-                     "<%d> %s:idleState:Interlock active:%c\n",' ');
+                     "<%ld> %s:idleState:Interlock active:%c\n",' ');
                 SET_ERR_MSG("Interlock line active");
             }       
         }
@@ -2432,7 +2444,7 @@ static long idleState
          */
  
         DEBUG(DDR_MSG_MAX, 
-              "<%d> %s:idleState:timeout true, setting PP%c\n", ' ');
+              "<%ld> %s:idleState:timeout true, setting PP%c\n", ' ');
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         pPriv->timeout = FALSE;
         semGive (pPriv->mutexSem);
@@ -2460,7 +2472,7 @@ static long idleState
              fabs(pdr->val - pdr->mpos) > pdr->mdbd))
         {
             DEBUG(DDR_MSG_FULL, 
-                  "<%d> %s:idleState:DIR=Go, motion required in mode=%d\n",
+                  "<%ld> %s:idleState:DIR=Go, motion required in mode=%ld\n",
                   pPriv->mode );
 
             /*
@@ -2496,7 +2508,7 @@ static long idleState
         else
         {
             DEBUG(DDR_MSG_FULL,
-                  "<%d> %s:idleState:DIR=GO no motion required, mode=%d\n",
+                  "<%ld> %s:idleState:DIR=GO no motion required, mode=%ld\n",
                   pPriv->mode );
         }
     }
@@ -2518,7 +2530,7 @@ static long idleState
          */
 
         DEBUG(DDR_MSG_ERROR, 
-              "<%d> %s:idleState:spontaneous device motion%c\n", ' ');
+              "<%ld> %s:idleState:spontaneous device motion%c\n", ' ');
 
         pdr->mip = DDR_MIP_ERROR;
         MONITOR(RECORD_MIP); 
@@ -2595,13 +2607,20 @@ static long idleState
  */
 
 static long initLinks 
+/*
+ *******************************************************************
+ *  All code using recGblInitFastInLink, recGblInitFastOutLink     *
+ *  and dbCaAddOutlink removed for EPICS 3.13 compatability.       *
+ *  (8/8/01,  pbt)                                                 *
+ *******************************************************************
+*/
 (
 DEVICE_CONTROL_RECORD *pdr          /* deviceControl record structure       */
 )
 {
     long status = 0;                /* function return status               */
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:initLinks: entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:initLinks: entry%c\n", ' ');
 
 
     /*
@@ -2614,7 +2633,8 @@ DEVICE_CONTROL_RECORD *pdr          /* deviceControl record structure       */
     if (pdr->dol.type == CONSTANT)
     {
         pdr->udf = FALSE;
-        pdr->val = pdr->dol.value.value;
+/*      pdr->val = pdr->dol.value.value;    ** Invalid for EPICS 3.13 ** */
+	recGblInitConstantLink(&pdr->dol, DBF_DOUBLE, &pdr->val);  /* 3.13 version */
     }
 
 
@@ -2622,7 +2642,7 @@ DEVICE_CONTROL_RECORD *pdr          /* deviceControl record structure       */
      *  Otherwise it has been linked to anohter epics record field.  Set up
      *  the database link so that the VAL field can be set by reading the
      *  link specified in the DOL field at a later date.
-     */
+     
 
     else
     {
@@ -2632,13 +2652,13 @@ DEVICE_CONTROL_RECORD *pdr          /* deviceControl record structure       */
     }
 
 
-    /*
+     *
      *  Initialize the input links used to read record field values
      *  from other records.   If the link field type is set to CONSTANT
      *  then no link has been defined and there is nothing to do, otherwise
      *  the link field holds the address of the field that will be read
      *  by a database get at a later date.
-     */
+     
 
     if (pdr->dbgl.type != CONSTANT)
     {
@@ -2653,15 +2673,14 @@ DEVICE_CONTROL_RECORD *pdr          /* deviceControl record structure       */
                                        DBR_ENUM, "SIMM");
         if (status) return (status);
     }
-
-
-    /*
+	     
+     *
      *  Initialize the output links used to write record field values
      *  to other records.   If the link field type is set to CONSTANT
      *  then no link has been defined and there is nothing to do, otherwise
      *  the link field holds the address of the field that will be updated
      *  by a database write at a later date.
-     */
+     
 
     if (pdr->brkl.type != CONSTANT)
     {
@@ -2683,13 +2702,14 @@ DEVICE_CONTROL_RECORD *pdr          /* deviceControl record structure       */
                                       DBR_ENUM, "BUSY");
       if (status) return (status);
     }
-
+    
     if (pdr->msgl.type == PV_LINK)
     {
       status = dbCaAddOutlink (&(pdr->msgl),(void *) pdr, "MESS");
       if (status) return (status);
     }
-
+    
+    */
     return status;
 }
 
@@ -2762,7 +2782,7 @@ static long initRecord
     long status = 0;                /* function return status               */
     ELLLIST *x = NULL;              /* lookup table entry linked list       */
 
-    DEBUG(DDR_MSG_MIN, "<%d> %s:initRecord pass = %d\n", pass);
+    DEBUG(DDR_MSG_MIN, "<%ld> %s:initRecord pass = %d\n", pass);
 
 
     /*
@@ -2930,10 +2950,10 @@ static long initRecord
 
     if (pdset->initDeviceSupport)
     {
-        DEBUG(DDR_MSG_MIN, "<%d> %s:initRecord:call initDeviceSupport%c\n",
+        DEBUG(DDR_MSG_MIN, "<%ld> %s:initRecord:call initDeviceSupport%c\n",
               ' ');
         status = (*pdset->initDeviceSupport) (pdr);
-        DEBUG(DDR_MSG_MIN, "<%d> %s:initRecord:initDeviceSupport returns %d\n",
+        DEBUG(DDR_MSG_MIN, "<%ld> %s:initRecord:initDeviceSupport returns %ld\n",
               status);
         if (status)
         {
@@ -3026,7 +3046,7 @@ static long initState
     long    status = 0;             /* function return status               */
 
 
-    DEBUG(DDR_MSG_FULL, "<%d> %s:Entering Init state%c\n", ' ');
+    DEBUG(DDR_MSG_FULL, "<%ld> %s:Entering Init state%c\n", ' ');
 
    
     /*
@@ -3070,7 +3090,7 @@ static long initState
     {
         return (status);
     }
-    DEBUG(DDR_MSG_MAX, "<%d> %s:initState, simulation=%d\n",
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:initState, simulation=%d\n",
           pPriv->simulation );
   
 
@@ -3113,7 +3133,7 @@ static long initState
         status = (*pdset->controlPower) (pPriv, FALSE);
         if (status)
         {
-            DEBUG(DDR_MSG_ERROR, "<%d> %s:initState: Power control fault%c\n",
+            DEBUG(DDR_MSG_ERROR, "<%ld> %s:initState: Power control fault%c\n",
                   ' ');
             SET_ERR_MSG( pPriv->errorMessage);
             return abortingState (pdr);
@@ -3136,7 +3156,7 @@ static long initState
     if (strlen(pdr->tfil) && strlen( pdr->tdir ))
     {          
         DEBUG(DDR_MSG_FULL, 
-              "<%d> %s:initState:opening file: %s\n", pdr->tfil);
+              "<%ld> %s:initState:opening file: %s\n", pdr->tfil);
 
         /*
          *  Create a full path name from the directory and file fields
@@ -3159,7 +3179,7 @@ static long initState
             {
 
                 DEBUG(DDR_MSG_FULL, 
-                      "<%d> %s:initState:got a line: %c\n",' ');
+                      "<%ld> %s:initState:got a line: %c\n",' ');
 
                 /*
                  *  Discard comment and blank lines.
@@ -3209,7 +3229,7 @@ static long initState
                     {
                         ellFree(pdr->lthp);
                          DEBUG(DDR_MSG_ERROR,
-                               "<%d> %s:initState: line format error: %s\n",
+                               "<%ld> %s:initState: line format error: %s\n",
                                scratchBuf );
                         SET_ERR_MSG("LUT file corrupted");
                         status = -6;
@@ -3221,13 +3241,13 @@ static long initState
                      */
 
                      DEBUG(DDR_MSG_FULL,
-                           "<%d> %s:initState: LUT name: %s\n",
+                           "<%ld> %s:initState: LUT name: %s\n",
                            pNode->name);
                      DEBUG(DDR_MSG_FULL,
-                           "<%d> %s:initState: LUT target: %f\n",
+                           "<%ld> %s:initState: LUT target: %f\n",
                            pNode->target);
                      DEBUG(DDR_MSG_FULL,
-                           "<%d> %s:initState: LUT index: %ld\n",
+                           "<%ld> %s:initState: LUT index: %ld\n",
                            pNode->index);
 
                     /*
@@ -3252,7 +3272,7 @@ static long initState
         else
         {
             DEBUG(DDR_MSG_ERROR, 
-                  "<%d> %s:initState: open %s failed\n", scratchBuf);
+                  "<%ld> %s:initState: open %s failed\n", scratchBuf);
             SET_ERR_MSG("LUT file not found");
         }
 
@@ -3369,7 +3389,7 @@ static long lockingState
         *pdset = (DEVICE_CONTROL_DSET *) (pdr->dset);
     long status = 0;                /* function return status   */
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:lockingState:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:lockingState:entry%c\n", ' ');
 
     
     /*
@@ -3380,7 +3400,7 @@ static long lockingState
     if (pdr->osta != DDR_ENGAGING)
     {
         DEBUG(DDR_MSG_FULL,
-              "<%d> %s: lockingState: from osta:%d\n", pdr->osta);
+              "<%ld> %s: lockingState: from osta:%d\n", pdr->osta);
 
         /*
          *  Switch the state machine into locking state and indicate
@@ -3433,7 +3453,7 @@ static long lockingState
     {
         SET_ERR_MSG("Unexpected motion while braking");
         DEBUG(DDR_MSG_ERROR, 
-              "<%d> %s:lockingState:moving flag set after brakes applied%c\n", ' ');
+              "<%ld> %s:lockingState:moving flag set after brakes applied%c\n", ' ');
         return abortingState (pdr);
     }
 
@@ -3496,7 +3516,7 @@ static long lockingState
         {
             SET_ERR_MSG( "brake did not engage in time");
             DEBUG(DDR_MSG_ERROR,
-                  "<%d> %s:lockingState: brake did not engage in time%c\n",
+                  "<%ld> %s:lockingState: brake did not engage in time%c\n",
                   ' ');
             status = abortingState (pdr);
         }
@@ -3557,7 +3577,7 @@ static void monitor
 {
     unsigned short  monitorMask;        /* monitor modifier mask            */
    
-    DEBUG(DDR_MSG_MAX, "<%d> %s:monitor:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:monitor:entry%c\n", ' ');
 
 
     /*
@@ -3780,7 +3800,7 @@ static long movingState
     long    status = 0;             /* function return status               */
 
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:movingState:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:movingState:entry%c\n", ' ');
 
     /*
      *  If entering this state from another state (first pass) then
@@ -3790,7 +3810,7 @@ static long movingState
     if (pdr->osta != DDR_MOVING)
     {
         DEBUG(DDR_MSG_FULL, 
-              "<%d> %s:movingState: from osta:%d\n", pdr->osta);
+              "<%ld> %s:movingState: from osta:%d\n", pdr->osta);
 
         /*
          *  Switch the state machine into moving state and indicate
@@ -3810,7 +3830,7 @@ static long movingState
         if (pPriv->index)
         {
             DEBUG(DDR_MSG_FULL, 
-                  "<%d> %s:movingState: calculate timeout for index%c\n", ' ');
+                  "<%ld> %s:movingState: calculate timeout for index%c\n", ' ');
             timeout =  calculateTimeout (pdr->pllm, 
                                          pdr->phlm, 
                                          pdr->velo, 
@@ -3842,7 +3862,7 @@ static long movingState
             if (pPriv->backlashMotion)
             {
                 DEBUG(DDR_MSG_FULL, 
-                      "<%d> %s:movingState: calculate timeout for backlash move%c\n", ' ');
+                      "<%ld> %s:movingState: calculate timeout for backlash move%c\n", ' ');
                 timeout =  calculateTimeout (pdr->mpos, 
                                              pdr->val, 
                                              pdr->fivl, 
@@ -3859,7 +3879,7 @@ static long movingState
             else if (pdr->blco && pdr->mode != DDR_MODE_INDEX)
             {
                 DEBUG(DDR_MSG_FULL, 
-                      "<%d> %s:movingState: calculate timeout for pre-backlash move%c\n", ' ');
+                      "<%ld> %s:movingState: calculate timeout for pre-backlash move%c\n", ' ');
                 timeout =  calculateTimeout (pdr->mpos, 
                                              pdr->val + pdr->blco, 
                                              pdr->velo, 
@@ -3876,7 +3896,7 @@ static long movingState
             else
             {
                 DEBUG(DDR_MSG_FULL, 
-                      "<%d> %s:movingState: calculate timeout for normal move%c\n", ' ');
+                      "<%ld> %s:movingState: calculate timeout for normal move%c\n", ' ');
                 timeout =  calculateTimeout (pdr->mpos, 
                                              pdr->val, 
                                              pdr->velo, 
@@ -3892,7 +3912,7 @@ static long movingState
 
         timeout = timeout + DDR_MOTION_OVERHEAD_TIME;
 
-        DEBUG(DDR_MSG_FULL, "<%d> %s:Motor timeout=%d\n", timeout);
+        DEBUG(DDR_MSG_FULL, "<%ld> %s:Motor timeout=%ld\n", timeout);
         (*pdset->setDelay) (pPriv, timeout);
 
         return ( status );                     
@@ -3908,7 +3928,7 @@ static long movingState
     if ( pPriv->move_while_busy )
     {
         DEBUG(DDR_MSG_FULL,
-               "<%d> %s: movingState: attribute update, reload%c\n", ' ');
+               "<%ld> %s: movingState: attribute update, reload%c\n", ' ');
 
         pdr->dir = DDR_DIR_CHECK;
         semTake (pPriv->mutexSem, WAIT_FOREVER);
@@ -3919,7 +3939,7 @@ static long movingState
         if (status)
         {
             DEBUG(DDR_MSG_ERROR,
-                  "<%d> %s:movingState: controlMotion call failed%c\n",
+                  "<%ld> %s:movingState: controlMotion call failed%c\n",
                   ' ');
             SET_ERR_MSG( pPriv->errorMessage);
             return abortingState (pdr);
@@ -3961,7 +3981,7 @@ static long movingState
                 if (status)
                 {
                     DEBUG(DDR_MSG_ERROR,
-                        "<%d> %s:movingState: setPosition call failed%c\n",
+                        "<%ld> %s:movingState: setPosition call failed%c\n",
                         ' ');
                     SET_ERR_MSG( pPriv->errorMessage);
                     return abortingState (pdr);
@@ -3982,7 +4002,7 @@ static long movingState
             {
                 SET_ERR_MSG( "Device hit a soft limit");
                 DEBUG(DDR_MSG_ERROR,
-                      "<%d> %s: movingState: device hit a soft limit%c\n", ' ');
+                      "<%ld> %s: movingState: device hit a soft limit%c\n", ' ');
                 return( abortingState(pdr) );
             }
 
@@ -4026,7 +4046,7 @@ static long movingState
                 if ( pPriv->target != pPriv->position )
                 {
                     SET_ERR_MSG("Motor didn't reach target");
-                    DEBUG(DDR_MSG_ERROR, "<%d> %s:movingState:motor didn't reach target (limit switch bounce?)%c\n", ' ');
+                    DEBUG(DDR_MSG_ERROR, "<%ld> %s:movingState:motor didn't reach target (limit switch bounce?)%c\n", ' ');
                     return abortingState(pdr);
                 }
 
@@ -4037,7 +4057,7 @@ static long movingState
 
                 if (pdr->ueip)
                 {
-                    DEBUG(DDR_MSG_FULL, "<%d> %s:movingState: encoder check, missed by:%d count(s)\n", abs((long)(((double)pdr->rrbv) *  pdr->eres/pdr->mres) - pdr->renc));
+                    DEBUG(DDR_MSG_FULL, "<%ld> %s:movingState: encoder check, missed by:%d count(s)\n", abs((long)(((double)pdr->rrbv) *  pdr->eres/pdr->mres) - pdr->renc));
 
                     /*
                      *  If the position returned by the encoders is out by more
@@ -4049,7 +4069,7 @@ static long movingState
                             pdr->renc) > pdr->edbd)
                     {
                         SET_ERR_MSG("Encoder doesn't agree with motor count");
-                        DEBUG(DDR_MSG_ERROR, "<%d> %s:movingState: encoder & position disagree by more than encoder deadband (EDBD=%d)\n", pdr->edbd);
+                        DEBUG(DDR_MSG_ERROR, "<%ld> %s:movingState: encoder & position disagree by more than encoder deadband (EDBD=%ld)\n", pdr->edbd);
                         return abortingState(pdr);
                     }
                 }
@@ -4124,7 +4144,7 @@ static long movingState
         {
             SET_ERR_MSG( "Motor stalled");
             DEBUG(DDR_MSG_ERROR,
-                  "<%d> %s:movingState: motor stalled (encoder values not changing)%c\n", ' ');
+                  "<%ld> %s:movingState: motor stalled (encoder values not changing)%c\n", ' ');
             semTake (pPriv->mutexSem, WAIT_FOREVER);
             pPriv->stalled_times = 0;
             semGive (pPriv->mutexSem);
@@ -4169,7 +4189,7 @@ static long movingState
     {        
         SET_ERR_MSG( "Power failed while moving, hard limit?");
         DEBUG(DDR_MSG_ERROR, 
-              "<%d> %s:movingState:Power failed while moving, hard limit?%c\n",
+              "<%ld> %s:movingState:Power failed while moving, hard limit?%c\n",
               ' ');
         return abortingState (pdr);
     }
@@ -4186,7 +4206,7 @@ static long movingState
     {
         SET_ERR_MSG( "Motion timeout!!!");
         DEBUG(DDR_MSG_ERROR,
-              "<%d> %s:movingState: Motor did not get there in time, moving=%d \n",
+              "<%ld> %s:movingState: Motor did not get there in time, moving=%d \n",
               pPriv->moving );
         return ( abortingState (pdr) );
     }
@@ -4304,7 +4324,7 @@ static long poweringState
     long    status = 0;             /* function return status               */
 
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:poweringState:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:poweringState:entry%c\n", ' ');
 
 
     /*
@@ -4314,7 +4334,7 @@ static long poweringState
     
     if (pdr->osta != DDR_POWERING)
     {
-        DEBUG(DDR_MSG_FULL, "<%d> %s: poweringState: from osta:%d\n",
+        DEBUG(DDR_MSG_FULL, "<%ld> %s: poweringState: from osta:%d\n",
                              pdr->osta );
 
         /*
@@ -4360,7 +4380,7 @@ static long poweringState
                 if (status)
                 {
                     DEBUG(DDR_MSG_ERROR, 
-                          "<%d> %s:poweringState:Power control fault%c\n",' ');
+                          "<%ld> %s:poweringState:Power control fault%c\n",' ');
                     SET_ERR_MSG( pPriv->errorMessage);
                     return abortingState (pdr);
                 }
@@ -4460,7 +4480,7 @@ static long poweringState
         {
             SET_ERR_MSG( "no motor power ... interlocked?");
             DEBUG(DDR_MSG_ERROR,
-                  "<%d> %s: poweringState: No motor power, interlock?%c\n",
+                  "<%ld> %s: poweringState: No motor power, interlock?%c\n",
                   ' ');
             return( abortingState (pdr) );
         }
@@ -4638,7 +4658,7 @@ static long process
     if (pdr->pact)
     {
         DEBUG(DDR_MSG_MAX,
-              "<%d> %s: process: attempt to process with pact=TRUE%c\n", ' ');
+              "<%ld> %s: process: attempt to process with pact=TRUE%c\n", ' ');
         return (0);
     }
 
@@ -4649,7 +4669,7 @@ static long process
      */
 
     DEBUG(DDR_MSG_MAX,
-            "<%d> %s: process: normal record processing begins .....%c\n", ' ');
+            "<%ld> %s: process: normal record processing begins .....%c\n", ' ');
     pdr->pact = TRUE;
 
 
@@ -4660,7 +4680,7 @@ static long process
 
     if (pPriv->faultChange)
     {
-        DEBUG(DDR_MSG_MAX, "<%d> %s:process: fault line change%c\n", ' ');
+        DEBUG(DDR_MSG_MAX, "<%ld> %s:process: fault line change%c\n", ' ');
 
         /*
          *  If the fault field is set then a new fault has been detected.
@@ -4668,7 +4688,7 @@ static long process
 
         if (pdr->flt)
         {
-            DEBUG(DDR_MSG_LOG, "<%d> %s:process: fault detected%c\n", ' ');
+            DEBUG(DDR_MSG_LOG, "<%ld> %s:process: fault detected%c\n", ' ');
 
 
             /*
@@ -4678,7 +4698,7 @@ static long process
             if (pdr->busy == DDR_CMD_BUSY)
             {
                 DEBUG(DDR_MSG_ERROR,
-                      "<%d> %s:process: aborting command in progress%c\n",
+                      "<%ld> %s:process: aborting command in progress%c\n",
                       ' ');
                 SET_ERR_MSG("Interlock Detected");
                 status = abortingState (pdr);
@@ -4698,7 +4718,7 @@ static long process
             else
             {
                 DEBUG(DDR_MSG_LOG,
-                      "<%d> %s:process: Processing interlock that occurred while IDLE%c\n",
+                      "<%ld> %s:process: Processing interlock that occurred while IDLE%c\n",
                       ' ');
 
                 pdr->mip = DDR_MIP_ERROR;
@@ -4712,7 +4732,7 @@ static long process
 
         else
         {
-            DEBUG(DDR_MSG_MIN, "<%d> %s:process: fault cleared%c\n", ' ');
+            DEBUG(DDR_MSG_MIN, "<%ld> %s:process: fault cleared%c\n", ' ');
         }
 
         /*
@@ -4720,7 +4740,7 @@ static long process
          *  change of fault states has been acknowledged.
          */
 
-        DEBUG(DDR_MSG_MAX, "<%d> %s:process: clear faultChange flag%c\n", ' ');
+        DEBUG(DDR_MSG_MAX, "<%ld> %s:process: clear faultChange flag%c\n", ' ');
 
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         pPriv->faultChange = FALSE;
@@ -4735,7 +4755,7 @@ static long process
 
     if ( pPriv->callback )
     {       
-        DEBUG(DDR_MSG_MAX, "<%d> %s:process: callback true%c\n", ' ');
+        DEBUG(DDR_MSG_MAX, "<%ld> %s:process: callback true%c\n", ' ');
 
         semTake (pPriv->mutexSem, WAIT_FOREVER);
 
@@ -4748,11 +4768,11 @@ static long process
         {
             pdr->lswa = (pPriv->lowLimit || pPriv->highLimit);
             DEBUG(DDR_MSG_FULL, 
-                  "<%d> %s:process:Limit switch change, LSWA=%d\n", pdr->lswa );
+                  "<%ld> %s:process:Limit switch change, LSWA=%d\n", pdr->lswa );
             DEBUG(DDR_MSG_FULL, 
-                  "<%d> %s:process:lowLimit=%d\n", pPriv->lowLimit);
+                  "<%ld> %s:process:lowLimit=%d\n", pPriv->lowLimit);
             DEBUG(DDR_MSG_FULL, 
-                  "<%d> %s:process:highLimit=%d\n", pPriv->highLimit);
+                  "<%ld> %s:process:highLimit=%d\n", pPriv->highLimit);
 
             MONITOR(RECORD_LSWA);
         }
@@ -4767,7 +4787,7 @@ static long process
         {
             pdr->hswa = pPriv->homeSwitch;
             DEBUG(DDR_MSG_FULL, 
-                  "<%d> %s:process:Home switch change, HSWA=%d\n", pdr->hswa );
+                  "<%ld> %s:process:Home switch change, HSWA=%d\n", pdr->hswa );
             MONITOR(RECORD_HSWA);
         }
 
@@ -4780,7 +4800,7 @@ static long process
         if (pdr->rrbv != pPriv->position)
         {
             DEBUG(DDR_MSG_MAX, 
-                  "<%d> %s:process: raw pos!=position%c\n", ' ');
+                  "<%ld> %s:process: raw pos!=position%c\n", ' ');
             pdr->rrbv = pPriv->position;
             MONITOR(RECORD_RRBV);
 
@@ -4825,7 +4845,7 @@ static long process
 
         if (pdr->ueip && !pPriv->simulation  &&  pdr->renc != pPriv->encoder )
         {
-            DEBUG(DDR_MSG_MAX, "<%d> %s:process: raw enc!=encoder=%c\n", ' ');
+            DEBUG(DDR_MSG_MAX, "<%ld> %s:process: raw enc!=encoder=%c\n", ' ');
 
             /*
              *  If the encoder has jumped by a large (bogus) number then 
@@ -4835,7 +4855,7 @@ static long process
             if (abs(pPriv->encoder - pdr->renc) > 15000)
             {
                 DEBUG(DDR_MSG_WARNING,
-                      "<%d> %s:process: encoder value jumped by %d\n",
+                      "<%ld> %s:process: encoder value jumped by %d\n",
                       abs(pPriv->encoder - pdr->renc));
             }
 
@@ -4938,14 +4958,14 @@ static long process
         if ( strlen(pPriv->actionErrMess) && pdr->busy == DDR_CMD_BUSY )
         {
 	  /* Command failed so this error message takes precedence */
-            DEBUG(DDR_MSG_ERROR, "<%d> %s:process: Command failed, setting BUSY to ERR%c\n", ' ');
+            DEBUG(DDR_MSG_ERROR, "<%ld> %s:process: Command failed, setting BUSY to ERR%c\n", ' ');
             SET_MESS( pPriv->actionErrMess );
             pdr->busy = DDR_CMD_ERROR;
         }
         else if ( pPriv->rejectAck == FALSE && strlen(pPriv->rejectErrMess) ) 
         {
          /* Command rejected, so write to MESS */
-            DEBUG(DDR_MSG_ERROR, "<%d> %s:process: Command rejected.%c\n", ' ');
+            DEBUG(DDR_MSG_ERROR, "<%ld> %s:process: Command rejected.%c\n", ' ');
             SET_MESS( pPriv->rejectErrMess );
             semTake (pPriv->mutexSem, WAIT_FOREVER);
             pPriv->rejectAck = TRUE;
@@ -4958,13 +4978,13 @@ static long process
            *  here if you want a successful command completion to erase
            *  any command rejection messages.
            */
-            DEBUG(DDR_MSG_MIN, "<%d> %s:process: Move while moving command rejected, but this finished, setting BUSY to IDLE%c\n", ' ');
+            DEBUG(DDR_MSG_MIN, "<%ld> %s:process: Move while moving command rejected, but this finished, setting BUSY to IDLE%c\n", ' ');
             pdr->busy = DDR_CMD_IDLE;
         }
         else if ( pdr->busy == DDR_CMD_BUSY )
         {
 	  /* Command finished successfully */
-            DEBUG(DDR_MSG_FULL, "<%d> %s:process: Command finished, setting BUSY to IDLE%c\n", ' ');
+            DEBUG(DDR_MSG_FULL, "<%ld> %s:process: Command finished, setting BUSY to IDLE%c\n", ' ');
             pdr->busy = DDR_CMD_IDLE;
         }
         MONITOR(RECORD_MESS);
@@ -4998,7 +5018,7 @@ static long process
 
     if (pdr->pp)
     {
-        DEBUG(DDR_MSG_MAX, "<%d> %s:process: post process entry%c\n", ' ');
+        DEBUG(DDR_MSG_MAX, "<%ld> %s:process: post process entry%c\n", ' ');
         pdr->pp = FALSE;
         recGblFwdLink( pdr );
         recGblGetTimeStamp( pdr );
@@ -5015,7 +5035,7 @@ static long process
 
     pdr->pact = FALSE;
     DEBUG(DDR_MSG_MAX,
-            "<%d> %s: process: record processing ends .....%c\n\n", ' ');
+            "<%ld> %s: process: record processing ends .....%c\n\n", ' ');
 
     return( status );
 }
@@ -5151,7 +5171,7 @@ static long processDirective
     char    tempstr[100];           /* scratch buffer                       */
     long    status = 0;             /* function return status               */
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:processDirective:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:processDirective:entry%c\n", ' ');
 
 
     /*
@@ -5197,7 +5217,7 @@ static long processDirective
             index = DDR_INDEX_NONE;
            
             DEBUG(DDR_MSG_FULL,
-                      "<%d> %s:processDirective: dir:%d\n", pdr->dir);
+                      "<%ld> %s:processDirective: dir:%d\n", pdr->dir);
 
             /*
              *  Perform specialized validity checking based on the current
@@ -5225,7 +5245,7 @@ static long processDirective
                     {
                         SET_REJ_MSG("Cannot init while fault line is active");
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:init while interlocked%c\n",
+                              "<%ld> %s:processDirective:init while interlocked%c\n",
                               ' ');
                     }
                     else ...
@@ -5237,7 +5257,7 @@ static long processDirective
                     {
                         SET_REJ_MSG( "Cannot initialize while active");
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:init while busy%c\n",
+                              "<%ld> %s:processDirective:init while busy%c\n",
                               ' ');
                     }
                     break;
@@ -5252,7 +5272,7 @@ static long processDirective
                     {
                         SET_REJ_MSG("Test would fail - fault line is active");
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:test while interlocked%c\n",
+                              "<%ld> %s:processDirective:test while interlocked%c\n",
                               ' ');
                     }
                     else if (pdr->mip != DDR_MIP_STOPPED &&
@@ -5261,7 +5281,7 @@ static long processDirective
                     {
                         SET_REJ_MSG( "Cannot test while active");
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:test while busy%c\n",
+                              "<%ld> %s:processDirective:test while busy%c\n",
                               ' ');
                     }
                     break;
@@ -5277,7 +5297,7 @@ static long processDirective
                     {
                         SET_REJ_MSG("Cannot index while fault line is active");
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:index while interlocked%c\n",
+                              "<%ld> %s:processDirective:index while interlocked%c\n",
                               ' ');
                     }
 
@@ -5287,7 +5307,7 @@ static long processDirective
                     {
                         SET_REJ_MSG( "Cannot index while active");
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:index while moving%c\n",
+                              "<%ld> %s:processDirective:index while moving%c\n",
                               ' ');
                     }
 
@@ -5297,7 +5317,7 @@ static long processDirective
                         sprintf(tempstr,"Invalid index mode=%d>", pdr->ialg );
                         SET_REJ_MSG( tempstr );
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:index with bad mode=%d\n",
+                              "<%ld> %s:processDirective:index with bad mode=%d\n",
                               pPriv->index );
                     }
 
@@ -5305,7 +5325,7 @@ static long processDirective
                     {
                         SET_REJ_MSG( "Velocity out of range");
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:index with bad velocity%c\n",
+                              "<%ld> %s:processDirective:index with bad velocity%c\n",
                               ' ');
                     }
 
@@ -5314,7 +5334,7 @@ static long processDirective
                     {
                         SET_REJ_MSG( "Final Index Velocity out of range");
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:index with bad fivl%c\n",
+                              "<%ld> %s:processDirective:index with bad fivl%c\n",
                               ' ');
                     }
 
@@ -5333,7 +5353,7 @@ static long processDirective
                     {
                         SET_REJ_MSG( "Cannot translate named position");
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:move mode: bad VALS string%c\n",
+                              "<%ld> %s:processDirective:move mode: bad VALS string%c\n",
                               ' ');
                         break;
                     }
@@ -5350,7 +5370,7 @@ static long processDirective
                     {
                         SET_REJ_MSG("Cannot move while fault line is active");
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:move while interlocked%c\n",
+                              "<%ld> %s:processDirective:move while interlocked%c\n",
                               ' ');
                     }
             
@@ -5358,7 +5378,7 @@ static long processDirective
                     {
                         SET_REJ_MSG( "Must re-index device before moving");
                         DEBUG(DDR_MSG_ERROR,
-                              "<%d> %s:processDirective:move after lost index%c\n",
+                              "<%ld> %s:processDirective:move after lost index%c\n",
                               ' ');
                     }
 
@@ -5366,7 +5386,7 @@ static long processDirective
                     {
                         SET_REJ_MSG( "Target position out of range");
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:move with bad target%c\n",
+                              "<%ld> %s:processDirective:move with bad target%c\n",
                               ' ');
                     }
 
@@ -5375,7 +5395,7 @@ static long processDirective
                     {
                         SET_REJ_MSG( "Backlash correction moves out of range");
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:move with backlash out of range%c\n",
+                              "<%ld> %s:processDirective:move with backlash out of range%c\n",
                         ' ');
                     }
 
@@ -5383,7 +5403,7 @@ static long processDirective
                     {
                         SET_REJ_MSG( "Velocity out of range");
                         DEBUG(DDR_MSG_ERROR,
-                              "<%d> %s:processDirective:move with bad velocity%c\n",
+                              "<%ld> %s:processDirective:move with bad velocity%c\n",
                               ' ');
                     }
 
@@ -5395,7 +5415,7 @@ static long processDirective
                               pPriv->index );
                         SET_REJ_MSG( tempstr );
                         DEBUG(DDR_MSG_ERROR, 
-                              "<%d> %s:processDirective:move with bad index=%d\n",
+                              "<%ld> %s:processDirective:move with bad index=%d\n",
                               pPriv->index );
                     }           
                     break;
@@ -5408,7 +5428,7 @@ static long processDirective
                 default:
                     SET_REJ_MSG("Unsupported mode requested");
                     DEBUG(DDR_MSG_ERROR, 
-                          "<%d> %s:processDirective: Invalid mode=%d\n",
+                          "<%ld> %s:processDirective: Invalid mode=%d\n",
                           pdr->mode );
                     break;
 
@@ -5427,7 +5447,7 @@ static long processDirective
 
 
             DEBUG(DDR_MSG_FULL,
-                    "<%d> %s:processDirective: GO directive%c\n", ' ');
+                    "<%ld> %s:processDirective: GO directive%c\n", ' ');
 
             /*
              *  VALS conversion did not fail so erase the contents of the
@@ -5487,7 +5507,7 @@ static long processDirective
                 pPriv->backlashMotion = FALSE;
                 semGive (pPriv->mutexSem);
                 DEBUG(DDR_MSG_FULL, 
-                      "<%d> %s:processDirective: motion update while busy%c\n",
+                      "<%ld> %s:processDirective: motion update while busy%c\n",
                       ' ');
             }
 
@@ -5539,7 +5559,7 @@ static long processDirective
         case DDR_DIR_STOP:
    
              DEBUG(DDR_MSG_MAX,
-                  "<%d> %s: processDirective: process STOP directive%c\n", ' ');
+                  "<%ld> %s: processDirective: process STOP directive%c\n", ' ');
 
             /*  
              *  If the record is not executing a command then set the 
@@ -5575,7 +5595,7 @@ static long processDirective
         default:
             SET_REJ_MSG("Unsupported directive requested");
             DEBUG(DDR_MSG_ERROR,
-                   "<%d> %s: processDirective: Invalid directive=%d\n", 
+                   "<%ld> %s: processDirective: Invalid directive=%d\n", 
                     pdr->dir);
             pdr->dir = DDR_DIR_CHECK;
             MONITOR(RECORD_DIR);
@@ -5651,7 +5671,7 @@ static long processState
             *pPriv = pdr->dpvt;
     long    status = 0;                 /* function return status           */
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:processState: entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:processState: entry%c\n", ' ');
 
 
     /*
@@ -5664,7 +5684,7 @@ static long processState
     {
         SET_ERR_MSG( pPriv->errorMessage);
         DEBUG(DDR_MSG_ERROR,
-              "<%d> %s:processState: device layer failure, status = %d\n",
+              "<%ld> %s:processState: device layer failure, status = %ld\n",
               pPriv->status);
         status = abortingState (pdr);   /* indicate the motion failed */
     }
@@ -5678,7 +5698,7 @@ static long processState
 
     else
     {
-        DEBUG(DDR_MSG_MAX, "<%d> %s:processState: osta=%d\n", pdr->osta );
+        DEBUG(DDR_MSG_MAX, "<%ld> %s:processState: osta=%d\n", pdr->osta );
         switch (pdr->osta) {
             case DDR_INIT:
                 status = initState (pdr);
@@ -5712,7 +5732,7 @@ static long processState
                 break;
             case DDR_FAILING:
                 DEBUG(DDR_MSG_LOG,
-                      "<%d> %s:processState: aborting%c\n", ' ');
+                      "<%ld> %s:processState: aborting%c\n", ' ');
                 status = abortingState (pdr);
                 break;
         }                         
@@ -5785,7 +5805,7 @@ static long readInputLinks
     double    dval;                     /* value read from DBR_DOUBLE link  */
     long    status = 0;                 /* function return status           */
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:readInputLinks: entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:readInputLinks: entry%c\n", ' ');
 
 
     /*
@@ -5799,13 +5819,15 @@ static long readInputLinks
 
         if (pdr->dol.type != CONSTANT)
         {
-            status = recGblGetFastLink (&(pdr->dol),(void *) pdr, &dval);
+/*          Next line was replaced by dbgetLink for EPICS 3.13
+            status = recGblGetFastLink (&(pdr->dol),(void *) pdr, &dval); */
+	    status = dbGetLink(&(pdr->dol), DBR_DOUBLE, &dval, 0, 0);
             if (status) return (status);
 
             if (pdr->val != dval)
             {
                 DEBUG(DDR_MSG_MAX,
-                      "<%d> %s:readInputLinks: Updating VAL field%c\n", ' ');
+                      "<%ld> %s:readInputLinks: Updating VAL field%c\n", ' ');
                 pdr->val = dval;
             }
         }
@@ -5819,13 +5841,15 @@ static long readInputLinks
  
     if (pdr->siml.type != CONSTANT)
     {
-        status = recGblGetFastLink (&(pdr->siml), (void *) pdr, &sval);
+/*          Next line was replaced by dbgetLink for EPICS3.13
+        status = recGblGetFastLink (&(pdr->siml), (void *) pdr, &sval);  */
+	status = dbGetLink(&(pdr->siml), DBR_USHORT, &sval, 0, 0);
         if (status) return (status);
 
         if (pdr->simm != sval)
         {
             DEBUG(DDR_MSG_MAX,
-                  "<%d> %s: readInputLinks: updating simm to %d\n", sval);
+                  "<%ld> %s: readInputLinks: updating simm to %d\n", sval);
             pdr->simm = sval;
             MONITOR(RECORD_SIMM);
         }
@@ -5842,7 +5866,7 @@ static long readInputLinks
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         pPriv->simulation = pdr->simm;
         DEBUG(DDR_MSG_MAX,
-              "<%d> %s: readInputLinks: Not busy, updating simulation to %d\n",
+              "<%ld> %s: readInputLinks: Not busy, updating simulation to %d\n",
               pPriv->simulation);
         pPriv->simmChange = 1;
 
@@ -5874,13 +5898,15 @@ static long readInputLinks
  
     if (pdr->dbgl.type != CONSTANT)
     {
-        status = recGblGetFastLink ( &(pdr->dbgl), (void *) pdr, &sval);
+/*      Following line replaced by dbGetLink for EPICS 3.13 
+        status = recGblGetFastLink ( &(pdr->dbgl), (void *) pdr, &sval); */
+	status = dbGetLink(&(pdr->dbgl), DBR_USHORT, &sval, 0, 0);
         if (status) return (status);
 
         if (pdr->dbug != sval)
         {
             DEBUG(DDR_MSG_MAX,
-                  "<%d> %s: readInputLinks: updating DDR_DEBUG to %d\n",sval);
+                  "<%ld> %s: readInputLinks: updating DDR_DEBUG to %d\n",sval);
             pdr->dbug = sval;
             MONITOR(RECORD_DBUG);
         }
@@ -5968,11 +5994,11 @@ static long special
     
     if (paddr->pfield == (void *) &pdr->flt)
     {
-        DEBUG(DDR_MSG_MAX, "<%d> %s:special: fault <%d>\n", pdr->flt);
+        DEBUG(DDR_MSG_MAX, "<%ld> %s:special: fault <%ld>\n", pdr->flt);
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         if (pPriv->fault != pdr->flt)
         {
-            DEBUG(DDR_MSG_MIN, "<%d> %s:special: new fault state, was: <%d>\n", 
+            DEBUG(DDR_MSG_MIN, "<%ld> %s:special: new fault state, was: <%d>\n", 
                 pPriv->fault);
             pPriv->faultChange = TRUE;
             pPriv->fault = pdr->flt;
@@ -6110,7 +6136,7 @@ static long startingState
     long    status = 0;             /* function return status               */
 
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:startingState:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:startingState:entry%c\n", ' ');
 
     /*
      *  If entering the starting state from another state (first pass) the
@@ -6120,7 +6146,7 @@ static long startingState
     if (pdr->osta != DDR_STARTING)
     {
         DEBUG(DDR_MSG_FULL,
-               "<%d> %s: startingState: from osta:%d\n", pdr->osta);
+               "<%ld> %s: startingState: from osta:%d\n", pdr->osta);
 
         /*
          *  switch the state machine into starting state.
@@ -6138,7 +6164,7 @@ static long startingState
         if ( pPriv->move_while_busy )
         {
             DEBUG(DDR_MSG_FULL,
-                "<%d> %s:startingState, unsetting move_while_busy%c\n", ' ');
+                "<%ld> %s:startingState, unsetting move_while_busy%c\n", ' ');
             pPriv->move_while_busy = FALSE;
             pPriv->backlashMotion = FALSE;
         }
@@ -6171,7 +6197,7 @@ static long startingState
         {
             pPriv->velocity = (pPriv->baseVelocity + 1);
             DEBUG(DDR_MSG_FULL, 
-                  "<%d> %s: startingState: increasing velocity to %d steps/sec\n",
+                  "<%ld> %s: startingState: increasing velocity to %ld steps/sec\n",
                   pPriv->velocity );
         }
 
@@ -6181,7 +6207,7 @@ static long startingState
 
         pPriv->encoderDeadband = pdr->edbd;
         DEBUG(DDR_MSG_MAX,
-                "<%d> %s:startingState: encoder Deadband=%d\n",
+                "<%ld> %s:startingState: encoder Deadband=%ld\n",
                 pPriv->encoderDeadband );
         semGive (pPriv->mutexSem);
 
@@ -6196,7 +6222,7 @@ static long startingState
         if (status)
         {
             DEBUG(DDR_MSG_ERROR,
-                  "<%d> %s:startingState: configureDrive call failed%c\n",
+                  "<%ld> %s:startingState: configureDrive call failed%c\n",
                   ' ');
             SET_ERR_MSG( pPriv->errorMessage);
             return abortingState (pdr);
@@ -6233,7 +6259,7 @@ static long startingState
             if (!pPriv->backlashMotion)
             {
                 DEBUG(DDR_MSG_FULL,
-                    "<%d> %s:startingState, backlash overshoot%c\n", ' ');
+                    "<%ld> %s:startingState, backlash overshoot%c\n", ' ');
                 pPriv->target = (long)((pdr->val + pdr->blco) * pdr->mres);
             }
 
@@ -6246,7 +6272,7 @@ static long startingState
             else
             {
                 DEBUG(DDR_MSG_FULL,
-                    "<%d> %s:startingState, backlash correction%c\n", ' ');
+                    "<%ld> %s:startingState, backlash correction%c\n", ' ');
                 pPriv->target = pPriv->target - (long)(pdr->blco * pdr->mres);
             }
         }
@@ -6283,7 +6309,7 @@ static long startingState
         if (status)
         {
             DEBUG(DDR_MSG_ERROR,
-                  "<%d> %s:startingState: controlMotion call failed%c\n",
+                  "<%ld> %s:startingState: controlMotion call failed%c\n",
                   ' ');
             SET_ERR_MSG( pPriv->errorMessage);
             return abortingState (pdr);
@@ -6316,7 +6342,7 @@ static long startingState
             pPriv->moving = TRUE;
             semGive (pPriv->mutexSem);
             DEBUG(DDR_MSG_FULL,
-                "<%d> %s: startingState: We're there, so fake moving%c\n", ' ');
+                "<%ld> %s: startingState: We're there, so fake moving%c\n", ' ');
             status = movingState (pdr);
         }
 
@@ -6380,7 +6406,7 @@ static long startingState
             if (status)
             {
                 DEBUG(DDR_MSG_ERROR,
-                      "<%d> %s:startingState: setPosition call failed%c\n",
+                      "<%ld> %s:startingState: setPosition call failed%c\n",
                       ' ');
                 SET_ERR_MSG( pPriv->errorMessage);
                 return abortingState (pdr);
@@ -6401,7 +6427,7 @@ static long startingState
         {
             SET_ERR_MSG( "Can not move into a soft limit");
             DEBUG(DDR_MSG_ERROR, 
-                  "<%d> %s: startingState: can't move into a limit%c\n", ' ');
+                  "<%ld> %s: startingState: can't move into a limit%c\n", ' ');
             return ( abortingState (pdr) );
         }
     }
@@ -6418,13 +6444,13 @@ static long startingState
         if ( pPriv->checkLimits )
         {
             DEBUG(DDR_MSG_MIN,
-                  "<%d> %s:startingState: scanTask did not check limits!%c\n",
+                  "<%ld> %s:startingState: scanTask did not check limits!%c\n",
                   ' ');
         }
 
         SET_ERR_MSG( "Motion did not start in time");
         DEBUG(DDR_MSG_ERROR,
-               "<%d> %s: startingState: Motion did not start in time%c\n", ' ');
+               "<%ld> %s: startingState: Motion did not start in time%c\n", ' ');
         return ( abortingState (pdr) );
     }
         
@@ -6508,7 +6534,7 @@ static long stoppingState
     long timeout;                   /* callback delay value                 */
     long status = 0;                /* function return status               */
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:stoppingState:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:stoppingState:entry%c\n", ' ');
 
 
 
@@ -6521,7 +6547,7 @@ static long stoppingState
     if (pdr->osta != DDR_STOPPING)
     {
         DEBUG(DDR_MSG_FULL,
-              "<%d> %s: stoppingState: from osta:%d\n", pdr->osta);
+              "<%ld> %s: stoppingState: from osta:%d\n", pdr->osta);
 
         /*
          *  switch the state machine into the stopping state.
@@ -6538,7 +6564,7 @@ static long stoppingState
         if (status)
         {
             DEBUG(DDR_MSG_ERROR,
-                  "<%d> %s:stoppingState: controlMotion call failed%c\n",
+                  "<%ld> %s:stoppingState: controlMotion call failed%c\n",
                   ' ');
             SET_ERR_MSG( pPriv->errorMessage);
             return abortingState (pdr);
@@ -6561,7 +6587,7 @@ static long stoppingState
                 (long) ceil (10 * pPriv->velocity / pPriv->acceleration ));
         if (timeout < DDR_START_TIMEOUT) timeout = DDR_START_TIMEOUT;
         DEBUG(DDR_MSG_FULL,
-              "<%d> %s: stoppingState: timeout:%d\n", timeout);
+              "<%ld> %s: stoppingState: timeout:%ld\n", timeout);
         (*pdset->setDelay) (pPriv, timeout);
        
         return ( status );
@@ -6582,7 +6608,7 @@ static long stoppingState
         {
             SET_ERR_MSG( "Device hit a soft limit");
             DEBUG(DDR_MSG_ERROR,
-                  "<%d> %s: stoppingState: Device hit a soft limit%c\n", ' ');
+                  "<%ld> %s: stoppingState: Device hit a soft limit%c\n", ' ');
             return ( abortingState(pdr) );
         }
       
@@ -6599,7 +6625,7 @@ static long stoppingState
     {
         SET_ERR_MSG( "motion did not stop in time");
         DEBUG(DDR_MSG_ERROR,
-              "<%d> %s: stoppingState: Motion did not stop in time%c\n", ' ');
+              "<%ld> %s: stoppingState: Motion did not stop in time%c\n", ' ');
         return ( abortingState (pdr) );
     }
 
@@ -6713,7 +6739,7 @@ static long unlockingState
     long     status = 0;            /* function return status               */
 
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:unlockingState:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:unlockingState:entry%c\n", ' ');
 
 
     /*
@@ -6724,7 +6750,7 @@ static long unlockingState
     if (pdr->osta != DDR_UNLOCKING)
     {
         DEBUG(DDR_MSG_FULL,
-              "<%d> %s: unlockingState: from osta:%d\n", pdr->osta);
+              "<%ld> %s: unlockingState: from osta:%d\n", pdr->osta);
 
         pdr->osta = DDR_UNLOCKING;
 
@@ -6839,7 +6865,7 @@ static long unlockingState
         {
             SET_ERR_MSG( "brake did not release in time");
             DEBUG(DDR_MSG_ERROR,
-                 "<%d> %s: unlockingState: Brake did not release in time%c\n",
+                 "<%ld> %s: unlockingState: Brake did not release in time%c\n",
                  ' ');
             return ( abortingState (pdr) );
         }
@@ -6891,10 +6917,9 @@ static long writeOutputLinks
     DEVICE_CONTROL_RECORD    *pdr   /* deviceControl record structure       */
 )
 {
-    long nRequest = 1;              /* number of values to write on the link*/
     long status = 0;                /* function return status               */
 
-    DEBUG(DDR_MSG_MAX, "<%d> %s:writeOutputLinks: %x\n", pdr->lmap);
+    DEBUG(DDR_MSG_MAX, "<%ld> %s:writeOutputLinks: %lx\n", pdr->lmap);
 
     /*
      *  If a field has been marked by writing (done by setting the matching
@@ -6906,27 +6931,35 @@ static long writeOutputLinks
 
     if (TRIGGERED(RECORD_BRK))
     {
-        status = recGblPutFastLink (&(pdr->brkl), (void *) pdr, &(pdr->brk));
+/*      Following line replaced by dbPutLink for EPICS 3.13 
+        status = recGblPutFastLink (&(pdr->brkl), (void *) pdr, &(pdr->brk)); */
+	status = dbPutLink(&(pdr->brkl), DBR_LONG, &(pdr->brk), 1);
         if (status) return status;
     }
 
     if (TRIGGERED(RECORD_PWR))
     {
-       status = recGblPutFastLink (&(pdr->pwrl), (void *) pdr, &(pdr->pwr));
+/*      Following line replaced by dbPutLink for EPICS 3.13 
+       status = recGblPutFastLink (&(pdr->pwrl), (void *) pdr, &(pdr->pwr)); */
+       status = dbPutLink(&(pdr->pwrl), DBR_LONG, &(pdr->pwr), 1);
        if (status) return status;
     }
 
     if (TRIGGERED(RECORD_MESS))
     {
+/*      Following line replaced by dbPutLink for EPICS 3.13 
         status = recGblPutLinkValue (&(pdr->msgl), (void *) pdr, DBR_STRING,
-                                     pdr->mess, &nRequest);
+                                     pdr->mess, &nRequest); */
+        status = dbPutLink(&(pdr->msgl), DBR_STRING, pdr->mess, 1);
         if (status) return status;
     }
 
     if (TRIGGERED(RECORD_BUSY))
     {
-        status = recGblPutFastLink (&(pdr->bsyl), (void *) pdr, &(pdr->busy));
-    if (status) return status;
+/*      Following line replaced by dbPutLink for EPICS 3.13 
+        status = recGblPutFastLink (&(pdr->bsyl), (void *) pdr, &(pdr->busy)); */
+        status = dbPutLink(&(pdr->bsyl), DBR_USHORT, &(pdr->busy), 1);
+        if (status) return status;
     }
 
 

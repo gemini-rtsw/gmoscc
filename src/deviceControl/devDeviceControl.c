@@ -26,10 +26,19 @@ static char rcsid[] = "$Id$";
  ************************************************************************
  *
  * FILENAME
- * devDeviceControl.c
+ * gcalDevDeviceControl.c
  *
  * PURPOSE:
- * EPICS OMS-8 and OMS-44 Device Support code for the deviceControl record.
+ * EPICS "GCAL" OMS-8 and OMS-44 Device Support code for the deviceControl record.
+ *
+ * This code was based on  devDeviceControl.c in the gmos/src directory
+ * of the Hilo CVS repository, file dated July 12 2001, checked-out on 
+ * 8 August 2001, then updated for EPICS 3.13 and GCAL mods. applied.
+ *
+ * This differs from the GMOS deviceControl record in that indexing with 
+ * mode INDEX_NONE here sets the internal position counter to zero.
+ * DSET here is called devDeviceControlGcalOMS corresponding to the
+ * device type "DEV GCAL OMS 8/44".
  *
  * FUNCTION NAME(S)
  * configureDrive       Set motor velocity, acceleration and base velocity
@@ -46,6 +55,12 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2001/08/10 14:01:48  ptaylor
+ * Restructured src directory with 4 sub-directories, including pv and lut which were previously in pv as well as deviceControl and gcal previously in src
+ *
+ * Revision 1.3  2001/07/12 19:11:00  gemvx
+ * Re-enabled power check
+ *
  * Revision 1.2  2001/04/23 18:23:09  smb
  * OIWFS will no longer time out after being moved manually a significant amount 
  * (bug 168).  HSWA field monitoring problem fixed (bug 218). Problem with setting 
@@ -351,7 +366,7 @@ static int scanTaskPeriod;                 /* system ticks between scans    */
  *
  * For example:
  *      DEBUG(DDR_MSG_FULL,
- *            "<%d> c:%d s:%d omsScanTask: new position: %d \n",
+ *            "<%ld> c:%d s:%d omsScanTask: new position: %d \n",
  *            position);
  *
  * may result in the following log message:
@@ -439,7 +454,7 @@ static long configureDrive
     long    status = 0;                              /* function status     */
   
 
-    DEBUG(DDR_MSG_MAX, "<%d> c:%d s:%d configureDrive:entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> c:%d s:%d configureDrive:entry%c\n", ' ');
 
     /*
      *  In simulation mode just set the simulation velocity.
@@ -475,7 +490,7 @@ static long configureDrive
 
         if ( pDevice->baseVelocity < 1 )
         {
-            DEBUG(DDR_MSG_ERROR, "<%d> c:%d s:%d configureDrive:velocity base cannot be less than 1: base velocity:%d steps/sec\n", pDevice->baseVelocity);
+            DEBUG(DDR_MSG_ERROR, "<%ld> c:%d s:%d configureDrive:velocity base cannot be less than 1: base velocity:%ld steps/sec\n", pDevice->baseVelocity);
             SET_ERR_MSG("VBAS must be greater than zero");
             return DRV_OMS_VME_S_PARAM_ERR;
         }
@@ -488,9 +503,9 @@ static long configureDrive
         if ( pDevice->velocity <= pDevice->baseVelocity ||
                   pDevice->indexVelocity <= pDevice->baseVelocity )
         {
-            DEBUG(DDR_MSG_ERROR, "<%d> c:%d s:%d configureDrive:velocity base failure: base velocity:%d steps/sec\n", pDevice->baseVelocity);
-            DEBUG(DDR_MSG_MIN, "<%d> c:%d s:%d configureDrive:velocity:%d steps/sec\n", pDevice->velocity);
-            DEBUG(DDR_MSG_MIN, "<%d> c:%d s:%d configureDrive:index velocity:%d steps/sec\n", pDevice->indexVelocity);
+            DEBUG(DDR_MSG_ERROR, "<%ld> c:%d s:%d configureDrive:velocity base failure: base velocity:%ld steps/sec\n", pDevice->baseVelocity);
+            DEBUG(DDR_MSG_MIN, "<%ld> c:%d s:%d configureDrive:velocity:%ld steps/sec\n", pDevice->velocity);
+            DEBUG(DDR_MSG_MIN, "<%ld> c:%d s:%d configureDrive:index velocity:%ld steps/sec\n", pDevice->indexVelocity);
             SET_ERR_MSG("VBAS must be less than VELO and FIVL");
             return DRV_OMS_VME_S_PARAM_ERR;
         }
@@ -502,9 +517,9 @@ static long configureDrive
         if ( pDevice->velocity < DDR_OMS_SCAN_TASK_RATE ||
              pDevice->indexVelocity < DDR_OMS_SCAN_TASK_RATE)
         {
-            DEBUG(DDR_MSG_ERROR, "<%d> c:%d s:%d configureDrive:velocity slower than scan rate, DDR_OMS_SCAN_TASK_RATE: %d scans/sec\n", DDR_OMS_SCAN_TASK_RATE);
-            DEBUG(DDR_MSG_MIN, "<%d> c:%d s:%d configureDrive:velocity: %d steps/sec\n", pDevice->velocity);
-            DEBUG(DDR_MSG_MIN, "<%d> c:%d s:%d configureDrive:index velocity: %d steps/sec\n", pDevice->indexVelocity);
+            DEBUG(DDR_MSG_ERROR, "<%ld> c:%d s:%d configureDrive:velocity slower than scan rate, DDR_OMS_SCAN_TASK_RATE: %d scans/sec\n", DDR_OMS_SCAN_TASK_RATE);
+            DEBUG(DDR_MSG_MIN, "<%ld> c:%d s:%d configureDrive:velocity: %ld steps/sec\n", pDevice->velocity);
+            DEBUG(DDR_MSG_MIN, "<%ld> c:%d s:%d configureDrive:index velocity: %ld steps/sec\n", pDevice->indexVelocity);
             SET_ERR_MSG("Velocity too slow for scan task");
             return DRV_OMS_VME_S_PARAM_ERR;
         }
@@ -517,9 +532,9 @@ static long configureDrive
         if ( pDevice->acceleration < (DDR_OMS_SCAN_TASK_RATE *
                    (DDR_OMS_SCAN_TASK_RATE - pDevice->baseVelocity)) )
         {
-            DEBUG(DDR_MSG_ERROR, "<%d> c:%d s:%d configureDrive:acceleration too slow for scan rate, DDR_OMS_SCAN_TASK_RATE: %d scans/sec\n", DDR_OMS_SCAN_TASK_RATE);
-            DEBUG(DDR_MSG_MIN, "<%d> c:%d s:%d configureDrive:base velocity: %d steps/sec\n", pDevice->baseVelocity);
-            DEBUG(DDR_MSG_MIN, "<%d> c:%d s:%d configureDrive:acceleration: %d steps/sec/sec\n", pDevice->acceleration);
+            DEBUG(DDR_MSG_ERROR, "<%ld> c:%d s:%d configureDrive:acceleration too slow for scan rate, DDR_OMS_SCAN_TASK_RATE: %d scans/sec\n", DDR_OMS_SCAN_TASK_RATE);
+            DEBUG(DDR_MSG_MIN, "<%ld> c:%d s:%d configureDrive:base velocity: %ld steps/sec\n", pDevice->baseVelocity);
+            DEBUG(DDR_MSG_MIN, "<%ld> c:%d s:%d configureDrive:acceleration: %ld steps/sec/sec\n", pDevice->acceleration);
             SET_ERR_MSG("Acceleration too slow for scan task");
             return DRV_OMS_VME_S_PARAM_ERR;
         }
@@ -549,7 +564,7 @@ static long configureDrive
         if (status)
         {
             drvOmsVmeGetErrorMessage (pDevice->errorMessage);
-            DEBUG(DDR_MSG_ERROR, "<%d> c:%d s:%d configureDrive: %s\n",
+            DEBUG(DDR_MSG_ERROR, "<%ld> c:%d s:%d configureDrive: %s\n",
                                  pDevice->errorMessage);
         }
         semGive (pMotor->mutexSem);
@@ -631,7 +646,7 @@ static long controlMotion
     long    status = 0;                              /* function status     */
 
 
-    DEBUG(DDR_MSG_FULL, "<%d> c:%d s:%d controlMotion: mode=<%ld>\n", mode);
+    DEBUG(DDR_MSG_FULL, "<%ld> c:%d s:%d controlMotion: mode=<%ld>\n", mode);
 
 
     /*
@@ -643,7 +658,7 @@ static long controlMotion
     {
 
         DEBUG(DDR_MSG_FULL, 
-              "<%d> c:%d s:%d controlMotion:simulating%c\n",' ');
+              "<%ld> c:%d s:%d controlMotion:simulating%c\n",' ');
 
         if ( mode != DDR_MOVE_GO )
         {
@@ -701,7 +716,16 @@ static long controlMotion
                 status = drvOmsVmeWriteMotor (pMotor->card,
                                               pMotor->axis,
                                               scratch);
-                break;
+		
+/* GCAL-specific modification: when INDEXing, set current position to zero */
+                if (pDevice->mode == DDR_MODE_INDEX)
+		{
+		  sprintf (scratch,"LP0 ");
+                  status = drvOmsVmeWriteMotor (pMotor->card,
+                                                pMotor->axis,
+                                                scratch);
+	        }
+		break;
 
 
             /*
@@ -715,7 +739,7 @@ static long controlMotion
 
             case DDR_INDEX_LHSW:
                 DEBUG(DDR_MSG_FULL,
-                      "<%d> c:%d s:%d controlMotion: INDEX_LHSW%c\n", ' ');
+                      "<%ld> c:%d s:%d controlMotion: INDEX_LHSW%c\n", ' ');
 
                 /*  
                  *  With the 44 type cards, if the limit IS set:
@@ -740,7 +764,7 @@ static long controlMotion
                 if (pMotor->type == 44)
                 {
                     DEBUG(DDR_MSG_FULL,
-                          "<%d> c:%d s:%d controlMotion: type 44%c\n",
+                          "<%ld> c:%d s:%d controlMotion: type 44%c\n",
                           ' ');
 
                     /*
@@ -826,7 +850,7 @@ static long controlMotion
 
             case DDR_INDEX_UHSW:
                 DEBUG(DDR_MSG_FULL,
-                      "<%d> c:%d s:%d controlMotion: INDEX_UHSW%c\n", ' ');
+                      "<%ld> c:%d s:%d controlMotion: INDEX_UHSW%c\n", ' ');
 
                 /*  
                  *  With the 44 type cards, if limit IS set:
@@ -849,7 +873,7 @@ static long controlMotion
                 if (pMotor->type == 44)
                 {
                     DEBUG(DDR_MSG_FULL,
-                          "<%d> c:%d s:%d controlMotion: type 44%c\n", ' ');
+                          "<%ld> c:%d s:%d controlMotion: type 44%c\n", ' ');
 
                     /*
                      *  Generate an OMS command string to implement this
@@ -859,7 +883,7 @@ static long controlMotion
                     if (pDevice->highLimit)
                     {
                         DEBUG(DDR_MSG_FULL,
-                              "<%d> c:%d s:%d controlMotion: hilim set%c\n",
+                              "<%ld> c:%d s:%d controlMotion: hilim set%c\n",
                               ' ');
                         sprintf (scratch,
                                  "HL HR0 HH HR0 VL%ld HE HM0 HS MA0 GO ID ",
@@ -904,7 +928,7 @@ static long controlMotion
                     if (pDevice->highLimit)
                     {
                         DEBUG(DDR_MSG_MAX,
-                              "<%d> c:%d s:%d controlMotion: hilim set%c\n",
+                              "<%ld> c:%d s:%d controlMotion: hilim set%c\n",
                               ' ');
                         sprintf (scratch,
                                  "HH HR0 HL HM0 VL%ld HH HR0 MA0 GO ID ",
@@ -951,7 +975,7 @@ static long controlMotion
 
             case DDR_INDEX_CHSW:
                 DEBUG(DDR_MSG_FULL,
-                      "<%d> c:%d s:%d controlMotion: INDEX_CHSW%c\n", ' ');
+                      "<%ld> c:%d s:%d controlMotion: INDEX_CHSW%c\n", ' ');
 
                 sprintf (scratch,
                          "HL HR0 HH HR0 HH HM0 VL%ld HL HM0 MA0 GO ID ",
@@ -975,7 +999,7 @@ static long controlMotion
 
             case DDR_INDEX_LLSW:
                 DEBUG(DDR_MSG_FULL,
-                      "<%d> c:%d s:%d controlMotion: INDEX_LLSW%c\n", ' ');
+                      "<%ld> c:%d s:%d controlMotion: INDEX_LLSW%c\n", ' ');
                 status = drvOmsVmeWriteMotor (pMotor->card,
                                               pMotor->axis,
                                               "MR-1000000000 GO ID ");
@@ -995,7 +1019,7 @@ static long controlMotion
 
             case DDR_INDEX_ULSW:
                 DEBUG(DDR_MSG_FULL,
-                      "<%d> c:%d s:%d controlMotion: INDEX_ULSW%c\n", ' ');
+                      "<%ld> c:%d s:%d controlMotion: INDEX_ULSW%c\n", ' ');
                 status = drvOmsVmeWriteMotor (pMotor->card,
                                               pMotor->axis,
                                               "MR1000000000 GO ID ");
@@ -1013,7 +1037,7 @@ static long controlMotion
             }
 
             DEBUG(DDR_MSG_MAX,
-                  "<%d> c:%d s:%d controlMotion: Done DDR_MOVE_GO%c\n", ' ');
+                  "<%ld> c:%d s:%d controlMotion: Done DDR_MOVE_GO%c\n", ' ');
             break;
 
 
@@ -1027,7 +1051,7 @@ static long controlMotion
                                           pMotor->axis,
                                           "ST ID ");
             DEBUG(DDR_MSG_MAX,
-                  "<%d> c:%d s:%d controlMotion: Done DDR_MOVE_STOP%c\n",
+                  "<%ld> c:%d s:%d controlMotion: Done DDR_MOVE_STOP%c\n",
                                      ' ');
             break;
 
@@ -1046,7 +1070,7 @@ static long controlMotion
                                           pMotor->axis,
                                           "AC2000000 ST ");
             DEBUG(DDR_MSG_MAX,
-                  "<%d> c:%d s:%d controlMotion: Done DDR_MOVE_ABORT%c\n",
+                  "<%ld> c:%d s:%d controlMotion: Done DDR_MOVE_ABORT%c\n",
                                      ' ');
             break;
         }
@@ -1063,7 +1087,7 @@ static long controlMotion
     {
         drvOmsVmeGetErrorMessage (pDevice->errorMessage);
         DEBUG(DDR_MSG_ERROR, 
-              "<%d> c:%d s:%d configure drive: %s\n",
+              "<%ld> c:%d s:%d configure drive: %s\n",
               pDevice->errorMessage);
     }
 
@@ -1122,7 +1146,7 @@ static long controlPower
     DEV_CTL_OMS_PRIVATE *pMotor = pDevice->pPrivate;
     long status = 0;
 
-    DEBUG(DDR_MSG_FULL, "<%d> c:%d s:%d controlPower:<%ld>\n", power);
+    DEBUG(DDR_MSG_FULL, "<%ld> c:%d s:%d controlPower:<%ld>\n", power);
 
     /*
      *  Only write to the hardware if we are not in simulation mode
@@ -1161,7 +1185,7 @@ static long controlPower
     {
         drvOmsVmeGetErrorMessage (pDevice->errorMessage);
         DEBUG(DDR_MSG_ERROR, 
-              "<%d> c:%d s:%d controlPower: failed: %s\n",
+              "<%ld> c:%d s:%d controlPower: failed: %s\n",
               pDevice->errorMessage);
     }
 
@@ -1549,7 +1573,7 @@ static long devInitRec
     DEV_CTL_OMS_PRIVATE *pAxis = NULL;              /* motor control struct */
     long    status = 0;                         /* function status return   */
 
-    DEBUG(DDR_MSG_MAX, "<%d> c:%d s:%d devInitRec: entry%c\n", ' ');
+    DEBUG(DDR_MSG_MAX, "<%ld> c:%d s:%d devInitRec: entry%c\n", ' ');
 
 
     /*
@@ -1683,7 +1707,7 @@ static long devInitRec
             semTake (pMotor->mutexSem, WAIT_FOREVER);
             pMotor->exists = FALSE; 
             semGive (pMotor->mutexSem);
-            DEBUG(DDR_MSG_FATAL, "\n<%d> c:%d s:%d devInitRec: OMS motor duplicate%c\n", ' ');
+            DEBUG(DDR_MSG_FATAL, "\n<%ld> c:%d s:%d devInitRec: OMS motor duplicate%c\n", ' ');
         }
 
         /* get the next one off the list */
@@ -1969,7 +1993,7 @@ static int omsScanTask
                     semTake (pMotor->mutexSem, WAIT_FOREVER);
                     pMotor->updateState = TRUE;
                     semGive (pMotor->mutexSem);
-                    DEBUG(DDR_MSG_FULL, "<%d> c:%d s:%d omsScanTask:clearing limit and home switches for simulation mode: %c\n", ' ');
+                    DEBUG(DDR_MSG_FULL, "<%ld> c:%d s:%d omsScanTask:clearing limit and home switches for simulation mode: %c\n", ' ');
 
                 }
 
@@ -2050,7 +2074,7 @@ static int omsScanTask
                 {
                     drvOmsVmeGetErrorMessage (pDevice->errorMessage);
                     DEBUG(DDR_MSG_ERROR,
-                            "<%d> c:%d s:%d Get motor position status = %d\n",
+                            "<%ld> c:%d s:%d Get motor position status = %ld\n",
                             pMotor->status);
                 }
                 else if ( pDevice->checkLimits ||
@@ -2069,7 +2093,7 @@ static int omsScanTask
 
                     
                     DEBUG(DDR_MSG_FULL,
-                        "<%d> c:%d s:%d Get motor state (checkLimits:%d)\n",
+                        "<%ld> c:%d s:%d Get motor state (checkLimits:%d)\n",
                         pDevice->checkLimits);
 
                     semTake (pMotor->mutexSem, WAIT_FOREVER);
@@ -2105,7 +2129,7 @@ static int omsScanTask
                     {
                         drvOmsVmeGetErrorMessage (pDevice->errorMessage);
                         DEBUG(DDR_MSG_ERROR,
-                            "<%d> c:%d s:%d Get motor state status = %d\n",
+                            "<%ld> c:%d s:%d Get motor state status = %ld\n",
                             pMotor->status);
                     }
 
@@ -2188,7 +2212,7 @@ static int omsScanTask
                     if ( (pMotor->earlyDone == TRUE) && (axisDone == 0) )         
                     {
                         DEBUG(DDR_MSG_FULL,
-                           "<%d> c:%d s:%d omsScanTask:motion & done flag detected in the same scan%c\n", ' ');
+                           "<%ld> c:%d s:%d omsScanTask:motion & done flag detected in the same scan%c\n", ' ');
                         axisDone = 1;
                         pMotor->earlyDone = FALSE;
                     }
@@ -2202,7 +2226,7 @@ static int omsScanTask
                     if ( axisDone || pDevice->simulation )
                     {
                         DEBUG(DDR_MSG_MIN,
-                           "<%d> c:%d s:%d omsScanTask:device motion stopped%c\n",
+                           "<%ld> c:%d s:%d omsScanTask:device motion stopped%c\n",
                            ' ');
                         pDevice->moving = FALSE;
                         rescan = TRUE;
@@ -2225,7 +2249,7 @@ static int omsScanTask
 
                         if (pMotor->stoppedCntr > 5)
                         {
-                            DEBUG(DDR_MSG_MIN,"<%d> c:%d s:%d omsScanTask:device motion stopped in limit - issuing EF ID string%c\n",' ');
+                            DEBUG(DDR_MSG_MIN,"<%ld> c:%d s:%d omsScanTask:device motion stopped in limit - issuing EF ID string%c\n",' ');
 
                             /*  
                              *  We've stopped and given the limits time to settle.
@@ -2251,7 +2275,7 @@ static int omsScanTask
                             {
                                 drvOmsVmeGetErrorMessage (pDevice->errorMessage);
                                 DEBUG(DDR_MSG_ERROR,
-                                  "<%d> c:%d s:%d Write motor stop status = %d\n",
+                                  "<%ld> c:%d s:%d Write motor stop status = %ld\n",
                                   pMotor->status);
                             }
                         }
@@ -2292,7 +2316,7 @@ static int omsScanTask
                         {
  
                             DEBUG(DDR_MSG_WARNING,
-                               "<%d> c:%d s:%d omsScanTask:device motion stopped without done flag%c\n",' ');
+                               "<%ld> c:%d s:%d omsScanTask:device motion stopped without done flag%c\n",' ');
                             pDevice->moving = FALSE;
                             rescan = TRUE;
                             semTake (pMotor->mutexSem, WAIT_FOREVER);
@@ -2328,14 +2352,14 @@ static int omsScanTask
                                  pDevice->highLimit)     )
                     {
                         DEBUG(DDR_MSG_MIN, 
-                            "<%d> c:%d s:%d omsScanTask:device motion started%c\n",
+                            "<%ld> c:%d s:%d omsScanTask:device motion started%c\n",
                             ' ');
                         pDevice->moving = TRUE;
                         DEBUG(DDR_MSG_MAX, 
-                            "<%d> c:%d s:%d omsScanTask:new position:%d\n", 
+                            "<%ld> c:%d s:%d omsScanTask:new position:%ld\n", 
                             position);
                         DEBUG(DDR_MSG_MAX, 
-                            "<%d> c:%d s:%d omsScanTask:old position:%d\n", 
+                            "<%ld> c:%d s:%d omsScanTask:old position:%ld\n", 
                             pDevice->position);
 
                         if (axisDone)
@@ -2362,7 +2386,7 @@ static int omsScanTask
                     pDevice->position = position;
                     done = FALSE;
                     rescan = TRUE;
-                    DEBUG(DDR_MSG_MAX, "<%d> c:%d s:%d omsScanTask:device position change%c\n", ' ');
+                    DEBUG(DDR_MSG_MAX, "<%ld> c:%d s:%d omsScanTask:device position change%c\n", ' ');
 	        }
 
 
@@ -2379,7 +2403,7 @@ static int omsScanTask
                 { 
                     if ( !(pDevice->moving) && !(pDevice->simulation) )
                     {
-                        DEBUG(DDR_MSG_MIN, "<%d> c:%d s:%d omsScanTask:spontaneous encoder change:%d counts\n", (pDevice->encoder - encoder));
+                        DEBUG(DDR_MSG_MIN, "<%ld> c:%d s:%d omsScanTask:spontaneous encoder change:%ld counts\n", (pDevice->encoder - encoder));
                     }
                     pDevice->encoder = encoder;
                     rescan = TRUE;
@@ -2396,7 +2420,7 @@ static int omsScanTask
                     if (lowLimit != pDevice->lowLimit)
                     {
                         DEBUG(DDR_MSG_FULL,
-                          "<%d> c:%d s:%d omsScanTask:low limit change:%d\n",
+                          "<%ld> c:%d s:%d omsScanTask:low limit change:%d\n",
                           lowLimit);
                         pDevice->lowLimit = lowLimit;
                         rescan = TRUE;
@@ -2405,7 +2429,7 @@ static int omsScanTask
                     if (highLimit != pDevice->highLimit)
                     {
                         DEBUG(DDR_MSG_FULL,
-                          "<%d> c:%d s:%d omsScanTask:high limit change:%d\n",
+                          "<%ld> c:%d s:%d omsScanTask:high limit change:%d\n",
                           highLimit);
                         pDevice->highLimit = highLimit;
                         rescan = TRUE;
@@ -2414,7 +2438,7 @@ static int omsScanTask
                     if (homeSwitch != pDevice->homeSwitch)
                     {
                         DEBUG(DDR_MSG_FULL,
-                          "<%d> c:%d s:%d omsScanTask:home switch change:%d\n",
+                          "<%ld> c:%d s:%d omsScanTask:home switch change:%d\n",
                           homeSwitch);
                         pDevice->homeSwitch = homeSwitch;
                         rescan = TRUE;
@@ -2433,7 +2457,7 @@ static int omsScanTask
             if (pMotor->status != pDevice->status)
             {
                 DEBUG(DDR_MSG_MIN,
-                 "<%d> c:%d s:%d omsScanTask:motor status != device status%c\n",
+                 "<%ld> c:%d s:%d omsScanTask:motor status != device status%c\n",
                  ' ');
                 pDevice->status = pMotor->status;
                 rescan = TRUE;
@@ -2451,7 +2475,7 @@ static int omsScanTask
             {
                 if ( pDevice->debug == DDR_MSG_MAX )
                 {
-                    logMsg ("<%d> callback! <%x,%x,%ld,%ld,%d>\n",
+                    logMsg ("<%ld> callback! <%x,%x,%ld,%ld,%d>\n",
                             (int)tickGet(),
                             (pMotor->card << 4) + pMotor->axis,
                             ((pDevice->highLimit << 12) +
@@ -2513,13 +2537,13 @@ static int omsScanTask
             {
                 SET_ERR_MSG("omsScanTask Warning: taskDelay failed ..timing off");
                 DEBUG(DDR_MSG_WARNING, 
-                      "<%d> c:%d s:%d omsScanTask: taskDelay failed, so timing off - error:%d\n", status);
+                      "<%ld> c:%d s:%d omsScanTask: taskDelay failed, so timing off - error:%ld\n", status);
             }
         }
         else
         {
             DEBUG(DDR_MSG_MIN,
-                   "<%d> c:%d s:%d omsScanTask:Slow by %d ticks!\n",taskTime);
+                   "<%ld> c:%d s:%d omsScanTask:Slow by %d ticks!\n",taskTime);
         }
 
     }  /* end of main loop */
@@ -2592,7 +2616,7 @@ static long setDelay
     semGive (pMotor->mutexSem);
 
     DEBUG(DDR_MSG_MAX, 
-          "<%d> c:%d s:%d Set delay to <%d>\n", pMotor->scansLeft);
+          "<%ld> c:%d s:%d Set delay to <%ld>\n", pMotor->scansLeft);
 
     return( 0 );
 
@@ -2646,7 +2670,7 @@ static long setPosition
     long status = 0;                        /* function return status       */
 
     DEBUG(DDR_MSG_FULL, 
-          "<%d> c:%d s:%d Set position to:%ld \n", position);
+          "<%ld> c:%d s:%d Set position to:%ld \n", position);
 
 
     /*
@@ -2699,7 +2723,7 @@ static long setPosition
         {
             drvOmsVmeGetErrorMessage (pDevice->errorMessage);
             DEBUG(DDR_MSG_ERROR, 
-                  "<%d> c:%d s:%d OMSscanTask: %s\n", pDevice->errorMessage);
+                  "<%ld> c:%d s:%d OMSscanTask: %s\n", pDevice->errorMessage);
         }
     }
 

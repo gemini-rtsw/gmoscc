@@ -1,6 +1,3 @@
-# Makefile,v 1.2 1995/09/02 01:45:04 epics Exp
-#
-
 include .applTop
 -include $(APPLIC_TOP)/config/CONFIG
 

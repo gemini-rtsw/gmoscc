@@ -45,6 +45,12 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2001/08/10 14:01:48  ptaylor
+ * Restructured src directory with 4 sub-directories, including pv and lut which were previously in pv as well as deviceControl and gcal previously in src
+ *
+ * Revision 1.2  2001/07/12 19:11:00  gemvx
+ * Re-enabled power check
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -2258,7 +2264,7 @@ long drvOmsVmeWriteMotor (int card, int axis, char *buffer)
  *-
  ************************************************************************
  */
-
+ 
 static void dumpDebugBuffer
 (
     DRV_OMS_VME_CARD *pCard             /* Card control structure       */
