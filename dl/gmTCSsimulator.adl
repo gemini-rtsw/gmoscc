@@ -6,8 +6,8 @@ display {
 	majv="2"
 	mnrv="4"
 	ndyng="2"
-	npc="12"
-	nstr="71"
+	npc="11"
+	nstr="78"
 	ndynamic="11"
 	nplot="0"
 	nrd="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="2528"
+	nwords_dspy="2578"
 	nwords_sta="804"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1658"
-	osta="854"
-	odynamic="1778"
-	oplot="2516"
-	ord="2516"
-	oes="2516"
-	okd="2516"
-	opd="2528"
-	opo="2528"
+	odyng="1708"
+	osta="904"
+	odynamic="1828"
+	oplot="2566"
+	ord="2566"
+	oes="2566"
+	okd="2566"
+	opd="2578"
+	opo="2578"
 	opc="68"
-	ostr="238"
-	ocmap="854"
-	ocrules="854"
+	ostr="232"
+	ocmap="904"
+	ocrules="904"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -121,7 +121,7 @@ display {
 "text" {
 	object {
 		x="13"
-		y="69"
+		y="67"
 		width="169"
 		height="18"
 		groupid="0"
@@ -132,7 +132,7 @@ display {
 "text" {
 	object {
 		x="12"
-		y="115"
+		y="113"
 		width="170"
 		height="18"
 		groupid="0"
@@ -143,7 +143,7 @@ display {
 "text" {
 	object {
 		x="12"
-		y="162"
+		y="160"
 		width="170"
 		height="18"
 		groupid="0"
@@ -154,7 +154,7 @@ display {
 "text" {
 	object {
 		x="12"
-		y="209"
+		y="206"
 		width="170"
 		height="18"
 		groupid="0"
@@ -240,7 +240,7 @@ display {
 "text" {
 	object {
 		x="12"
-		y="255"
+		y="253"
 		width="170"
 		height="18"
 		groupid="0"
@@ -428,7 +428,7 @@ display {
 		x="190"
 		y="61"
 		width="200"
-		height="35"
+		height="30"
 		groupid="0"
 	}
 	control {
@@ -473,7 +473,7 @@ display {
 		x="190"
 		y="107"
 		width="200"
-		height="35"
+		height="30"
 		groupid="0"
 	}
 	control {
@@ -518,7 +518,7 @@ display {
 		x="190"
 		y="154"
 		width="200"
-		height="35"
+		height="30"
 		groupid="0"
 	}
 	control {
@@ -561,9 +561,9 @@ display {
 "text entry" {
 	object {
 		x="190"
-		y="201"
+		y="200"
 		width="200"
-		height="35"
+		height="30"
 		groupid="0"
 	}
 	control {
@@ -608,7 +608,7 @@ display {
 		x="22"
 		y="365"
 		width="175"
-		height="34"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -654,7 +654,7 @@ display {
 		x="219"
 		y="365"
 		width="175"
-		height="34"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -700,7 +700,7 @@ display {
 		x="190"
 		y="247"
 		width="200"
-		height="35"
+		height="30"
 		groupid="0"
 	}
 	control {
@@ -743,9 +743,9 @@ display {
 "text update" {
 	object {
 		x="124"
-		y="403"
+		y="405"
 		width="181"
-		height="34"
+		height="30"
 		groupid="0"
 	}
 	monitor {
