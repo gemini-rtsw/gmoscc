@@ -1,0 +1,405 @@
+file {
+	name="gmSeqIFUSelect.adl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="0"
+	npc="2"
+	nstr="74"
+	ndynamic="5"
+	nplot="0"
+	nrd="0"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="430"
+		height="328"
+	}
+	clr="1"
+	bclr="13"
+	nwords_dspy="1494"
+	nwords_sta="456"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="1128"
+	osta="672"
+	odynamic="1128"
+	oplot="1482"
+	ord="1482"
+	oes="1482"
+	okd="1482"
+	opd="1494"
+	opo="1494"
+	opc="68"
+	ostr="86"
+	ocmap="672"
+	ocrules="672"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="2560"
+	pixht="1024"
+	mmwid="722"
+	mmht="289"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="57"
+		y="19"
+		width="311"
+		height="24"
+		groupid="0"
+	}
+	textix="GMOS IFU Selection"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="14"
+		y="72"
+		width="264"
+		height="20"
+		groupid="0"
+	}
+	textix="Select IFU Mode :"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"line" {
+	object {
+		x="941"
+		y="569"
+		width="0"
+		height="0"
+		groupid="0"
+	}
+	npoints="0"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="71"
+		y="48"
+		width="278"
+		height="1"
+		groupid="0"
+	}
+	npoints="3"
+	point[0] {
+		x="71"
+		y="49"
+	}
+	point[1] {
+		x="219"
+		y="49"
+	}
+	point[2] {
+		x="349"
+		y="48"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="532"
+		y="1000"
+	}
+	orgpoint[2] {
+		x="1000"
+		y="0"
+	}
+}
+"message button" {
+	object {
+		x="79"
+		y="129"
+		width="180"
+		height="20"
+		groupid="0"
+	}
+	control {
+		chan="$(T)cc:ifuSelection.B"
+		clr="1"
+		bclr="0"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="IFU"
+	pressed_label="10000004"
+	press_msg="10000004"
+	release_msg=""
+}
+"message button" {
+	object {
+		x="79"
+		y="149"
+		width="180"
+		height="20"
+		groupid="0"
+	}
+	control {
+		chan="$(T)cc:ifuSelection.B"
+		clr="1"
+		bclr="0"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="IFU-2"
+	pressed_label="10000007"
+	press_msg="10000007"
+	release_msg=""
+}
+"message button" {
+	object {
+		x="79"
+		y="169"
+		width="180"
+		height="20"
+		groupid="0"
+	}
+	control {
+		chan="$(T)cc:ifuSelection.B"
+		clr="1"
+		bclr="0"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="IFU-B"
+	pressed_label="10000008"
+	press_msg="10000008"
+	release_msg=""
+}
+"message button" {
+	object {
+		x="79"
+		y="190"
+		width="180"
+		height="20"
+		groupid="0"
+	}
+	control {
+		chan="$(T)cc:ifuSelection.B"
+		clr="1"
+		bclr="0"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="IFU-R"
+	pressed_label="10000009"
+	press_msg="10000009"
+	release_msg=""
+}
+"text update" {
+	object {
+		x="80"
+		y="271"
+		width="180"
+		height="26"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)cc:ifuSelection.B"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"kill display" {
+	object {
+		x="308"
+		y="261"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

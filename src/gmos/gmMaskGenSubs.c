@@ -36,6 +36,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:48  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -162,6 +165,7 @@
 
 long mkExtLvdtZones (struct genSubRecord *);
 long mkSwitchWord (struct genSubRecord *);
+long mkIfuSelection (struct genSubRecord *);
 
 
 /*
@@ -359,6 +363,74 @@ long mkExtLvdtZones
  ************************************************************************
  *+
  * FUNCTION NAME:
+ * mkIfuSelection
+ *
+ * INVOCATION:
+ * Called when ifuSelection genSub record processes
+ *
+ * PARAMETERS: (">" input, "!" modified, "<" output)
+ * (>) pgs (struct genSubRecord *)  Pointer to calling genSub record structure
+ *
+ *
+ * FUNCTION VALUE:
+ * ([long] 0 ) Indicates completed successfully.
+ *
+ * PURPOSE:
+ * Process GenSub record
+ *
+ * DESCRIPTION:
+ * Replaces IFU barcode with a user selected barcode
+ *
+ * EXTERNAL VARIABLES:
+ * None.
+ *
+ * PRIOR REQUIREMENTS:
+ * None.
+ *
+ * SEE ALSO:
+ * - other function name.
+ *
+ * DEFICIENCIES:
+ * None.
+ *-
+ ************************************************************************
+ */
+
+long mkIfuSelection
+(
+    struct genSubRecord *pgs /* (in) pointer to calling recored structure */
+)
+{
+   char ifuSelection[8] = "";
+   char barcode[8] = "";
+
+/* Read in user IFU selection */
+   strncpy (ifuSelection, (char *)pgs->b, 8);
+   printf("ifuSelection = %s\n",ifuSelection);
+/* Read in barcode */
+   strncpy (barcode, (char *)pgs->a, 8);
+   printf("barcode read = %s\n", barcode);
+      
+/* Check to see if IFU  barcode is read */
+   if (strncmp (barcode,"10000004", 8) == 0)
+      /* ifu barcode read then output the user selected barcode */
+      {
+       strncpy((char *)pgs->vala,ifuSelection,8); 
+       printf("barcode read is IFU, output is user selection: n");
+      }
+   else
+      /* the barcode does not correspond to the ifu */
+      /* copy the original barcode to the output */
+      {
+       strncpy((char *)pgs->vala,barcode,8);
+       printf("barcode read is not IFU, output is original barcode \n");
+      }
+return(0);
+}
+/*
+ ************************************************************************
+ *+
+ * FUNCTION NAME:
  * mkSwitchWord
  *
  * INVOCATION:
@@ -406,7 +478,6 @@ long mkExtLvdtZones
  *-
  ************************************************************************
  */
-
 
 long mkSwitchWord
 (

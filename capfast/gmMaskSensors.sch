@@ -1,8 +1,9 @@
 [schematic2]
-uniq 467
+uniq 475
 [tools]
 [detail]
-w 1190 915 100 0 barcode gmBarcode.gmBarcode#466.OUT 896 912 1568 912 outhier.barcode.p
+w 1234 891 100 0 bcread gmBarcode.gmBarcode#466.FLNK 896 880 1632 880 1632 720 1856 720 egenSub.ifuSelection.SLNK
+w 2154 1435 100 0 barcode egenSub.ifuSelection.VALA 2144 1424 2224 1424 outhier.barcode.p
 w 306 1515 100 0 n#455 ebis.NotInFp.FLNK 32 800 160 800 160 1504 512 1504 egenSubD.SwitchWord.SLNK
 w 66 1963 100 0 n#455 ebis.GrpNotGripped.FLNK 32 1952 160 1952 160 1504 junction
 w -142 891 100 0 n#454 ebis.IfuNotIn.FLNK 32 992 80 992 80 880 -304 880 -304 784 -224 784 ebis.NotInFp.SLNK
@@ -39,6 +40,22 @@ w -270 819 100 0 n#134 hwin.hwin#135.in -256 816 -224 816 ebis.NotInFp.INP
 w -270 1011 100 0 n#133 hwin.hwin#132.in -256 1008 -224 1008 ebis.IfuNotIn.INP
 w -270 1203 100 0 n#131 hwin.hwin#130.in -256 1200 -224 1200 ebis.MaskNotIn.INP
 [cell use]
+use inhier -464 535 100 0 bc_trigger
+xform 0 -448 576
+use egenSub 1856 631 100 0 ifuSelection
+xform 0 2000 1056
+p 1633 405 100 0 0 FTA:STRING
+p 1633 405 100 0 0 FTB:STRING
+p 1633 373 100 0 0 FTC:STRING
+p 1633 341 100 0 0 FTD:STRING
+p 1633 309 100 0 0 FTE:STRING
+p 1633 245 100 0 0 FTF:STRING
+p 1633 245 100 0 0 FTG:STRING
+p 1633 405 100 0 0 FTVA:STRING
+p 1568 1006 100 0 0 SNAM:mkIfuSelection
+p 1568 1262 100 0 0 def(INPA):gm:cc:mskBarcodeString
+p 1633 789 100 0 0 def(OUTA):gm:cc:mskAssembly.SIL
+p 1808 1402 75 0 -1 pproc(INPA):NPP
 use gmBarcode 608 839 100 0 gmBarcode#466
 xform 0 752 896
 p 640 832 100 0 -1 setChan:cos_channel $(cosMaskChannel)
@@ -49,14 +66,12 @@ xform 0 1232 1648
 p 1312 1504 100 0 1 CALC:A+1
 p 1232 1904 100 512 1 PV:$(top)$(dev)
 p 1312 1472 100 0 1 SCAN:Passive
-use inhier -464 535 100 0 bc_trigger
-xform 0 -448 576
 use outhier 1536 2135 100 0 switches
 xform 0 1552 2176
 use outhier 1536 1111 100 0 zones
 xform 0 1552 1152
-use outhier 1536 871 100 0 barcode
-xform 0 1552 912
+use outhier 2192 1383 100 0 barcode
+xform 0 2208 1424
 use egenSubD 704 2272 100 0 SwitchWord
 xform 0 656 1840
 p 592 2208 70 0 -1 FTA:LONG

@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.7  2004/12/17 03:45:18  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.6  2004/03/08 21:03:52  gemvx
  * *** empty log message ***
  *
@@ -2438,8 +2441,11 @@ n", focusOffset);*/
 
           if (status == CAD_ACCEPT)
           {
- 		/* Output the location and barcode ID  */
- 		if (maskLocation == 0) *(long *) pcad->vala = barcodeID;
+ 		/* Output the location,  barcode ID and name  */
+ 		if (maskLocation == 0) {
+                   *(long *) pcad->vala = barcodeID;
+                   *(char *) pcad->vald = maskname;
+                   }
 		*(long *)pcad->valb = maskLocation;
 		/* Output mask offset */
 		if (maskLocation == 0)

@@ -7,7 +7,7 @@ display {
 	mnrv="4"
 	ndyng="24"
 	npc="42"
-	nstr="140"
+	nstr="133"
 	ndynamic="26"
 	nplot="0"
 	nrd="6"
@@ -18,28 +18,28 @@ display {
 	object {
 		x="0"
 		y="0"
-		width="693"
+		width="724"
 		height="877"
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="7580"
+	nwords_dspy="7464"
 	nwords_sta="968"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="3004"
-	osta="2036"
-	odynamic="4236"
-	oplot="5976"
-	ord="5976"
-	oes="6936"
-	okd="7568"
-	opd="7580"
-	opo="7580"
+	odyng="2888"
+	osta="1920"
+	odynamic="4120"
+	oplot="5860"
+	ord="5860"
+	oes="6820"
+	okd="7452"
+	opd="7464"
+	opo="7464"
 	opc="68"
 	ostr="606"
-	ocmap="2036"
-	ocrules="2036"
+	ocmap="1920"
+	ocrules="1920"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -194,7 +194,7 @@ display {
 	object {
 		x="24"
 		y="520"
-		width="499"
+		width="511"
 		height="301"
 		groupid="0"
 	}
@@ -731,9 +731,9 @@ display {
 }
 "text" {
 	object {
-		x="449"
-		y="751"
-		width="67"
+		x="467"
+		y="749"
+		width="62"
 		height="18"
 		groupid="0"
 	}
@@ -833,8 +833,8 @@ display {
 	object {
 		x="196"
 		y="673"
-		width="119"
-		height="18"
+		width="126"
+		height="21"
 		groupid="0"
 	}
 	textix="Wavelength"
@@ -843,9 +843,9 @@ display {
 "text" {
 	object {
 		x="196"
-		y="709"
+		y="706"
 		width="119"
-		height="18"
+		height="21"
 		groupid="0"
 	}
 	textix="Order"
@@ -853,9 +853,9 @@ display {
 }
 "text" {
 	object {
-		x="449"
+		x="466"
 		y="664"
-		width="70"
+		width="57"
 		height="18"
 		groupid="0"
 	}
@@ -953,7 +953,7 @@ display {
 }
 "rectangle" {
 	object {
-		x="495"
+		x="507"
 		y="521"
 		width="27"
 		height="26"
@@ -1676,9 +1676,9 @@ display {
 "text" {
 	object {
 		x="196"
-		y="655"
-		width="119"
-		height="18"
+		y="652"
+		width="123"
+		height="21"
 		groupid="0"
 	}
 	textix="Central"
@@ -1826,7 +1826,7 @@ display {
 }
 "text entry" {
 	object {
-		x="312"
+		x="325"
 		y="661"
 		width="130"
 		height="30"
@@ -1871,8 +1871,8 @@ display {
 }
 "text entry" {
 	object {
-		x="312"
-		y="703"
+		x="326"
+		y="701"
 		width="130"
 		height="30"
 		groupid="0"
@@ -2650,7 +2650,7 @@ display {
 }
 "text entry" {
 	object {
-		x="312"
+		x="327"
 		y="745"
 		width="130"
 		height="30"
@@ -2787,8 +2787,8 @@ display {
 }
 "message button" {
 	object {
-		x="312"
-		y="776"
+		x="324"
+		y="781"
 		width="130"
 		height="30"
 		groupid="0"
@@ -3474,8 +3474,8 @@ display {
 		args="T=$(T)$(C1),TC=$(T)$(CC),S=$(T)sad:$(C1),D=msk"
 	}
 	display[1] {
-		label=""
-		name=""
+		label="IFU Selection"
+		name="gmSeqIFUSelect.dl"
 		args=""
 	}
 	display[2] {

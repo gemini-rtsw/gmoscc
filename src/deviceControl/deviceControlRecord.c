@@ -62,6 +62,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2002/04/24 05:18:14  ajf
+ * Changes for epics3.13.4GEM8.4.
+ *
  * Revision 1.1  2001/11/28 20:15:07  mbec
  * *** empty log message ***
  *
@@ -3608,25 +3611,29 @@ static void monitor
         db_post_events(pdr, &pdr->val, monitorMask);
     }
 
-
+   /* pgroszko, mar2,2005: added DBE_LOG to all the fields below, so that the ArchiveEngine can pick
+     them up on change. Remains to be tested how well this works with some channels (ex MPOS), as the time stamp
+     does not always get updated when the value changes - this might give undesirable results in GEA.
+   */
+   
     /*
      *  Raise monitors on the input fields if the appropriate bits in the
      *  monitor mask word have been set.  Use the MONITORED macro to
      *  test the bit for each field.
      */
 
-    if (MONITORED(RECORD_DIR))  db_post_events(pdr, &pdr->dir,  DBE_VALUE);
-    if (MONITORED(RECORD_MODE)) db_post_events(pdr, &pdr->mode, DBE_VALUE);
-    if (MONITORED(RECORD_VELO)) db_post_events(pdr, &pdr->velo, DBE_VALUE);
-    if (MONITORED(RECORD_ACCL)) db_post_events(pdr, &pdr->accl, DBE_VALUE);
-    if (MONITORED(RECORD_IALG)) db_post_events(pdr, &pdr->ialg, DBE_VALUE);
-    if (MONITORED(RECORD_PSTA)) db_post_events(pdr, &pdr->psta, DBE_VALUE);
-    if (MONITORED(RECORD_BSTA)) db_post_events(pdr, &pdr->bsta, DBE_VALUE);
-    if (MONITORED(RECORD_FLT))  db_post_events(pdr, &pdr->flt,  DBE_VALUE);
-    if (MONITORED(RECORD_DBUG)) db_post_events(pdr, &pdr->dbug, DBE_VALUE);
-    if (MONITORED(RECORD_SIMM)) db_post_events(pdr, &pdr->simm, DBE_VALUE);
-    if (MONITORED(RECORD_MDBD)) db_post_events(pdr, &pdr->mdbd, DBE_VALUE);
-    if (MONITORED(RECORD_VALS)) db_post_events(pdr, &pdr->vals, DBE_VALUE);
+    if (MONITORED(RECORD_DIR))  db_post_events(pdr, &pdr->dir,  DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_MODE)) db_post_events(pdr, &pdr->mode, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_VELO)) db_post_events(pdr, &pdr->velo, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_ACCL)) db_post_events(pdr, &pdr->accl, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_IALG)) db_post_events(pdr, &pdr->ialg, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_PSTA)) db_post_events(pdr, &pdr->psta, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_BSTA)) db_post_events(pdr, &pdr->bsta, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_FLT))  db_post_events(pdr, &pdr->flt,  DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_DBUG)) db_post_events(pdr, &pdr->dbug, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_SIMM)) db_post_events(pdr, &pdr->simm, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_MDBD)) db_post_events(pdr, &pdr->mdbd, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_VALS)) db_post_events(pdr, &pdr->vals, DBE_VALUE|DBE_LOG);
 
 
     /*
@@ -3637,25 +3644,25 @@ static void monitor
      *  changes.
      */
 
-    if (MONITORED(RECORD_ACK))  db_post_events(pdr, &pdr->ack, DBE_VALUE);
-    if (MONITORED(RECORD_PWR))  db_post_events(pdr, &pdr->pwr, DBE_VALUE);
-    if (MONITORED(RECORD_BRK))  db_post_events(pdr, &pdr->brk, DBE_VALUE);
+    if (MONITORED(RECORD_ACK))  db_post_events(pdr, &pdr->ack, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_PWR))  db_post_events(pdr, &pdr->pwr, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_BRK))  db_post_events(pdr, &pdr->brk, DBE_VALUE|DBE_LOG);
 
-    if (MONITORED(RECORD_MIP))  db_post_events(pdr, &pdr->mip, DBE_VALUE);
-    if (MONITORED(RECORD_MPOS)) db_post_events(pdr, &pdr->mpos, DBE_VALUE);
-    if (MONITORED(RECORD_RPOS)) db_post_events(pdr, &pdr->rpos, DBE_VALUE);
-    if (MONITORED(RECORD_RRBV)) db_post_events(pdr, &pdr->rrbv, DBE_VALUE);
-    if (MONITORED(RECORD_RVEL)) db_post_events(pdr, &pdr->rvel, DBE_VALUE);
-    if (MONITORED(RECORD_RENC)) db_post_events(pdr, &pdr->renc, DBE_VALUE);
-    if (MONITORED(RECORD_MSTA)) db_post_events(pdr, &pdr->msta, DBE_VALUE);
-    if (MONITORED(RECORD_OSTA)) db_post_events(pdr, &pdr->osta, DBE_VALUE);
-    if (MONITORED(RECORD_LVIO)) db_post_events(pdr, &pdr->lvio, DBE_VALUE);
-    if (MONITORED(RECORD_LSWA)) db_post_events(pdr, &pdr->lswa, DBE_VALUE);
-    if (MONITORED(RECORD_HPVL)) db_post_events(pdr, &pdr->hpvl, DBE_VALUE);
-    if (MONITORED(RECORD_HSWA)) db_post_events(pdr, &pdr->hswa, DBE_VALUE);
+    if (MONITORED(RECORD_MIP))  db_post_events(pdr, &pdr->mip, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_MPOS)) db_post_events(pdr, &pdr->mpos, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_RPOS)) db_post_events(pdr, &pdr->rpos, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_RRBV)) db_post_events(pdr, &pdr->rrbv, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_RVEL)) db_post_events(pdr, &pdr->rvel, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_RENC)) db_post_events(pdr, &pdr->renc, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_MSTA)) db_post_events(pdr, &pdr->msta, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_OSTA)) db_post_events(pdr, &pdr->osta, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_LVIO)) db_post_events(pdr, &pdr->lvio, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_LSWA)) db_post_events(pdr, &pdr->lswa, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_HPVL)) db_post_events(pdr, &pdr->hpvl, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_HSWA)) db_post_events(pdr, &pdr->hswa, DBE_VALUE|DBE_LOG);
    
-    if (MONITORED(RECORD_MESS)) db_post_events(pdr, &pdr->mess, DBE_VALUE);
-    if (MONITORED(RECORD_BUSY)) db_post_events(pdr, &pdr->busy, DBE_VALUE);
+    if (MONITORED(RECORD_MESS)) db_post_events(pdr, &pdr->mess, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_BUSY)) db_post_events(pdr, &pdr->busy, DBE_VALUE|DBE_LOG);
 
 
     /*

@@ -1,9 +1,10 @@
 [symbol2]
 bbox -32 32 256 96
-port 200 48 100 768 VAL symbol 2 256 48 0
+port 200 48 100 768 FLNK symbol 2 256 48 0
+port 200 64 100 768 VAL symbol 2 256 64 0
 port 32 64 100 1280 SLNK symbol 1 -32 64 0
 port 200 80 100 768 OUT symbol 2 256 80 0
-uniq 45
+uniq 48
 [tools]
 [attributes]
 p 0 0 100 0 -1 setChan:cos_channel 1
@@ -18,6 +19,9 @@ r 0 176 40 192 88
 r 0 136 48 144 80
 v 0 192 48
 256 48
+_
+v 0 192 64
+256 64
 _
 v 0 -32 64
 32 64
