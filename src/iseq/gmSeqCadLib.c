@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.1  2002/04/24 05:26:18  ajf
+ * Added for epics3.13.4GEM8.4.
+ *
  * Revision 1.5  2002/03/25 19:45:50  mbec
  * epics 3.13 debugging
  *
@@ -2416,13 +2419,20 @@ n", focusOffset);
 
           if (status == CAD_ACCEPT)
           {
-
-          /* Output the location and barcode ID  */
-             if (maskLocation == 0) *(long *) pcad->vala = barcodeID;
-             *(long *)pcad->valb = maskLocation;
-          /* Output mask offset */
-             *(long *) pcad->valc = focusOffset;
-             printf("DEBUG MESSAGE: Focus offset written to record. pcad->valc\n");
+ 		/* Output the location and barcode ID  */
+ 		if (maskLocation == 0) *(long *) pcad->vala = barcodeID;
+		*(long *)pcad->valb = maskLocation;
+		/* Output mask offset */
+		if (maskLocation == 0)
+		{
+		*(long *) pcad->valc = focusOffset;
+ 		printf("DEBUG MESSAGE: Focus offset written to record. pcad->valc\n");
+		}
+		else
+		{
+		*(long *) pcad->valc = 0;
+		printf("DEBUG MESSAGE: Focus offset written to record  pcad->valc = 0 \n");
+		}
           }
           break ;
 
