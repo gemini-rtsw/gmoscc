@@ -2,15 +2,15 @@
 uniq 545
 [tools]
 [detail]
-w -568 491 100 0 SFLG ebos.SelSelect.OUT -1088 608 -928 608 -928 480 -160 480 -160 448 junction
 w -104 451 -100 0 SFLG inhier.SFLG.P -240 448 80 448 easscontj.Assembly.A
+w -568 491 100 0 SFLG ebos.SelSelect.OUT -1088 608 -928 608 -928 480 -160 480 -160 448 junction
 w -1070 419 100 0 n#543 embbos.ParkSelect.OUT -1504 416 -576 416 -576 320 80 320 easscontj.Assembly.E
-w 850 -573 100 0 n#526 easscontj.Assembly.SOU 400 -512 608 -512 608 -576 1152 -576 ebos.TurretPower.SLNK
 w 1148 -597 100 0 n#526 ebos.TurretPower.SDIS 1152 -608 1152 -576 junction
+w 850 -573 100 0 n#526 easscontj.Assembly.SOU 400 -512 608 -512 608 -576 1152 -576 ebos.TurretPower.SLNK
 w -420 -149 100 0 n#525 easscontj.Assembly.D 80 352 -416 352 -416 -640 -1248 -640 egenSub.ConfigString.OUTA
-w -1710 -1053 100 0 n#524 eais.ConfigFlash.FLNK -1696 -1056 -1664 -1056 junction
-w -1710 -829 100 0 n#524 eais.ConfigBlash.FLNK -1696 -832 -1664 -832 junction
 w -1668 -965 100 0 n#524 eais.ConfigTscale.FLNK -1696 -608 -1664 -608 -1664 -1312 -1536 -1312 egenSub.ConfigString.SLNK
+w -1710 -829 100 0 n#524 eais.ConfigBlash.FLNK -1696 -832 -1664 -832 junction
+w -1710 -1053 100 0 n#524 eais.ConfigFlash.FLNK -1696 -1056 -1664 -1056 junction
 w -1604 -933 100 0 n#523 egenSub.ConfigString.INPC -1536 -768 -1600 -768 -1600 -1088 -1696 -1088 eais.ConfigFlash.VAL
 w -1636 -789 100 0 n#522 egenSub.ConfigString.INPB -1536 -704 -1632 -704 -1632 -864 -1696 -864 eais.ConfigBlash.VAL
 w -1646 -637 100 0 n#519 eais.ConfigTscale.VAL -1696 -640 -1536 -640 egenSub.ConfigString.INPA
@@ -94,12 +94,13 @@ w -102 419 -100 0 GratingID inhier.ID.P -176 416 80 416 easscontj.Assembly.B
 w -72 707 -100 0 MODE inhier.MODE.P -176 704 80 704 easscontj.Assembly.MODE
 w -670 -1101 100 0 n#165 ebis.Ilock.FLNK -704 -1104 -576 -1104 -576 -1168 -496 -1168 edfans.Ilfan.SLNK
 [cell use]
-use ebos -1120 720 100 0 SelSelect
-xform 0 -1216 640
-p -1280 544 100 0 1 OMSL:supervisory
-p -1280 480 100 0 1 ONAM:Grating only
-p -1280 720 100 0 -1 PV:$(top)$(dev)
-p -1280 512 100 0 1 ZNAM:Grating and tilt
+use ebos -272 -784 100 0 PwrUpdate
+xform 0 -336 -864
+p -784 -914 100 0 0 OMSL:closed_loop
+p -784 -1010 100 0 0 ONAM:ON
+p -464 -784 100 0 1 PV:$(top)$(dev)
+p -784 -978 100 0 0 ZNAM:OFF
+p -208 -896 75 768 -1 pproc(OUT):NPP
 use ebos 1408 -496 100 0 TurretPower
 xform 0 1280 -576
 p 1216 -688 100 0 1 DTYP:DEV OMS POWER
@@ -109,28 +110,27 @@ p 1216 -752 100 0 1 PINI:YES
 p 1216 -496 100 0 1 PV:$(top)$(dev)
 p 1216 -720 100 0 1 SCAN:Passive
 p 1216 -816 100 0 1 ZNAM:OFF
-use ebos -272 -784 100 0 PwrUpdate
-xform 0 -336 -864
-p -784 -914 100 0 0 OMSL:closed_loop
-p -784 -1010 100 0 0 ONAM:ON
-p -464 -784 100 0 1 PV:$(top)$(dev)
-p -784 -978 100 0 0 ZNAM:OFF
-p -208 -896 75 768 -1 pproc(OUT):NPP
-use eais -1776 -992 100 0 ConfigFlash
-xform 0 -1824 -1072
-p -2208 -1234 100 0 0 PREC:3
-p -1920 -992 100 0 -1 PV:$(top)$(dev)
-p -1888 -1152 100 0 1 SCAN:Passive
-use eais -1776 -768 100 0 ConfigBlash
-xform 0 -1824 -848
-p -2208 -1010 100 0 0 PREC:2
-p -1920 -768 100 0 -1 PV:$(top)$(dev)
-p -1888 -928 100 0 1 SCAN:Passive
+use ebos -1120 720 100 0 SelSelect
+xform 0 -1216 640
+p -1280 544 100 0 1 OMSL:supervisory
+p -1280 480 100 0 1 ONAM:Grating only
+p -1280 720 100 0 -1 PV:$(top)$(dev)
+p -1280 512 100 0 1 ZNAM:Grating and tilt
 use eais -1776 -544 100 0 ConfigTscale
 xform 0 -1824 -624
 p -2208 -786 100 0 0 PREC:3
 p -1920 -544 100 0 -1 PV:$(top)$(dev)
 p -1888 -704 100 0 1 SCAN:Passive
+use eais -1776 -768 100 0 ConfigBlash
+xform 0 -1824 -848
+p -2208 -1010 100 0 0 PREC:2
+p -1920 -768 100 0 -1 PV:$(top)$(dev)
+p -1888 -928 100 0 1 SCAN:Passive
+use eais -1776 -992 100 0 ConfigFlash
+xform 0 -1824 -1072
+p -2208 -1234 100 0 0 PREC:3
+p -1920 -992 100 0 -1 PV:$(top)$(dev)
+p -1888 -1152 100 0 1 SCAN:Passive
 use egenSub -1344 -544 100 0 ConfigString
 xform 0 -1392 -976
 p -1759 -1627 100 0 0 FTVA:STRING
@@ -138,19 +138,6 @@ p -1824 -994 100 0 0 INAM:gmosMakeGratString
 p -1824 -850 100 0 0 PREC:5
 p -1504 -544 100 0 -1 PV:$(top)$(dev)
 p -1824 -1026 100 0 0 SNAM:gmosMakeGratString
-use edfans -272 -960 100 0 Ilfan
-xform 0 -368 -1168
-p -480 -1408 100 768 1 OMSL:closed_loop
-p -432 -960 100 0 -1 PV:$(top)$(dev)
-p -240 -1264 75 768 -1 pproc(OUTF):PP
-p -240 -1296 75 768 -1 pproc(OUTG):NPP
-use edfans 496 -1648 100 0 Debug
-xform 0 416 -1856
-p 304 -1648 100 0 1 PV:$(top)$(dev)
-p 544 -1792 75 768 -1 pproc(OUTA):NPP
-p 544 -1824 75 768 -1 pproc(OUTB):NPP
-p 544 -1856 75 768 -1 pproc(OUTC):NPP
-p 544 -1888 75 768 -1 pproc(OUTD):NPP
 use edfans 1360 -1392 100 0 Simulate
 xform 0 1280 -1600
 p 1168 -1392 100 0 1 PV:$(top)$(dev)
@@ -158,6 +145,19 @@ p 1408 -1536 75 768 -1 pproc(OUTA):NPP
 p 1408 -1568 75 768 -1 pproc(OUTB):NPP
 p 1408 -1600 75 768 -1 pproc(OUTC):NPP
 p 1408 -1632 75 768 -1 pproc(OUTD):NPP
+use edfans 496 -1648 100 0 Debug
+xform 0 416 -1856
+p 304 -1648 100 0 1 PV:$(top)$(dev)
+p 544 -1792 75 768 -1 pproc(OUTA):NPP
+p 544 -1824 75 768 -1 pproc(OUTB):NPP
+p 544 -1856 75 768 -1 pproc(OUTC):NPP
+p 544 -1888 75 768 -1 pproc(OUTD):NPP
+use edfans -272 -960 100 0 Ilfan
+xform 0 -368 -1168
+p -480 -1408 100 768 1 OMSL:closed_loop
+p -432 -960 100 0 -1 PV:$(top)$(dev)
+p -240 -1264 75 768 -1 pproc(OUTF):PP
+p -240 -1296 75 768 -1 pproc(OUTG):NPP
 use ukatcBorderD -2128 -2345 100 0 ukatcBorderD#495
 xform 0 512 -640
 p 2740 -2032 120 256 -1 Project:Gemini Multi-object Optical Spectrograph
@@ -178,14 +178,6 @@ xform 0 720 -736
 p 608 -800 100 0 -1 setChan:cos_channel $(cosGrChannel)
 p 608 -864 100 0 -1 setName:name
 p 608 -832 100 0 -1 setPort:port_address $(cosIocSerial)
-use ebis -544 -752 100 0 Power
-xform 0 -672 -816
-p -736 -896 100 0 1 DTYP:$(xycom)
-p -736 -1024 100 0 1 ONAM:ON
-p -736 -960 100 0 1 PINI:YES
-p -736 -752 100 0 1 PV:$(top)$(dev)
-p -736 -928 100 0 1 SCAN:$(iointr)
-p -736 -992 100 0 1 ZNAM:OFF
 use ebis -736 -1056 100 0 Ilock
 xform 0 -832 -1120
 p -896 -1312 100 0 1 EVNT:0
@@ -193,30 +185,38 @@ p -896 -1216 100 0 1 ONAM:INTERLOCK
 p -896 -1056 100 0 -1 PV:$(top)$(dev)
 p -896 -1280 100 0 1 SCAN:Passive
 p -896 -1248 100 0 1 ZNAM:OK
+use ebis -544 -752 100 0 Power
+xform 0 -672 -816
+p -736 -896 100 0 1 DTYP:$(xycom)
+p -736 -1024 100 0 1 ONAM:ON
+p -736 -960 100 0 1 PINI:YES
+p -736 -752 100 0 1 PV:$(top)$(dev)
+p -736 -928 100 0 1 SCAN:.1 second
+p -736 -992 100 0 1 ZNAM:OFF
 use hwin -992 -825 100 0 hwin#96
 xform 0 -896 -784
 p -1008 -752 100 0 -1 val(in):#<$(grtPower)>
-use hwout 576 -521 100 0 hwout#477
-xform 0 672 -480
-p 672 -489 100 0 -1 val(outp):$(sadtop)grID PP NMS
-use hwout 1408 -1065 100 0 hwout#475
-xform 0 1504 -1024
-p 1504 -1033 100 0 -1 val(outp):$(sadtop)grTilt PP NMS
-use hwout -240 -1209 100 0 hwout#168
-xform 0 -144 -1168
-p -144 -1177 100 0 -1 val(outp):$(top)$(dev)BDevice.FLT NPP NMS
-use hwout -240 -1177 100 0 hwout#169
-xform 0 -144 -1136
-p -144 -1145 100 0 -1 val(outp):$(top)$(dev)ADevice.FLT NPP NMS
-use hwout -240 -1241 100 0 hwout#171
-xform 0 -144 -1200
-p -144 -1209 100 0 -1 val(outp):$(top)$(dev)CDevice.FLT NPP NMS
-use hwout -240 -1273 100 0 hwout#174
-xform 0 -144 -1232
-p -144 -1241 100 0 -1 val(outp):$(top)$(dev)DDevice.FLT NPP NMS
 use hwout 1456 -649 100 0 hwout#480
 xform 0 1552 -608
 p 1552 -617 100 0 -1 val(outp):#<$(grtMotor)>
+use hwout -240 -1273 100 0 hwout#174
+xform 0 -144 -1232
+p -144 -1241 100 0 -1 val(outp):$(top)$(dev)DDevice.FLT NPP NMS
+use hwout -240 -1241 100 0 hwout#171
+xform 0 -144 -1200
+p -144 -1209 100 0 -1 val(outp):$(top)$(dev)CDevice.FLT NPP NMS
+use hwout -240 -1177 100 0 hwout#169
+xform 0 -144 -1136
+p -144 -1145 100 0 -1 val(outp):$(top)$(dev)ADevice.FLT NPP NMS
+use hwout -240 -1209 100 0 hwout#168
+xform 0 -144 -1168
+p -144 -1177 100 0 -1 val(outp):$(top)$(dev)BDevice.FLT NPP NMS
+use hwout 1408 -1065 100 0 hwout#475
+xform 0 1504 -1024
+p 1504 -1033 100 0 -1 val(outp):$(sadtop)grTilt PP NMS
+use hwout 576 -521 100 0 hwout#477
+xform 0 672 -480
+p 672 -489 100 0 -1 val(outp):$(sadtop)grID PP NMS
 use eaos 1424 -912 100 0 Tiltr
 xform 0 1280 -992
 p 1232 -1120 100 0 1 EGU:degrees
@@ -230,27 +230,6 @@ use elongouts -512 720 100 0 Dir
 xform 0 -608 640
 p -672 512 100 0 1 OMSL:closed_loop
 p -672 720 100 0 -1 PV:$(top)$(dev)
-use devGrating -1152 304 100 0 grating4
-xform 4 -1152 144
-p -1168 -32 100 0 -1 seta:dev grD
-p -1040 -64 100 0 -1 setb:motor $(grDMotor)
-p -1040 -96 100 0 -1 setc:power $(grDPower)
-p -1152 -128 100 0 -1 setd:gratno 4
-p -992 -32 100 0 -1 sete:axis D
-use devGrating 2016 -144 100 0 grating3
-xform 0 2016 -304
-p 1920 -480 100 0 -1 seta:dev grC
-p 1920 -512 100 0 -1 setb:motor $(grCMotor)
-p 1920 -544 100 0 -1 setc:power $(grCPower)
-p 1920 -576 100 0 -1 setd:gratno 3
-p 2112 -480 100 0 -1 sete:axis C
-use devGrating 2848 304 100 0 grating1
-xform 0 2848 144
-p 2752 -32 100 0 -1 seta:dev grA
-p 2752 -64 100 0 -1 setb:motor $(grAMotor)
-p 2752 -96 100 0 -1 setc:power $(grAPower)
-p 2752 -128 100 0 -1 setd:gratno 1
-p 2944 -32 100 0 -1 sete:axis A
 use devGrating 2432 80 100 0 grating2
 xform 0 2432 -80
 p 2336 -256 100 0 -1 seta:dev grB
@@ -258,6 +237,27 @@ p 2336 -288 100 0 -1 setb:motor $(grBMotor)
 p 2336 -320 100 0 -1 setc:power $(grBPower)
 p 2336 -352 100 0 -1 setd:gratno 2
 p 2528 -256 100 0 -1 sete:axis B
+use devGrating 2848 304 100 0 grating1
+xform 0 2848 144
+p 2752 -32 100 0 -1 seta:dev grA
+p 2752 -64 100 0 -1 setb:motor $(grAMotor)
+p 2752 -96 100 0 -1 setc:power $(grAPower)
+p 2752 -128 100 0 -1 setd:gratno 1
+p 2944 -32 100 0 -1 sete:axis A
+use devGrating 2016 -144 100 0 grating3
+xform 0 2016 -304
+p 1920 -480 100 0 -1 seta:dev grC
+p 1920 -512 100 0 -1 setb:motor $(grCMotor)
+p 1920 -544 100 0 -1 setc:power $(grCPower)
+p 1920 -576 100 0 -1 setd:gratno 3
+p 2112 -480 100 0 -1 sete:axis C
+use devGrating -1152 304 100 0 grating4
+xform 4 -1152 144
+p -1168 -32 100 0 -1 seta:dev grD
+p -1040 -64 100 0 -1 setb:motor $(grDMotor)
+p -1040 -96 100 0 -1 setc:power $(grDPower)
+p -1152 -128 100 0 -1 setd:gratno 4
+p -992 -32 100 0 -1 sete:axis D
 use devTurret -736 80 100 0 turret
 xform 4 -736 -80
 p -640 -256 100 0 -1 seta:dev grt
@@ -265,36 +265,36 @@ p -640 -288 100 0 -1 setb:motor $(grtMotor)
 p -640 -320 100 0 -1 setc:power $(grtPower)
 use lifter 768 -1024 100 0 lifter
 xform 0 704 -960
-use outhier 2048 791 100 0 CAR
-xform 0 2064 832
-use outhier 768 535 100 0 HLTH
-xform 0 784 576
-use outhier 768 631 100 0 MESS
-xform 0 784 672
-use outhier 768 727 100 0 VAL
-xform 0 784 768
-use outhier 2048 375 100 0 CFLK
-xform 0 2064 416
-use outhier 2048 503 100 0 OERR
-xform 0 2064 544
-use outhier 2048 631 100 0 OMSS
-xform 0 2064 672
 use outhier 464 -745 100 0 FLNK
 xform 0 480 -704
-use inhier -192 663 100 0 MODE
-xform 0 -176 704
-use inhier -944 791 100 0 DIR
-xform 0 -928 832
-use inhier -144 -1897 100 0 DBUG
-xform 0 -128 -1856
-use inhier 976 -1641 100 0 SIMM
-xform 0 992 -1600
-use inhier -128 343 100 0 TILT
-xform 0 -112 384
-use inhier -192 375 100 0 ID
-xform 0 -176 416
+use outhier 2048 631 100 0 OMSS
+xform 0 2064 672
+use outhier 2048 503 100 0 OERR
+xform 0 2064 544
+use outhier 2048 375 100 0 CFLK
+xform 0 2064 416
+use outhier 768 727 100 0 VAL
+xform 0 784 768
+use outhier 768 631 100 0 MESS
+xform 0 784 672
+use outhier 768 535 100 0 HLTH
+xform 0 784 576
+use outhier 2048 791 100 0 CAR
+xform 0 2064 832
 use inhier -256 407 100 0 SFLG
 xform 0 -240 448
+use inhier -192 375 100 0 ID
+xform 0 -176 416
+use inhier -128 343 100 0 TILT
+xform 0 -112 384
+use inhier 976 -1641 100 0 SIMM
+xform 0 992 -1600
+use inhier -144 -1897 100 0 DBUG
+xform 0 -128 -1856
+use inhier -944 791 100 0 DIR
+xform 0 -928 832
+use inhier -192 663 100 0 MODE
+xform 0 -176 704
 use easscontj 304 816 100 0 Assembly
 xform 0 240 32
 p 0 448 100 0 -1 AAHL:1.0

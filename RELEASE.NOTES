@@ -276,3 +276,21 @@ V?-? ?? ??? 2001 ???
 A future version will need to contain Malcolm Smith's ADC correction code
 for the OIWFS software and the actual ADC assembly software (rather than
 the present code running in simulation mode).
+
+V2-8 July 2001 TPAZ:
+-------------------
+Improvements made to version 2-7:
+- gmSeqApply changed to avoid the "configuring while reading out" error, 
+  as suggested by Steven Beard. 
+- default values for the motor power scan changed to 0.1 seconds. 	
+
+CJT changes :
+-------------
+- Fixed pvload of gmSeqTracking.pv to load iaa = 180 upon reboot.
+- Fixed gmosAlarm. Account gmos needed write accsess to /gemini/gmos/gmos/data.
+  This needs a longer term solution.
+- Limits changed in pv/gmTempCalibrate.pv
+- SMB changes to sys/gmSeqTracking.c:
+   * calculation of GMOS angles in function gmSeqAtmDemands().
+   * changes to record issPort in capfast/gmSeqAtmTrack.sch
+   * dl/gmSeqTcsSimulate.dl : added control for IAA value

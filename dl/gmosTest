@@ -9,9 +9,10 @@
 # Find the first GMOS test directory within the user's home directory
 #
 
-set testlist = `find ${HOME} -name "test" | grep gmos`
-set testdir = `echo $testlist | awk '{print $1}'`
+#set testlist = `find ${HOME} -name "test" | grep gmos`
+#set testdir = `echo $testlist | awk '{print $1}'`
 
+set testdir = /home/gemvx/tpaz/gmosDev/gmos/test
 if ( $#testdir == 1 ) then
 
   cd ${testdir}

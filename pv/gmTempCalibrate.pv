@@ -39,8 +39,8 @@
 group {
    double $(top)temp0.EGUL =  40.0;
    double $(top)temp0.EGUF = -60.0;
-   double $(top)temp0.LOLO = -12.0;
-   double $(top)temp0.LOW  =   0.0;
+   double $(top)temp0.LOLO = -10.0;
+   double $(top)temp0.LOW  =  -8.0;
    double $(top)temp0.HIGH =  25.0;
    double $(top)temp0.HIHI =  35.0;
    double $(top)temp0.SMOO =   0.5;
@@ -63,10 +63,10 @@ long $(top)temp0disable.VAL = 1;
 group {
    double $(top)temp1.EGUL =  40.0;
    double $(top)temp1.EGUF = -60.0;
-   double $(top)temp1.LOLO = -12.0;
-   double $(top)temp1.LOW  =   0.0;
-   double $(top)temp1.HIGH =  28.0;
-   double $(top)temp1.HIHI =  38.0;
+   double $(top)temp1.LOLO = -10.0;
+   double $(top)temp1.LOW  =  -8.0;
+   double $(top)temp1.HIGH =  25.0;
+   double $(top)temp1.HIHI =  35.0;
    double $(top)temp1.SMOO =   0.5;
 }
 group {
@@ -87,8 +87,8 @@ long $(top)temp1disable.VAL = 0;
 group {
    double $(top)temp2.EGUL =  40.0;
    double $(top)temp2.EGUF = -60.0;
-   double $(top)temp2.LOLO = -12.0;
-   double $(top)temp2.LOW  =   0.0;
+   double $(top)temp2.LOLO = -10.0;
+   double $(top)temp2.LOW  =  -8.0;
    double $(top)temp2.HIGH =  25.0;
    double $(top)temp2.HIHI =  35.0;
    double $(top)temp2.SMOO =   0.5;
@@ -111,10 +111,10 @@ long $(top)temp2disable.VAL = 0;
 group {
    double $(top)temp3.EGUL =  40.0;
    double $(top)temp3.EGUF = -60.0;
-   double $(top)temp3.LOLO = -12.0;
-   double $(top)temp3.LOW  =   0.0;
-   double $(top)temp3.HIGH =  28.0;
-   double $(top)temp3.HIHI =  38.0;
+   double $(top)temp3.LOLO = -10.0;
+   double $(top)temp3.LOW  =  -8.0;
+   double $(top)temp3.HIGH =  25.0;
+   double $(top)temp3.HIHI =  35.0;
    double $(top)temp3.SMOO =   0.5;
 }
 group {
@@ -135,8 +135,8 @@ long $(top)temp3disable.VAL = 0;
 group {
    double $(top)temp4.EGUL =  40.0;
    double $(top)temp4.EGUF = -60.0;
-   double $(top)temp4.LOLO = -12.0;
-   double $(top)temp4.LOW  =   0.0;
+   double $(top)temp4.LOLO = -10.0;
+   double $(top)temp4.LOW  =  -8.0;
    double $(top)temp4.HIGH =  25.0;
    double $(top)temp4.HIHI =  35.0;
    double $(top)temp4.SMOO =   0.5;
@@ -159,8 +159,8 @@ long $(top)temp4disable.VAL = 0;
 group {
    double $(top)temp5.EGUL =  40.0;
    double $(top)temp5.EGUF = -60.0;
-   double $(top)temp5.LOLO = -12.0;
-   double $(top)temp5.LOW  =   0.0;
+   double $(top)temp5.LOLO = -10.0;
+   double $(top)temp5.LOW  =  -8.0;
    double $(top)temp5.HIGH =  25.0;
    double $(top)temp5.HIHI =  35.0;
    double $(top)temp5.SMOO =   0.5;
@@ -183,10 +183,10 @@ long $(top)temp5disable.VAL = 0;
 group {
    double $(top)temp6.EGUL =  40.0;
    double $(top)temp6.EGUF = -60.0;
-   double $(top)temp6.LOLO = -12.0;
-   double $(top)temp6.LOW  =   0.0;
-   double $(top)temp6.HIGH =  28.0;
-   double $(top)temp6.HIHI =  38.0;
+   double $(top)temp6.LOLO = -10.0;
+   double $(top)temp6.LOW  =  -8.0;
+   double $(top)temp6.HIGH =  25.0;
+   double $(top)temp6.HIHI =  35.0;
    double $(top)temp6.SMOO =   0.5;
 }
 group {
@@ -207,10 +207,10 @@ long $(top)temp6disable.VAL = 0;
 group {
    double $(top)temp7.EGUL =  40.0;
    double $(top)temp7.EGUF = -60.0;
-   double $(top)temp7.LOLO = -12.0;
-   double $(top)temp7.LOW  =   0.0;
-   double $(top)temp7.HIGH =  28.0;
-   double $(top)temp7.HIHI =  38.0;
+   double $(top)temp7.LOLO = -10.0;
+   double $(top)temp7.LOW  =  -8.0;
+   double $(top)temp7.HIGH =  25.0;
+   double $(top)temp7.HIHI =  35.0;
    double $(top)temp7.SMOO =   0.5;
 }
 group {
@@ -231,8 +231,8 @@ long $(top)temp7disable.VAL = 0;
 group {
    double $(top)temp8.EGUL =  40.0;
    double $(top)temp8.EGUF = -60.0;
-   double $(top)temp8.LOLO = -12.0;
-   double $(top)temp8.LOW  =   0.0;
+   double $(top)temp8.LOLO = -10.0;
+   double $(top)temp8.LOW  =  -8.0;
    double $(top)temp8.HIGH =  25.0;
    double $(top)temp8.HIHI =  35.0;
    double $(top)temp8.SMOO =   0.5;

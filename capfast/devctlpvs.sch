@@ -19,36 +19,36 @@ w -114 1323 100 0 dir inhier.dir.P -736 1312 544 1312 544 800 576 800 edevctlm.D
 w -152 715 100 0 n#23 ebis.Power.VAL -192 704 -64 704 ebos.PwrUpdate.DOL
 w -444 747 100 2 n#33 hwin.hwin#29.in -448 752 -448 752 ebis.Power.INP
 w 360 651 100 0 n#22 ebos.PwrUpdate.OUT 192 640 576 640 edevctlm.Device.PSTA
-s 480 -169 100 0 on this Capfast schematic.
-s 480 -137 100 0 all its properties defined correctly
-s 480 -105 100 0 above record does not necessarily have
-s 480 -73 100 0 are initialised using pvload, so the
 s 480 -41 100 0 NOTE: all the device record properties
+s 480 -73 100 0 are initialised using pvload, so the
+s 480 -105 100 0 above record does not necessarily have
+s 480 -137 100 0 all its properties defined correctly
+s 480 -169 100 0 on this Capfast schematic.
 [cell use]
-use inhier -768 1328 100 512 dir
-xform 0 -736 1312
-use inhier -768 1232 100 512 mode
-xform 0 -736 1216
-use inhier -768 944 100 512 velo
-xform 0 -736 928
-use inhier -768 1136 100 512 vals
-xform 0 -736 1120
-use inhier -768 496 100 512 simm
-xform 0 -736 480
 use inhier -768 368 100 512 dbug
 xform 0 -736 352
-use outhier 1760 480 100 0 lswa
-xform 0 1712 480
-use outhier 1760 512 100 0 mip
-xform 0 1712 512
-use outhier 1760 800 100 0 ack
-xform 0 1712 800
-use outhier 1760 768 100 0 bsyl
-xform 0 1712 768
-use outhier 1760 736 100 0 msgl
-xform 0 1712 736
+use inhier -768 496 100 512 simm
+xform 0 -736 480
+use inhier -768 1136 100 512 vals
+xform 0 -736 1120
+use inhier -768 944 100 512 velo
+xform 0 -736 928
+use inhier -768 1232 100 512 mode
+xform 0 -736 1216
+use inhier -768 1328 100 512 dir
+xform 0 -736 1312
 use outhier 1760 544 100 0 mpos
 xform 0 1712 544
+use outhier 1760 736 100 0 msgl
+xform 0 1712 736
+use outhier 1760 768 100 0 bsyl
+xform 0 1712 768
+use outhier 1760 800 100 0 ack
+xform 0 1712 800
+use outhier 1760 512 100 0 mip
+xform 0 1712 512
+use outhier 1760 480 100 0 lswa
+xform 0 1712 480
 use edevctlm 832 912 100 0 Device
 xform 0 736 608
 p 736 336 100 256 1 PREC:2
@@ -78,6 +78,6 @@ xform 0 -320 720
 p -384 640 100 0 1 DTYP:$(xycom)
 p -384 544 100 0 1 ONAM:ON
 p -384 784 100 0 1 PV:$(top)$(dev)
-p -384 608 100 0 1 SCAN:$(iointr)
+p -384 608 100 0 1 SCAN:.1 second
 p -384 576 100 0 1 ZNAM:OFF
 [comments]

@@ -15,8 +15,8 @@ w 316 459 100 0 n#105 elongouts.Dir.FLNK -272 1024 320 1024 320 -96 544 -96 edev
 w -688 1008 100 0 dir inhier.dir.P -768 992 -528 992 elongouts.Dir.SLNK
 w 1634 1227 100 0 n#100 embbi.DeviceMenu.VAL 1632 1216 1696 1216 estringouts.DeviceStrg.DOL
 w 1668 1291 100 0 n#99 embbi.DeviceMenu.FLNK 1632 1408 1664 1408 1664 1184 1696 1184 estringouts.DeviceStrg.SLNK
-w -216 675 100 0 vals inhier.vals.P -768 672 384 672 384 288 544 288 edevctlm.Device.VALS
 w 1160 675 100 0 vals estringouts.DeviceStrg.OUT 1952 1168 1984 1168 1984 672 384 672 junction
+w -216 675 100 0 vals inhier.vals.P -768 672 384 672 384 288 544 288 edevctlm.Device.VALS
 w -476 459 100 2 n#93 hwin.hwin#96.in -480 464 -480 464 ebis.Power.INP
 w -184 427 100 0 n#92 ebis.Power.VAL -224 416 -96 416 ebos.PwrUpdate.DOL
 w -168 395 100 0 n#91 ebis.Power.FLNK -224 448 -192 448 -192 384 -96 384 ebos.PwrUpdate.SLNK
@@ -32,25 +32,25 @@ w 1226 331 100 0 busy_link edevctlm.Device.BSYL 864 320 1696 320 outhier.bsyl.p
 w -232 579 100 0 velo inhier.velo.P -768 576 352 576 352 256 544 256 edevctlm.Device.VELO
 w -200 771 100 0 mode inhier.mode.P -768 768 416 768 416 320 544 320 edevctlm.Device.MODE
 w 92 867 100 0 devdir elongouts.Dir.OUT -272 960 -192 960 -192 864 448 864 448 352 544 352 edevctlm.Device.DIR
-s -192 96 100 0 $(top)$(dev)IlckCA in the lifterTurretIlck schematic instead
-s -144 128 100 0 Do not set this FLT field via channel access, connect to
-s 1248 192 100 0 <-- No power control. Power controlled explicitly by assembly record.
-s 672 752 100 0 This menu for engineering testing only
-s -192 -224 100 0 The lifter state is treated as a brake status
-s -192 -256 100 0 which prevents the turret from moving while
 s -192 -288 100 0 the indexer is engaged.
+s -192 -256 100 0 which prevents the turret from moving while
+s -192 -224 100 0 The lifter state is treated as a brake status
+s 672 752 100 0 This menu for engineering testing only
+s 1248 192 100 0 <-- No power control. Power controlled explicitly by assembly record.
+s -144 128 100 0 Do not set this FLT field via channel access, connect to
+s -192 96 100 0 $(top)$(dev)IlckCA in the lifterTurretIlck schematic instead
 [cell use]
-use hwin -896 -153 100 0 hwin#127
-xform 0 -800 -112
-p -896 -160 100 0 0 typ(in):val
-p -896 -160 100 0 -1 val(in):$(top)grLifterUp.VAL NPP NMS
+use hwin -672 423 100 0 hwin#96
+xform 0 -576 464
+p -688 496 100 0 -1 val(in):#<$(power)>
 use hwin -896 -41 100 0 hwin#125
 xform 0 -800 0
 p -896 -48 100 0 0 typ(in):val
 p -896 -48 100 0 -1 val(in):$(top)grLifter.VALD NPP NMS
-use hwin -672 423 100 0 hwin#96
-xform 0 -576 464
-p -688 496 100 0 -1 val(in):#<$(power)>
+use hwin -896 -153 100 0 hwin#127
+xform 0 -800 -112
+p -896 -160 100 0 0 typ(in):val
+p -896 -160 100 0 -1 val(in):$(top)grLifterUp.VAL NPP NMS
 use ukatcBorderC -1120 -825 100 0 ukatcBorderC#126
 xform 0 560 480
 p 1828 -512 120 256 -1 Project:Gemini Multi-object Optical Spectrometer
@@ -61,6 +61,11 @@ use eais -608 240 100 0 Brake
 xform 0 -736 176
 p -1120 -82 100 0 0 EGU:brake state
 p -800 240 100 0 1 PV:$(top)$(dev)
+use ebos 160 32 100 0 BrakeStat
+xform 0 96 -64
+p 32 -176 100 0 1 OMSL:closed_loop
+p -352 -210 100 0 0 ONAM:disabled
+p -32 32 100 0 1 PV:$(top)$(dev)
 use ebos 96 464 100 0 PwrUpdate
 xform 0 32 384
 p -416 334 100 0 0 OMSL:closed_loop
@@ -68,11 +73,6 @@ p -416 238 100 0 0 ONAM:ON
 p -96 464 100 0 1 PV:$(top)$(dev)
 p -416 270 100 0 0 ZNAM:OFF
 p 160 352 75 768 -1 pproc(OUT):NPP
-use ebos 160 32 100 0 BrakeStat
-xform 0 96 -64
-p 32 -176 100 0 1 OMSL:closed_loop
-p -352 -210 100 0 0 ONAM:disabled
-p -32 32 100 0 1 PV:$(top)$(dev)
 use ecalcs -128 160 100 0 BrakeFaker
 xform 0 -288 -48
 p -368 -352 100 0 1 CALC:A||B||C
@@ -107,32 +107,32 @@ xform 0 -352 432
 p -416 352 100 0 1 DTYP:$(xycom)
 p -416 240 100 0 1 ONAM:ON
 p -416 496 100 0 1 PV:$(top)$(dev)
-p -416 320 100 0 1 SCAN:$(iointr)
+p -416 320 100 0 1 SCAN:.1 second
 p -416 272 100 0 1 ZNAM:OFF
-use inhier 400 -16 100 512 dbug
-xform 0 432 -32
-use inhier 400 48 100 512 simm
-xform 0 432 32
-use inhier -800 688 100 512 vals
-xform 0 -768 672
-use inhier -800 592 100 512 velo
-xform 0 -768 576
-use inhier -800 784 100 512 mode
-xform 0 -768 768
 use inhier -800 1008 100 512 dir
 xform 0 -768 992
-use outhier 1728 96 100 0 mpos
-xform 0 1680 96
-use outhier 1728 288 100 0 msgl
-xform 0 1680 288
-use outhier 1728 320 100 0 bsyl
-xform 0 1680 320
-use outhier 1728 352 100 0 ack
-xform 0 1680 352
-use outhier 1728 64 100 0 mip
-xform 0 1680 64
+use inhier -800 784 100 512 mode
+xform 0 -768 768
+use inhier -800 592 100 512 velo
+xform 0 -768 576
+use inhier -800 688 100 512 vals
+xform 0 -768 672
+use inhier 400 48 100 512 simm
+xform 0 432 32
+use inhier 400 -16 100 512 dbug
+xform 0 432 -32
 use outhier 1728 32 100 0 lswa
 xform 0 1680 32
+use outhier 1728 64 100 0 mip
+xform 0 1680 64
+use outhier 1728 352 100 0 ack
+xform 0 1680 352
+use outhier 1728 320 100 0 bsyl
+xform 0 1680 320
+use outhier 1728 288 100 0 msgl
+xform 0 1680 288
+use outhier 1728 96 100 0 mpos
+xform 0 1680 96
 use edevctlm 800 464 100 0 Device
 xform 0 704 160
 p 928 -224 100 0 1 ACCL:0.25

@@ -31,11 +31,27 @@ applSetup -T mv167 -s Makefile.subdirs \
 
 applSetup  >> gmosBuild.log 2>&1
 
-#
-# Update the local startup script with GMOS version (TEMPORARY).
-#
+# Test scripts installation
 
-cp ./local.vws ./startup
+cd ./startup
+
+ed UAE.dist << eof >/dev/null
+/^FILES5
+a
+FILES99 = ( \${APPLIC_INSTALL}/test )
+.
+w
+$
+a
+
+(\${FILES99}) -> (\${HOSTS})
+        install -R \${DIST_PATH}/test;
+.
+w
+q
+eof
+
+cd ..
 
 #
 # Go to the dl directory and explicitly make the color templates.

@@ -4,8 +4,8 @@ uniq 94
 [detail]
 w -264 227 100 0 n#93 elongouts.Dir.FLNK -320 1376 -288 1376 -288 1472 -928 1472 -928 224 448 224 448 352 576 352 edevctlm.Device.SLNK
 w -688 1360 100 0 dir inhier.dir.P -736 1344 -576 1344 elongouts.Dir.SLNK
-w -152 1131 100 0 vals inhier.vals.P -736 1120 480 1120 480 736 576 736 edevctlm.Device.VALS
 w 484 1379 100 0 vals estringouts.DeviceStrg.OUT 320 1648 480 1648 480 1120 junction
+w -152 1131 100 0 vals inhier.vals.P -736 1120 480 1120 480 736 576 736 edevctlm.Device.VALS
 w 2 1707 100 0 n#88 embbis.DeviceMenu.VAL 0 1696 64 1696 estringouts.DeviceStrg.DOL
 w 36 1691 100 0 n#87 embbis.DeviceMenu.FLNK 0 1728 32 1728 32 1664 64 1664 estringouts.DeviceStrg.SLNK
 w -232 363 100 0 dbug inhier.dbug.P -736 352 320 352 320 416 576 416 edevctlm.Device.DBUG
@@ -44,30 +44,30 @@ use ukatcBorderC -1200 -553 100 0 ukatcBorderC#86
 xform 0 480 752
 p 1740 -304 120 256 -1 Title:GMOS CCD Translation Axis Schematic
 p 1456 -368 100 768 -1 author:S M Beard
-use inhier -768 368 100 512 dbug
-xform 0 -736 352
-use inhier -768 496 100 512 simm
-xform 0 -736 480
-use inhier -768 1136 100 512 vals
-xform 0 -736 1120
-use inhier -768 944 100 512 velo
-xform 0 -736 928
-use inhier -768 1232 100 512 mode
-xform 0 -736 1216
 use inhier -768 1360 100 512 dir
 xform 0 -736 1344
-use outhier 1760 544 100 0 mpos
-xform 0 1712 544
-use outhier 1760 736 100 0 msgl
-xform 0 1712 736
-use outhier 1760 768 100 0 bsyl
-xform 0 1712 768
-use outhier 1760 800 100 0 ack
-xform 0 1712 800
-use outhier 1760 512 100 0 mip
-xform 0 1712 512
+use inhier -768 1232 100 512 mode
+xform 0 -736 1216
+use inhier -768 944 100 512 velo
+xform 0 -736 928
+use inhier -768 1136 100 512 vals
+xform 0 -736 1120
+use inhier -768 496 100 512 simm
+xform 0 -736 480
+use inhier -768 368 100 512 dbug
+xform 0 -736 352
 use outhier 1760 480 100 0 lswa
 xform 0 1712 480
+use outhier 1760 512 100 0 mip
+xform 0 1712 512
+use outhier 1760 800 100 0 ack
+xform 0 1712 800
+use outhier 1760 768 100 0 bsyl
+xform 0 1712 768
+use outhier 1760 736 100 0 msgl
+xform 0 1712 736
+use outhier 1760 544 100 0 mpos
+xform 0 1712 544
 use edevctlm 832 912 100 0 Device
 xform 0 736 608
 p 960 224 100 0 1 ACCL:$(accl)
@@ -112,6 +112,6 @@ xform 0 -320 720
 p -384 640 100 0 1 DTYP:$(xycom)
 p -384 544 100 0 1 ONAM:ON
 p -384 784 100 0 1 PV:$(top)$(dev)
-p -384 608 100 0 1 SCAN:$(iointr)
+p -384 608 100 0 1 SCAN:.1 second
 p -384 576 100 0 1 ZNAM:OFF
 [comments]

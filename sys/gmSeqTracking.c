@@ -22,6 +22,12 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.4  2001/07/10 13:45:22  gmos
+ * V2-6 imported from Gemini.
+ *
+ * Revision 1.1.1.1  2001/04/13 01:37:34  smb
+ * Initial creation of the Gemini GMOS repository
+ *
  * Revision 1.9  2001/03/01 14:10:13  gmos
  * Use (char *) explicitly for CAD string fields.
  *
@@ -999,7 +1005,7 @@ long gmSeqAtmDemands (struct genSubRecord *pgsub)
    double disp = 0.0 ;               /* Dispersion (arcsec)                       */
    double conv ;                     /* Conversion factor                         */
    double sinthetaY, sinthetaZ;      /* Sine of the GMOS coordinates.             */
-   double rotGmosAngle;              /* Rotator angle seen by GMOS                */
+   double rotGmosAngle;              /* Rotator angle seen by GMOS (radians)      */
 
    /* Pull in the input data */
 
@@ -1144,26 +1150,27 @@ long gmSeqAtmDemands (struct genSubRecord *pgsub)
 
               /* Convert TCS coordinates to GMOS coordinates */
 
-              rotGmosAngle = gmSeqRotMechAng + (DPIBY2 * (double) (gmSeqIssPort-1));
-              if ( gmSeqIssPort == 0 )
+              if ( gmSeqIssPort > 1 )
               {
 
-                 /* Upward looking port */
+                 rotGmosAngle = (DPIBY2 * (double) (gmSeqIssPort-1)) + gmSeqRotMechAng;
 
-                 gmSeqThetaY = gmSeqZenDist - DPIBY2;
-                 gmSeqThetaZ = rotGmosAngle;       /* PLUS A CONSTANT ? */
-              }
-              else
-              {
-
-                 /* Side looking port */
+                 /* Side looking port - 2,3,4,5 (wraps for larger port numbers) */
 
                  sinzd = sin( gmSeqZenDist );
                  sinthetaY = sinzd * cos( rotGmosAngle );
                  sinthetaZ = sinzd * sin( rotGmosAngle );
 
-                 gmSeqThetaY = asin( sinthetaY );       /* PLUS A CONSTANT ? */
-                 gmSeqThetaZ = asin( sinthetaZ );       /* PLUS A CONSTANT ? */
+                 gmSeqThetaY = asin( sinthetaY );
+                 gmSeqThetaZ = (iaa * DD2R) + asin( sinthetaZ );
+              }
+              else
+              {
+
+                 /* Assume an upward looking port for port 1 (or smaller) */
+
+                 gmSeqThetaY = gmSeqZenDist - DPIBY2;
+                 gmSeqThetaZ = (iaa * DD2R) + gmSeqRotMechAng;
               }
            }
            else

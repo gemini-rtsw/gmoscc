@@ -104,6 +104,7 @@ group {
    double $(top)atmTrack.C = 0.0 ;           # Default exit prism offset (degrees)
    double $(top)atmTrack.D = 400.0 ;         # Default lower wavelength (nm)
    double $(top)atmTrack.E = 900.0 ;         # Default upper wavelength (nm)
+   double $(top)atmTrack:iaa = 180.0 ;       # Default IAA
 }
 long $(top)atmTrack.DIR = 1;                 # CLEAR the atmTrack CAD record
 group {

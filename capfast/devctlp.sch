@@ -22,34 +22,34 @@ w -152 715 100 0 n#23 ebis.Power.VAL -192 704 -64 704 ebos.PwrUpdate.DOL
 w -444 747 100 2 n#33 hwin.hwin#29.in -448 752 -448 752 ebis.Power.INP
 w 360 651 100 0 n#22 ebos.PwrUpdate.OUT 192 640 576 640 edevctlm.Device.PSTA
 [cell use]
-use inhier -768 1136 100 512 vals
-xform 0 -736 1120
-use inhier -768 944 100 512 velo
-xform 0 -736 928
-use inhier -768 1040 100 512 val
-xform 0 -736 1024
-use inhier -768 1232 100 512 mode
-xform 0 -736 1216
-use inhier -768 1328 100 512 dir
-xform 0 -736 1312
-use inhier -768 496 100 512 flt
-xform 0 -736 480
-use inhier -768 368 100 512 simm
-xform 0 -736 352
 use inhier -768 272 100 512 dbug
 xform 0 -736 256
-use outhier 1760 544 100 0 mpos
-xform 0 1712 544
-use outhier 1760 736 100 0 msgl
-xform 0 1712 736
-use outhier 1760 768 100 0 bsyl
-xform 0 1712 768
-use outhier 1760 800 100 0 ack
-xform 0 1712 800
-use outhier 1760 512 100 0 mip
-xform 0 1712 512
+use inhier -768 368 100 512 simm
+xform 0 -736 352
+use inhier -768 496 100 512 flt
+xform 0 -736 480
+use inhier -768 1328 100 512 dir
+xform 0 -736 1312
+use inhier -768 1232 100 512 mode
+xform 0 -736 1216
+use inhier -768 1040 100 512 val
+xform 0 -736 1024
+use inhier -768 944 100 512 velo
+xform 0 -736 928
+use inhier -768 1136 100 512 vals
+xform 0 -736 1120
 use outhier 1760 480 100 0 lswa
 xform 0 1712 480
+use outhier 1760 512 100 0 mip
+xform 0 1712 512
+use outhier 1760 800 100 0 ack
+xform 0 1712 800
+use outhier 1760 768 100 0 bsyl
+xform 0 1712 768
+use outhier 1760 736 100 0 msgl
+xform 0 1712 736
+use outhier 1760 544 100 0 mpos
+xform 0 1712 544
 use edevctlm 832 912 100 0 Device
 xform 0 736 608
 use gmosBorderC -1120 -825 100 0 gmosBorderC#40
@@ -75,6 +75,6 @@ xform 0 -320 720
 p -384 640 100 0 1 DTYP:XYCOM-240
 p -672 558 100 0 0 ONAM:ON
 p -384 784 100 0 1 PV:$(top)$(dev)
-p -384 608 100 0 1 SCAN:I/O Intr
+p -384 608 100 0 1 SCAN:.1 second
 p -672 590 100 0 0 ZNAM:OFF
 [comments]
