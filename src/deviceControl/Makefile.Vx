@@ -61,7 +61,7 @@ DATA	=
 
 # Any extra targets can be placed in a TARGETS macro (the build target
 # builds only pre_build, LIBNAME, TARGETS and PROD, not SCRIPTS, INC etc)
-TARGETS	=
+TARGETS	= 
 
 # Rules for building targets
 include $(APPLIC_TOP)/config/RULES.Build

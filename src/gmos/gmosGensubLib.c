@@ -3269,7 +3269,11 @@ long gmosMakeGratString (struct genSubRecord *pgensub)
      double tiltScale;                            /* The input tiltscale value          */
      double backlash;                             /* The input backlash value           */
      double forwardlash;                          /* The input forwardlash value        */
-     double zpc;                                  /* Zero point correction              */
+     long zpca;                                  /* Zero point correction   GRA       */
+     long zpcb;                                  /* Zero point correction   GRB       */
+     long zpcc;                                  /* Zero point correction   GRC       */
+     long zpcd;                                  /* Zero point correction   GRD       */
+     
      char   valString[MAX_STRING_SIZE];           /* Double value formatted as a string */
      char   tempString[SCRATCH_BUFF_SIZE];        /* Scratch space                      */
 
@@ -3278,38 +3282,75 @@ long gmosMakeGratString (struct genSubRecord *pgensub)
      tiltScale   = *(double *) pgensub->a;
      backlash    = *(double *) pgensub->b;
      forwardlash = *(double *) pgensub->c;
-     zpc         = *(double *) pgensub->d;
+     zpca        = *(long *) pgensub->d;
+     zpcb        = *(long *) pgensub->e;
+     zpcc        = *(long *) pgensub->f;
+     zpcd        = *(long *) pgensub->g;
+     /*numberGrating = *(long *) pgensub->h;*/
+/*
+     switch (numberGrating)
+            {
+		case (0):
+			zpc = zpca;
+                        break;
+                case (1):
+			zpc = zpcb;
+                        break;
+                case (2):
+                        zpc = zpcc;
+                        break;
+                case (3):
+                        zpc = zpcd;
+                        break;
+                default: 
+                        zpc = 0.0;
+                        break;
+            }
 
+ */     
      /*
       * Make up a string looking something like this
       * 
-      *    TSCALE 106.867 BLASH 1.25 FLASH 0.037 ZPC 123.0
+      *    106.867 1.25 0.037 111 222 333 444
       *
       * in which the floating point values are written to
       * strings which are then truncated, to ensure the
       * whole thing can fit into MAX_STRING_SIZE-1 characters.
       */
 
-     strcpy (tempString, "TS ");
-     sprintf (valString, "%7.3f", tiltScale);
-     strncat (tempString, valString, 7);
+     /*TS*/
+     sprintf (valString, "%7.3f ", tiltScale);
+     strcpy (tempString, valString);
 
-     strcat (tempString, " BL ");
-     sprintf (valString, "%4.2f", backlash);
+     /*BL*/
+     sprintf (valString, "%4.2f ", backlash);
+     strncat (tempString, valString, 5);
+
+
+     /*FL*/
+     sprintf (valString, " %5.3f ", forwardlash);
+     strncat (tempString, valString, 7);
+ 
+
+     /*ZPC*/
+
+     sprintf (valString, "%ld ", zpca);
      strncat (tempString, valString, 4);
 
-     strcat (tempString, " FL ");
-     sprintf (valString, "%5.3f", forwardlash);
-     strncat (tempString, valString, 5);
- 
-     strcat (tempString, " ZPC ");
-     sprintf (valString, "%5.2f", zpc);
-     strncat (tempString, valString, 5);
+     sprintf (valString, "%ld ", zpcb);
+     strncat (tempString, valString, 4);
+
+     sprintf (valString, "%ld ", zpcc);
+     strncat (tempString, valString, 4);
+
+     sprintf (valString, "%ld ", zpcd);
+     strncat (tempString, valString, 4);
+
+
 
      /* Finally, copy the string to VALA, ensuring it is truncated to MAX_STRING_SIZE-1 */
 
      strncpy( (char *)pgensub->vala, tempString, MAX_STRING_SIZE-1);
-
      return (status);
 }
 

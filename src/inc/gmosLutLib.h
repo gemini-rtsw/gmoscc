@@ -22,6 +22,12 @@
  * HISTORY
  * -------
  * $Log$
+ * Revision 1.2.2.1  2004/06/24 01:57:53  gemvx
+ * added zpc
+ *
+ * Revision 1.2  2004/03/08 21:03:52  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.1  2002/04/24 05:25:35  ajf
  * Added for port to epics3.13.4GEM8.4.
  *
@@ -82,6 +88,7 @@ typedef struct
   int numberOfEntries;                       /* Number of entries in the table */
   double input[MAX_GMOS_LUT_ENTRIES];        /* Input parameter value          */
   double measured[MAX_GMOS_LUT_ENTRIES];     /* Measured response              */
+  double zpc;                                /* Zero Point Correction for the lut */
 } gmosLookupTable;
 
 /* Public function prototypes */

@@ -13,6 +13,10 @@ group {
    double $(top)grConfigTscale   =     106.867;  # Average number of motor steps per degree
    double $(top)grConfigBlash    =     1.25;     # Backlash parameter (degrees)
    double $(top)grConfigFlash    =     0.037;    # Forwardlash parameter (degrees)
+   double $(top)grConfigZpcGRA   =     0;        # Zero Point Correction GRA (pixels) 
+   double $(top)grConfigZpcGRB   =     0;        # Zero Point Correction GRB (pixels) 
+   double $(top)grConfigZpcGRC   =     0;        # Zero Point Correction GRC (pixels) 
+   double $(top)grConfigZpcGRD   =     0;        # Zero Point Correction GRC (pixels) 
    double $(top)grAssembly.ACLL  =    -10.0;     # Minimum grating tilt in degrees
    double $(top)grAssembly.ACHL  =     90.0;     # Maximum grating tilt in degrees
 }

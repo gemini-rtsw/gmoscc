@@ -44,6 +44,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2002/04/24 05:18:14  ajf
+ * Changes for epics3.13.4GEM8.4.
+ *
  * Revision 1.1  2001/11/28 20:15:07  mbec
  * *** empty log message ***
  *
@@ -191,7 +194,7 @@
  */
 
 #define DRV_OMS_VME_MAX_REPLY_TIME          4       /* read timeout..       */
-#define DRV_OMS_VME_MAX_REQUESTS            3       /* max synch attempts   */
+#define DRV_OMS_VME_MAX_REQUESTS            4       /* max synch attempts   */
 #define DRV_OMS_VME_MAX_MESSAGES            16      /* size of message queue*/
 #define DRV_OMS_VME_MAX_CARDS               8       /* max cards in a system*/
 #define DRV_OMS_VME_CTL_X                   0x18    /* define control-X     */
@@ -990,10 +993,11 @@ static void drvOmsVmeIsr
             /*
              *  If so, send a debug message.
              */
-
+            if (drvOmsVmeDebug) {
             logMsg("OMS%d card: Command rejected, control=%d, status=%d\n", 
                   pCard->type, control, intStatus, 0, 0, 0);
             dumpDebugBuffer (pCard);
+	    }
         }
 
 
@@ -1454,7 +1458,8 @@ long drvOmsVmeMotorPosition
          *  Otherwise an error occurred.   Write debugging information
          *  and then go back and try again.
          */
-
+      if (drvOmsVmeDebug)
+      {
         if ( *pEnd != '\0' )
         {
             logMsg("OMS card:%d RP bad string termination:%c,  %d/%d\n", 
@@ -1463,6 +1468,7 @@ long drvOmsVmeMotorPosition
         }
         if ( pCard->status != 0 )
         {
+	 
             logMsg("OMS card:%d RP status register error:%d, %d/%d\n", 
                  card, pCard->status, requests, 
                  DRV_OMS_VME_MAX_REQUESTS, 0, 0);
@@ -1474,7 +1480,7 @@ long drvOmsVmeMotorPosition
                  DRV_OMS_VME_MAX_REQUESTS, 0, 0);
         }
         dumpDebugBuffer (pCard);
-
+      }
     }     /* end of RP query loop */
 
     /*
@@ -1494,7 +1500,7 @@ long drvOmsVmeMotorPosition
              * so bail out with an error.
              */
             SET_ERR_MSG ("OMS Position read failure");
-            logMsg("OMS card:%d RP cmd failed after %d attempts, %d:%d\n", 
+            logMsg("OMS card:%d RP cmd failed after %d attempts, status = %d:%d\n", 
                  card, requests, status, pCard->status, 0, 0);
             return DRV_OMS_VME_S_SYS_ERROR;
         } 
@@ -1870,16 +1876,15 @@ long drvOmsVmeReadCard
     /*
      * Ensure that the request is valid
      */
-     
-    if ((pCard = pCards[card]) == NULL)
+    
+    pCard = pCards[card];
+    
+    if (pCard == NULL)
     {
-        SET_ERR_MSG ("Read from invalid OMS card");
+     /*   SET_ERR_MSG ("Read from invalid OMS card");*/
         return DRV_OMS_VME_S_CFG_ERROR;
     }
 
-    pCard = pCards[card];            
-    
-            
     /*
      * No timeout means simply check for messages. This is 
      * used when the object is to clear the message queue.
@@ -1908,8 +1913,8 @@ long drvOmsVmeReadCard
 
     if (status < 0)
     {
-        logMsg("OMS card:%d readCard failed, %d:%d\n", 
-             card, status, pCard->status, 0, 0, 0);
+        /*logMsg("OMS card:%d readCard failed, %d:%d\n", 
+             card, status, pCard->status, 0, 0, 0);*/
         return DRV_OMS_VME_S_NO_REPLY; 
     }
       

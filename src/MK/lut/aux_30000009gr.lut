@@ -1,4 +1,22 @@
 aux_grating
+#
+# Grating B600:
+# Values for B600 in position 2
+# 
+# Based on R600 initial linear aux file for position 4
+
+# Cell  Tilt    Steps
+
+2   0.0000000       0
+2   7.755      899.50
+2  26.025     2829.00
+2  40.231     4327.50
+2  52.912     5666.00
+2     65.     6942.00
+2  77.069     8216.00
+2  89.745     9554.00
+
+#
 # NOTE: These figures are based on Marc's orientation A measurement
 # corrected using the offset measured by Rick Murowinski on 24 May 2000
 # corrected again using the offset measured by Stephanie Juneau on 28 June 2000
@@ -14,7 +32,7 @@ aux_grating
 # Edited on December 11th by Laura Fissel after the B600 was remounted.
 # Edited on December 17th by Laura Fissel after a fine wavelength calibration.
 # Edited on February 17 by PLG subtracted 1.5 motor steps
-#edited on march 26 by PLG by adding 0.4 msteps
+# edited on march 26 by PLG by adding 0.4 msteps
 
 # Cell  Tilt    Steps
 

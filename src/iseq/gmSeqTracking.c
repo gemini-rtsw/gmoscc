@@ -22,6 +22,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.3  2003/07/21 21:37:20  gemvx
+ * V4-2 follow in z only version
+ *
  * Revision 1.2  2002/05/02 20:31:57  gemvx
  * Workaround added for port 5
  *
@@ -1068,7 +1071,15 @@ long gmSeqAtmDemands (struct genSubRecord *pgsub)
      * to decide what to do (0= give up, 1=simulate TCS, 2=simulate GMOS coordinates).
      */
 
-    if (pgsub->sevr != INVALID_ALARM && pgsub->noj == AST_CTXA_SIZE)
+    /* tpaz: from epics3.13.8, gensub will no longer process the user routine when dbGetLink
+       returns -1 if tcs is disconnected
+       therefore,  VALA will never be able to go from a connected to a disconnected  or
+       simulation status value
+       through this routine 
+
+       moving tcs connect/disconnect outside of this recored */
+
+    if (pgsub->sevr != INVALID_ALARM)
     {
 
         /*

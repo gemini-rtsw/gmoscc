@@ -10,11 +10,11 @@ else
     site=CP;
 fi
 
-slalib_dir=/gemini/epics3.13.4/slalib/slalib
-timelib_dir=/gemini/epics3.13.4/timelib/timelib
-astlib_dir=/gemini/epics3.13.4/astlib/astlib
+slalib_dir=/gemini/GEM8.6/slalib/slalib
+timelib_dir=/gemini/GEM8.6/timelib/timelib
+astlib_dir=/gemini/GEM8.6/astlib/astlib
 
-applSetup.pl -T mv167 -I adl -I alh -I capfast -I src -I startup -I db \
+applSetup.pl -T ppc604_long -I adl -I alh -I capfast -I src -I startup -I db \
 	     -d $astlib_dir -d $slalib_dir -d $timelib_dir -S $site $1 > $2 2>&1
 
 gmake >> $2 2>&1

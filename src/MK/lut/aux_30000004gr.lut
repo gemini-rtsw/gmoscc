@@ -219,12 +219,29 @@ aux_grating
 # corrected again using the offset measured by Stephanie Juneau on 13 Feb 2001
 # Grating R831
 # Cell  Tilt    Steps
-
 4   0.0000000       0
-4   7.755         941.5
-4  26.025        2871
-4  40.231        4369.5
-4  52.912        5708
-4  65.000        6984
-4  77.069        8258
-4  89.745        9596
+4   7.755         943.00
+4  26.025        2872.50
+4  40.231        4361.00
+4  52.912        5709.50
+4  65.000        6985.50
+4  77.069        8259.50
+4  89.745        9597.50
+
+#stolen from R600 in cell D
+# Grating R831:
+# Values for R600 in position 4 are based on measurement of only
+# the 65 deg point, Dec 04, 2003 (KR, PG).
+# The rest are offset +60 relative to R600
+# in cell 3 (C);  (0,0) is left in place.
+
+# Cell  Tilt    Steps
+
+#4   0.0000000       0
+#4   7.755      939.73
+#4  26.025     2869.23
+#4  40.231     4367.73
+#4  52.912     5706.23
+#4     65.     6983.23
+#4  77.069     8256.23
+#4  89.745     9594.23

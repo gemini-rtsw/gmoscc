@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.7  2004/06/07 19:55:35  gemvx
+ * V5-1: bug fixes and grStep keyword added
+ *
  * Revision 1.4  2003/07/21 21:37:20  gemvx
  * V4-2 follow in z only version
  *
@@ -770,7 +773,8 @@ typedef struct devConfig {
      double             tiltScale;      /* Degrees per motor step when no LUT available.        */
      double             backlash;       /* Amount of grating tilt backlash.                     */
      double             forwardlash;    /* Movement required to release contact with worm gear. */
-     double             zpc;            /* Zero point correction                                */
+     double             zpc[GR_NUM_GRATINGS];            /* Zero point correction                                */
+     double             numberGrating;  /* numberGrating                                        */
      long               magic;          /* magic value to guard against pointer corruption      */
 } GR_DEV_CONFIG;
 
@@ -1581,14 +1585,23 @@ static long grCheckAttributes(ASSEMBLY_CONTROL_RECORD *par)
      double         tiltAngle;
      int            match = FALSE;                   /* boolean search flag         */
      char           tempString[4][MAX_STRING_SIZE];  /* temp string buffers         */
-     double         tempDouble[4];                   /* temp doubles                */
-     int            count;                           /* simple counter              */
+     double         tempDouble[3];                   /* temp doubles                */
+     long           tempLong[4];                        /* temp long                   */
      BOOL           gotTscale;                       /* TRUE when tscale allocated  */
      BOOL           gotFlash;                        /* TRUE when flash  allocated  */
      BOOL           gotBlash;                        /* TRUE when blash allocated  */
-     BOOL           gotZpc;                          /* TRUE when zerp point correction allocated */
-     double         pixZpc;                         /* zpc in pixels */
-     double         stepsZpc;                         /* zpc in motorsteps*/
+     BOOL           gotZpca;                          /* TRUE when zerp point correction allocated */
+     BOOL           gotZpcb;                          /* TRUE when zerp point correction allocated */
+     BOOL           gotZpcc;                          /* TRUE when zerp point correction allocated */
+     BOOL           gotZpcd;                          /* TRUE when zerp point correction allocated */
+     long         pixZpca;                         /* zpc in pixels */
+     long         pixZpcb;                         /* zpc in pixels */
+     long         pixZpcc;                         /* zpc in pixels */
+     long         pixZpcd;                         /* zpc in pixels */
+     double         stepsZpca;                         /* zpc in motorsteps*/
+     double         stepsZpcb;                         /* zpc in motorsteps*/
+     double         stepsZpcc;                         /* zpc in motorsteps*/
+     double         stepsZpcd;                         /* zpc in motorsteps*/
 
 
      GRDEBUG(DAR_MSG_MAX, "grCheckAttributes: entry, sim=%d\n", assSimulateLevel(par) );
@@ -1702,13 +1715,19 @@ static long grCheckAttributes(ASSEMBLY_CONTROL_RECORD *par)
 	  gotTscale = FALSE;
 	  gotBlash  = FALSE;
 	  gotFlash  = FALSE;
-          gotZpc    = FALSE;
+          gotZpca    = FALSE;
+          gotZpcb    = FALSE;
+          gotZpcc    = FALSE;
+          gotZpcd    = FALSE;
 
-	  if (sscanf((char *)par->d, "%s %lf %s %lf %s %lf %s %lf",
-		     &tempString[0][0], &tempDouble[0],
-		     &tempString[1][0], &tempDouble[1],
-		     &tempString[2][0], &tempDouble[2],
-                     &tempString[3][0], &tempDouble[3]) != 8)
+	  if (sscanf((char *)par->d, "%lf %lf %lf %ld %ld %ld %ld",
+		     &tempDouble[0],
+		     &tempDouble[1],
+		     &tempDouble[2],
+                     &tempLong[0], 
+                     &tempLong[1], 
+                     &tempLong[2], 
+                     &tempLong[3]) != 7)
 	  {
 	       GRDEBUG(DAR_MSG_ERROR,
 		       "grCheckAttributes: wrong string read from input D%c\n",
@@ -1720,38 +1739,92 @@ static long grCheckAttributes(ASSEMBLY_CONTROL_RECORD *par)
 	  }
 	  else
 	  {
-	       for (count = 0; count < 4; count++)
-	       {
-		    if (!strcmp(&tempString[count][0], "TS"))
-		    {
-			 pDevConfig->tiltScale = tempDouble[count];
+			 pDevConfig->tiltScale = tempDouble[0];
 			 gotTscale = TRUE;
-		    }
-		    else if (!strcmp(&tempString[count][0], "BL"))
-		    {
-			 pDevConfig->backlash = tempDouble[count];
+			 pDevConfig->backlash = tempDouble[1];
 			 gotBlash = TRUE;
-		    }
-		    else if (!strcmp(&tempString[count][0], "FL"))
-		    {
-			 pDevConfig->forwardlash = tempDouble[count];
+			 pDevConfig->forwardlash = tempDouble[2];
 			 gotFlash = TRUE;
-		    }
-		    else if (!strcmp(&tempString[count][0], "ZPC"))
-		    {  
-                         pixZpc = tempDouble[count]; 
-                         /*(printf("*** zero point correction in pixels received : %f ***\n", pixZpc);*/
-                         if (pixZpc >  0) {
-                         stepsZpc = (pixZpc - 182)/12;
+                         pixZpca = tempLong[0]; 
+                         pixZpcb = tempLong[1]; 
+                         pixZpcc = tempLong[2]; 
+                         pixZpcd = tempLong[3]; 
+                         
+                         printf("*** zero point correction in pixels received : %ld %ld %ld %ld ***\n", pixZpca,pixZpcb,pixZpcc,pixZpcd);
+#ifdef MK
+                         if (pixZpca >  0) {
+                         	stepsZpca = (pixZpca - 182.0)/12.0;
                          }
-                         /*printf("*** zero point correction in motorsteps : %f ***\n", stepsZpc);*/
-			 pDevConfig->zpc = stepsZpc;
-			 gotZpc = TRUE;
-                    }
-	       }
+                         else {
+                 		stepsZpca = 0.0;
+ 			 }
+                         if (pixZpcb >  0) {
+                         	stepsZpcb = (pixZpcb - 182.0)/12.0;
+                         }
+			 else {
+				stepsZpcb = 0.0;
+			 }
+                         if (pixZpcc >  0) {
+                         	stepsZpcc = (pixZpcc - 182.0)/12.0;
+                         }
+                         else {
+				stepsZpcc = 0.0;
+			 }
+                         if (pixZpcd >  0) {
+                         	stepsZpcd = (pixZpcd - 182.0)/12.0;
+                         }
+                         else {
+				stepsZpcd = 0.0;
+  			 }
+#else
+
+                         if (pixZpca >  0) {
+                                stepsZpca = (pixZpca - 151.0)/10.5;
+                         }
+                         else {
+                                stepsZpca = 0.0;
+                         }
+                         if (pixZpcb >  0) {
+                                stepsZpcb = (pixZpcb - 151.0)/10.5;
+                         }
+                         else {
+                                stepsZpcb = 0.0;
+                         }
+                         if (pixZpcc >  0) {
+                                stepsZpcc = (pixZpcc - 151.0)/10.5;
+                         }
+                         else {
+                                stepsZpcc = 0.0;
+                         }
+                         if (pixZpcd >  0) {
+                                stepsZpcd = (pixZpcd - 151.0)/10.5;
+                         }
+                         else {
+                                stepsZpcd = 0.0;
+                         }
+
+#endif
+                         
+                        /* printf("******** zero point correction in motorsteps : %f %f %f %f ***\n", stepsZpca, stepsZpcb, stepsZpcc, stepsZpcd);*/
+			 pDevConfig->zpc[GRA] = stepsZpca;
+			 gotZpca = TRUE;
+			 pDevConfig->zpc[GRB] = stepsZpcb;
+			 gotZpcb = TRUE;
+			 pDevConfig->zpc[GRC] = stepsZpcc;
+			 gotZpcc = TRUE;
+			 pDevConfig->zpc[GRD] = stepsZpcd;
+			 gotZpcd = TRUE;
+
+/*
+                        printf(" ******** populating configuration structure : \n");
+                        printf(" ******** pDevConfig->zpc[GRA] = %f \n", pDevConfig->zpc[GRA]);
+                        printf(" ******** pDevConfig->zpc[GRB] = %f \n", pDevConfig->zpc[GRB]);
+                        printf(" ******** pDevConfig->zpc[GRC] = %f \n", pDevConfig->zpc[GRC]);
+                        printf(" ******** pDevConfig->zpc[GRD] = %f \n", pDevConfig->zpc[GRD]);
+ */                      
 	  }
 
-	  if (!gotTscale || !gotBlash || !gotFlash || !gotZpc)
+	  if (!gotTscale || !gotBlash || !gotFlash || !gotZpca || !gotZpcb || !gotZpcc || !gotZpcd)
 	  {
 	       GRDEBUG(DAR_MSG_ERROR,
 		       "grCheckAttributes: incomplete string read from input D%c\n",
@@ -2308,6 +2381,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
      int lifterWaitTime = 1 + (int) ( (float) GR_LIFTER_CYCLE_TIME * 1.5);
 
      double fsteps;
+     double zpcSteps;
 
      pGrPriv = ( GR_DEV_PRIVATE *) assGetPrivateStruct( par );
      pDevConfig = pGrPriv->pGratingPriv;
@@ -2644,10 +2718,15 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 			assPriv->keepIndex = TRUE;
                         status = GR_LUT_ERROR;
                     }
+                    /* apply zero point correction to motorsteps */
+                    zpcSteps = fsteps + pDevConfig->zpc[GRA];
+                    printf("#####   A_1 FSTEPS = %f \n",fsteps);
+                    printf("#####   A_1 ZPCSTEPS = %f \n",zpcSteps);
                }
 
+
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
-               sprintf( pGrPriv->position[GRA], "%f", fsteps);
+               sprintf( pGrPriv->position[GRA], "%f", zpcSteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -2697,12 +2776,17 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 			assPriv->keepIndex = TRUE;
                         status = GR_LUT_ERROR;
                     }
+                    /* apply zero point correction to motorsteps */
+                    zpcSteps = fsteps + pDevConfig->zpc[GRA];
+                    printf("#####   A_2 FSTEPS = %f \n",fsteps);
+                    printf("#####   A_2 ZPCSTEPS = %f \n",zpcSteps);
+
                }
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
-               sprintf( pGrPriv->position[GRA], "%f", fsteps);
-               GR_STEP_VALUE = fsteps;
-               printf(" GRATING A MOTORSTEPS : %f\n", fsteps);
+               sprintf( pGrPriv->position[GRA], "%f", zpcSteps);
+               GR_STEP_VALUE = zpcSteps;
+               printf(" GRATING A MOTORSTEPS : %f\n", zpcSteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -2754,10 +2838,16 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 			assPriv->keepIndex = TRUE;
                         status = GR_LUT_ERROR;
                     }
+
+                    /* apply zero point correction to motorsteps */
+                    zpcSteps = fsteps + pDevConfig->zpc[GRA];
+                    printf("#####   A_3 FSTEPS = %f \n",fsteps);
+                    printf("#####   A_3 ZPCSTEPS = %f \n",zpcSteps);
+
                }
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
-               sprintf( pGrPriv->position[GRA], "%f", fsteps);
+               sprintf( pGrPriv->position[GRA], "%f", zpcSteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -2810,10 +2900,15 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 			assPriv->keepIndex = TRUE;
                         status = GR_LUT_ERROR;
                     }
+
+                    /* apply zero point correction to motorsteps */
+                    zpcSteps = fsteps + pDevConfig->zpc[GRB];
+                    printf("#####   B_1 FSTEPS = %f \n",fsteps);
+                    printf("#####   B-1 ZPCSTEPS = %f \n",zpcSteps);
                }
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
-               sprintf( pGrPriv->position[GRB], "%f", fsteps);
+               sprintf( pGrPriv->position[GRB], "%f", zpcSteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -2863,12 +2958,18 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 			assPriv->keepIndex = TRUE;
                         status = GR_LUT_ERROR;
                     }
+
+                    /* apply zero point correction to motorsteps */
+                    zpcSteps = fsteps + pDevConfig->zpc[GRB];
+                    printf("#####   B_2 FSTEPS = %f \n",fsteps);
+                    printf("#####   B_2 ZPCSTEPS = %f \n",zpcSteps);
+
                }
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
-               sprintf( pGrPriv->position[GRB], "%f", fsteps);
-               printf(" GRATING B MOTORSTEPS : %f\n", fsteps);
-               GR_STEP_VALUE = fsteps;
+               sprintf( pGrPriv->position[GRB], "%f", zpcSteps);
+               printf(" GRATING B MOTORSTEPS : %f\n", zpcSteps);
+               GR_STEP_VALUE = zpcSteps;
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -2919,10 +3020,16 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 			assPriv->keepIndex = TRUE;
                         status = GR_LUT_ERROR;
                     }
+
+                    /* apply zero point correction to motorsteps */
+                    zpcSteps = fsteps + pDevConfig->zpc[GRB];
+                    printf("#####   B_3 FSTEPS = %f \n",fsteps);
+                    printf("#####   B_3 ZPCSTEPS = %f \n",zpcSteps);
+
                }
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
-               sprintf( pGrPriv->position[GRB], "%f", fsteps);
+               sprintf( pGrPriv->position[GRB], "%f", zpcSteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -2971,10 +3078,16 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 			assPriv->keepIndex = TRUE;
                         status = GR_LUT_ERROR;
                     }
+
+                    /* apply zero point correction to motorsteps */
+                    zpcSteps = fsteps + pDevConfig->zpc[GRC];
+                    printf("#####   C_1 FSTEPS = %f \n",fsteps);
+                    printf("#####   C_1 ZPCSTEPS = %f \n",zpcSteps);
+
                }
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
-               sprintf( pGrPriv->position[GRC], "%f", fsteps);
+               sprintf( pGrPriv->position[GRC], "%f", zpcSteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -3021,12 +3134,18 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 			assPriv->keepIndex = TRUE;
                         status = GR_LUT_ERROR;
                     }
+
+                    /* apply zero point correction to motorsteps */
+                    zpcSteps = fsteps + pDevConfig->zpc[GRC];
+                    printf("#####   C_2 FSTEPS = %f \n",fsteps);
+                    printf("#####   C_2 ZPCSTEPS = %f \n",zpcSteps);
+
                }
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
-               sprintf( pGrPriv->position[GRC], "%f", fsteps);
-               printf(" GRATING C MOTORSTEPS : %f\n", fsteps);
-               GR_STEP_VALUE = fsteps;
+               sprintf( pGrPriv->position[GRC], "%f", zpcSteps);
+               printf(" GRATING C MOTORSTEPS : %f\n", zpcSteps);
+               GR_STEP_VALUE = zpcSteps;
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -3073,10 +3192,16 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 			assPriv->keepIndex = TRUE;
                         status = GR_LUT_ERROR;
                     }
+
+                    /* apply zero point correction to motorsteps */
+                    zpcSteps = fsteps + pDevConfig->zpc[GRC];
+                    printf("#####   C_3 FSTEPS = %f \n",fsteps);
+                    printf("#####   C_3 ZPCSTEPS = %f \n",zpcSteps);
+
                }
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
-               sprintf( pGrPriv->position[GRC], "%f", fsteps);
+               sprintf( pGrPriv->position[GRC], "%f", zpcSteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -3125,10 +3250,16 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 			assPriv->keepIndex = TRUE;
                         status = GR_LUT_ERROR;
                     }
+
+                    /* apply zero point correction to motorsteps */
+                    zpcSteps = fsteps + pDevConfig->zpc[GRD];
+                    printf("#####   D_1 FSTEPS = %f \n",fsteps);
+                    printf("#####   D_1 ZPCSTEPS = %f \n",zpcSteps);
+
                }
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
-               sprintf( pGrPriv->position[GRD], "%f", fsteps);
+               sprintf( pGrPriv->position[GRD], "%f", zpcSteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -3175,12 +3306,18 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 			assPriv->keepIndex = TRUE;
                         status = GR_LUT_ERROR;
                     }
+                    
+	   	    /* apply zero point correction to motorsteps */
+                    zpcSteps = fsteps + pDevConfig->zpc[GRD];
+                    printf("#####   D_2 FSTEPS = %f \n",fsteps);
+                    printf("#####   D_2 ZPCSTEPS = %f \n",zpcSteps);
+
                }
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
-               sprintf( pGrPriv->position[GRD], "%f", fsteps);
-               printf(" GRATING D MOTORSTEPS : %f\n", fsteps);
-               GR_STEP_VALUE = fsteps;
+               sprintf( pGrPriv->position[GRD], "%f", zpcSteps);
+               printf(" GRATING D MOTORSTEPS : %f\n", zpcSteps);
+               GR_STEP_VALUE = zpcSteps;
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -3228,10 +3365,16 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 			assPriv->keepIndex = TRUE;
                         status = GR_LUT_ERROR;
                     }
+
+                    /* apply zero point correction to motorsteps */
+                    zpcSteps = fsteps + pDevConfig->zpc[GRD];
+                    printf("#####   D_3 FSTEPS = %f \n",fsteps);
+                    printf("#####   D_3 ZPCSTEPS = %f \n",zpcSteps);
+
                }
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
-               sprintf( pGrPriv->position[GRD], "%f", fsteps);
+               sprintf( pGrPriv->position[GRD], "%f", zpcSteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -5796,17 +5939,11 @@ static long grReadConfig(ASSEMBLY_CONTROL_RECORD *par)
 
 
                          if (grind == (gratingPos+1)) {
-                         GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: grind %d = \n", grind);
-                         GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: gratingPos %d\n", gratingPos);
-                         GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: readline successfull scratchBuf: %s\n", scratchBuf);
                          if (n[grind - 1] <= MAX_GMOS_LUT_ENTRIES)
                          {
-                              GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: n[grind -1] = %d\n", n[grind - 1]);
                               semTake (pGrPriv->mutexSem, WAIT_FOREVER);
                               pGrPriv->tilt2StepsLut[grind -1].input[n[grind -1]]  = tilt;
-                              GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: TILT = %f\n",tilt);
                               pGrPriv->tilt2StepsLut[grind -1].measured[n[grind -1]] = steps;
-                              GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: STEPS = %f\n",steps);
                               semGive (pGrPriv->mutexSem);
                               n[grind - 1]++;
                          }
@@ -5823,10 +5960,10 @@ static long grReadConfig(ASSEMBLY_CONTROL_RECORD *par)
                       }/* if grind == gratingPos */
 
 
-                    }/*if*/
-               }/*if*/
-          }/*while*/
-        }/*for*/
+                    }
+               }
+          }
+        }
     fclose (fp);
      }
 

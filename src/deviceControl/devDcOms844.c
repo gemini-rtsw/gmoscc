@@ -45,6 +45,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2002/04/24 21:09:58  ajf
+ * Changes for the port to epics3.13.4GEM8.4
+ *
  * Revision 1.1  2002/04/24 05:18:13  ajf
  * Changes for epics3.13.4GEM8.4.
  *
@@ -254,7 +257,7 @@
 
 #define DDR_OMS_SCAN_TASK_PRIORITY     80         /* OMS scan task priority       */
 #define DDR_OMS_SCAN_TASK_STACK        0x2000     /* 8192 byte stack              */
-#define DDR_OMS_SCAN_TASK_RATE         10         /* omsScanTask rate (scans/sec) */
+#define DDR_OMS_SCAN_TASK_RATE         10          /* omsScanTask rate (scans/sec) */
 #define DDR_OMS_SCAN_TASK_OPTIONS      VX_FP_TASK /* Allow floating point         */
 
 

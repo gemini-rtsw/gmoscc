@@ -10,10 +10,14 @@
 # Translation Assembly
 #
 group {
-   double $(top)dtaAssembly.AALL  =   -18.0;  # Minimum X axis position in microns
-   double $(top)dtaAssembly.AAHL  =   248.0;  # Maximum X axis position in microns
+   #double $(top)dtaAssembly.AALL  =   -18.0;  # Minimum X axis position in microns
+   #double $(top)dtaAssembly.AAHL  =   248.0;  # Maximum X axis position in microns
+   #double $(top)dtaAssembly.ABLL  =   -14.0;  # Minimum Y axis position in microns
+   #double $(top)dtaAssembly.ABHL  =   258.0;  # Maximum Y axis position in microns
+   double $(top)dtaAssembly.AALL  =   -16.4;  # Minimum X axis position in microns
+   double $(top)dtaAssembly.AAHL  =   246.0;  # Maximum X axis position in microns
    double $(top)dtaAssembly.ABLL  =   -14.0;  # Minimum Y axis position in microns
-   double $(top)dtaAssembly.ABHL  =   258.0;  # Maximum Y axis position in microns
+   double $(top)dtaAssembly.ABHL  =   257.0;  # Maximum Y axis position in microns
    double $(top)dtaAssembly.ACLL  =    30.0;  # Minimum Z axis position in microns
    double $(top)dtaAssembly.ACHL  =  4950.0;  # Maximum Z axis position in microns
    long   $(top)dtaOffsetSel.VAL  =       3;  # Select crosstalk XYZ correction by default
