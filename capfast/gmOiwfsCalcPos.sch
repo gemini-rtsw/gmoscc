@@ -1,0 +1,111 @@
+[schematic2]
+uniq 272
+[tools]
+[detail]
+w 1794 1131 -100 0 n#271 egenSub.CalcPosition.VALB 1632 1824 1760 1824 1760 1120 1888 1120 eaos.CurY.DOL
+w 1858 1483 -100 0 n#270 eaos.CurX.DOL 1952 1472 1824 1472 1824 1888 1632 1888 egenSub.CalcPosition.VALA
+w 978 651 100 0 z_offset eais.ZOffset.VAL 832 640 1184 640 1184 1472 1344 1472 egenSub.CalcPosition.INPG
+w 962 939 100 0 y_offset eais.YOffset.VAL 832 928 1152 928 1152 1536 1344 1536 egenSub.CalcPosition.INPF
+w 946 1099 100 0 x_offset eais.XOffset.VAL 832 1088 1120 1088 1120 1600 1344 1600 egenSub.CalcPosition.INPE
+w 930 1259 100 0 pickoff_offset eais.PkoOffset.VAL 832 1248 1088 1248 1088 1664 1344 1664 egenSub.CalcPosition.INPD
+w 912 1424 100 0 base_offset eais.BasOffset.VAL 832 1408 1056 1408 1056 1728 1344 1728 egenSub.CalcPosition.INPC
+w 1846 1611 100 0 cur_pos egenSub.CalcPosition.OUTE 1632 1600 2144 1600 outhier.CUR_POS.p
+w 1858 1739 100 0 z_cur egenSub.CalcPosition.OUTC 1632 1728 2144 1728 outhier.Z_CUR.p
+w 758 1803 100 0 pko_pos inhier.PKO_POS.P 256 1792 1344 1792 egenSub.CalcPosition.INPB
+w 1852 1675 100 0 pr_cur egenSub.CalcPosition.OUTD 1632 1664 2144 1664 outhier.PR_CUR.p
+w 1858 1803 100 0 y_cur egenSub.CalcPosition.OUTB 1632 1792 2144 1792 outhier.Y_CUR.p
+w 1858 1867 100 0 x_cur egenSub.CalcPosition.OUTA 1632 1856 2144 1856 outhier.X_CUR.p
+w 758 1867 100 0 bas_pos inhier.BAS_POS.P 256 1856 1344 1856 egenSub.CalcPosition.INPA
+f 448 800 1024 1536 100 3072 Offsets
+s 480 816 100 0 AbsAngles genSub.
+s 480 848 100 0 These offsets also go to the
+[cell use]
+use eaos 2064 1168 100 0 CurY
+xform 0 2016 1088
+p 1952 864 100 0 1 EGU:mm
+p 1952 928 100 0 0 EGUF:0
+p 1952 896 100 0 0 EGUL:0
+p 1952 928 100 0 1 HOPR:140.0
+p 1952 896 100 0 1 LOPR:-30.0
+p 1952 960 100 0 1 OMSL:closed_loop
+p 2048 1168 100 512 -1 PV:$(top)$(dev)
+p 1952 992 100 0 1 SCAN:.1 second
+use eaos 2128 1520 100 0 CurX
+xform 0 2080 1440
+p 2016 1216 100 0 1 EGU:mm
+p 2016 1280 100 0 0 EGUF:0
+p 2016 1248 100 0 0 EGUL:0
+p 2016 1280 100 0 1 HOPR:130.0
+p 2016 1248 100 0 1 LOPR:-10.0
+p 2016 1312 100 0 1 OMSL:closed_loop
+p 2112 1520 100 512 -1 PV:$(top)$(dev)
+p 2016 1344 100 0 1 SCAN:.1 second
+use eais 768 1488 100 0 BasOffset
+xform 0 704 1424
+p 704 1392 100 256 1 PREC:3
+p 752 1488 100 512 -1 PV:$(top)$(dev)
+use eais 768 1328 100 0 PkoOffset
+xform 0 704 1264
+p 704 1232 100 256 1 PREC:3
+p 752 1328 100 512 -1 PV:$(top)$(dev)
+use eais 752 1168 100 0 XOffset
+xform 0 704 1104
+p 704 1072 100 256 1 PREC:3
+p 752 1168 100 512 -1 PV:$(top)$(dev)
+use eais 752 1008 100 0 YOffset
+xform 0 704 944
+p 704 912 100 256 1 PREC:3
+p 752 1008 100 512 -1 PV:$(top)$(dev)
+use eais 752 720 100 0 ZOffset
+xform 0 704 656
+p 656 624 100 0 1 PREC:3
+p 752 720 100 512 -1 PV:$(top)$(dev)
+use outhier 2144 1616 100 0 CUR_POS
+xform 0 2128 1600
+use outhier 2144 1744 100 0 Z_CUR
+xform 0 2128 1728
+use outhier 2144 1872 100 0 X_CUR
+xform 0 2128 1856
+use outhier 2144 1808 100 0 Y_CUR
+xform 0 2128 1792
+use outhier 2144 1680 100 0 PR_CUR
+xform 0 2128 1664
+use inhier 224 1856 100 512 BAS_POS
+xform 0 256 1856
+use inhier 224 1792 100 512 PKO_POS
+xform 0 256 1792
+use egenSub 1600 1952 100 0 CalcPosition
+xform 0 1488 1520
+p 1424 1888 70 0 -1 FTA:DOUBLE
+p 1424 1824 70 0 -1 FTB:DOUBLE
+p 1424 1760 70 0 -1 FTC:DOUBLE
+p 1424 1696 70 0 -1 FTD:DOUBLE
+p 1424 1632 70 0 -1 FTE:DOUBLE
+p 1424 1568 70 0 -1 FTF:DOUBLE
+p 1424 1504 70 0 -1 FTG:DOUBLE
+p 1552 1888 70 512 -1 FTVA:DOUBLE
+p 1552 1824 70 512 -1 FTVB:DOUBLE
+p 1552 1760 70 512 -1 FTVC:DOUBLE
+p 1552 1696 70 512 -1 FTVD:DOUBLE
+p 1552 1632 75 512 -1 FTVE:DOUBLE
+p 1552 1616 100 0 0 NOE:1
+p 1552 1600 70 512 1 NOVE:4
+p 1360 1056 100 0 1 PREC:2
+p 1584 1952 100 512 1 PV:$(top)$(dev)
+p 1488 1136 70 256 1 SCAN:.1 second
+p 1488 1088 100 256 1 SNAM:oiAngles2Position
+p 1360 1022 70 0 0 def(INPC):0.0
+p 1360 990 70 0 0 def(INPD):0.0
+p 1360 958 70 0 0 def(INPE):0.0
+p 1360 928 70 0 0 def(INPF):0.0
+p 1360 896 70 0 0 def(OUTE):0.000000000000000e+00
+p 1121 1126 100 0 0 typ(OUTE):path
+use gmosBorderC -416 -153 100 0 gmosBorderC#91
+xform 0 1264 1152
+p 2836 -24 100 512 1 File:gmOiwfsCalcPos.sch
+p 2532 160 120 256 -1 Project:Gemini Multi-object Optical Spectrometer
+p 2244 20 150 0 1 Rev:
+p 2524 96 120 256 -1 Title:Calculate X/Y Position
+p 2564 32 100 1024 -1 author:B.Wooff
+p 2564 0 100 1024 -1 date:October 18, 2000
+[comments]

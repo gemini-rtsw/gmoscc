@@ -1,0 +1,131 @@
+#!/usr/local/bin/tcsh -f
+#
+# logTemps
+#
+# Description:
+#
+#   A simple script to log temperature at a periodic interval
+#
+#   It is assumed this script is being run from the "test" directory.
+#   The GMOS CC database must be running somewhere.
+#   This script will not attempt to move any mechanisms.
+#
+# Invocation:
+#   logTemps interval
+#
+# NOTE:
+#   This script is designed to be as simple as possible, so it does not do as much
+#   checking as a dhsTestCmdr script. It is designed to generate test data rather
+#   than to check out the correct operation of the instrument.
+#
+
+#
+# Check for arguments
+#
+
+if ($#argv != 1) then
+    echo "Please supply interval between measurements (in minutes)"
+    exit
+endif
+
+#
+# Get the current day and calculate interval
+#
+
+set day = `date +%d%h%y`
+
+set intervalSeconds = `mult $1 60`
+
+if ($intervalSeconds <= 0) then
+    echo "Interval must be greater than zero"
+    exit
+endif
+
+#
+# Bail out if the scripts directory does not exist.
+#
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+#
+# Create the log directory if need be...
+#
+
+echo ""
+if (!(-e logfiles/$day)) then
+    mkdir logfiles/$day
+    echo "Creating directory ./logfiles/"$day" for temperature file"
+    sleep 1
+endif
+
+if (!(-e logfiles/$day/temperatures)) then
+    echo "Creating temperature log file ./logfile/"$day"/temperatures"
+    echo "Day Month Date Time Year temp0 temp1 temp2 temp3 temp4 temp5 temp6 temp7 temp8" | cat >> ./logfiles/$day/temperatures
+    sleep 1
+endif
+
+echo "Temperatures will be stored in ./logfiles/"$day"/temperatures"
+sleep 1
+
+echo ""
+echo "It is assumed you have started the components controller database."
+echo "(Type Ctrl-c when you want to finish)"
+sleep 1
+
+echo ""
+echo "Taking periodic temperature measurements from the GMOS components controller"
+date
+echo ""
+
+#
+# Start the measurements.
+#
+
+echo "" | cat >> ./logfiles/$day/temperatures
+
+while ( 1 )
+
+#
+# Set the file name to the current time.
+#
+
+    set observeTime = `date +"%a %b %d %T %Y"`
+
+    echo "Measuring temperatures at $observeTime"
+
+    set temp0 = `caget "g7:cc:temp0.VAL" | sed 's|g7:cc:temp0.VAL                | |g'`
+    echo "temp0 is "$temp0
+    set temp1 = `caget "g7:cc:temp1.VAL" | sed 's|g7:cc:temp1.VAL                | |g'`
+    echo "temp1 is "$temp1
+    set temp2 = `caget "g7:cc:temp2.VAL" | sed 's|g7:cc:temp2.VAL                | |g'`
+    echo "temp2 is "$temp2
+    set temp3 = `caget "g7:cc:temp3.VAL" | sed 's|g7:cc:temp3.VAL                | |g'`
+    echo "temp3 is "$temp3
+    set temp4 = `caget "g7:cc:temp4.VAL" | sed 's|g7:cc:temp4.VAL                | |g'`
+    echo "temp4 is "$temp4
+    set temp5 = `caget "g7:cc:temp5.VAL" | sed 's|g7:cc:temp5.VAL                | |g'`
+    echo "temp5 is "$temp5
+    set temp6 = `caget "g7:cc:temp6.VAL" | sed 's|g7:cc:temp6.VAL                | |g'`
+    echo "temp6 is "$temp6
+    set temp7 = `caget "g7:cc:temp7.VAL" | sed 's|g7:cc:temp7.VAL                | |g'`
+    echo "temp7 is "$temp7
+    set temp8 = `caget "g7:cc:temp8.VAL" | sed 's|g7:cc:temp8.VAL                | |g'`
+    echo "temp8 is "$temp8
+    echo ""
+
+    echo $observeTime $temp0 $temp1 $temp2 $temp3 $temp4 $temp5 $temp6 $temp7 $temp8 |cat >> ./logfiles/$day/temperatures
+
+    sleep $intervalSeconds
+    
+end
+
+exit
+
+
+
+
+
+

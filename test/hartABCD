@@ -1,0 +1,302 @@
+#!/usr/local/bin/tcsh -f
+#
+# hartmannFocus
+#
+# Description:
+#
+#   A simple script to take images with the 4 Hartmann masks.
+#
+#   It is assumed this script is being run from the "test" directory.
+#   The detector controller must already have been initalised
+#   and set into the desired configuration, as must the OIWFS controller.
+#   The filter assembly must be initialised and indexed. Produce test
+#   images before running the script.
+#
+# Invocation:
+#   hartmannFocus
+#
+# NOTE:
+#   This script is designed to be as simple as possible, so it does not do as much
+#   checking as a dhsTestCmdr script. It is designed to generate test data rather
+#   than to check out the correct operation of the instrument.
+#
+
+# Set some numbers - suitable Hartmann Masks barcode IDs
+
+set filter1_posA = 20000013
+set filter1_posB = 20000014
+set filter1_posC = 20000015
+set filter1_posD = 20000016
+
+# For filter wheel2, enter current barcode ID
+# g' = 20000001
+# i' = 20000002
+# r' = 20000003
+# z' = 20000004
+
+# set filter2_pos = 20000001
+
+
+# Move this after "image" command
+set filter2_pos = `caget "gm:cc:fltAssembly.B" | sed 's|gm:cc:fltAssembly.B||g'`
+
+
+#
+# Check for arguments
+#
+
+if ($#argv != 0) then
+    echo "Error - hartmannFocus expects no arguments"
+    exit
+endif
+
+#
+# Get the current date
+#
+
+# set day = `date +%h%d.%y | tolower`
+
+set day = `date +%h%d.%y`
+
+echo "Date is "${day}
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!($?GMOS_MK_ACCESS)) then
+    echo "GMOS MK safety check failed."
+    echo ""
+    echo "Before executing this script, which will move real MK hardware,"
+    echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+    echo ""
+    exit
+else
+    echo "GMOS MK safety check passed."
+    echo ""
+endif
+
+#echo "Simulation mode - no safety check required"
+
+#
+# Bail out if the scripts directory does not exist.
+#
+
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+#
+# Create the log directory if need be...
+#
+
+if (!(-e logfiles)) then
+    mkdir logfiles
+endif
+
+if (!(-e logfiles/${day})) then
+    mkdir logfiles/${day}
+    echo "Creating directory ./logfiles/"${day}
+    echo ""
+endif
+
+if (!(-e logfiles/${day}/hartLog_${day})) then
+    echo "Creating log file ./logfile/"${day}"/hartLog_${day}"
+    echo "Day Month Date Time Year Filename filter1 filter2 actual_dta_z temp4 temp5 tempDet userComment" | cat >> ./logfiles/${day}/hartLog_${day}
+endif
+
+echo "Focus test image information will be stored in ./logfiles/"${day}"/hartLog_${day}"
+echo ""
+
+echo "Press enter to proceed"
+set dummy = $<
+
+echo "Before proceeding - perform the following:"
+echo "1. Initialise and Index the filter assembly"
+echo "2. Configure GMOS (components controller) for the images required"
+echo "3. Configure the Science camera controller and take a test image"
+echo "4. Note down the first filename required (gXXXXX)"
+echo ""
+echo "Press enter to proceed"
+set dummy = $<
+
+echo "Please enter a file number for images (the first filename will be gXXXXX)"
+set scienceFilenumber = $<
+
+@ scienceFilenumber -= 1
+@ scienceFilenumber += 1
+
+#echo ""
+#echo "Please enter the current iteration of this script"
+#set scriptIterations = $<
+
+echo "" | cat >> ./logfiles/${day}/hartLog_${day}    
+
+while (1)
+
+echo ""
+echo "Awaiting input, please enter:"
+echo '"image" to take and log a set of hartmann images'
+echo '"quit" to stop the script'
+echo ""
+set userInput = $<
+
+while ($userInput == "")
+    set userInput = $<
+end
+
+#   echo "Current iteration is "$scriptIterations
+    echo "Next filename will be: g"$scienceFilenumber
+    echo "Data logging to: ./logfiles/"${day}"/hartLog_"${day}
+
+if ($userInput == "image") then
+
+# Begin test here !!!
+
+    echo ""
+    echo "Taking Hartmann images"
+    echo ""
+    echo "Please enter a comment for this iteration:"
+    set userComment = $<
+
+    set observeTime = `date +"%a %b %d %T %Y"`
+    echo ""
+    echo "* The time now is ${observeTime} *"
+    echo ""
+
+
+    #
+    # Take the images
+    #
+
+# Get filter ID for filter wheel 2 in-beam position.
+#    set filter2_pos = `caget "gm:cc:fltAssembly.B" | sed 's|gm:cc:fltAssembly.B||g'`
+
+    set scienceImagesTaken = 0
+
+    while ($scienceImagesTaken < 4)
+
+	#
+	# Move to new filter wheel position.
+	#
+
+	echo ""	
+	if ($scienceImagesTaken == 0) then
+	    echo "Moving to first filter wheel position...Hartmann mask A"
+	    set filter1_pos = $filter1_posA
+
+	else if ($scienceImagesTaken == 1) then
+	    echo "Moving to second filter wheel position...Hartmann mask B"
+	    set filter1_pos = $filter1_posB
+
+	else if ($scienceImagesTaken == 2) then
+	    echo "Moving to third filter wheel position...Hartmann mask C"
+	    set filter1_pos = $filter1_posC
+
+	else if ($scienceImagesTaken == 3) then
+	    echo "Moving to fourth filter wheel position...Hartmann mask D"
+	    set filter1_pos = $filter1_posD
+
+	else
+	    echo "Script error"
+	    exit
+
+	endif
+
+	set moveResponse = `moveAssembly gm:cc:fltAssembly $filter1_pos $filter2_pos`
+	set moveStatus = `echo $moveResponse | grep 'Command Success'`
+	if ( $#moveStatus != 2 ) then
+	    echo "Filter move failed"
+	    caget gm:cc:fltAssembly.MESS
+	    exit -1
+	endif
+	echo "Filter move succeeded"
+	
+	#
+	# Make an observation
+	#
+	
+	echo ""
+	
+
+	# Set the file name to the current number.
+	
+	echo "Focus test observation - saving data to g${scienceFilenumber}"
+
+	set fileResponse = `setObserveFilename gm: g${scienceFilenumber}`
+	set fileStatus = `echo $fileResponse | grep 'Command Success'`
+	if ( $#fileStatus != 2 ) then
+	    echo "Setting image filename failed"
+	    exit -1
+	endif
+	
+	# Make an observation
+	
+	echo "Observing..."
+	set observeResponse = `executeObserve gm:`
+	set observeStatus = `echo $observeResponse | grep 'Command Success'`
+	if ( $#observeStatus != 2 ) then
+	    echo "Science observation failed"
+	    exit -1
+	endif
+	
+	echo "Observation complete"
+	
+	#
+	# Log to the image logfile.
+	#
+	
+	echo ""
+	echo "Logging data to log file"
+	
+	set temp4 = `caget "gm:cc:temp4.VAL" | sed 's|gm:cc:temp4.VAL||g'`
+	echo "temp4 is "$temp4
+	set temp5 = `caget "gm:cc:temp5.VAL" | sed 's|gm:cc:temp5.VAL||g'`
+	echo "temp5 is "$temp5
+	set detTemp = `caget "gm:sad:dc:detTemp.VAL" | sed 's|gm:sad:dc:detTemp.VAL||g'`
+	echo "detector temp is "$detTemp
+
+	set actualDtaZ = `caget "gm:cc:dta3Device.MPOS" | sed 's|gm:cc:dta3Device.MPOS||g'`
+	echo "Current focus position (Z) is ${actualDtaZ}"
+
+
+#	echo ${observeTime} ${scriptIterations} g${scienceFilenumber} ${filter1_pos} ${filter2_pos} ${roiXmin} ${roiYmin} ${roiXrange} ${roiYrange} ${temp4} ${temp5} ${detTemp} ${userComment} | cat >> ./logfiles/${day}/hartLog_${day}
+
+	echo ${observeTime} g${scienceFilenumber} ${filter1_pos} ${filter2_pos} ${actualDtaZ} ${temp4} ${temp5} ${detTemp} ${userComment} | cat >> ./logfiles/${day}/hartLog_${day}
+	
+	@ scienceFilenumber += 1
+	
+	@ scienceImagesTaken += 1
+
+    end
+
+# Finish test here !!!
+
+else if ($userInput == "quit") then
+    echo ""
+    echo "Exiting - the logfile was ./logfiles/${day}/hartLog_${day}"
+    exit
+
+else
+    echo ""
+    echo "Unrecognised command, please select from the following list..." 
+    sleep 1
+
+endif
+
+end
+
+exit
+
+
+
+
+
+
+
+
+
+

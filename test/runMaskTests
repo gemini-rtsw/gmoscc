@@ -1,0 +1,13 @@
+#!/usr/local/bin/tcsh -f
+#
+#  This sets the environment variables and runs the tests
+#
+#
+setenv DEFAULT_CONFIG_DIR ./configFiles
+
+checkout grip $1 $2
+checkout release $1 $2
+checkout extractor $1 $2
+checkout cassette $1 $2
+
+

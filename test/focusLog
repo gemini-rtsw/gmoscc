@@ -1,0 +1,251 @@
+#!/usr/local/bin/tcsh -f
+#
+# flexLog
+#
+# Description:
+#
+#   A simple script to log images whilst adjusting the translation stage focus
+#   - under user control
+#
+#   It is assumed this script is being run from the "test" directory.
+#   The detector controller must already have been initalised
+#   and set into the desired configuration.
+#   The translation assembly must be initialised and indexed. Produce test
+#   images before running the script.
+#
+# Invocation:
+#   flexLog
+#
+# NOTE:
+#   This script is designed to be as simple as possible, so it does not do as much
+#   checking as a dhsTestCmdr script. It is designed to generate test data rather
+#   than to check out the correct operation of the instrument.
+#
+
+#
+# Check for arguments
+#
+
+if ($#argv != 0) then
+    echo "Error - focusLog expects no arguments"
+    exit
+endif
+
+#
+# Get the current date
+#
+
+set day = `date +%h%d.%y | tolower`
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!($?GMOS_MK_ACCESS)) then
+    echo "GMOS MK safety check failed."
+    echo ""
+    echo "Before executing this script, which will move real MK hardware,"
+    echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+    echo ""
+    exit
+else
+    echo "GMOS MK safety check passed."
+    echo ""
+endif
+
+#echo "Simulation mode - no safety check required"
+
+#
+# Bail out if the scripts directory does not exist.
+#
+
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+#
+# Create the log directory if need be...
+#
+
+if (!(-e logfiles)) then
+    mkdir logfiles
+endif
+
+if (!(-e logfiles/${day})) then
+    mkdir logfiles/${day}
+    echo "Creating directory ./logfiles/"${day}
+    echo ""
+endif
+
+if (!(-e logfiles/${day}/focusLog_${day})) then
+    echo "Creating image log file ./logfile/"${day}"/focusLog_${day}"
+    echo "filename z-translation" | cat >> ./logfiles/${day}/focusLog_${day}
+endif
+
+echo "Science camera image information will be stored in ./logfiles/"${day}"/focusLog_${day}"
+echo ""
+
+echo "Press enter to proceed"
+set dummy = $<
+
+echo "Before proceeding - perform the following:"
+echo "1. Initialise, Index and position the translation assembly"
+echo "2. Configure GMOS (components controller) for the science images required"
+echo "4. Configure the Science camera controller and take a test image"
+echo "5. Note down the first filename required for the science camera (gXXXXX)"
+echo ""
+echo "Press enter to proceed"
+set dummy = $<
+
+echo "Please enter a file number for science images (the first filename will be gXXXXX)"
+set scienceFilenumber = $<
+
+@ scienceFilenumber -= 1
+@ scienceFilenumber += 1
+
+echo ""
+echo "Please enter the focus increment (um)"
+set focusIncrement = $<
+
+echo ""
+echo "Please enter the number of images to take"
+set focusIterations = $<
+
+set iterationsDone = 1
+
+set dtaCstart = `caget "gm:cc:dtaAssembly.C" | sed 's|gm:cc:dtaAssembly.C||g'`
+
+echo "" | cat >> ./logfiles/${day}/focusLog_${day}    
+
+set observeTime = `date +"%a %b %d %T %Y"`
+echo ""
+echo "*"
+echo "* The time is now ${observeTime}"
+echo "*"
+
+while (${iterationsDone} != ${focusIterations})
+
+    echo ""
+    echo "Saving data to g${scienceFilenumber}"
+
+    #
+    # Set the file name to the current time.
+    #
+
+    set fileResponse = `setObserveFilename gm: g${scienceFilenumber}`
+    set fileStatus = `echo $fileResponse | grep 'Command Success'`
+    if ( $#fileStatus != 2 ) then
+	echo "Setting filename failed"
+	exit -1
+    endif
+
+    #
+    # Make an observation
+    #
+
+    echo "Observing, image "${iterationsDone}"..."
+    set observeResponse = `executeObserve gm:`
+    set observeStatus = `echo $observeResponse | grep 'Command Success'`
+    if ( $#observeStatus != 2 ) then
+	echo "Observation failed"
+	exit -1
+    endif
+
+    echo "Complete. Logging data now."
+
+    #
+    # Log the filename and focus position.
+    #
+
+    set dtaA = `caget "gm:cc:dtaAssembly.A" | sed 's|gm:cc:dtaAssembly.A||g'`
+    set dtaB = `caget "gm:cc:dtaAssembly.B" | sed 's|gm:cc:dtaAssembly.B||g'`
+    set dtaC = `caget "gm:cc:dtaAssembly.C" | sed 's|gm:cc:dtaAssembly.C||g'`
+
+    echo g${scienceFilenumber} ${dtaC} | cat >> ./logfiles/${day}/focusLog_${day}    
+
+    @ scienceFilenumber += 1
+
+    # Now move on to the next position
+
+    echo "Move the translation assembly z-axis by one increment..."
+
+    # We need to get one of the input parameters to feed back (MARK the record)
+
+    @ dtaC += ${focusIncrement}
+
+    set moveResponse = `moveAssembly gm:cc:dtaAssembly ${dtaA} ${dtaB} ${dtaC}`
+    set moveStatus = `echo $moveResponse | grep 'Command Success'`
+    if ( $#moveStatus != 2 ) then
+	echo "Assembly move failed"
+	caget gm:cc:dtaAssembly.MESS
+	exit -1
+    endif
+    echo "Complete"
+
+    @ iterationsDone += 1
+
+end
+
+echo ""
+echo "Saving data to g${scienceFilenumber}"
+
+#
+# Set the file name to the current time.
+#
+
+set fileResponse = `setObserveFilename gm: g${scienceFilenumber}`
+set fileStatus = `echo $fileResponse | grep 'Command Success'`
+if ( $#fileStatus != 2 ) then
+    echo "Setting filename failed at"
+    exit -1
+endif
+
+#
+# Make an observation
+#
+
+echo "Observing, last image..."
+set observeResponse = `executeObserve gm:`
+set observeStatus = `echo $observeResponse | grep 'Command Success'`
+if ( $#observeStatus != 2 ) then
+    echo "Observation failed"
+    exit -1
+endif
+
+echo "Complete. Logging data now."
+
+#
+# Log the filename and focus position.
+#
+
+set dtaC = `caget "gm:cc:dtaAssembly.C" | sed 's|gm:cc:dtaAssembly.C||g'`
+
+echo g${scienceFilenumber} ${dtaC} | cat >> ./logfiles/${day}/focusLog_${day}    
+
+echo ""
+echo "That was the last observation"
+
+# Now move back to original position
+
+echo ""
+echo "Restoring the translation assembly z-axis..."
+
+# We need to get one of the input parameters to feed back (MARK the record)
+
+set moveResponse = `moveAssembly gm:cc:dtaAssembly ${dtaA} ${dtaB} ${dtaCstart}`
+set moveStatus = `echo $moveResponse | grep 'Command Success'`
+if ( $#moveStatus != 2 ) then
+    echo "Assembly move failed"
+    caget gm:cc:dtaAssembly.MESS
+    exit -1
+endif
+echo "Complete - exiting"
+
+exit
+
+
+
+

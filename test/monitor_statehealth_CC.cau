@@ -1,0 +1,10 @@
+# monitor_statehealth.cau
+#
+# cau macro which monitors SIR records associated with state and health.
+# Invoked using cau "source" command.
+#
+monitor g7:sad:cc:state.VAL
+monitor g7:sad:wfs:state.VAL
+
+monitor g7:sad:cc:health.VAL
+monitor g7:sad:wfs:health.VAL

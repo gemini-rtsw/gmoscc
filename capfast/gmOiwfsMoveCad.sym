@@ -1,0 +1,26 @@
+[symbol2]
+bbox 32 32 288 256
+port 224 192 100 2048 X_T symbol 2 288 192 0
+port 224 160 100 2048 Y_T symbol 2 288 160 0
+port 224 96 100 2048 MoveFollowState symbol 2 288 96 0
+uniq 387
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 7 0 128 240 Move CAD
+l 100 2 0 208 48 gmOiwfsMoveCad
+r 0 32 32 224 256
+v 0 224 96
+288 96
+_
+v 0 224 160
+288 160
+_
+v 0 32 224
+224 224
+_
+v 0 224 192
+288 192
+_
+[comments]

@@ -1,0 +1,17 @@
+[symbol2]
+bbox -128 -128 112 128
+port -112 -96 100 0 STLK symbol 1 -128 -96 0
+port 48 -96 100 0 CFLK symbol 2 112 -96 0
+port 48 -16 100 0 CMESS symbol 2 112 0 0
+port 48 32 100 0 CVAL symbol 2 112 48 0
+port 48 -64 100 0 CERR symbol 2 112 -48 0
+uniq 0
+[tools]
+[attributes]
+p -128 -160 100 0 1 seta:car dta|atm
+[layers]
+<symbol>
+l 100 0 0 -64 96 Tracking CAR
+l 100 0 0 -48 64 Value
+r 0 -128 -128 112 128
+[comments]

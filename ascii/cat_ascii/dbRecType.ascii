@@ -1,0 +1,15 @@
+!
+! dbRecType.ascii
+! List of custom record names
+!
+
+!
+! GMOS Device Control Record
+!
+"deviceControl"
+
+!
+! GMOS Assembly Control Record
+!
+"assemblyControl"
+

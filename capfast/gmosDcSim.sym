@@ -1,0 +1,11 @@
+[symbol2]
+bbox -96 -32 416 320
+uniq 90
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 64 144 Simulation
+l 100 0 0 0 192 GMOS Detector Controller
+r 0 -96 -32 416 320
+[comments]

@@ -1,0 +1,46 @@
+[symbol2]
+bbox 32 32 352 384
+port 48 320 100 0 DIR symbol 1 32 320 0
+port 48 288 100 0 ICID symbol 1 32 288 0
+port 48 96 100 0 SIMM symbol 1 32 96 0
+port 48 64 100 0 DBUG symbol 1 32 64 0
+port 336 320 100 512 VAL symbol 2 352 320 0
+port 336 288 100 512 MESS symbol 2 352 288 0
+port 336 256 100 512 HLTH symbol 2 352 256 0
+port 336 224 100 512 FLNK symbol 2 352 224 0
+port 336 160 100 512 CAR symbol 2 352 160 0
+port 336 128 100 512 OMSS symbol 2 352 128 0
+port 336 96 100 512 OERR symbol 2 352 96 0
+port 336 64 100 512 CFLK symbol 2 352 64 0
+uniq 104
+[tools]
+[attributes]
+p 32 -64 100 0 1 setc:dev gr
+p 32 -96 100 0 1 setd:dtyp grating
+p 32 -128 100 0 1 sete:simm NONE
+[layers]
+<symbol>
+l 100 7 0 192 368 grating
+r 0 32 32 352 384
+v 0 192 176
+176 32
+192 32
+192 176
+208 32
+_
+v 0 352 176
+192 176
+160 32
+224 32
+192 176
+_
+v 0 112 160
+144 128
+240 224
+208 256
+112 160
+_
+v 0 32 352
+352 352
+_
+[comments]

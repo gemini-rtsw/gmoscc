@@ -1,0 +1,4 @@
+#!/bin/csh -f
+setenv PATH ${PATH}:./bin/solaris:./gmosdc/bin/solaris
+setenv EPICS_DISPLAY_PATH .:./data:./gmosdc/data
+dm2.4 -iconic gmosTop.dl "T=g7:, S=g7:, C1=cc:, C2=cc:, CC=cc:, DC=dc:" &

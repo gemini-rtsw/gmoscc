@@ -1,0 +1,10 @@
+# monitor_activeC.cau
+#
+# cau macro which monitors the OIWFS activeC record.
+# Invoked using cau "source" command.
+#
+monitor g7:wfs:activeC.VAL
+monitor g7:wfs:activeC.CLID
+monitor g7:wfs:activeC.OMSS
+
+# Type dataOut cau_activeC.log

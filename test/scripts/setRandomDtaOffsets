@@ -1,0 +1,66 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: setRandomDtaOffsets
+#
+# Purpose: 
+#	To select a random mask in the instrument sequencer
+#	Input args:
+#		$1 record name and field where dta X offset is selected
+#		$2 record name and field where dta Y offset is selected
+#		$3 record name and field where dta Y offset is selected
+#
+
+# Set dta X offset
+
+set seed = `date +"%S%M%H"`
+set dtaOffsetX = `echo $seed 100 | rand`
+@ dtaOffsetX -= 50
+
+echo "Setting dta X offset $dtaOffsetX"
+
+set response = `caput -ts $1 $dtaOffsetX | grep "CA.Client"`
+
+if ($#response != 0) then
+	echo "Command Failed"
+	exit
+endif
+
+# Set dta Y offset
+
+set seed = `date +"%S%H%M"`
+@ seed += 151713
+set dtaOffsetY = `echo $seed 100 | rand`
+@ dtaOffsetY -= 50
+
+echo "Setting dta Y offset $dtaOffsetY"
+
+set response = `caput -ts $2 $dtaOffsetY | grep "CA.Client"`
+
+if ($#response != 0) then
+	echo "Command Failed"
+	exit
+endif
+
+# Set dta Z offset
+
+set seed = `date +"%S%S%H"`
+@ seed += 151700
+set dtaOffsetZ = `echo $seed 100 | rand`
+@ dtaOffsetZ -= 50
+
+echo "Setting dta Z offset $dtaOffsetZ"
+
+set response = `caput -ts $3 $dtaOffsetZ | grep "CA.Client"`
+
+if ($#response != 0) then
+	echo "Command Failed"
+	exit
+endif
+
+echo "Command Success"
+exit
+
+
+
+
+

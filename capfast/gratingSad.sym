@@ -1,0 +1,29 @@
+[symbol2]
+bbox 32 32 352 304
+uniq 90
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 160 256 grating
+l 100 0 0 80 208 Status Alarm Database
+r 0 192 112 256 112
+r 0 32 32 352 304
+v 0 192 112
+176 64
+208 64
+192 112
+_
+v 0 144 96
+160 80
+208 128
+192 144
+144 96
+_
+v 0 64 160
+320 160
+_
+v 0 64 64
+320 64
+_
+[comments]

@@ -1,0 +1,52 @@
+[symbol2]
+bbox 32 32 352 416
+port 336 64 100 512 CFLK symbol 2 352 64 0
+port 336 96 100 512 OERR symbol 2 352 96 0
+port 336 128 100 512 OMSS symbol 2 352 128 0
+port 336 160 100 512 CAR symbol 2 352 160 0
+port 336 256 100 512 FLNK symbol 2 352 256 0
+port 336 288 100 512 HLTH symbol 2 352 288 0
+port 336 320 100 512 MESS symbol 2 352 320 0
+port 336 352 100 512 VAL symbol 2 352 352 0
+port 48 64 100 0 DBUG symbol 1 32 64 0
+port 48 96 100 0 SIMM symbol 1 32 96 0
+port 48 224 100 0 Z symbol 1 32 224 0
+port 48 256 100 0 Y symbol 1 32 256 0
+port 48 288 100 0 X symbol 1 32 288 0
+port 48 320 100 0 MODE symbol 1 32 320 0
+port 48 352 100 0 DIR symbol 1 32 352 0
+uniq 103
+[tools]
+[attributes]
+p 32 0 100 0 1 seta:top gm:cc:
+p 32 -32 100 0 1 setb:sadtop gm:cc:
+p 32 -64 100 0 1 setc:dev dta
+p 32 -96 100 0 1 setd:dtyp Translation
+p 32 -128 100 0 1 sete:simm NONE
+[layers]
+<symbol>
+l 100 7 0 208 400 detector translation
+r 0 32 32 352 416
+r 0 112 64 272 224
+v 0 32 384
+352 384
+_
+v 0 144 224
+144 64
+176 64
+176 224
+208 224
+208 64
+240 64
+240 224
+_
+v 0 112 192
+272 192
+272 160
+112 160
+112 128
+272 128
+272 96
+112 96
+_
+[comments]

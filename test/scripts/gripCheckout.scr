@@ -1,0 +1,718 @@
+#
+# DHS Test Commander
+# Grip device functionality test script
+#
+
+#
+# Do the variable substitution thing....
+#
+
+# Device INPUTS
+VAR     gripDevice      devDir                  devDir	            1
+VAR     gripDevice      devMode                 devMode             1
+VAR     gripDevice      devTarget               devTarget           1
+VAR     gripDevice      devNamedTarget          devNamedTarget      1
+VAR     gripDevice      devIndexType            devIndexType        1
+VAR     gripDevice      devDbug                 devDbug             1
+VAR     gripDevice      devSimm                 devSimm             1
+VAR     gripDevice      devMinPosition          devMinPosition      1
+VAR     gripDevice      devMaxPosition          devMaxPosition      1
+VAR     gripDevice      devVelocity             devVelocity         1
+VAR     gripDevice      devMinVelocity          devMinVelocity      1
+VAR     gripDevice      devMaxVelocity          devMaxVelocity      1
+VAR     gripDevice      devAcceleration         devAcceleration     1
+VAR     gripDevice      devLutFile              devLutFile          1
+VAR     gripDevice      devLutDirectory         devLutDirectory     1
+VAR     gripDevice      devDevType              devDevType          1
+VAR     gripDevice      devEgu                  devEgu              1
+VAR     gripDevice      devMotorRes             devMotorRes         1
+VAR     gripDevice      devMotionDeadBand       devMotionDeadBand   1
+VAR     gripDevice      devBaseVelo             devBaseVelo         1
+VAR     gripDevice      devUsePwrStatus         devUsePwrStatus     1
+VAR     gripDevice      devPwrStatusTimeout     devPwrStatusTimeout 1
+VAR     gripDevice      devPower                devPower            1
+VAR     gripDevice      devUseBrkStatus         devUseBrkStatus     1
+VAR     gripDevice      devBrkStatusTimeout     devBrkStatusTimeout 1
+VAR     gripDevice      devBrake                devBrake            1
+VAR     gripDevice      devUseAuxPwr            devUseAuxPwr        1
+VAR     gripDevice      devUseEncoder           devUseEncoder       1
+VAR     gripDevice      devEncoderRes           devEncoderRes       1
+VAR     gripDevice      devEncoderDeadBand      devEncoderDeadBand  1
+
+# Device OUPUTS
+VAR     gripDevice      devPosition             devPosition         1
+VAR     gripDevice      devAck                  devAck              1
+VAR     gripDevice      devBusy                 devBusy             1
+VAR     gripDevice      devState                devState            1
+VAR     gripDevice      devMess                 devMess             1
+VAR     gripDevice      devIndexed              devIndexed          1
+VAR     gripDevice      devLimited              devLimited          1
+
+# other status
+VAR     maskStatus      gripNotGripped          gripNotGripped      1
+VAR     maskStatus      gripNotReleased         gripNotReleased     1
+VAR     maskStatus      gripperPosition         gripPosition        1
+
+#
+# Is it safe to proceed?
+#
+
+PROMPT "Read the assumptions.  Is it safe to rotate the Gripper?"
+
+#
+# Verify startup state
+#
+
+TEST "Verify startup state"
+FATAL
+
+DESC "Verify startup state"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Log the current device record configuration
+#
+TEST "Log the current device record configuration"
+FATAL
+
+DESC "Get deviceControl record device layer type"
+GETVAL devDevType
+OUTPUT *.DTYP*DEV CTL OMS 8/44*
+
+DESC "Get simulation level"
+GETVAL devSimm
+OUTPUT *.SIMM*NONE*
+
+DESC "Get debug level"
+GETVAL devDbug
+OUTPUT *.DBUG*
+
+DESC "Get enginering units"
+GETVAL devEgu
+OUTPUT *.EGU*
+
+DESC "Get motor resolution, in microsteps per EGU"
+GETVAL devMotorRes
+OUTPUT *.MRES*
+
+DESC "Get motion deadband"
+GETVAL devMotionDeadBand
+OUTPUT *.MDBD*
+
+DESC "Get upper target limit, max EGU target allowed"
+GETVAL devMaxPosition
+OUTPUT *.PHLM*
+
+DESC "Get lower target limit, min EGU target allowed"
+GETVAL devMinPosition
+OUTPUT *.PLLM*
+
+DESC "Get motion velocity"
+GETVAL devVelocity
+OUTPUT *.VELO*
+
+DESC "Get upper velocity limit, max EGU velocity allowed"
+GETVAL devMaxVelocity
+OUTPUT *.VHLM*
+
+DESC "Get lower velocity limit, min EGU velocity allowed"
+GETVAL devMinVelocity
+OUTPUT *.VLLM*
+
+DESC "Get motion startup velocity"
+GETVAL devBaseVelo
+OUTPUT *.VBAS*
+
+DESC "Get acceleration, VBAS to VELO in EGUs per second per second"
+GETVAL devAcceleration
+OUTPUT *.ACCL*
+
+DESC "Get the indexing algorithm number"
+GETVAL devIndexType
+OUTPUT *.IALG* 5*
+
+DESC "Using Power status?"
+GETVAL devUsePwrStatus
+#OUTPUT *.UPSB* YES*
+# Comment out check on UPSB until power status electronics problem fixed
+OUTPUT *.UPSB*
+
+DESC "Get the power status timeout"
+GETVAL devPwrStatusTimeout
+OUTPUT *.PTMO*
+
+DESC "Using Brake status?"
+GETVAL devUseBrkStatus
+OUTPUT *.UBSB* NO*
+
+DESC "Get the brake status timeout"
+GETVAL devBrkStatusTimeout
+OUTPUT *.BTMO* 0*
+
+DESC "Using AUX to enable drives?"
+GETVAL devUseAuxPwr
+OUTPUT *.UAPB* YES*
+
+DESC "Using Encoder?"
+GETVAL devUseEncoder
+OUTPUT *.UEIP* NO*
+
+DESC "Get encoder resolution in counts per EGU"
+GETVAL devEncoderRes
+OUTPUT *.ERES*
+
+DESC "Get encoder deadband"
+GETVAL devEncoderDeadBand
+OUTPUT *.EDBD*
+
+DESC "Get lookup table name"
+GETVAL devLutFile
+OUTPUT *.TFIL* mskGrp.lut*
+
+DESC "Get lookup table directory name"
+GETVAL devLutDirectory
+OUTPUT *.TDIR*
+
+ENDTEST
+
+#
+# First try to initialize the device control record
+#
+
+TEST "Test gripper device INIT mode"
+FATAL
+
+DESC "Initializing Gripper"
+
+PUTVAL devMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+ENDTEST
+
+#
+# Test gripper device TEST mode
+#
+
+TEST "Test gripper device TEST mode"
+FATAL
+
+DESC "Testing Gripper"
+
+PUTVAL devMode "5"
+OUTPUT *MODE*MODE*TEST*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+ENDTEST
+
+#
+# Test limit switch by indexing on 
+# lower soft limit switch
+#
+
+TEST "Testing lower limit switch"
+FATAL
+
+DESC "Testing lower limit switch"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devNamedTarget "i4"
+OUTPUT *.VALS*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Test full travel and limit switches by indexing on 
+# upper soft limit switch
+#
+
+TEST "Testing upper limit switch"
+FATAL
+
+DESC "Testing upper limit switch"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devNamedTarget "i5"
+OUTPUT *
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Then try to index the device
+#
+
+TEST "Test indexing gripper"
+FATAL
+
+DESC "Indexing gripper"
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+GETVAL gripPosition
+OUTPUT *VALC* 1*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Check distance between positions
+#
+
+TEST "Attempting to move gripper past limit"
+FATAL
+
+DESC "Moving gripper"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devTarget "-50"
+OUTPUT *VAL*VAL* -50*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Failed*
+
+ENDTEST
+
+#
+# Verify error message and log current position
+#
+
+TEST "Verify error message and log current position"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* ERROR* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+GETVAL devMess
+OUTPUT *.MESS*Device hit a soft limit*
+
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Index the device to get back to normal
+#
+
+TEST "Indexing gripper"
+FATAL
+
+DESC "Indexing gripper"
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+GETVAL gripPosition
+OUTPUT *VALC* 1*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Try to do the Grip thing
+#
+
+TEST "Place gripper device in grip position"
+FATAL
+
+DESC "Engaging Gripper" 
+
+PUTVAL devNamedTarget "grip"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL gripNotGripped
+OUTPUT *VAL*Gripped*
+
+GETVAL gripNotReleased
+OUTPUT *VAL*Unknown*
+
+GETVAL gripPosition
+OUTPUT *VALC* -1*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Then the Release thing
+#
+
+TEST "Place gripper in release position"
+FATAL
+
+DESC "Releasing Gripper" 
+
+PUTVAL devNamedTarget "release"
+OUTPUT *.VALS*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Testing feedback switches"
+DESC "Check switches"
+
+GETVAL gripNotGripped
+OUTPUT *VAL*Unknown*
+
+GETVAL gripNotReleased
+OUTPUT *VAL*Released*
+
+GETVAL gripPosition
+OUTPUT *VALC* 1*
+
+ENDTEST                 
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Then get it between positions
+#
+
+TEST "Place gripper between release and grip positions"
+FATAL
+
+DESC "Moving Gripper" 
+
+PUTVAL devTarget "-15"
+OUTPUT *.VAL* -15*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Testing feedback switches"
+DESC "Check switches"
+
+GETVAL gripNotGripped
+OUTPUT *VAL*Unknown*
+
+GETVAL gripNotReleased
+OUTPUT *VAL*Unknown*
+
+GETVAL gripPosition
+OUTPUT *VALC* 0*
+
+ENDTEST                 
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Index the device to get back to normal
+#
+
+TEST "Indexing gripper"
+FATAL
+
+DESC "Indexing gripper"
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+GETVAL gripPosition
+OUTPUT *VALC* 1*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+#  All Grip functions check out OK!
+#
+
+COMMENT "Grip checks out OK"
+
+
+ 

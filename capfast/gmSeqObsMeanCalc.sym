@@ -1,0 +1,28 @@
+[symbol2]
+bbox 224 240 544 720
+port 320 320 100 1792 END symbol 1 224 320 0
+port 352 384 100 1792 CONTINUE symbol 1 224 384 0
+port 336 448 100 1792 PAUSE symbol 1 224 448 0
+port 336 512 100 1792 BEGIN symbol 1 224 512 0
+uniq 0
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 352 656 value during
+l 100 0 0 352 688 Compute a mean
+l 100 0 0 352 624 observation
+r 0 288 720 544 240
+v 0 224 320
+288 320
+_
+v 0 224 384
+288 384
+_
+v 0 224 448
+288 448
+_
+v 0 224 512
+288 512
+_
+[comments]

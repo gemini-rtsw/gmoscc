@@ -1,0 +1,110 @@
+#! /bin/csh -f
+#
+# Shell script: gmSeqConfInterlock
+#
+#   Test for GMOS Sequencer CAD commands 
+#   accept/reject when configuring in progress
+#
+#     P.B Taylor 17/2/00
+#
+#   Rewrite 20/9/00 using real systems
+#
+
+# Set expected error string
+setenv GMOS_ERRSTRING "GMOS currently reconfiguring"
+
+# First check whether reading-out/observing
+#
+if ($GMOS_PREFIX == "") then
+  echo 'Error: environment variable GMOS_PREFIX undefined'
+  exit 1
+endif
+set v = `caget -n ${GMOS_PREFIX}sad:dc:rdout.VAL`
+shift v
+if ($v != 0) then
+  echo "Error - rdout flag non-zero"
+  exit 1
+endif
+set v = `caget -n ${GMOS_PREFIX}dc:observeC.VAL`
+shift v
+if ($v != 0) then
+  echo "Error - observeC not IDLE"
+  exit 1
+endif
+#
+# Get GMOS 'configuring' for some time 
+# by issuing CAD datum
+#
+doCad datum
+sleep 1
+#
+# These CADs are expected to be rejected whilst
+# configuring
+#
+doCad continue && goto failTest
+doCad datum && goto failTest
+doCad init && goto failTest
+#
+# Get GMOS 'configuring' for some time 
+# by issuing CAD datum
+#
+waitApply
+doCad datum
+sleep 1
+doCad observe && goto failTest
+doCad park && goto failTest
+#
+# Get GMOS 'configuring' for some time 
+# by issuing CAD datum
+#
+waitApply
+doCad datum
+sleep 1
+doCad test && goto failTest
+doCad update && goto failTest
+#
+# Wait for applyC to go not BUSY
+waitApply
+#
+# Do init/datum commands and wait for completion
+#
+doCadWait init 2000 || goto failTest
+sleep 1
+doCadWait datum 8000 || goto failTest
+#
+# Get GMOS 'configuring' again for a long time 
+# by issuing CAD update
+#
+doCad update
+sleep 1
+#
+# These CADs should be accepted
+#
+# IGNORE following 3 CADs....
+# doCad abort || goto failTest
+# doCad stop || goto failTest
+# doCad pause || goto failTest
+doCad atmPos 45 45 || goto failTest
+doCad atmTrack MOVE 45 45 || goto failTest
+doCad dtaPos 1 1 1  || goto failTest
+doCad dtaTrack MOVE 1 1 1 || goto failTest
+doCad fltPos Hartmann_A Z1 || goto failTest
+doCad grSelect SEL 600+ || goto failTest
+doCad mskPos 78 IN-BEAM || goto failTest
+doCad endGuide || goto failTes
+doCad endObserve || goto failTest
+doCad endVerify || goto failTest
+doCad guide || goto failTest
+doCad verify || goto failTest
+#
+# Wait for applyC to go not BUSY
+#
+waitApply
+echo "************************************************"
+echo "* Test script $0 completed OK *"
+echo "************************************************"
+exit 0
+#
+failTest:
+  echo "Test failed: response not as expected"
+  exit 1

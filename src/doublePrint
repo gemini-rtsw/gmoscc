@@ -1,0 +1,69 @@
+#!/bin/csh -f
+#!/bin/csh -f
+#+
+# Module name:
+#    doublePrint
+#
+# Purpose:
+#    Print one or more files to a Postscript printer in a 2-page compressed format
+#
+# Language:
+#    Unix C shell script
+#
+# Description:
+#    This C-shell script prints one or more files to a Postscript printer
+#    in a 2-pages per sheet compressed format. The files are converted to
+#    Postscript using a2ps. Each file is printed in landscape mode with two
+#    pages per sheet, a reduced tab spacing and reduced font size.
+#    This format is useful for printing wide C source code.
+#
+# Note:
+#    The a2ps options chosen are a compromise between making the output readable
+#    and saving paper. (The most readable option, "a2ps -w -nn -t4", which leaves
+#    a lot of blank space on the right hand side, has been left commented out).
+#
+# Invocation:
+#    doublePrint *.c *.h     (for example)
+#
+# Prior requirements:
+#    Set the PRINTER environment variable to a printer which can understand
+#    Postscript.
+#
+# Status:
+#    $Id$
+#
+# History:
+#    $Log$
+#    Revision 1.1  2001/03/08 11:55:47  gmos
+#    Imported the scripts used to print GMOS source code.
+#
+#
+#-
+
+   set files = "$*"
+   if ( "$files" != "" ) then
+
+      if ( $PRINTER != "" ) then
+
+         foreach file ( $files )
+
+            echo Printing $file on $PRINTER in compressed mode
+
+#           Print in landscape mode with two pages to a side and no line
+#           numbering. Reduce the font size to 6 and the tab spacing to 4.
+#           If the printer supports it, also print double sided.
+
+            a2ps -np -nn -f6 -t4 -d $file |  lp -d ${PRINTER}
+#
+#           This is a wasteful but more readable alternative (commented out).
+#           It prints in wide mode with the standard font size.
+
+#           a2ps -w -nn -t4 -d $file | lp -d ${PRINTER}
+         end
+      else
+
+         echo No printer specified. Please define PRINTER environment variable.
+      endif
+   else
+      echo Usage - doublePrint file1 file2, file3...
+   endif

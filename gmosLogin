@@ -1,0 +1,23 @@
+#
+#+
+#  Name:
+#     gmosLogin
+
+#  Purpose:
+#     Define everything needed for running the GMOS software
+
+#  Language:
+#     csh
+
+#  Type of Module:
+#     Resource file.
+
+#  Invocation:
+#     source gmosLogin
+
+#  Arguments:
+#     None.
+#-
+
+source gmosEnvironment
+source gmosAliases

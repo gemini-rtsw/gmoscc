@@ -1,0 +1,13 @@
+[symbol2]
+bbox 192 -32 416 320
+port 352 48 100 0 FLNK symbol 2 416 48 0
+port 400 96 100 512 CAR symbol 2 416 96 0
+port 208 96 100 0 SLNK symbol 1 192 96 0
+uniq 116
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 160 0 0 208 160 Toggle CAR
+r 0 192 -32 416 320
+[comments]

@@ -1,0 +1,54 @@
+
+include Target.include
+include .applTop/config/CONFIG
+
+# You can change the way the sf2db and sch2edif tools work by adding to
+# the following flags
+# SF2DB_FLAGS    =
+#SCH2EDIF_PATH = .+../../../gmoscc/capfast
+#E2SR_SYSFLAGS = -aetc -d $(EPICS_EXTENSIONS)/src/edif/lib/edb.def
+E2SR_SYSFLAGS  = -ate -d ../edb.def
+#
+
+# List of ASCII database (*.db) files 
+# DEPSCHS is a list of schematics they depend on
+
+DEPSCHS = $(wildcard ../*.sch)
+#DATA	= $(patsubst ../%.sch, %.db, $(wildcard ../*Top*.sch))
+
+#
+# A selection of databases can be built covering different kinds of
+# simulation mode. In general, the database endings for various
+# simulation modes are:
+#
+#   ...MKRR.db  - Mauna Kea database - real hardware
+#   ...MKSS.db  - Mauna Kea database - simulated hardware
+#   ...MKSS.db  - Mauna Kea database - simulated hardware, second prefix
+#   ...MKSR.db  - Mauna Kea database - simulated pre fp, real post fp
+#   ...MKRS.db  - Mauna Kea database - real pre fp, simulated post fp
+#
+# At Gemini only the real and simulated hardware databases are of interest.
+# Other databases can be built as and when required by including them in
+# the list.
+#
+
+DATA	= gmosCcTopMKRR.db   gmosCcSadTopMKRR.db  \
+	  gmosCcTopMKSS.db   gmosCcSadTopMKSS.db  \
+	  gmSeqTopMKRR.db    gmSeqSadTopMKRR.db   \
+	  gmSeqTopMKSS.db    gmSeqSadTopMKSS.db
+
+# Remove these databases from the build list until required
+#	  gmosCcTopCP.db     gmosCcSadTopCP.db    \
+#	  gmosCcTopMKSR.db   gmosCcSadTopMKSR.db  \
+#	  gmosCcTopMKRS.db   gmosCcSadTopMKRS.db  \
+#	  gmosCcTopMKSS2.db  gmosCcSadTopMKSS2.db \
+#	  gmSeqTopMKRS.db    gmSeqSadTopMKRS.db   \
+#	  gmSeqTopMKSR.db    gmSeqSadTopMKSR.db   \
+#         gmSeqTopCP.db      gmSeqSadTopCP.db     \
+#	  gmSeqTopMKSR.db    gmSeqSadTopMKSR.db   \
+#	  gmSeqTopMKRS.db    gmSeqSadTopMKRS.db   \
+#	  gmSeqTopMKSS2.db   gmSeqSadTopMKSS2.db  \
+#	  gmosDcSimTop.db    gmosCcSadSimTop.db
+
+
+include .applTop/config/RULES.Build

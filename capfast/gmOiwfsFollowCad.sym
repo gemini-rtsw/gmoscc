@@ -1,0 +1,18 @@
+[symbol2]
+bbox 32 16 288 256
+port 228 164 100 2048 FollowState symbol 2 288 160 0
+uniq 382
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 2 0 224 32 gmOiwfsFollowCad
+l 100 7 0 128 240 Follow CAD
+r 0 32 32 224 256
+v 0 224 160
+288 160
+_
+v 0 32 224
+224 224
+_
+[comments]

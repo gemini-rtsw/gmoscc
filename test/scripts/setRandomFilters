@@ -1,0 +1,49 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: setRandomFilters
+#
+# Purpose: 
+#	To select a random filters in the instrument sequencer
+#	Input args:
+#		$1 record name and field where filter1 is to be selected
+#		$2 record name and field where filter2 is to be selected
+#		$3 lookup table filename and path
+#
+
+
+set flt1Range = `grep 20000 $3 | grep " 1 "| wc -l`
+if ($flt1Range == 0) then
+    echo "Command Failed"
+    exit
+endif
+
+set flt2Range = `grep 20000 $3 | grep " 2 "| wc -l`
+if ($flt2Range == 0) then
+    echo "Command Failed"
+    exit
+endif
+
+set seed = `date +"%S%M%H"`
+set flt1Num = `echo $seed $flt1Range | rand`
+
+set seed = `date +"%S%H%M"`
+set flt2Num = `echo $seed $flt2Range | rand`
+
+echo "Setting filter number $flt1Num on wheel 1"
+
+set response = `caput -ts $1 $flt1Num | grep "CA.Client"`
+if ($#response != 0) then
+	echo "Command Failed"
+	exit
+endif
+
+echo "Setting filter number $flt2Num on wheel 2"
+
+set response = `caput -ts $2 $flt2Num | grep "CA.Client"`
+if ($#response != 0) then
+	echo "Command Failed"
+	exit
+endif
+
+echo "Command Success"
+exit

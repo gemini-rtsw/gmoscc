@@ -1,0 +1,603 @@
+file {
+	name="gmOiwfsOffset.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="6"
+	npc="8"
+	nstr="61"
+	ndynamic="5"
+	nplot="0"
+	nrd="0"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="425"
+		height="352"
+	}
+	clr="1"
+	bclr="13"
+	nwords_dspy="2414"
+	nwords_sta="292"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="968"
+	osta="676"
+	odynamic="2072"
+	oplot="2402"
+	ord="2402"
+	oes="2402"
+	okd="2402"
+	opd="2414"
+	opo="2414"
+	opc="68"
+	ostr="162"
+	ocmap="676"
+	ocrules="676"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1600"
+	pixht="1200"
+	mmwid="320"
+	mmht="240"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="19"
+		y="22"
+		width="387"
+		height="24"
+		groupid="0"
+	}
+	textix="GMOS Oiwfs Probe Offsets"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="4"
+	}
+}
+"line" {
+	object {
+		x="21"
+		y="48"
+		width="374"
+		height="1"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="21"
+		y="48"
+	}
+	point[1] {
+		x="395"
+		y="49"
+	}
+	orgpoint[0] {
+		x="0"
+		y="0"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="1000"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="31"
+		y="115"
+		width="234"
+		height="19"
+		groupid="0"
+	}
+	textix="X Offset (mm):"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="28"
+		y="160"
+		width="237"
+		height="19"
+		groupid="0"
+	}
+	textix="Y Offset (mm):"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="28"
+		y="203"
+		width="237"
+		height="19"
+		groupid="0"
+	}
+	textix="Z Offset (mm):"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="25"
+		y="247"
+		width="240"
+		height="19"
+		groupid="0"
+	}
+	textix="angle Offset (rad):"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="29"
+		y="75"
+		width="236"
+		height="19"
+		groupid="0"
+	}
+	textix="track ID:"
+	align="horiz. right"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if zero"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan="$(T)followS"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs=""
+		}
+	}
+}
+"text" {
+	object {
+		x="9"
+		y="286"
+		width="280"
+		height="32"
+		groupid="0"
+	}
+	textix="Not following"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="4"
+	}
+}
+"line" {
+	object {
+		x="279"
+		y="67"
+		width="112"
+		height="32"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="279"
+		y="99"
+	}
+	point[1] {
+		x="391"
+		y="67"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"line" {
+	object {
+		x="281"
+		y="110"
+		width="112"
+		height="32"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="281"
+		y="142"
+	}
+	point[1] {
+		x="393"
+		y="110"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"line" {
+	object {
+		x="279"
+		y="152"
+		width="112"
+		height="32"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="279"
+		y="184"
+	}
+	point[1] {
+		x="391"
+		y="152"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"line" {
+	object {
+		x="279"
+		y="198"
+		width="112"
+		height="32"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="279"
+		y="230"
+	}
+	point[1] {
+		x="391"
+		y="198"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"line" {
+	object {
+		x="280"
+		y="240"
+		width="112"
+		height="32"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="280"
+		y="272"
+	}
+	point[1] {
+		x="392"
+		y="240"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"text update" {
+	object {
+		x="280"
+		y="67"
+		width="112"
+		height="32"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)Offset.VALE"
+		clr="11"
+		bclr="13"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="280"
+		y="110"
+		width="112"
+		height="32"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)Offset.VALA"
+		clr="11"
+		bclr="13"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="280"
+		y="153"
+		width="112"
+		height="32"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)Offset.VALB"
+		clr="11"
+		bclr="13"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="280"
+		y="198"
+		width="112"
+		height="32"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)Offset.VALC"
+		clr="11"
+		bclr="13"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="280"
+		y="241"
+		width="112"
+		height="32"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)Offset.VALD"
+		clr="11"
+		bclr="13"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"kill display" {
+	object {
+		x="312"
+		y="295"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

@@ -1,0 +1,522 @@
+
+#
+# DHS Test Commander
+# Grating turret device functionality setup script - for backlash removal
+#
+
+#
+# Define the variables used in this script, and the configuration files
+# which contain their translation into EPICS channel names.
+#
+#       Config file              Config file name        Named used here     Mystery number
+#       -----------              ---------------------   -----------------   --------------
+
+# Device INPUTS
+VAR     gratingTurretDevice      devDir                  devDir	             1
+VAR     gratingTurretDevice      devMode                 devMode             1
+VAR     gratingTurretDevice      devTarget               devTarget           1
+VAR     gratingTurretDevice      devNamedTarget          devNamedTarget      1
+VAR     gratingTurretDevice      devIndexType            devIndexType        1
+VAR     gratingTurretDevice      devDbug                 devDbug             1
+VAR     gratingTurretDevice      devSimm                 devSimm             1
+VAR     gratingTurretDevice      devMinPosition          devMinPosition      1
+VAR     gratingTurretDevice      devMaxPosition          devMaxPosition      1
+VAR     gratingTurretDevice      devBacklash             devBacklash         1
+VAR     gratingTurretDevice      devRounding             devRounding         1
+VAR     gratingTurretDevice      devVelocity             devVelocity         1
+VAR     gratingTurretDevice      devMinVelocity          devMinVelocity      1
+VAR     gratingTurretDevice      devMaxVelocity          devMaxVelocity      1
+VAR     gratingTurretDevice      devAcceleration         devAcceleration     1
+VAR     gratingTurretDevice      devLutFile              devLutFile          1
+VAR     gratingTurretDevice      devLutDirectory         devLutDirectory     1
+VAR     gratingTurretDevice      devDevType              devDevType          1
+VAR     gratingTurretDevice      devEgu                  devEgu              1
+VAR     gratingTurretDevice      devMotorRes             devMotorRes         1
+VAR     gratingTurretDevice      devMotionDeadBand       devMotionDeadBand   1
+VAR     gratingTurretDevice      devBaseVelo             devBaseVelo         1
+VAR     gratingTurretDevice      devFinalIndexVelo       devFinalIndexVelo   1
+VAR     gratingTurretDevice      devUsePwrStatus         devUsePwrStatus     1
+VAR     gratingTurretDevice      devPwrStatusTimeout     devPwrStatusTimeout 1
+VAR     gratingTurretDevice      devPower                devPower            1
+VAR     gratingTurretDevice      devUseBrkStatus         devUseBrkStatus     1
+VAR     gratingTurretDevice      devBrkStatusTimeout     devBrkStatusTimeout 1
+VAR     gratingTurretDevice      devBrake                devBrake            1
+VAR     gratingTurretDevice      devUseAuxPwr            devUseAuxPwr        1
+VAR     gratingTurretDevice      devUseEncoder           devUseEncoder       1
+VAR     gratingTurretDevice      devEncoderRes           devEncoderRes       1
+VAR     gratingTurretDevice      devEncoderDeadBand      devEncoderDeadBand  1
+VAR     gratingTurretDevice      devManualPower          devManualPower      1
+
+# Device OUTPUTS
+VAR     gratingTurretDevice      devPosition             devPosition         1
+VAR     gratingTurretDevice      devAck                  devAck              1
+VAR     gratingTurretDevice      devBusy                 devBusy             1
+VAR     gratingTurretDevice      devState                devState            1
+VAR     gratingTurretDevice      devMess                 devMess             1
+VAR     gratingTurretDevice      devIndexed              devIndexed          1
+VAR     gratingTurretDevice      devLimited              devLimited          1
+
+# other status
+VAR     gratingStatus            gratingInPosition       grInpos             1
+VAR     gratingStatus            gratingLifterUp         lifterUp            1
+VAR     gratingStatus            gratingLifterDown       lifterDown          1
+
+#
+# Is it safe to proceed?
+#
+
+PROMPT "Read the assumptions.  Are the grating turret switches really broken?"
+
+#
+# Verify startup state. The device should be unindexed, stopped and unpowered.
+# The lifter MUST be raised.
+#
+
+TEST "Check the lifter is raised"
+FATAL
+
+DESC "The lifter MUST be raised or the turret cannot be moved"
+GETVAL lifterUp
+OUTPUT *VAL* UP*
+
+GETVAL lifterDown
+OUTPUT *VAL* NOTDOWN*
+
+ENDTEST
+
+TEST "Verify turret startup state"
+FATAL
+
+DESC "Verify turret startup state"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Log the current device record configuration
+#
+TEST "Log the current device record configuration"
+FATAL
+
+DESC "Get deviceControl record device layer type"
+GETVAL devDevType
+OUTPUT *.DTYP*DEV CTL OMS 8/44*
+
+DESC "Get simulation level - script cannot work in simulation mode"
+DESC "It relies on getting feedback from limit switches and power status"
+GETVAL devSimm
+OUTPUT *.SIMM*NONE*
+#OUTPUT *.SIMM*FULL*
+
+DESC "Get debug level"
+GETVAL devDbug
+OUTPUT *.DBUG*
+
+DESC "Get enginering units"
+GETVAL devEgu
+OUTPUT *.EGU*
+
+DESC "Get motor resolution, in microsteps per EGU"
+GETVAL devMotorRes
+OUTPUT *.MRES*
+
+DESC "Get motion deadband"
+GETVAL devMotionDeadBand
+OUTPUT *.MDBD*
+
+DESC "Get upper target limit, max EGU target allowed"
+GETVAL devMaxPosition
+OUTPUT *.PHLM*
+
+DESC "Get lower target limit, min EGU target allowed"
+GETVAL devMinPosition
+OUTPUT *.PLLM*
+
+DESC "Get motion velocity"
+GETVAL devVelocity
+OUTPUT *.VELO*
+
+DESC "Get upper velocity limit, max EGU velocity allowed"
+GETVAL devMaxVelocity
+OUTPUT *.VHLM*
+
+DESC "Get lower velocity limit, min EGU velocity allowed"
+GETVAL devMinVelocity
+OUTPUT *.VLLM*
+
+DESC "Get motion startup velocity"
+GETVAL devBaseVelo
+OUTPUT *.VBAS*
+
+DESC "Get final indexing velocity"
+GETVAL devFinalIndexVelo
+OUTPUT *.FIVL*
+
+DESC "Get acceleration, VBAS to VELO in EGUs per second per second"
+GETVAL devAcceleration
+OUTPUT *.ACCL*
+
+DESC "Get backlash correction in motor steps"
+GETVAL devBacklash
+OUTPUT *.BLCO*
+
+DESC "Get motor position rounding in motor steps"
+GETVAL devRounding
+OUTPUT *.MRND*
+
+DESC "Get the indexing algorithm number - should be 4 for the grating turret"
+DESC "INDEXING ALGORITHM 0 IS USED WHILE TURRET LIMIT SWITCHES ARE BROKEN"
+GETVAL devIndexType
+#OUTPUT *.IALG* 4*
+OUTPUT *.IALG* 0*
+
+DESC "Using Power status? Should be YES for the grating turret"
+GETVAL devUsePwrStatus
+OUTPUT *.UPSB* YES*
+#OUTPUT *.UPSB* NO*
+
+DESC "Get the power status timeout"
+GETVAL devPwrStatusTimeout
+OUTPUT *.PTMO*
+
+DESC "Using Brake status? Should be NO for the grating turret"
+GETVAL devUseBrkStatus
+OUTPUT *.UBSB* NO*
+
+DESC "Get the brake status timeout - should be zero for the grating turret"
+GETVAL devBrkStatusTimeout
+OUTPUT *.BTMO* 0*
+
+DESC "Using AUX to enable drives? Should be NO for the grating turret"
+GETVAL devUseAuxPwr
+OUTPUT *.UAPB* NO*
+
+DESC "Using Encoder? Should be NO for the grating turret"
+GETVAL devUseEncoder
+OUTPUT *.UEIP* NO*
+
+DESC "Get encoder resolution in counts per EGU"
+GETVAL devEncoderRes
+OUTPUT *.ERES*
+
+DESC "Get encoder deadband"
+GETVAL devEncoderDeadBand
+OUTPUT *.EDBD*
+
+DESC "Get lookup table name"
+GETVAL devLutFile
+OUTPUT *.TFIL* grt.lut*
+
+DESC "Get lookup table directory name"
+GETVAL devLutDirectory
+OUTPUT *.TDIR*
+
+ENDTEST
+
+#
+# First try to initialize the device control record
+#
+
+TEST "Test grating turret device INIT mode"
+FATAL
+
+DESC "Initializing grating turret"
+
+PUTVAL devTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL devMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+ENDTEST
+
+#
+# Test grating turret device TEST mode
+#
+
+TEST "Test grating turret device TEST mode"
+FATAL
+
+DESC "Testing grating turret"
+
+PUTVAL devMode "5"
+OUTPUT *MODE*MODE*TEST*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+ENDTEST
+
+#
+# The grating turret microswitches are broken, so the limit switch
+# checks are commented out for the time being. The device must be positioned
+# at the lower hard limit and indexed with algorithm 0.
+#
+
+PROMPT "Have you positioned the turret at the lower hard limit and rebooted?"
+
+TEST "Manually switch on the turret power"
+FATAL
+
+PUTVAL devManualPower "1"
+OUTPUT *VAL*VAL* ON*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 1* 
+#OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+TEST "Index the turret at the lower hard limit with algorithm 0"
+FATAL
+
+DESC "Indexing the turret - algorithm 0"
+PUTVAL devIndexType "0"
+OUTPUT *
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 1* 
+#OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Check allowed position range - lower limit.
+#
+
+TEST "Request position well below lower software limit and check response"
+FATAL
+
+DESC "Requesting position well below lower limit for grating turret"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devTarget "-2"
+OUTPUT *VAL*VAL* -2*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Command rejected*
+
+ENDTEST
+
+#
+# Verify device state and error message
+#
+
+TEST "Verify device state and error message"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Look for error message 'Target position out of range'"
+GETVAL devMess
+OUTPUT *.MESS*Target position out of range*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 1* 
+#OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Check allowed position range - upper limit.
+#
+
+TEST "Request position well above upper software limit and check response"
+FATAL
+
+DESC "Requesting position well above upper limit for grating turret"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devTarget "300"
+OUTPUT *VAL*VAL* 300*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Command rejected*
+
+ENDTEST
+
+#
+# Verify device state and error message
+#
+
+TEST "Verify device state and error message"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Look for error message 'Target position out of range'"
+GETVAL devMess
+OUTPUT *.MESS*Target position out of range*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 1* 
+#OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Move turret to position A in preparation for the turretBacklashCheckout script
+#
+
+# -----------------------------------------------------------------------------
+
+TEST "Move grating turret to position A"
+FATAL
+
+DESC "Moving turret to position A"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+DESC "Put zero into target position to avoid device control bug"
+PUTVAL devTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL devNamedTarget "posA"
+OUTPUT *VALS*VALS* posA*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify state and log current position
+#
+
+TEST "Verify state and log position"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 1*
+#OUTPUT *.PSTA* 0*
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+ENDTEST
+
+# -----------------------------------------------------------------------------
+
+TEST "Finally manually switch off the turret power"
+FATAL
+
+PUTVAL devManualPower "0"
+OUTPUT *VAL*VAL* OFF*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+#  All grating turret functions check out OK for setup!
+#
+
+COMMENT "Grating turret checks out OK for the backlash script"
+
+
+ 

@@ -1,0 +1,52 @@
+[symbol2]
+bbox -32 32 256 96
+port 200 48 100 768 VAL symbol 2 256 48 0
+port 32 64 100 1280 SLNK symbol 1 -32 64 0
+port 200 80 100 768 OUT symbol 2 256 80 0
+uniq 45
+[tools]
+[attributes]
+p 0 0 100 0 -1 setChan:cos_channel 1
+p 0 -64 100 0 -1 setName:name recordNamePrefix
+p 0 -32 100 0 -1 setPort:port_address /tyCo/1
+p 240 96 100 0 -1 setPproc:pproc NPP
+[layers]
+<symbol>
+l 90 4 0 88 48 gmBarcode
+r 0 32 32 144 96
+r 0 176 40 192 88
+r 0 136 48 144 80
+v 0 192 48
+256 48
+_
+v 0 -32 64
+32 64
+_
+v 0 192 80
+256 80
+_
+v 6 176 64
+192 64
+_
+v 6 176 56
+192 56
+_
+v 7 176 40
+192 40
+_
+v 7 176 80
+192 80
+_
+v 0 176 72
+192 72
+_
+v 0 176 48
+192 48
+_
+v 0 176 88
+144 72
+_
+v 0 176 40
+144 56
+_
+[comments]

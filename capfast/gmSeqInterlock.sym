@@ -1,0 +1,19 @@
+[symbol2]
+bbox -256 -16 48 160
+port -80 16 100 0 FLNK symbol 2 48 16 0
+port -96 80 100 0 ILOCK symbol 2 48 80 0
+uniq 0
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 -192 48 Interlock
+l 100 0 0 -176 96 Gemini
+r 0 -256 -16 -32 160
+v 0 -32 16
+48 16
+_
+v 0 -32 80
+48 80
+_
+[comments]

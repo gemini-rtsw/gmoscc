@@ -1,0 +1,16 @@
+[symbol2]
+bbox 192 -32 416 320
+port 400 256 100 512 VAL symbol 2 416 256 0
+port 400 224 100 512 MESS symbol 2 416 224 0
+port 400 192 100 512 FLNK symbol 2 416 192 0
+port 208 256 100 0 DIR symbol 1 192 256 0
+port 208 176 100 0 ICID symbol 1 192 176 0
+uniq 116
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 200 0 0 224 96 Observe
+l 80 0 0 208 288 GMOS SEQUENCE COMMAND
+r 0 192 -32 416 320
+[comments]

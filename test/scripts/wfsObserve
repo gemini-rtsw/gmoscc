@@ -1,0 +1,19 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: wfsObserve
+#
+# Purpose: 
+#	To start a GMOS WFS observation
+#
+# Invocation:
+#       wfsObserve pwfs2:
+#
+# Assumptions:
+#       The executeCommand script is available in the current PATH
+#
+
+executeCommand ${1}dc:observe.DIR ${1}dc:observe.VAL ${1}dc:observeC.VAL
+
+exit
+
+

@@ -1,0 +1,38 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: getChannel
+#
+# Purpose: 
+#	To get the value of an EPICS channel and report it to stdout
+#
+# Invokation:
+#       getChannel channel_name
+#       set variable = `getChannel channel_name`
+#
+# Assumptions:
+#       It is assumed that the EPICS channel represents a numerical
+#       value or a single word character string.
+#
+
+#
+# Read the EPICS channel with caget, ignore any output that doesn't include the
+# channel name using grep and use the awk editor to extract the second word (the
+# value) from the output.
+#
+
+set getoutput = `caget $1 | grep $1 | awk '{print $2}'`
+
+#
+# If a value has been found output it, otherwise output
+# an error message.
+#
+
+if ( `echo $getoutput | wc -m` > 0 ) then
+
+   echo $getoutput
+else
+
+   echo "(Failed)"
+endif
+
+exit

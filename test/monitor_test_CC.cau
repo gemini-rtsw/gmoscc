@@ -1,0 +1,17 @@
+# monitor_test.cau
+#
+# cau macro which monitors CAD/CAR records associated with test.
+# Invoked using cau "source" command.
+#
+monitor g7:cc:test.DIR
+monitor g7:cc:test.VAL
+monitor g7:cc:test.OMSS
+
+monitor g7:cc:testC.VAL
+monitor g7:cc:testC.OMSS
+
+monitor g7:wfs:test.DIR
+monitor g7:wfs:test.VAL
+monitor g7:wfs:test.OMSS
+
+# Type dataOut cau_test.log

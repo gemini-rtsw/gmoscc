@@ -1,0 +1,13 @@
+# monitor_tolerance.cau
+#
+# cau macro which monitors CAD/CAR records associated with OIWFS tolerance.
+# Invoked using cau "source" command.
+#
+
+monitor g7:wfs:tolerance.DIR
+monitor g7:wfs:tolerance.VAL
+monitor g7:wfs:tolerance.A
+monitor g7:wfs:tolerance.B
+monitor g7:wfs:tolerance.OMSS
+
+# Type dataOut cau_tolerance.log

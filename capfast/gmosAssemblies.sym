@@ -1,0 +1,44 @@
+[symbol2]
+bbox -96 -32 416 320
+port -80 256 100 0 DIR symbol 1 -96 256 0
+port -80 0 100 0 DBUG symbol 1 -96 0 0
+port -80 32 100 0 SIMM symbol 1 -96 32 0
+port 400 256 100 512 VAL symbol 2 416 256 0
+port 400 224 100 512 MESS symbol 2 416 224 0
+port 400 192 100 512 FLNK symbol 2 416 192 0
+port 400 0 100 512 CFLK symbol 2 416 0 0
+port 400 32 100 512 OERR symbol 2 416 32 0
+port 400 64 100 512 OMSS symbol 2 416 64 0
+port 400 96 100 512 CAR symbol 2 416 96 0
+uniq 98
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 64 272 GMOS Assemblies
+r 0 -96 -32 416 320
+r 0 256 0 288 96
+r 0 192 0 224 96
+r 0 128 0 160 96
+r 0 64 0 96 96
+r 0 0 0 32 96
+r 0 128 144 160 240
+v 0 208 128
+208 96
+_
+v 0 144 128
+272 128
+272 96
+_
+v 0 144 128
+144 96
+_
+v 0 80 128
+80 96
+_
+v 0 144 144
+144 128
+16 128
+16 96
+_
+[comments]

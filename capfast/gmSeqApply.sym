@@ -1,0 +1,40 @@
+[symbol2]
+bbox -544 -304 -64 192
+port -96 -185 100 0 ISFLNK symbol 2 -64 -144 0
+port -96 -89 100 0 ISMESS symbol 2 -64 -48 0
+port -96 23 100 0 ISCAR symbol 2 -64 64 0
+port -96 119 100 0 CONFC symbol 2 -64 160 0
+port -336 160 100 0 APPLYC symbol 1 -544 160 0
+port -336 96 100 0 ILOCK symbol 1 -544 96 0
+port -336 32 100 0 RDOUT symbol 1 -544 32 0
+port -336 -224 100 0 CC symbol 1 -544 -224 0
+port -336 -288 100 0 DC symbol 1 -544 -288 0
+port -336 -32 100 0 MENB symbol 1 -544 -32 0
+uniq 3
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 150 0 0 -240 -160 APPLY
+l 150 0 0 -256 -64 Sequencer
+l 150 0 0 -224 32 GMOS
+r 0 -352 -304 -64 192
+v 0 -544 160
+-352 160
+_
+v 0 -544 -224
+-352 -224
+_
+v 0 -544 32
+-352 32
+_
+v 0 -544 96
+-352 96
+_
+v 0 -544 -288
+-352 -288
+_
+v 0 -544 -32
+-352 -32
+_
+[comments]

@@ -1,0 +1,66 @@
+#!/bin/csh
+#
+# deviceReset
+#
+# Description:
+#
+#   Reset a device to make it look as if it has just
+#   been booted. This is useful to save rebooting the
+#   VME crate when testing a checkout script.
+#
+# Invocation:
+#   deviceReset <top> <dev>
+#
+#   where <top> is the top level database prefix and <dev> is the
+#   EPICS record string used for the device/axis combination.
+#   Examples
+#
+#   top = g7:cc: for simulation mode
+#   top = gm:cc: for MK system
+#   dev = mskCas for mask cassette
+#   dev = mskExt for mask extractor
+#   dev = mskGrp for mask gripper
+#   dev = mskRel for mask release
+#   dev = grA for grating tilt A
+#   dev = grt for grating turret
+#   dev = flt1 for filter wheel 1
+#   dev = flt2 for filter wheel 2
+#   dev = dta1 for translation stage X axis
+#   dev = dta1 for translation stage Y axis
+#   dev = dta1 for translation stage Z axis
+
+#
+# Get the record prefix strings
+#
+set gtop = $1
+set gdev = $2
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if ("$gtop" == "gm:cc:") then
+
+    #
+    # Check for gmos safety
+    #
+
+    if (!($?GMOS_MK_ACCESS)) then
+	echo ""
+	echo "GMOS MK safety check failed."
+	echo ""
+	echo "Before executing this script, which will affect the MK hardware,"
+	echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+	echo ""
+	exit
+    else
+	echo "GMOS MK safety check passed."
+    endif
+endif
+
+#
+# Reset the device record flags with caput.
+#
+echo Resetting ${gtop}${gdev}Device
+caput ${gtop}${gdev}Device.HPVL 0

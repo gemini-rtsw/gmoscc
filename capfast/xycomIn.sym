@@ -1,0 +1,13 @@
+[symbol2]
+bbox -224 16 -32 224
+uniq 1
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 -195 100 cards 0/1
+l 100 0 0 -196 162 inputs
+l 100 0 0 -191 183 xycom
+r 0 -224 224 -224 224
+r 0 -224 31 -32 224
+[comments]

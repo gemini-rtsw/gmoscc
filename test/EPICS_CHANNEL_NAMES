@@ -1,0 +1,101 @@
+
+	NAMES OF USEFUL EPICS CHANNELS
+	==============================
+
+This document lists the names of useful EPICS channels that may
+be monitored using "caget".
+
+
+EPICS channel name		Contents
+------------------		--------
+gm:sad:health.VAL		Overall GMOS health
+gm:sad:cc:health.VAL		GMOS components controller health
+
+gm:sad:cc:mskID.VAL			Barcode ID of current mask/IFU
+gm:sad:cc:mskLoc.VAL		Current location of mask/IFU
+
+gm:sad:filtName1.VAL		Name of filter 1
+gm:sad:filtName2.VAL		Name of filter 2
+gm:sad:cc:fltPos1.VAL		Position of filter wheel 1
+gm:sad:cc:fltPos2.VAL		Position of filter wheel 2
+
+gm:sad:grName.VAL		Name of current grating
+gm:sad:grWavelen.VAL		Central wavelength for current grating
+gm:sad:grOrder.VAL		Order of current grating
+gm:sad:grRulingDensity.VAL	Ruling density of current grating
+gm:sad:grBlazeDir.VAL		Blaze direction of current grating
+gm:sad:cc:grID.VAL		Barcode ID of current grating
+gm:sad:cc:grTilt.VAL		Tilt angle of current grating in degrees
+
+gm:cc:gr1Device.RRBV		Current tilt of grating A in motor steps
+gm:cc:gr2Device.RRBV		Current tilt of grating B in motor steps
+gm:cc:gr2Device.RRBV		Current tilt of grating C in motor steps
+gm:cc:gr4Device.RRBV		Current tilt of grating D in motor steps
+
+gm:cc:dtaAssembly.A		Target X axis position in microns
+gm:cc:dtaAssembly.B		Target Y axis position in microns
+gm:cc:dtaAssembly.C		Target Z axis position in microns
+gm:cc:dtaAssembly.VALA		Thermal correction for X axis in microns
+gm:cc:dtaAssembly.VALB		Thermal correction for Y axis in microns
+gm:cc:dtaAssembly.VALC		Thermal correction for Z axis in microns
+gm:cc:dtacrossx.VAL		Cross talk correction for X axis in microns (temporary channel)
+gm:cc:dtacrossy.VAL		Cross talk correction for Y axis in microns (temporary channel)
+
+gm:cc:dta1Device.MPOS		Current X axis position in microns
+gm:cc:dta2Device.MPOS		Current Y axis position in microns
+gm:cc:dta3Device.MPOS		Current Z axis position in microns
+gm:cc:dta1Device.RRBV		Current X axis position in motor steps
+gm:cc:dta2Device.RRBV		Current Y axis position in motor steps
+gm:cc:dta3Device.RRBV		Current Z axis position in motor steps
+
+gm:cc:temp0.VAL			Temperature of FOSS/ISS in degrees Celsius
+gm:cc:temp1.VAL			Temperature of WFS controller case in degrees Celsius
+gm:cc:temp2.VAL			Temperature of collimator barrel front in degrees Celsius
+gm:cc:temp3.VAL			Temperature of electronics enclosure 1 in degrees Celsius
+gm:cc:temp4.VAL			Temperature of CCD body in degrees Celsius
+gm:cc:temp5.VAL			Temperature of collimator beam air in degrees Celsius
+gm:cc:temp6.VAL			Temperature of science CCD controller case in degrees Celsius
+gm:cc:temp7.VAL			Temperature of electronics enclosure 2 in degrees Celsius
+gm:cc:temp8.VAL			Temperature of camera barrel mid point in degrees Celsius
+
+gm:sad:dc:rdspeed.VAL		Detector readout speed
+gm:sad:dc:gain.VAL		Detector gain
+gm:sad:dc:portCnt.VAL		Detector port count
+gm:sad:dc:shutPos.VAL		Detector shutter position during exposure
+
+gm:sad:dc:prep.VAL		Detector preparing
+gm:sad:dc:acq.VAL		Detector exposing
+gm:sad:dc:rdout.VAL		Detector reading out
+
+gm:sad:dc:numRois.VAL		Number of regions of interest
+gm:sad:dc:roi1X.VAL		X start of region of interest 1
+gm:sad:dc:roi1Y.VAL		Y start of region of interest 1
+gm:sad:dc:roiXSize.VAL		X size of region of interest 1
+gm:sad:dc:roiYsize.VAL		Y size of region of interest 1
+gm:sad:dc:roi2X.VAL		X start of region of interest 2
+gm:sad:dc:roi2Y.VAL		Y start of region of interest 2
+gm:sad:dc:roiXSize.VAL		X size of region of interest 2
+gm:sad:dc:roiYsize.VAL		Y size of region of interest 2
+gm:sad:dc:roi3X.VAL		X start of region of interest 3
+gm:sad:dc:roi3Y.VAL		Y start of region of interest 3
+gm:sad:dc:roiXSize.VAL		X size of region of interest 3
+gm:sad:dc:roiYsize.VAL		Y size of region of interest 3
+gm:sad:dc:roi4X.VAL		X start of region of interest 4
+gm:sad:dc:roi4Y.VAL		Y start of region of interest 4
+gm:sad:dc:roiXSize.VAL		X size of region of interest 4
+gm:sad:dc:roiYsize.VAL		Y size of region of interest 4
+gm:sad:dc:xBin.VAL		X binning factor
+gm:sad:dc:yBin.VAL		Y binning factor
+
+gm:sad:dc:exposedRQ.VAL		Requested exposure time in seconds
+gm:sad:dc:timeleft.VAL		Time left to end of exposure in seconds
+gm:sad:dc:exposed.VAL		Actual exposure time in seconds
+gm:sad:dc:darktime.VAL		Actual dark time in seconds
+gm:sad:dc:utstart.VAL		UT at start of observation
+gm:sad:dc:utend.VAL		UT at end of observation
+
+gm:sad:dc:dataLabel.VAL		Data label of most recent observation
+
+gm:sad:dc:detTemp.VAL		Detector temperature
+gm:sad:dc:errorTemp.VAL		Error in detector temperature
+

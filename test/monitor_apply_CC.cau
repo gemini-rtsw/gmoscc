@@ -1,0 +1,16 @@
+# monitor_apply.cau
+#
+# cau macro which monitors the components controller and OIWFS
+# top level apply, applyC and activeC records.
+# Invoked using cau "source" command.
+#
+monitor g7:cc:apply.DIR
+monitor g7:cc:apply.VAL
+monitor g7:cc:apply.CLID
+monitor g7:cc:apply.OMSS
+
+monitor g7:cc:applyC.VAL
+monitor g7:cc:applyC.CLID
+monitor g7:cc:applyC.OMSS
+
+# Type dataOut cau_apply.log

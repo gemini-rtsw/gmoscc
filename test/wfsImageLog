@@ -1,0 +1,229 @@
+#!/usr/local/bin/tcsh -f
+#
+# wfsImageLog
+#
+# Description:
+#
+#   A simple script to log OIWFS images at a periodic interval
+#
+#   It is assumed this script is being run from the "test" directory.
+#   The OIWFS controller must already have been initalised
+#   and set into the desired configuration.
+#   Produce test images before running the script.
+#
+# Invocation:
+#   wfsImageLog interval
+#
+# NOTE:
+#   This script is designed to be as simple as possible, so it does not do as much
+#   checking as a dhsTestCmdr script. It is designed to generate test data rather
+#   than to check out the correct operation of the instrument.
+#
+
+#
+# Check for arguments
+#
+
+if ($#argv != 1) then
+    echo "Please supply interval between observation triplets (in minutes)"
+    exit
+endif
+
+#
+# Get the current date and calculate interval
+#
+
+set day = `date +%h%d.%y`
+
+echo "Date is "${day}
+
+set intervalSeconds = `mult $1 60`
+
+if ($intervalSeconds <= 0) then
+    echo "Interval must be greater than zero"
+    exit
+endif
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!($?GMOS_MK_ACCESS)) then
+    echo "GMOS MK safety check failed."
+    echo ""
+    echo "Before executing this script, which will move real MK hardware,"
+    echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+    echo ""
+    exit
+else
+    echo "GMOS MK safety check passed."
+    echo ""
+endif
+
+#echo "Simulation mode - no safety check required"
+
+#
+# Bail out if the scripts directory does not exist.
+#
+
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+#
+# Create the log directory if need be...
+#
+
+if (!(-e logfiles)) then
+    mkdir logfiles
+endif
+
+if (!(-e logfiles/${day})) then
+    mkdir logfiles/${day}
+    echo "Creating directory ./logfiles/"${day}
+    echo ""
+    sleep 1
+endif
+
+if (!(-e logfiles/${day}/wfsImageLog_${day})) then
+    echo "Creating image log file ./logfile/"${day}"/wfsImageLog_${day}"
+#    echo "Day Month Date Time Year Iteration Filename ProbeMaskX ProbeMaskY ProbeTheta centroidX1 centroidY1 centroidX2 centroidY2 centroidX3 centroidY3 centroidX4 centroidY4 centroidXmean centroidYmean userComment" | cat >> ./logfiles/${day}/wfsImageLog_${day}
+    echo "Day Month Date Time Year Filename ProbeMaskX ProbeMaskY ProbeTheta centroidX1 centroidY1 centroidX2 centroidY2 centroidX3 centroidY3 centroidX4 centroidY4 centroidXmean centroidYmean" | cat >> ./logfiles/${day}/wfsImageLog_${day}
+    sleep 1
+endif
+
+echo "Image information will be stored in ./logfiles/"${day}"/wfsImageLog_${day}"
+echo ""
+    sleep 1
+
+echo "Press enter to proceed"
+set dummy = $<
+
+echo "Before proceeding - perform the following:"
+echo "1. Configure the OIWFS camera controller (including the file path) and take a test image"
+echo "2. Note down the first filenames required (wXXXXX)"
+echo "3. Switch on tracking mode if required"
+echo ""
+echo "Press enter to proceed"
+set dummy = $<
+
+echo ""
+echo "Please enter a file number for WFS images (the first filename will be wXXXXX)"
+set wfsFilenumber = $<
+
+@ wfsFilenumber -= 1
+@ wfsFilenumber += 1
+
+#echo ""
+#echo "Please enter the number of WFS images to take per iteration"
+#set wfsNumImages = $<
+
+echo "" | cat >> ./logfiles/${day}/wfsImageLog_${day}    
+
+while (1)
+
+    set observeTime = `date +"%a %b %d %T %Y"`
+    echo ""
+    echo "* The time now is ${observeTime} *"
+    echo ""
+
+    #
+    # Take the WFS images
+    #
+
+#    set wfsImagesTaken = 0
+
+#    while ($wfsImagesTaken < $wfsNumImages)
+
+	#
+	# Make a wfs observation
+	#
+    
+	echo ""
+	echo "WFS observation - saving data to w${wfsFilenumber}"
+	
+	# Set the file name to the current number.
+	
+	set fileResponse = `setWfsFilename pwfs2: w${wfsFilenumber}`
+	set fileStatus = `echo $fileResponse | grep 'Command Success'`
+	if ( $#fileStatus != 2 ) then
+	    echo "Setting WFS filename failed"
+	    exit -1
+	endif
+
+	#
+	# Make an observation
+	#
+	
+	echo "Observing..."
+	set observeResponse = `wfsObserve pwfs2:`
+	set observeStatus = `echo $observeResponse | grep 'Command Success'`
+	if ( $#observeStatus != 2 ) then
+	    echo "WFS observation failed"
+	    exit -1
+	endif
+
+	echo "WFS observation complete"
+
+	#
+	# Log to the WFS image logfile.
+	#
+
+	echo ""
+	echo "Logging data to WFS log file"
+
+	set wfsProbeMaskX = `caget "gm:wfs:probeCalcPosition.VALA" | sed 's|gm:wfs:probeCalcPosition.VALA||g'`
+	echo "Probe X position (mask co-ords) is "$wfsProbeMaskX
+	set wfsProbeMaskY = `caget "gm:wfs:probeCalcPosition.VALB" | sed 's|gm:wfs:probeCalcPosition.VALB||g'`
+	echo "Probe Y position (mask co-ords) is "$wfsProbeMaskY
+	set wfsProbeTheta = "NOT_SET"
+	echo "Probe Angle (theta) is "$wfsProbeTheta
+      	set centroidX1    = `caget "pwfs2:dc:fgDiag.VALA" | sed 's|pwfs2:dc:fgDiag.VALA||g'`
+	echo "First centroid X is "$centroidX1
+	set centroidY1    = `caget "pwfs2:dc:fgDiag.VALB" | sed 's|pwfs2:dc:fgDiag.VALB||g'`
+	echo "First centroid Y is "$centroidY1
+	set centroidX2    = `caget "pwfs2:dc:fgDiag.VALC" | sed 's|pwfs2:dc:fgDiag.VALC||g'`
+	echo "Second centroid X is "$centroidX2
+	set centroidY2    = `caget "pwfs2:dc:fgDiag.VALD" | sed 's|pwfs2:dc:fgDiag.VALD||g'`
+	echo "Second centroid Y is "$centroidY2
+	set centroidX3    = `caget "pwfs2:dc:fgDiag.VALE" | sed 's|pwfs2:dc:fgDiag.VALE||g'`
+	echo "Third centroid X is "$centroidX3
+	set centroidY3    = `caget "pwfs2:dc:fgDiag.VALF" | sed 's|pwfs2:dc:fgDiag.VALF||g'`
+	echo "Third centroid Y is "$centroidY3
+	set centroidX4    = `caget "pwfs2:dc:fgDiag.VALG" | sed 's|pwfs2:dc:fgDiag.VALG||g'`
+	echo "Forth centroid X is "$centroidX4
+	set centroidY4    = `caget "pwfs2:dc:fgDiag.VALH" | sed 's|pwfs2:dc:fgDiag.VALH||g'`
+	echo "Forth centroid Y is "$centroidY4
+	set centroidXmean = `caget "pwfs2:dc:fgDiag.VALI" | sed 's|pwfs2:dc:fgDiag.VALI||g'`
+	echo "Mean centroid X is "$centroidXmean
+	set centroidYmean = `caget "pwfs2:dc:fgDiag.VALJ" | sed 's|pwfs2:dc:fgDiag.VALJ||g'`
+	echo "Mean centroid Y is "$centroidYmean
+
+#	echo ${observeTime} ${scriptIterations} w${wfsFilenumber} ${wfsProbeMaskX} ${wfsProbeMaskY} ${wfsProbeTheta} ${centroidX1} ${centroidY1} ${centroidX2} ${centroidY2} ${centroidX3} ${centroidY3} ${centroidX4} ${centroidY4} ${centroidXmean} ${centroidYmean} ${userComment} | cat >> ./logfiles/${day}/wfsImageLog_${day}
+
+	echo ${observeTime} w${wfsFilenumber} ${wfsProbeMaskX} ${wfsProbeMaskY} ${wfsProbeTheta} ${centroidX1} ${centroidY1} ${centroidX2} ${centroidY2} ${centroidX3} ${centroidY3} ${centroidX4} ${centroidY4} ${centroidXmean} ${centroidYmean} | cat >> ./logfiles/${day}/wfsImageLog_${day}
+
+	@ wfsFilenumber += 1
+
+#	@ wfsImagesTaken += 1
+
+    echo ""
+    echo "Type Ctrl-c to stop the script."
+    echo ""
+    echo "The time is now "`date +"%T"`
+    echo "Waiting for ${intervalSeconds} seconds..."
+    sleep $intervalSeconds
+
+end
+
+
+exit
+
+
+
+
+
+

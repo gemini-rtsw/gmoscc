@@ -1,0 +1,16 @@
+GROUP NULL MAIN
+
+   $GUIDANCE
+   Top level alarm group for GMOS - $(name)
+   $END
+
+   GROUP MAIN TEMPERATURES
+
+      $GUIDANCE
+      Detector controller temperature alarms.
+      --------------------------------------------
+      Check dewar vacuum if too warm.
+      $END
+
+      CHANNEL TEMPERATURES $(top)sad:dc:detTemp
+      $ALIAS Detector temperature

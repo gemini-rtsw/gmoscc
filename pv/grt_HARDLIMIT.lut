@@ -1,0 +1,18 @@
+#
+# Lookup table for turret
+# Translates position names into motor positions
+#
+
+# name         target   index
+
+index           0.000   0
+park            2.250   0
+posA            2.250   0
+posB           32.250   0
+posC           62.250   0
+posD           92.250   0
+posARotated   122.250   0
+posABarcode    62.250   0
+posBBarcode    92.250   0
+posCBarcode     2.250   0
+posDBarcode    32.250   0

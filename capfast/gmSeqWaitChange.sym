@@ -1,0 +1,19 @@
+[symbol2]
+bbox -256 -16 48 160
+port -96 32 100 0 FLNK symbol 2 48 32 0
+port -112 64 100 0 NEWVAL symbol 2 48 64 0
+uniq 0
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 -240 112 Wait for changed
+l 100 0 0 -176 80 value
+r 0 -256 -16 -32 160
+v 0 -32 32
+48 32
+_
+v 0 -32 64
+48 64
+_
+[comments]

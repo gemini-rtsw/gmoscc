@@ -1,0 +1,37 @@
+!
+! devSup.ascii
+! Custom device support definitions for both standard GEMINI and custom GMOS
+! records.
+!
+
+!
+! AssemblyControl record device support to control GMOS assemblies 
+!
+"assemblyControl"     VME_IO         "devAtmdcAssembly"        "Atmdc"
+"assemblyControl"     VME_IO         "devOiwfsAssembly"        "Oiwfs"
+"assemblyControl"     VME_IO         "devMaskAssembly"         "Mask"
+"assemblyControl"     VME_IO         "devFilterAssembly"       "Filter"
+"assemblyControl"     VME_IO         "devGratingAssembly"      "Grating"
+"assemblyControl"     VME_IO         "devTranslationAssembly"  "Translation"
+
+!
+! DeviceControl record device support for DAO OMS 8/44 driver
+!
+"deviceControl"       VME_IO         "devDeviceControlOMS"     "DEV CTL OMS 8/44"
+
+!
+! Binary output record device support for power control via DAO OMS 8/44 driver
+!
+"bo"                  VME_IO         "devDeviceBoOmsDao"       "DEV OMS POWER"
+
+!
+! String input record device support for barcode reader  
+!
+"stringin"            INST_IO        "devBarcode"              "barcodeScanner"
+
+!
+! TEMPORARY ADDITION
+! Device support for new version of apply record
+!
+"apply"               CONSTANT       "devApplyLocal"           "Local"
+"apply"               CONSTANT       "devApplyRemote"          "Remote"

@@ -1,0 +1,319 @@
+
+#
+# DHS Test Commander
+# wfs assembly functionality test script
+#
+
+#
+# Do the variable substitution thing....
+#
+
+VAR     wfsAssembly      assemblyDirective       wfsDir              1
+VAR     wfsAssembly      assemblyMode            wfsMode             1
+VAR     wfsAssembly      assemblyAAttribute      wfsMXTarget         1
+VAR     wfsAssembly      assemblyBAttribute      wfsMYTarget         1
+VAR     wfsAssembly      assemblyCAttribute      wfsSol              1
+VAR     wfsAssembly      assemblyAttributeAMin   wfsAttributeAMin    1
+VAR     wfsAssembly      assemblyAttributeAMax   wfsAttributeAMax    1
+VAR     wfsAssembly      assemblyAttributeBMin   wfsAttributeBMin    1
+VAR     wfsAssembly      assemblyAttributeBMax   wfsAttributeBMax    1
+
+VAR     wfsAssembly      assemblyAcknowledge     wfsAck              1
+VAR     wfsAssembly      assemblyBusy            wfsBusy             1
+VAR     wfsAssembly      assemblyMessage         wfsMess             1
+
+VAR     wfsAssembly      assemblyDebug           wfsDebug            1
+VAR     wfsAssembly      assemblySimulation      wfsSimulation       1
+VAR     wfsAssembly      assemblyLutFile         wfsLutFile          1
+VAR     wfsAssembly      assemblyLutDir          wfsLutDir           1
+VAR     wfsAssembly      assemblyNumberOfDevices wfsNumDev           1
+VAR     wfsAssembly      assemblyDevType         wfsDevType          1
+
+VAR     wfsAssembly      assemblyState           wfsState            1
+VAR     wfsAssembly      assemblyIndexed         wfsIndexed          1
+VAR     wfsAssembly      assemblyInitialized     wfsInitialized      1
+VAR     wfsAssembly      assemblyHealth          wfsHealth           1
+VAR     wfsAssembly      assemblyParked          wfsParked           1
+
+VAR     wfsCommands      wfsTXTarget             wfsTXTarget         1
+VAR     wfsCommands      wfsTYTarget             wfsTYTarget         1
+VAR     wfsCommands      wfsMXPos                wfsMXPos            1
+VAR     wfsCommands      wfsMYPos                wfsMYPos            1
+VAR     wfsCommands      wfsConvert              wfsConvert          1
+
+VAR     wfsCommands      wfsXMax                 wfsXMax             1
+VAR     wfsCommands      wfsXMin                 wfsXMin             1
+VAR     wfsCommands      wfsYMax                 wfsYMax             1
+VAR     wfsCommands      wfsYMin                 wfsYMin             1
+
+VAR     wfsCommands      wfsActiveC              wfsActiveC          1
+
+VAR     wfsCommands      wfsDatumDir             wfsDatumDir         1
+VAR     wfsCommands      wfsDatumAck             wfsDatumAck         1
+
+VAR     wfsCommands      wfsInitDir              wfsInitDir          1
+VAR     wfsCommands      wfsInitAck              wfsInitAck          1
+
+VAR     wfsCommands      wfsTestDir              wfsTestDir          1
+VAR     wfsCommands      wfsTestAck              wfsTestAck          1
+
+VAR     wfsCommands      wfsParkDir              wfsParkDir          1
+VAR     wfsCommands      wfsParkAck              wfsParkAck          1
+
+VAR     wfsCommands      wfsMoveDir              wfsMoveDir          1
+VAR     wfsCommands      wfsMoveAck              wfsMoveAck          1
+VAR     wfsCommands      wfsMoveMess             wfsMoveMess         1
+VAR     wfsCommands      wfsMoveCar              wfsMoveCar          1
+VAR     wfsCommands      wfsMoveXTarget          wfsMoveXTarget      1
+VAR     wfsCommands      wfsMoveYTarget          wfsMoveYTarget      1
+
+VAR     wfsCommands      wfsToleranceDir         wfsToleranceDir     1
+VAR     wfsCommands      wfsToleranceAck         wfsToleranceAck     1
+VAR     wfsCommands      wfsToleranceMess        wfsToleranceMess    1
+VAR     wfsCommands      wfsToleranceCar         wfsToleranceCar     1
+VAR     wfsCommands      wfsToleranceTarget      wfsToleranceTarget  1
+
+VAR     baseDevice       devicePosition          basePos             1
+VAR     baseDevice       deviceDirective         baseDir             1
+VAR     baseDevice       deviceMode              baseMode            1
+VAR     baseDevice       deviceTarget            baseTarget          1
+VAR     baseDevice       deviceAcknowledge       baseAck             1
+VAR     baseDevice       deviceBusy              baseBusy            1
+VAR     baseDevice       deviceMessage           baseMess            1
+VAR     pickoffDevice    devicePosition          pickoffPos          1
+VAR     pickoffDevice    deviceDirective         pickoffDir          1
+VAR     pickoffDevice    deviceMode              pickoffMode         1
+VAR     pickoffDevice    deviceTarget            pickoffTarget       1
+VAR     pickoffDevice    deviceAcknowledge       pickoffAck          1
+VAR     pickoffDevice    deviceBusy              pickoffBusy         1
+VAR     pickoffDevice    deviceMessage           pickoffMess         1
+
+
+
+
+#
+# Test receipt of new target while already moving
+#
+
+TEST "Test receipt of new target while already moving"
+FATAL
+
+DESC "Start in upper left corner"
+
+DESC "Load Telescope X attribute with minimum value"
+CMD "setField wfsMoveXTarget wfsXMin"
+OUTPUT *Success*
+
+DESC "Load Telescope Y attribute with maximum value"
+CMD "setField wfsMoveYTarget wfsYMax"
+OUTPUT *Success*
+
+DESC "Parse Telescope X,Y"
+CMD "executeCommand wfsMoveDir wfsMoveAck wfsActiveC"
+OUTPUT *Success*
+
+DESC "Set solution type to 1"
+PUTVAL wfsSol "1"
+OUTPUT *.C*.C* 1*
+
+DESC "Convert to mask coordinates and move via assembly"
+PUTVAL wfsConvert "1"
+OUTPUT *PROC*PROC*1*
+
+DESC "Wait for ActiveC to finish"
+CMD "finishCommand wfsActiveC"
+OUTPUT *Success*
+
+DESC "Start move to upper right corner"
+
+DESC "Load Telescope X attribute with maximum value"
+CMD "setField wfsMoveXTarget wfsXMax"
+OUTPUT *Success*
+
+DESC "Load Telescope Y attribute with maximum value"
+CMD "setField wfsMoveYTarget wfsYMax"
+OUTPUT *Success*
+
+DESC "Parse Telescope X,Y"
+CMD "executeCommand wfsMoveDir wfsMoveAck wfsMoveCar"
+OUTPUT *Success*
+
+DESC "Set solution type to 1"
+PUTVAL wfsSol "1"
+OUTPUT *.C*.C* 1*
+
+DESC "Convert to mask coordinates and move via assembly"
+PUTVAL wfsConvert "1"
+OUTPUT *PROC*PROC*1*
+
+DESC "Check the Car"
+GETVAL wfsActiveC
+OUTPUT *VAL*BUSY*
+
+DESC "Interrupt with move to optical centre"
+
+PUTVAL wfsMoveXTarget "0.0"
+OUTPUT *.A* 0.0*
+
+PUTVAL wfsMoveYTarget "0.0"
+OUTPUT *.B* 0.0*
+
+DESC "Parse Telescope X,Y"
+CMD "executeCommand wfsMoveDir wfsMoveAck wfsMoveCar"
+OUTPUT *Success*
+
+DESC "Set solution type to 1"
+PUTVAL wfsSol "1"
+OUTPUT *.C*.C* 1*
+
+DESC "Convert to mask coordinates and move via assembly"
+PUTVAL wfsConvert "1"
+OUTPUT *PROC*PROC* 1*
+
+DESC "Check the state"
+CMD "checkState wfsState MOVING"
+OUTPUT *Success*
+
+DESC "Check the Car"
+GETVAL wfsActiveC
+OUTPUT *VAL*BUSY*
+
+DESC "Wait for ActiveC to finish"
+CMD "finishCommand wfsActiveC"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify assembly state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL wfsState
+OUTPUT *.ASTA* IDLE* 
+
+GETVAL wfsInitialized
+OUTPUT *.INIT* 1* 
+
+GETVAL wfsIndexed
+OUTPUT *.INDX* 1* 
+
+GETVAL wfsParked
+OUTPUT *.PARK* 0* 
+
+GETVAL wfsHealth
+OUTPUT *.HLTH* GOOD* 
+
+ENDTEST
+
+#
+# Park the wfs assembly
+#
+
+TEST "Test OIWFS PARK command"
+FATAL
+
+DESC "Parking wfs"
+
+DESC "Mark the park cad"
+PUTVAL wfsParkDir "0"
+OUTPUT *DIR*DIR*MARK*
+
+DESC "Start the cad and wait for car to finish"
+CMD "executeCommand wfsParkDir wfsParkAck wfsActiveC"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify assembly state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL wfsState
+OUTPUT *.ASTA* IDLE* 
+
+GETVAL wfsInitialized
+OUTPUT *.INIT* 1* 
+
+GETVAL wfsIndexed
+OUTPUT *.INDX* 1* 
+
+GETVAL wfsParked
+OUTPUT *.PARK* 1* 
+
+GETVAL wfsHealth
+OUTPUT *.HLTH* GOOD* 
+
+ENDTEST
+
+#
+# Un-Park the wfs assembly
+#
+
+TEST "Move the OIWFS Probe and lose park flag"
+FATAL
+
+DESC "Moving wfs"
+
+PUTVAL wfsMoveXTarget "0.0"
+OUTPUT *0*
+
+PUTVAL wfsMoveYTarget "0.0"
+OUTPUT *0*
+
+DESC "Parse Telescope X,Y"
+CMD "executeCommand wfsMoveDir wfsMoveAck wfsActiveC"
+OUTPUT *Success*
+
+DESC "Set solution type to 1"
+PUTVAL wfsSol "1"
+OUTPUT *.C*.C* 1*
+
+DESC "Convert to mask coordinates and move via assembly"
+PUTVAL wfsConvert "1"
+OUTPUT *PROC*PROC*1*
+
+DESC "Wait for ActiveC to finish"
+CMD "finishCommand wfsActiveC"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify assembly state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL wfsState
+OUTPUT *.ASTA* IDLE* 
+
+GETVAL wfsInitialized
+OUTPUT *.INIT* 1* 
+
+GETVAL wfsIndexed
+OUTPUT *.INDX* 1* 
+
+GETVAL wfsParked
+OUTPUT *.PARK* 0* 
+
+GETVAL wfsHealth
+OUTPUT *.HLTH* GOOD* 
+
+ENDTEST
+
+COMMENT "wfs checks out OK"
+
+ 

@@ -1,0 +1,209 @@
+# This is a file of tests for the GMOS sequencer in a suitable format to be read
+# by the tcsTests.tk procedure.
+# 
+# This particular test file is aimed at checking the input ranges to 
+# the GMOS 'grSelect' CAD command.
+#
+#
+# Comments are introduced by a # in the first column
+# Blank lines can be left if required.
+# The currently allowed keywords are (case is immaterial)
+#
+#  Test   <testId>
+#  Command <commandName>
+#  Field   <CAD field> <value>
+#  Response Accept | Reject
+#  Timeout <msecs>
+#  OnError Continue | Abort
+#  Log     <recordName>
+#  Directive Start | Preset
+
+# This first part before the first Test keyword can be used to setup 
+# global values for Response, TimeOut and OnError. These global values
+# can be over ridden within specific tests
+
+Response Reject
+TimeOut  30000
+OnError  Continue
+
+Help
+Help These tests checks the trapping of invalid input to the
+Help grSelect command.
+Help
+Help The first tests check for null input. If the commands in question have
+Help been run at any time after booting and prior to running these tests then
+Help there will already be input on the CAD fields and so these null tests
+Help will fail. To validate the trapping of null input you will have to
+Help reboot the GMOS sequencer and start these tests again.
+Help
+Help Press continue when ready
+Help
+
+# Tests start here. Each test must start with the Test keyword, end with
+# a Directive keyword and have at least one Command keyword. Any Field
+# keywords are assumed to apply to the last command
+
+Test UT04010
+Summary Check rejection of null input
+Help Check rejection of null input
+
+ Command grSelect
+ Field  A  ""
+ Field  DIR MARK   
+ Response  Reject 
+ Directive Start
+
+Test UT04020
+Summary Check rejection of invalid input to Mode  field 
+Help Check rejection of invalid input to Mode field 
+
+ Command grSelect 
+ Field  A  XXXXX
+ Response  Reject 
+ Directive Start
+
+Test UT04030
+Summary SEL mode: Check rejection of null input to grating name field
+Help SEL mode: Check rejection of null input to grating name field
+
+ Command grSelect 
+ Field  A  SEL
+ Response  Reject 
+ Directive Start
+
+Test UT04040
+Summary SEL mode: Check rejection of invalid grating name
+Help SEL mode: Check rejection of invalid grating name
+
+ Command grSelect 
+ Field  A  SEL
+ Field  B  XXXXX
+ Response  Reject 
+ Directive Start
+
+Test UT04050
+Summary WLEN mode: Check rejection of invalid grating name
+Help WLEN mode: Check rejection of invalid grating name
+
+ Command grSelect 
+ Field  A  WLEN
+ Field  B  XXXXX
+ Response  Reject 
+ Directive Start
+
+
+Test UT04060
+Summary WLEN mode: Check rejection of null input to Wavelength field
+Help WLEN mode: Check rejection of null input to Wavelength field
+
+ Command grSelect 
+  Field  A  WLEN
+  Field  B  800+
+  Response  Reject 
+  Directive Start
+
+Test UT04070
+Summary WLEN mode: Check rejection of invalid input to Wavelength field
+Help WLEN mode: Check rejection of invalid input to Wavelength field
+
+ Command grSelect 
+  Field  A  WLEN
+  Field  B  800+
+  Field  C  XXXXX
+  Response  Reject 
+  Directive Start
+
+Test UT04075
+Summary WLEN mode: Check rejection of out-of-range input to Wavelength field
+Help WLEN mode: Check rejection of out-of-range input to Wavelength field
+
+ Command grSelect 
+  Field  A  WLEN
+  Field  B  800+
+  Field  C  100.0
+  Response  Reject 
+  Directive Start
+
+
+Test UT04080
+Summary WLEN mode: Check rejection of null input to grating order field
+Help WLEN mode: Check rejection of null input to grating order field
+
+ Command grSelect 
+  Field  A  WLEN
+  Field  B  800+
+  Field  C  0.4
+  Response  Reject 
+  Directive Start
+
+Test UT04090
+Summary WLEN mode: Check rejection of invalid input to grating order field
+Help WLEN mode: Check rejection of invalid input to grating order field
+
+ Command grSelect 
+  Field  A  WLEN
+  Field  B  800+
+  Field  C  0.4
+  Field  D  XXXXX
+  Response  Reject 
+  Directive Start
+
+Test UT04100
+Summary WLEN mode: Check rejection of out-of-range input to grating order field
+Help WLEN mode: Check rejection of out-of-range input to grating order field
+
+ Command grSelect 
+  Field  A  WLEN
+  Field  B  800+
+  Field  C  0.4
+  Field  D  -1
+  Response  Reject 
+  Directive Start
+
+
+Test UT04110
+Summary Check acceptance of valid grating-only  selection 
+Help Check acceptance of valid grating-only  selection 
+
+  Aftertest Pause
+
+Log c2:grAssembly.A
+Log c2:grAssembly.B
+Log c2:grAssembly.C
+
+ Command grSelect 
+  Field  A  SEL
+  Field  B  800+
+  Response  Accept 
+  Directive Start
+ 
+Test UT04120
+Summary Check acceptance of valid grating/tilt selection
+Help Check acceptance of valid grating/tilt selection
+
+  Aftertest Pause
+
+Log c2:grAssembly.A
+Log c2:grAssembly.B
+Log c2:grAssembly.C
+
+ Command grSelect 
+  Field  A  WLEN
+  Field  B  800+
+  Field  C  0.4
+  Field  D  1
+  Response  Accept 
+  Directive Start
+ 
+Test UT04130
+Summary WLEN mode: Check uninstalled grating name rejection reported OK
+Help WLEN mode: Check uninstalled grating name rejection reported OK
+#
+#  NOTE: Substitute appropriate grating name for 'Field B' value
+#
+
+ Command grSelect 
+ Field  A  WLEN
+ Field  B  800-
+ Response  Reject 
+ Directive Start

@@ -1,0 +1,40 @@
+#!/bin/csh
+#
+# Description :
+#    Builds all the underlying directories
+# Usage:
+#    source makeEverything
+#
+# Bugs:
+#    Sometimes two passes are needed through this procedure to
+#    ensure that all the necessary database files and include files
+#    are built properly.
+#
+
+# Touch the source files and database files to make sure they are always rebuilt
+# when this script is executed.
+
+touch ascii/cat_ascii/*.ascii
+touch capfast/*.sch
+touch src/*.h
+touch src/*.c
+touch sys/*.h
+touch sys/*.c
+
+#
+# First go to the dl directories and explicitly make the color templates.
+#
+
+cd ./dl; adl2dl2.4 gmColors.adl; adl2dl2.4 colors.adl; cd ..
+
+#
+# Touch all the *.adl files to ensure they will be newer than the colour templates.
+#
+
+touch ./dl/*.adl
+
+#
+# Build everything.
+#
+
+gmake

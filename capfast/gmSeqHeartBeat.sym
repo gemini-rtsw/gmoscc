@@ -1,0 +1,18 @@
+[symbol2]
+bbox 192 320 640 624
+port 304 512 100 1792 CC symbol 1 192 512 0
+port 288 432 100 0 DC symbol 1 192 432 0
+uniq 3
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 368 480 Generate GMOS hearbeat
+r 0 256 320 640 624
+v 0 192 512
+256 512
+_
+v 0 192 432
+256 432
+_
+[comments]

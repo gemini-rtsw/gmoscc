@@ -1,0 +1,162 @@
+#!/usr/local/bin/tcsh -f
+#
+# turretSimUpdateCP
+#
+# Description:
+#
+#   A simple script to simulate an grating assembly update, using the
+#   turret indexer - at periodic intervals, on the CP hardware
+#
+#   It is assumed this script is being run from the "test" directory.
+#   The detector controller must already have been initalised
+#   and set into the desired configuration.
+#
+# Invocation:
+#   turretSimUpdateCP
+#
+# NOTE:
+#   This script is designed to be as simple as possible, so it does not do as much
+#   checking as a dhsTestCmdr script. It is designed to generate test data rather
+#   than to check out the correct operation of the instrument.
+#
+
+#
+# Check for arguments
+#
+
+if ($#argv != 0) then
+    echo "No arguments accepted - exiting."
+    exit
+endif
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!($?GMOS_CP_ACCESS)) then
+    echo ""
+    echo "GMOS CP safety check failed."
+    echo ""
+    echo "Before executing this script, which will move real CP hardware,"
+    echo 'you must type "gmosCP" to confirm that it is safe to do so.'
+    echo ""
+    exit
+else
+    echo ""
+    echo "GMOS CP safety check passed."
+    echo ""
+endif
+
+echo ""
+echo "It is assumed that the grating turret can be moved safely"
+echo ""
+echo "Type Ctrl-c when you want to finish the script."
+echo ""
+echo "Please enter the interval between iterations to proceed:"
+set interval = $<
+
+set intervalSeconds = `mult $interval 60`
+
+if ($intervalSeconds <= 0) then
+    echo "Interval must be greater than zero"
+    exit
+endif
+
+#
+# Start the motion
+#
+
+set repsDone = 0
+
+while (1)
+
+    # Simulated update goes here!
+
+    # First move...
+
+    echo "Moving grating turret to position B"
+
+    caput "g3:cc:grtDevice.VALS" "posB"
+
+    set moveResponse = `deviceCommand g3:cc:grtDevice.DIR g3:cc:grtDevice.ACK g3:cc:grtDevice.BUSY `
+    set moveStatus = `echo $moveResponse | grep 'Command Success'`
+    if ( $#moveStatus != 2 ) then
+	echo "Grating turret failed"
+	caget g3:cc:grtDevice.MESS
+	exit -1
+    endif
+    echo "Grating turret now at position B."
+    echo ""
+
+    # Second move...
+
+    echo "Moving grating turret to position C"
+
+    caput "g3:cc:grtDevice.VALS" "posC"
+
+    set moveResponse = `deviceCommand g3:cc:grtDevice.DIR g3:cc:grtDevice.ACK g3:cc:grtDevice.BUSY `
+    set moveStatus = `echo $moveResponse | grep 'Command Success'`
+    if ( $#moveStatus != 2 ) then
+	echo "Grating turret failed"
+	caget g3:cc:grtDevice.MESS
+	exit -1
+    endif
+    echo "Grating turret now at position C."
+    echo ""
+
+    # Third move...
+
+    echo "Moving grating turret to position D"
+
+    caput "g3:cc:grtDevice.VALS" "posD"
+
+    set moveResponse = `deviceCommand g3:cc:grtDevice.DIR g3:cc:grtDevice.ACK g3:cc:grtDevice.BUSY `
+    set moveStatus = `echo $moveResponse | grep 'Command Success'`
+    if ( $#moveStatus != 2 ) then
+	echo "Grating turret failed"
+	caget g3:cc:grtDevice.MESS
+	exit -1
+    endif
+    echo "Grating turret now at position D."
+    echo ""
+
+    # Forth move...
+
+    echo "Moving grating turret to position A"
+
+    caput "g3:cc:grtDevice.VALS" "posA"
+
+    set moveResponse = `deviceCommand g3:cc:grtDevice.DIR g3:cc:grtDevice.ACK g3:cc:grtDevice.BUSY `
+    set moveStatus = `echo $moveResponse | grep 'Command Success'`
+    if ( $#moveStatus != 2 ) then
+	echo "Grating turret failed"
+	caget g3:cc:grtDevice.MESS
+	exit -1
+    endif
+    echo "Grating turret now at position A."
+    echo ""
+
+    # And ends here!
+
+    @ repsDone += 1
+
+    echo ""
+    echo "-----------------------------------------"
+    echo "Completed "$repsDone" simulated UPDATE operations"
+    echo ""
+    echo "Type Ctrl-c to stop the script."
+    echo "Waiting for ${intervalSeconds} seconds..."
+    sleep $intervalSeconds
+    echo "-----------------------------------------"
+    echo ""
+
+end
+
+exit
+
+
+
+
+
+

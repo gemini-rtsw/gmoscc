@@ -1,0 +1,93 @@
+[symbol2]
+bbox -96 -32 416 320
+uniq 90
+[tools]
+[attributes]
+p -96 -64 100 0 -1 seta:top gm:
+p -96 -96 100 0 -1 setb:sadtop gm:sad:
+p -96 -128 100 0 -1 setc:c1 cc:
+p -96 -160 100 0 -1 setd:c2 cc:
+p -96 -192 100 0 -1 sete:cc cc:
+p -96 -224 100 0 -1 setf:atmdc atm
+p -96 -256 100 0 -1 setg:oiwfs probe
+p -96 -288 100 0 -1 seth:mask msk
+p 256 -224 100 0 -1 seti:filter flt
+p 256 -256 100 0 -1 setj:grating gr
+p 256 -288 100 0 -1 setk:translation dta
+p -96 -320 100 0 -1 setl:preSimm NONE|FULL
+p 256 -320 100 0 -1 setm:postSimm NONE|FULL
+p -96 -352 100 0 -1 setn:preUpsb YES|NO
+p 256 -352 100 0 -1 seto:postUpsb YES|NO
+p -96 -384 100 0 -1 setp:preXycom XYCOM-240|Soft Channel
+p 256 -384 100 0 -1 setq:postXycom XYCOM-240|Soft Channel
+p -96 -416 100 0 -1 setr:preIointr I/O Intr|Passive
+p 256 -416 100 0 -1 sets:postIointr I/O Intr|Passive
+p -96 -448 100 0 -1 sett:bothXycom XYCOM-240|Soft Channel
+p -96 -480 100 0 -1 setu:bothIointr I/O Intr|Passive
+p 256 -64 100 0 -1 setv:gm gm:
+[layers]
+<symbol>
+l 100 0 0 16 272 GMOS Components Controller
+r 0 -96 -32 416 320
+r 0 0 112 16 160
+r 0 112 64 128 256
+r 0 144 64 160 256
+r 0 224 -16 352 0
+v 0 64 224
+48 208
+32 176
+32 144
+48 112
+64 96
+80 112
+96 144
+96 176
+80 208
+64 224
+_
+v 0 224 64
+240 48
+272 32
+304 32
+336 48
+352 64
+336 80
+304 96
+272 96
+240 80
+224 64
+_
+v 0 -64 256
+-32 256
+-32 64
+-64 64
+-32 256
+_
+v 0 0 256
+0 224
+16 224
+16 256
+0 256
+_
+v 0 0 208
+0 176
+16 176
+16 208
+0 208
+_
+v 0 0 96
+0 64
+16 64
+16 96
+0 96
+_
+v 0 224 224
+256 256
+368 144
+336 112
+224 224
+_
+v 0 -64 256
+-64 64
+_
+[comments]

@@ -1,0 +1,23 @@
+#
+# DHS Test Commander
+# Checkout script for:
+#
+#	Gmos NULL checkout - does nothing
+#
+# This script is used for testing other scripts, such as "soak" and "checkout"
+#
+
+#
+# Define the variables used in this script, and the configuration files
+# which contain their translation into EPICS channel names.
+#
+#     Config file     Config file name          Named used here      Mystery number
+#     -----------     ---------------------     -----------------    --------------
+
+
+TEST "Null test"
+FATAL
+
+ENDTEST
+
+COMMENT "NULL test PASSED"

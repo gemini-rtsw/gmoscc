@@ -1,0 +1,19 @@
+# monitor_move.cau
+#
+# cau macro which monitors CAD/CAR records associated
+# with OIWFS following mode.
+# Invoked using cau "source" command.
+#
+
+monitor g7:wfs:move.DIR
+monitor g7:wfs:move.VAL
+monitor g7:wfs:move.A
+monitor g7:wfs:move.B
+monitor g7:wfs:move.OMSS
+
+monitor g7:wfs:probeC.VAL
+monitor g7:wfs:probeC.OMSS
+
+monitor g7:wfs:inPosition.VAL
+
+# Type dataOut cau_move.log

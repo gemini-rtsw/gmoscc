@@ -1,0 +1,1889 @@
+#
+# DHS Test Commander
+# Filter wheel 1 device functionality test script
+#
+
+#
+# Define the variables used in this script, and the configuration files
+# which contain their translation into EPICS channel names.
+#
+#       Config file        Config file name        Named used here     Mystery number
+#       -----------        ---------------------   -----------------   --------------
+
+# Device INPUTS
+VAR     filter1Device      devDir                  devDir	       1
+VAR     filter1Device      devMode                 devMode             1
+VAR     filter1Device      devTarget               devTarget           1
+VAR     filter1Device      devNamedTarget          devNamedTarget      1
+VAR     filter1Device      devIndexType            devIndexType        1
+VAR     filter1Device      devDbug                 devDbug             1
+VAR     filter1Device      devSimm                 devSimm             1
+VAR     filter1Device      devMinPosition          devMinPosition      1
+VAR     filter1Device      devMaxPosition          devMaxPosition      1
+VAR     filter1Device      devBacklash             devBacklash         1
+VAR     filter1Device      devRounding             devRounding         1
+VAR     filter1Device      devVelocity             devVelocity         1
+VAR     filter1Device      devMinVelocity          devMinVelocity      1
+VAR     filter1Device      devMaxVelocity          devMaxVelocity      1
+VAR     filter1Device      devAcceleration         devAcceleration     1
+VAR     filter1Device      devLutFile              devLutFile          1
+VAR     filter1Device      devLutDirectory         devLutDirectory     1
+VAR     filter1Device      devDevType              devDevType          1
+VAR     filter1Device      devEgu                  devEgu              1
+VAR     filter1Device      devMotorRes             devMotorRes         1
+VAR     filter1Device      devMotionDeadBand       devMotionDeadBand   1
+VAR     filter1Device      devBaseVelo             devBaseVelo         1
+VAR     filter1Device      devFinalIndexVelo       devFinalIndexVelo   1
+VAR     filter1Device      devUsePwrStatus         devUsePwrStatus     1
+VAR     filter1Device      devPwrStatusTimeout     devPwrStatusTimeout 1
+VAR     filter1Device      devPower                devPower            1
+VAR     filter1Device      devUseBrkStatus         devUseBrkStatus     1
+VAR     filter1Device      devBrkStatusTimeout     devBrkStatusTimeout 1
+VAR     filter1Device      devBrake                devBrake            1
+VAR     filter1Device      devUseAuxPwr            devUseAuxPwr        1
+VAR     filter1Device      devUseEncoder           devUseEncoder       1
+VAR     filter1Device      devEncoderRes           devEncoderRes       1
+VAR     filter1Device      devEncoderDeadBand      devEncoderDeadBand  1
+
+# Device OUTPUTS
+VAR     filter1Device      devPosition             devPosition         1
+VAR     filter1Device      devRawPosition          devRawPosition      1
+VAR     filter1Device      devAck                  devAck              1
+VAR     filter1Device      devBusy                 devBusy             1
+VAR     filter1Device      devState                devState            1
+VAR     filter1Device      devMess                 devMess             1
+VAR     filter1Device      devIndexed              devIndexed          1
+VAR     filter1Device      devLimited              devLimited          1
+VAR     filter1Device      devAtHome               devAtHome           1
+
+# other status
+VAR     filterStatus       filter1InPosition      flt1InPosition       1
+
+#
+# Is it safe to proceed?
+#
+
+PROMPT "Read the assumptions.  Is it safe to move the filter wheels?"
+
+#
+# Verify startup state. The device should be unindexed, stopped and unpowered.
+#
+
+TEST "Verify startup state"
+FATAL
+
+DESC "Verify startup state"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Log the current device record configuration
+#
+TEST "Log the current device record configuration"
+FATAL
+
+DESC "Get deviceControl record device layer type"
+GETVAL devDevType
+OUTPUT *.DTYP*DEV CTL OMS 8/44*
+
+#
+# The in position switches will not work in simulation mode
+#
+DESC "Get simulation level"
+GETVAL devSimm
+OUTPUT *.SIMM* NONE*
+
+DESC "Get debug level"
+GETVAL devDbug
+OUTPUT *.DBUG*
+
+DESC "Get enginering units"
+GETVAL devEgu
+OUTPUT *.EGU*
+
+DESC "Get motor resolution, in microsteps per EGU"
+GETVAL devMotorRes
+OUTPUT *.MRES*
+
+DESC "Get motion deadband"
+GETVAL devMotionDeadBand
+OUTPUT *.MDBD*
+
+DESC "Get upper target limit, max EGU target allowed"
+GETVAL devMaxPosition
+OUTPUT *.PHLM*
+
+DESC "Get lower target limit, min EGU target allowed"
+GETVAL devMinPosition
+OUTPUT *.PLLM*
+
+DESC "Get motion velocity"
+GETVAL devVelocity
+OUTPUT *.VELO*
+
+DESC "Get upper velocity limit, max EGU velocity allowed"
+GETVAL devMaxVelocity
+OUTPUT *.VHLM*
+
+DESC "Get lower velocity limit, min EGU velocity allowed"
+GETVAL devMinVelocity
+OUTPUT *.VLLM*
+
+DESC "Get motion startup velocity"
+GETVAL devBaseVelo
+OUTPUT *.VBAS*
+
+DESC "Get final indexing velocity"
+GETVAL devFinalIndexVelo
+OUTPUT *.FIVL*
+
+DESC "Get acceleration, VBAS to VELO in EGUs per second per second"
+GETVAL devAcceleration
+OUTPUT *.ACCL*
+
+DESC "Get backlash correction in motor steps"
+GETVAL devBacklash
+OUTPUT *.BLCO*
+
+DESC "Get motor position rounding in motor steps"
+GETVAL devRounding
+OUTPUT *.MRND*
+
+DESC "Get the indexing algorithm number - should be 3 for filter wheels"
+GETVAL devIndexType
+OUTPUT *.IALG* 3*
+
+DESC "Using Power status? Should be YES for filter wheels"
+GETVAL devUsePwrStatus
+#OUTPUT *.UPSB* YES*
+# Allow the device not to use power status while in simulation mode for testing the script
+OUTPUT *.UPSB*
+
+DESC "Get the power status timeout"
+GETVAL devPwrStatusTimeout
+OUTPUT *.PTMO*
+
+DESC "Using Brake status? Should be NO for filter wheels"
+GETVAL devUseBrkStatus
+OUTPUT *.UBSB* NO*
+
+DESC "Get the brake status timeout - should be zero for filter wheels"
+GETVAL devBrkStatusTimeout
+OUTPUT *.BTMO* 0*
+
+DESC "Using AUX to enable drives?"
+GETVAL devUseAuxPwr
+OUTPUT *.UAPB* YES*
+
+DESC "Using Encoder? Should be NO for filter wheels"
+GETVAL devUseEncoder
+OUTPUT *.UEIP* NO*
+
+DESC "Get encoder resolution in counts per EGU"
+GETVAL devEncoderRes
+OUTPUT *.ERES*
+
+DESC "Get encoder deadband"
+GETVAL devEncoderDeadBand
+OUTPUT *.EDBD*
+
+DESC "Get lookup table name"
+GETVAL devLutFile
+OUTPUT *.TFIL* flt1.lut*
+
+DESC "Get lookup table directory name"
+GETVAL devLutDirectory
+OUTPUT *.TDIR*
+
+ENDTEST
+
+#
+# First try to initialize the device control record
+#
+
+TEST "Test filter wheel 1 device INIT mode"
+FATAL
+
+DESC "Initializing filter wheel 1"
+
+PUTVAL devMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+ENDTEST
+
+#
+# Test filter wheel 1 device TEST mode
+#
+
+TEST "Test filter wheel 1 device TEST mode"
+FATAL
+
+DESC "Testing filter wheel 1"
+
+PUTVAL devMode "5"
+OUTPUT *MODE*MODE*TEST*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+ENDTEST
+
+#
+# Then try to index the device
+#
+
+TEST "Test indexing filter wheel 1"
+FATAL
+
+DESC "Indexing filter wheel 1"
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+#GETVAL devAtHome
+#OUTPUT *.HSWA* 1*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Check index position is zero"
+GETVAL devPosition
+OUTPUT *.MPOS* 0* 
+
+GETVAL devRawPosition
+OUTPUT *.RRBV* 0* 
+
+ENDTEST
+
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 0
+#
+
+TEST "Place filter wheel 1 device in pos0"
+FATAL
+
+DESC "Look for pos0" 
+
+PUTVAL devNamedTarget "pos0"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Move to a position between pos0 and pos1
+#
+
+TEST "Place filter wheel 1 device between pos0 and pos1"
+FATAL
+
+DESC "Move between pos0/pos1" 
+
+PUTVAL devTarget "-11.0"
+OUTPUT *.VAL*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify switches are not made in between positions
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL*NOTINPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 1
+#
+
+TEST "Place filter wheel 1 device in pos1"
+FATAL
+
+DESC "Look for pos1" 
+
+PUTVAL devNamedTarget "pos1"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Move to a position between pos1 and pos2
+#
+
+TEST "Place filter wheel 1 device between pos1 and pos2"
+FATAL
+
+DESC "Move between pos1/pos2" 
+
+PUTVAL devTarget "-9.0"
+OUTPUT *.VAL*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify switches are not made in between positions
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL*NOTINPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 2
+#
+
+TEST "Place filter wheel 1 device in pos2"
+FATAL
+
+DESC "Look for pos2" 
+
+PUTVAL devNamedTarget "pos2"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Move to a position between pos2 and pos3
+#
+
+TEST "Place filter wheel 1 device between pos2 and pos3"
+FATAL
+
+DESC "Move between pos2/pos3" 
+
+PUTVAL devTarget "-7.0"
+OUTPUT *.VAL*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify switches are not made in between positions
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL*NOTINPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 3
+#
+
+TEST "Place filter wheel 1 device in pos3"
+FATAL
+
+DESC "Look for pos3" 
+
+PUTVAL devNamedTarget "pos3"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Move to a position between pos3 and pos4
+#
+
+TEST "Place filter wheel 1 device between pos3 and pos4"
+FATAL
+
+DESC "Move between pos3/pos4" 
+
+PUTVAL devTarget "-5.0"
+OUTPUT *.VAL*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify switches are not made in between positions
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL*NOTINPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 4
+#
+
+TEST "Place filter wheel 1 device in pos4"
+FATAL
+
+DESC "Look for pos4" 
+
+PUTVAL devNamedTarget "pos4"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Move to a position between pos4 and pos5
+#
+
+TEST "Place filter wheel 1 device between pos4 and pos5"
+FATAL
+
+DESC "Move between pos4/pos5" 
+
+PUTVAL devTarget "-3.0"
+OUTPUT *.VAL*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify switches are not made in between positions
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL*NOTINPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 5
+#
+
+TEST "Place filter wheel 1 device in pos5"
+FATAL
+
+DESC "Look for pos5" 
+
+PUTVAL devNamedTarget "pos5"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Move to a position between pos5 and pos6
+#
+
+TEST "Place filter wheel 1 device between pos5 and pos6"
+FATAL
+
+DESC "Move between pos5/pos6" 
+
+PUTVAL devTarget "-1.0"
+OUTPUT *.VAL*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify switches are not made in between positions
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL*NOTINPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 6
+#
+
+TEST "Place filter wheel 1 device in pos6"
+FATAL
+
+DESC "Look for pos6" 
+
+PUTVAL devNamedTarget "pos6"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Move to a position between pos6 and pos7
+#
+
+TEST "Place filter wheel 1 device between pos6 and pos7"
+FATAL
+
+DESC "Move between pos6/pos7" 
+
+PUTVAL devTarget "1.0"
+OUTPUT *.VAL*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify switches are not made in between positions
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL*NOTINPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 7
+#
+
+TEST "Place filter wheel 1 device in pos7"
+FATAL
+
+DESC "Look for pos7" 
+
+PUTVAL devNamedTarget "pos7"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Move to a position between pos7 and pos8
+#
+
+TEST "Place filter wheel 1 device between pos7 and pos8"
+FATAL
+
+DESC "Move between pos7/pos8" 
+
+PUTVAL devTarget "3.0"
+OUTPUT *.VAL*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify switches are not made in between positions
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL*NOTINPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 8
+#
+
+TEST "Place filter wheel 1 device in pos8"
+FATAL
+
+DESC "Look for pos8" 
+
+PUTVAL devNamedTarget "pos8"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Move to a position between pos8 and pos9
+#
+
+TEST "Place filter wheel 1 device between pos8 and pos9"
+FATAL
+
+DESC "Move between pos8/pos9" 
+
+PUTVAL devTarget "5.0"
+OUTPUT *.VAL*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify switches are not made in between positions
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL*NOTINPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 9
+#
+
+TEST "Place filter wheel 1 device in pos9"
+FATAL
+
+DESC "Look for pos9" 
+
+PUTVAL devNamedTarget "pos9"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Move to a position between pos9 and pos10
+#
+
+TEST "Place filter wheel 1 device between pos9 and pos10"
+FATAL
+
+DESC "Move between pos9/pos10" 
+
+PUTVAL devTarget "7.0"
+OUTPUT *.VAL*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify switches are not made in between positions
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL*NOTINPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 10
+#
+
+TEST "Place filter wheel 1 device in pos10"
+FATAL
+
+DESC "Look for pos10" 
+
+PUTVAL devNamedTarget "pos10"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Move to a position between pos10 and pos11
+#
+
+TEST "Place filter wheel 1 device between pos10 and pos11"
+FATAL
+
+DESC "Move between pos10/pos11" 
+
+PUTVAL devTarget "9.0"
+OUTPUT *.VAL*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify switches are not made in between positions
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL*NOTINPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 11
+#
+
+TEST "Place filter wheel 1 device in pos11"
+FATAL
+
+DESC "Look for pos11" 
+
+PUTVAL devNamedTarget "pos11"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Head for wheel position 0 rotated by a whole revolution
+#
+
+TEST "Place filter wheel 1 device in pos0 rotated a whole revolution"
+FATAL
+
+DESC "Look for pos0Rotated" 
+
+PUTVAL devNamedTarget "pos0Rotated"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+# Go back to position 0 and time how long one whole revolution takes
+#
+
+TEST "Move filter wheel 1 a whole revolution back to pos0"
+FATAL
+
+DESC "Move back to for pos0" 
+
+PUTVAL devNamedTarget "pos0"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL flt1InPosition
+OUTPUT *VAL* INPOSITION*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Get current position"
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+# -------------------------------------------------------------------------------------
+#
+# Index the device to get back to normal
+#
+
+TEST "Indexing filter wheel 1"
+FATAL
+
+DESC "Indexing filter wheel 1"
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+#GETVAL devAtHome
+#OUTPUT *.HSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+#  All Filter wheel 1 functions check out OK!
+#
+
+COMMENT "Filter wheel 1 checks out OK"
+
+
+ 

@@ -1,0 +1,143 @@
+#
+# VxWorks startup script to load and execute system (iocCore) software.
+#
+# First, vxWorks startup issues:
+#
+# DESCRIPTION:  Loads the GMOS Components Controller database.
+#
+#
+
+# Make delete key work for backspace
+tyBackspaceSet 0177
+
+# Set the shell prompt
+shellPromptSet "GMOS CC MK - no sad > "
+
+# cd to application install directory (beware automounter problems)
+cd "$(install)"
+pwd
+
+# The local file contains site-specific information
+# such as the default router and the vxWorks password file.
+# (Commented out, since already done in startup_MINIMAL)
+# < $(install)/bin/$(arch)/local
+
+# Load EPICS core and record stuff
+ld < $(epics)/base/bin/$(arch)/iocCore
+ld < $(epics)/base/bin/$(arch)/drvSup
+ld < $(epics)/base/bin/$(arch)/recSup
+ld < $(install)/bin/$(arch)/recApply.o
+ld < $(epics)/base/bin/$(arch)/devSup
+ld < $(install)/bin/$(arch)/devApplyLocal.o
+ld < $(install)/bin/$(arch)/devApplyRemote.o
+
+# Add this for pvload
+ld < epics/extensions/bin/$(arch)/pvload
+
+# If using state programs, load the sequencer
+ld < $(epics)/base/bin/$(arch)/seq
+
+# Load any application records, device support or drivers here,
+# or code for subroutine records. It is assumed that Gemini
+# libraries are available in the standard /gemini directory).
+
+ld < /gemini/slalib/bin/$(arch)/slalib
+ld < /gemini/timelib/bin/$(arch)/timelib
+
+ld < $(install)/bin/$(arch)/drvOmsVme.o
+ld < $(install)/bin/$(arch)/devDeviceControl.o
+ld < $(install)/bin/$(arch)/devBarcode.o
+ld < $(install)/bin/$(arch)/recAssControl.o
+ld < $(install)/bin/$(arch)/recDeviceControl.o
+ld < $(install)/bin/$(arch)/gmosGensubLib.o
+
+ld < $(install)/bin/$(arch)/gmMaskGenSubs.o
+ld < $(install)/bin/$(arch)/devMaskControl.o
+ld < $(install)/bin/$(arch)/gmOiwfsCalc.o
+ld < $(install)/bin/$(arch)/gmOiwfsGenSubs.o
+ld < $(install)/bin/$(arch)/gmOiwfsCadSupport.o
+ld < $(install)/bin/$(arch)/tcs_simulator.o
+ld < $(install)/bin/$(arch)/devOiwfsControl.o
+ld < $(install)/bin/$(arch)/devAtmdcControl.o
+ld < $(install)/bin/$(arch)/devFilterAss.o
+ld < $(install)/bin/$(arch)/gmosLutLib.o
+ld < $(install)/bin/$(arch)/devGratingAss.o
+ld < $(install)/bin/$(arch)/lifter.o
+ld < $(install)/bin/$(arch)/devTranslationAss.o
+
+ld < $(install)/bin/$(arch)/gmosCcCadLib.o
+
+# Load sequences here
+ld < /gemini/timelib/bin/mv167/timeSeq
+
+ld < $(install)/bin/$(arch)/assemblyCar.o
+ld < $(install)/bin/$(arch)/systemCar.o
+ld < $(install)/bin/$(arch)/commandCar.o
+#ld < $(install)/bin/$(arch)/lifterSim.o
+
+# Initialise the Gemini Time System (1=master, 1=simulate, intPerSecond, intPerTick, timeOffset)
+timeClockInit 0, 1, 60, 1, 0
+
+# Configure the Timestamp system, 1=Master IOC
+TSconfigure 1, 0, 0, 0, 0, 0
+
+# Load one or more ASCII databases here
+dbLoad "$(install)/data/default.dctsdr"
+dbLoadRecords "$(install)/data/gmosCcTopMKRR.db"
+#dbLoadRecords "$(install)/data/gmosCcSadTopMKRR.db"
+
+# This turns off logging
+# iocLogDisable=1
+
+iocInit "$(install)/data/resource.def"
+
+# Ensure master enable is disabled while startup script executes
+dbpf "gm:cc:msEnableEnable","0"
+
+#dbpf "g6:sad:cc:historyLog","Booting..."
+
+#Define the database name
+#dbpf "gm:sad:cc:name.VAL","GMOS CC Mauna Kea (V22) - no sad"
+
+# Load initialization files
+pvload "$(version)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"
+pvload "$(version)/data/gmOiwfs.pv","top=gm:wfs:"
+pvload "$(version)/data/gmMask.pv","top=gm:cc:"
+pvload "$(version)/data/gmFilter.pv","top=gm:cc:"
+pvload "$(version)/data/gmGrating.pv","top=gm:cc:"
+pvload "$(version)/data/gmTranslation.pv","top=gm:cc:"
+pvload "$(version)/data/gmTempCalibrate.pv","top=gm:cc:"
+pvload "$(version)/data/gmSeq.pv","top=gm:, sadtop=gm:sad:"
+pvload "$(version)/data/gmSeqTracking.pv","top=gm:, sadtop=gm:sad:"
+
+# Start sequences
+seq &timeSeq, "sys=gm:cc:"
+
+seq &assemblyCar, "top=gm:cc:, dev=msk, priority=75"
+seq &assemblyCar, "top=gm:, dev=wfs:probe, priority=75"
+seq &commandCar, "top=gm:, dev=wfs:, priority=75"
+seq &assemblyCar, "top=gm:cc:, dev=flt, priority=75"
+seq &assemblyCar, "top=gm:cc:, dev=gr, priority=75"
+#seq &lifterSim,   "top=gm:cc:, dev=gr, priority=75"
+seq &assemblyCar, "top=gm:cc:, dev=dta, priority=75"
+seq &systemCar,   "top=gm:cc:, cad=init, priority=75"
+seq &systemCar,   "top=gm:cc:, cad=test, priority=75"
+seq &systemCar,   "top=gm:cc:, cad=datum, priority=75"
+seq &systemCar,   "top=gm:cc:, cad=update, priority=75"
+seq &systemCar,   "top=gm:cc:, cad=park, priority=75"
+
+# Trigger the initialisation of the components controller
+dbpf "gm:cc:init.DIR","0"
+dbpf "gm:cc:apply.DIR","3"
+
+# Wait while the initialisation completes
+taskDelay(180)
+
+#dbpf "gm:sad:cc:historyLog","Master enable switched on"
+
+# Enable master enable on completion of startup script
+#dbpf "gm:cc:msEnableEnable","1"
+
+# Finally, display the startup time in UTC.
+#timeClockReport
+timePrint "UTC"

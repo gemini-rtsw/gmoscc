@@ -1,0 +1,74 @@
+#!/bin/csh -f
+#
+# Script to spawn an xterm to connect to the mordred crate.
+#
+# The log file output may be suppressed by specifying "nolog" as a first argument.
+#
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!($?GMOS_MK_ACCESS)) then
+    echo ""
+    echo "GMOS MK safety check failed."
+    echo ""
+    echo "Before executing this script, which accesses the GMOS MK crate,"
+    echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+    echo ""
+    exit
+else
+    echo "GMOS MK safety check passed."
+endif
+#
+# Save the current day
+#
+
+set day = `date +%d%h%y`
+
+#
+# Create the "consoleLogs" directory if it doesn't exist.
+#
+
+if ( !(-e /home/gmos/consoleLogs) ) then
+
+    mkdir /home/gmos/consoleLogs
+endif
+
+if (!(-e /home/gmos/consoleLogs/$day)) then
+
+    mkdir /home/gmos/consoleLogs/$day
+endif
+
+if (!(-e /home/gmos/consoleLogs/$day/mordred)) then
+
+    mkdir /home/gmos/consoleLogs/$day/mordred
+endif
+
+#
+# Change directory to day's console log directory.
+#
+
+pushd /home/gmos/consoleLogs/$day/mordred
+
+#
+# Spawn an X terminal to act as the VxWorks console.
+#
+
+if ( $1 == "nolog" ) then
+
+   xterm -geometry 80x50-0+0 -n mordred -T "GMOS MK Science CCD Console" -e gmosIocConsole mordred &
+   echo "No log file will be created."
+else
+
+   xterm -l -geometry 80x50-0+0 -n mordred -T "GMOS MK Science CCD Console" -e gmosIocConsole mordred &
+   echo "A log file will be created in the `pwd`"
+   echo "directory. Check for files called XtermLog.*"
+endif
+
+#
+# Restore the original directory.
+#
+
+popd

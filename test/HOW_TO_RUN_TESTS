@@ -1,0 +1,290 @@
+This file describes the procedures to run the GMOS checkout test scripts.
+
+* It is assumed you are in the main software tree directory (e.g. at ROE 
+it is /net/alba/sw3/gmos/operational/gmos022/ for V22 software)
+
+NOTE: If you change any setup read below for editting required
+      Also note that all log files will be written into the logfiles 
+      directory, given the same name as the test script with a .log 
+      appended (eg. script name = gmTest.scr, then log will be called
+      gmTest.log).  The log file created is overwritten each time 
+      that test is run, but a backup copy of the form gmTest.log.date
+      is saved.
+
+      To use these tests on a running database with a different record
+      prefix, it will only be necessary to edit the .config files in the
+      "configFiles" sub-directory. The configFilesSim directory contains
+      an example.
+
+      IT IS IMPORTANT TO READ THE ASSUMPTIONS PRINTED AT THE START OF
+      EACH TEST AND DECIDE WHETHER IT IS SAFE TO CONTINUE.
+
+To run tests:
+
+NOTE: To run these tests you need the "." and "./scripts" directories
+      in your PATH.
+
+NOTE: You have to be logged onto alba (or where the main software tree is) 
+      as gmos and have the MK_access prompt (by typing 'gmosMK').
+
+NOTE: Before running any checkout script it is assumed that either the
+      software has been freshly rebooted or the device (or assembly) state
+      has been reseted using the command <device>Reset (e.g. to checkout the
+      translation stage x axis you need to first type 'xaxisReset').
+
+(assemblyReset           Reset an assembly - used for testing the scripts only)
+(deviceReset             Reset a device - used for testing the scripts only)
+
+
+Pre Focal Plane Tests
+---------------------
+
+1.   cd gmoscc/test/ directory (should be where you found this file)
+
+2a.  To do basic functionality tests one mask device at a time run 
+     the "checkout" cshell script by typing checkout followed by 
+     a <device> argument.  
+
+     For example:
+
+	rona 1 >  checkout grip
+		or
+	rona 1 >  checkout extractor
+		or 
+	rona 1 >  checkout release
+		or 
+	rona 1 >  checkout cassette
+
+2b.  To test basic functionality for all four mask devices run 
+     the "runTests" cshell script (use caution with this one)
+
+2c.  To test basic functionality of the mask assembly:
+
+	rona 1 >  checkout mask          *assumes an IFU is installed
+		or 
+                  checkout maskNoIfu     *assumes there is no IFU
+
+2d.  To test basic functionality of the oiwfs assembly:
+
+	rona 1 >  checkout wfs
+
+2e.  To test mask portion of GMOS CC/IS ICD functionality:
+
+	rona 1 >  checkout maskIcd      *assumes an IFU is installed
+
+2f.  To do basic error checking tests on one mask device at a time:  
+
+	rona 1 >  checkout extractorErr
+		or 
+	rona 1 >  checkout cassetteErr
+
+	** Please note only extractorErr and cassetteErr are
+	   available at this time.
+
+2g.  To test basic error checking tests for all available pre focal plane devices run 
+     the "runErrTests" cshell script
+
+All of the above scripts take two optional arguments allowing 
+you to add the popular "-debug" or "-auto" or both when you run
+the test.
+
+Post Focal Plane Tests
+----------------------
+
+3a.  To do basic functionality tests one filter device at a time run 
+     the "checkout" cshell script by typing checkout followed by 
+     a <device> argument.  
+
+     For example:
+
+	rona 1 >  checkout wheel1
+		or
+	rona 1 >  checkout wheel2
+
+3b.  To test basic functionality of the filter assembly:
+
+	rona 1 >  checkout filter
+
+3c.  To do basic functionality tests one grating device at a time:
+
+	rona 1 >  checkout turret
+		or
+	rona 1 >  checkout tiltA
+		or
+	rona 1 >  checkout tiltB
+		or
+	rona 1 >  checkout tiltC
+		or
+	rona 1 >  checkout tiltD
+		or
+	rona 1 >  checkout lifter
+
+3d.  To test basic functionality of the grating assembly:
+
+	rona 1 >  checkout grating
+
+3e.  To test basic functionality of the translation axes one at a time:
+
+	rona 1 >  checkout xaxis
+		or
+	rona 1 >  checkout yaxis
+		or
+	rona 1 >  checkout zaxis
+
+3d.  To test basic functionality of the translation assembly:
+
+	rona 1 >  checkout translation
+
+
+More info on the directories in this directory:
+
+configFiles/   This directory contains configuration files for the scripts:
+=====================================================================
+baseDevice.config
+cassetteDevice.config
+extractorDevice.config
+filter1Device.config
+filter2Device.config
+filterAssembly.config
+filterStatus.config
+gratingADevice.config
+gratingAssembly.config
+gratingBDevice.config
+gratingCDevice.config
+gratingDDevice.config
+gratingStatus.config
+gratingTurretDevice.config
+gripDevice.config
+lifterDevice.config
+maskAssembly.config
+maskStatus.config
+pickoffDevice.config
+postFpIcd.config
+preFpIcd.config
+releaseDevice.config
+wfsAssembly.config
+wfsCommands.config
+
+configFilesSim/   This directory contains the same set of configuration files for
+                  the simulation mode database prefix.
+=====================================================================
+
+
+==> If you change any record names in the EPICs database, then the first thing 
+to do is edit the above files.  These contain the names of the records and they 
+need to reflect the name of the EPICS db you are going to use.  Once you edit
+them, you don't have to edit again.
+
+
+scripts/  This directory contains the scripts, assumption files and logs
+=====================================================================
+(NOTE: the suffix .scr, means scripts, .asm means assumption file)
+
+Pre Focal Plane Scripts
+-----------------------
+
+    cassetteCheckout.asm
+    cassetteCheckout.scr  Cassette device basic functionality test script
+ cassetteErrCheckout.scr  Cassette device error test script
+   extractorCheckout.asm           
+   extractorCheckout.scr  Extractor device functionality test script
+extractorErrCheckout.scr  Extractor device error test script
+        gripCheckout.asm
+        gripCheckout.scr  Grip device functionality test script
+         icdCheckout.scr  Comprehensive mask assembly test script
+			- Test Initialization function
+			- Test Index Function
+			- Execute the Test Function
+			- Try entering invalid mask ID attributes
+			- Try entering invalid mask location attributes
+			- Try entering invalid park location attributes
+			- Stopping UPDATE sequence in progress
+			- Do an UPDATE and allow it to complete
+			- Insert first mask from lookup table - an IFU
+			- Re-load the same mask
+			- Removing current mask
+			- Mess up a re-load by moving the gripper first
+			- Reloading the current mask
+			- Loading a mask (last entry in table)
+			- Start to load 1st mask then stop it
+			- Parking function test
+			- Now ask for current mask moved out to un-park assembly
+        maskCheckout.asm
+        maskCheckout.scr  Mask assembly functionality test script
+			- Test Initialization function
+			- Test Index Function
+			- Test index at both ends with IFU in tow
+			- Test index at both ends with mask in tow
+			- Insert first mask from lookup table - an IFU
+			- Loading a mask (last entry in table)
+			- Parking function test
+     maskErrCheckout.scr  Mask assembly error test script
+   maskNoIfuCheckout.scr  Mask assembly functionality test script
+                        - same as maskCheckout but skips the parts involving 
+                          an IFU
+     releaseCheckout.asm
+     releaseCheckout.scr  Release device functionality test script
+         wfsCheckout.scr  oiwfs assembly basic functionality test script
+
+Post Focal Plane Scripts
+------------------------
+
+filterCheckout.asm
+filterCheckout.acr
+gratingCheckout.asm
+gratingCheckout.scr
+lifterCheckout.asm
+lifterCheckout.scr
+tiltACheckout.asm
+tiltACheckout.scr
+tiltBCheckout.asm
+tiltBCheckout.scr
+tiltCCheckout.asm
+tiltCCheckout.scr
+tiltDCheckout.asm
+tiltDCheckout.scr
+translationCheckout.asm
+translationCheckout.acr
+turretCheckout.asm
+turretCheckout.scr
+wheel1Checkout.asm
+wheel2Checkout.scr
+xaxisCheckout.asm
+yaxisCheckout.asm
+zaxisCheckout.asm
+
+The following are cShell scripts used in the scripts above
+___________________________
+assemblyCommand
+checkCommand
+checkState
+compareField
+deviceCommand		Start a device record command and 
+			monitor its progress
+executeCommand
+finishCommand
+getFirstMaskId
+getMaskId		Recover a mask ID from the lookup table and 
+			load it into the assembly record
+getLastMaskId
+setField
+startCommand
+stopCommand
+
+assemblyReset           Reset an assembly - used for testing the scripts only
+deviceReset             Reset a device - used for testing the scripts only
+
+
+logfiles/  This directory is where log files will be written and can 
+           ultimately be deleted.:
+=====================================================================
+
+
+
+Files to Edit:
+1. As noted above, edit the configuration file that matches the test you 
+   are going to run.  EG., running the cassetteCheckout.scr, then edit the 
+   cassetteDevice.config.
+2. Edit the assumptions files if you change what startup file or db files
+   to load.
+

@@ -1,0 +1,23 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: checkState
+#
+# Purpose: 
+#	To wait for a record to go into a given state
+#
+
+while ( 1 )
+
+#	sleep 1
+
+	set response = `caget $1`
+
+	set stateFound = `echo $response | grep $1 | grep $2`
+	if ( $#stateFound == 2 ) then
+		echo "Success"
+		exit
+	endif
+	sleep 1
+end
+
+exit

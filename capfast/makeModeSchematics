@@ -1,0 +1,98 @@
+#!/bin/csh -f
+#+
+#  Name:
+#    makeModeSchematics
+
+#  Purpose:
+#    Convert gmosModeCad.sch into all the various mode schematics
+
+#  Language:
+#    Unix C shell script
+
+#  Invocation:
+#    makeModeSchematics
+
+#  Description:
+#    This C shell script applies the "sed" editor and generates all the mode schematics
+#    from a single generic schematic. This is done to save editing with Capfast.
+
+#  Authors:
+#    SMB: Steven Beard (ROE)
+
+#  History:
+#    26-Jul-1999 (SMB):
+#       Original version.
+#-
+#===============================================================================
+#
+
+#
+#  Apply the "sed" editor to make the necessary global changes to create each of
+#  the schematics.
+#
+
+   set cad=init; set mode=Init
+   echo Generating ${mode} schematic
+
+   if ( -e gmosCadMode${mode}.sch ) then
+      \rm -f  gmosCadMode${mode}.sch.bak
+      mv gmosCadMode${mode}.sch gmosCadMode${mode}.sch.bak
+   endif
+
+   sed <gmosCadMode.sch >gmosCadMode${mode}.tmp -e "s|<CAD>|$cad|g"
+   sed <gmosCadMode${mode}.tmp >gmosCadMode${mode}.sch -e "s|<MODE>|$mode|g"
+   \rm  gmosCadMode${mode}.tmp
+
+#
+   set cad=test; set mode=Test
+   echo Generating ${mode} schematic
+
+   if ( -e gmosCadMode${mode}.sch ) then
+      \rm -f  gmosCadMode${mode}.sch.bak
+      mv gmosCadMode${mode}.sch gmosCadMode${mode}.sch.bak
+   endif
+
+   sed <gmosCadMode.sch >gmosCadMode${mode}.tmp -e "s|<CAD>|$cad|g"
+   sed <gmosCadMode${mode}.tmp >gmosCadMode${mode}.sch -e "s|<MODE>|$mode|g"
+   \rm  gmosCadMode${mode}.tmp
+
+#
+   set cad=datum; set mode=Datum
+   echo Generating ${mode} schematic
+
+   if ( -e gmosCadMode${mode}.sch ) then
+      \rm -f  gmosCadMode${mode}.sch.bak
+      mv gmosCadMode${mode}.sch gmosCadMode${mode}.sch.bak
+   endif
+
+   sed <gmosCadMode.sch >gmosCadMode${mode}.tmp -e "s|<CAD>|$cad|g"
+   sed <gmosCadMode${mode}.tmp >gmosCadMode${mode}.sch -e "s|<MODE>|$mode|g"
+   \rm  gmosCadMode${mode}.tmp
+
+#
+# UPDATE mode commented out, since its schematic is slightly different
+#
+#   set cad=update; set mode=Update
+#   echo Generating ${mode} schematic
+#
+#   if ( -e gmosCadMode${mode}.sch ) then
+#      \rm -f  gmosCadMode${mode}.sch.bak
+#      mv gmosCadMode${mode}.sch gmosCadMode${mode}.sch.bak
+#   endif
+#
+#   sed <gmosCadMode.sch >gmosCadMode${mode}.tmp -e "s|<CAD>|$cad|g"
+#   sed <gmosCadMode${mode}.tmp >gmosCadMode${mode}.sch -e "s|<MODE>|$mode|g"
+#   \rm  gmosCadMode${mode}.tmp
+
+#
+   set cad=park; set mode=Park
+   echo Generating ${mode} schematic
+
+   if ( -e gmosCadMode${mode}.sch ) then
+      \rm -f  gmosCadMode${mode}.sch.bak
+      mv gmosCadMode${mode}.sch gmosCadMode${mode}.sch.bak
+   endif
+
+   sed <gmosCadMode.sch >gmosCadMode${mode}.tmp -e "s|<CAD>|$cad|g"
+   sed <gmosCadMode${mode}.tmp >gmosCadMode${mode}.sch -e "s|<MODE>|$mode|g"
+   \rm  gmosCadMode${mode}.tmp

@@ -1,0 +1,1124 @@
+DIRECTORY - test
+================
+
+High level test scripts
+-----------------------
+
+crosstalkX
+crosstalkX.asm
+crosstalkXNolog
+crosstalkXSim
+crosstalkXSimNolog
+crosstalkY
+crosstalkY.asm
+crosstalkYNolog
+crosstalkYSim
+crosstalkYSimNolog
+crosstalkZ
+crosstalkZ.asm
+crosstalkZNolog
+crosstalkZSim
+crosstalkZSimNolog
+        Various detector translation cross talk calibration scripts.
+
+dumpFits
+        Extract information from the GMOS Status Alarm Database and
+        save it as a file looking like a FITS header. This script
+        simulates the action of the OCS when it collects static
+        header information.
+
+flexLog
+flexLog_old
+flexLog_sciOnly
+        Flexure test scripts.
+
+focusLog
+focusLogSim
+        Focus test scripts
+        (real and simulation mode versions).
+
+gratingJuggle
+        Grating repeatability test script.
+
+hartAB
+hartABCD
+hartCD
+hartFocusRun
+        Hartmann focus test scripts.
+
+logFilterSwitches
+logFilterSwitchesSim
+        Log the position of the filter in-position switches
+        (real and simulation mode versions).
+
+logImages
+logImagesSim
+        Instrument stability test - log a series of images
+        (real and simulation mode versions).
+
+logTemps
+logTempsSim
+        Temperature calibration test script
+        (real and simulation mode versions).
+
+turretSimUpdate
+turretSimUpdateCP
+        Soak test the grating turret, simulating a realistic
+        series of UPDATE commands (MK and CP versions).
+
+wfsImageLog
+        Wavefront sensor stability check - log a series of images.
+
+
+Low level utilities
+-------------------
+
+assemblyReset
+        Reset an assembly to make it look as if it has just
+        been booted. This is useful to save rebooting the
+        VME crate when testing a checkout script.
+
+checkout
+        This sets the environment variables, sets up logging files
+        and runs the *Checkout.scr script.
+
+checkoutCP
+        Same as checkout except uses CP configFiles and sim luts
+
+checkoutSim
+        Same as checkout except uses sim configFiles and sim luts
+
+deviceReset
+        Reset a device to make it look as if it has just
+        been booted. This is useful to save rebooting the
+        VME crate when testing a checkout script.
+
+gmosCheckout
+        Run various levels of checkout on the entire GMOS instrument.
+
+gmosCheckoutSim
+        Same as gmosCheckout but uses simulation database.
+
+purgeLogs
+        Remove old log files, prompting before removing any.
+
+purgeSmallLogs
+        Remove small log files, prompting before removing any.
+        (Such small files are normally created when a script
+        fails to start).
+
+runMaskErrTests
+        Runs cassetteErrCheckout and extractorErrCheckout scripts.
+
+runMaskTests
+        Runs gripCheckout, releaseCheckout, extractorCheckout and
+        cassetteCheckout scripts.
+
+setDevicePrefixes
+        Define environment variables containing the assembly and device
+        prefixes used in the GMOS EPICS database.
+
+setResetAliases
+        Define some useful aliases for executing the assemblyReset
+        and deviceReset scripts with common combinations of
+        arguments.
+
+soak
+        This sets the environment variables and runs a checkout test
+        over and over again to check the reliability of a component.
+
+soakSim
+        Same as soak but uses simulation database.
+
+
+CAU utilities
+-------------
+
+monitor_activeC.cau
+monitor_apply.cau
+monitor_datum.cau
+monitor_debug.cau
+monitor_follow.cau
+monitor_init.cau
+monitor_move.cau
+monitor_park.cau
+monitor_reboot.cau
+monitor_simulate.cau
+monitor_statehealth.cau
+monitor_test.cau
+monitor_tolerance.cau
+monitor_update.cau
+        Various "source" files for CAU which monitor CAD, CAR and apply
+        records associated with different commands.
+
+
+DIRECTORY - scripts
+===================
+
+Prefocal plane checkout scripts
+-------------------------------
+
+cassetteCheckout.scr
+        Cassette device basic functionality test script
+        - Verify startup state
+        - Log the current device record configuration
+        - Test cassette device INIT mode
+        - Verify state after command
+        - Test cassette device TEST mode
+        - Verify state after command
+        - Testing lower limit switch
+        - Verify state after command
+        - Testing upper limit switch
+        - Verify state after command
+        - Test indexing cassette
+        - Verify state after command
+        - Try a named position move
+        - Verify state after command
+        - Verify current position
+        - Try another named position move
+        - Verify state after command
+        - Verify current position
+        - Adjust upper and lower target limits
+        - Attempting to move cassette past upper limit
+        - Verify error message and log current position
+        - Indexing cassette
+        - Verify state after command
+        - Attempting to move cassette past lower limit
+        - Verify error message and log current position
+        - Indexing cassette
+        - Verify state after command
+        - Testing park position
+        - Verify state after command
+        - Verify current position
+
+cassetteErrCheckout.scr
+        Cassette device error test script
+        - Initialize the Mask Assembly
+        - Index the Mask assembly
+        - Try invalid position strings with the check directive
+        - Try out of bounds positions with the check directive
+        - Try invalid velocities with the check directive
+        - Attempt cassette move with extractor at ID
+        - Attempt cassette move with release released
+        - Ensure upper & lower position limits are reachable
+        - Drive into upper limit and check response
+        - Attempt to move without first indexing
+        - Attempt to move further into upper limit
+        - Drive into lower limit and check response
+        - Attempt to move without first indexing
+        - Attempt to move further into lower limit
+
+cassettePinCheckout.scr
+        Cassette alignment pin functionality test script
+        - Log the current device record configuration
+        - Test cassette device INIT mode
+        - Verify state after command
+        - Test cassette device TEST mode
+        - Verify state after command
+        - Test indexing cassette
+        - Verify state after command
+        - Run pin alignment check shell script (checkAlign) which 
+          checks for a pin in every possible location
+
+extractorCheckout.scr
+        Extractor device functionality test script
+        - Verify startup state
+        - Log the current device record configuration
+        - Test extractor device INIT mode
+        - Verify state after command
+        - Test extractor device TEST mode
+        - Verify state after command
+        - Get all the LVDT stuff
+        - Setting to reduced velocity for moves into limits
+        - Testing upper limit switch
+        - Verify state after command
+        - Testing lower limit switch
+        - Verify state after command
+        - Test indexing extractor
+        - Verify state after command
+        - Setting to full velocity for moves within limits
+        - Moving to ifu position
+        - Verify state after command
+        - Verifying move to ifu position
+        - Moving to mask position
+        - Verify state after command
+        - Verifying move to mask position
+        - Moving to clear position
+        - Verify state after command
+        - Verifying move to clear position
+        - Moving to id position
+        - Verify state after command
+        - Verifying move to id position
+        - Moving to grip position
+        - Verify state after command
+        - Verifying move to grip position
+        - Moving to release position
+        - Verify state after command
+        - Verifying move to release position
+        - Reduce velocity and move into low limit index
+        - Verify state after command
+        - Verifying move to i4 position
+        - Moving to i4gripper position
+        - Verify state after command
+        - Verifying move to i4gripper position
+        - Moving to i4release position
+        - Verify state after command
+        - Verifying move to i4release position
+        - Re-index on home switch
+        - Adjust upper and lower target limits
+        - Attempting to move extractor past upper limit
+        - Verify error message and log current position
+        - Indexing extractor
+        - Verify state after command
+        - Attempting to move extractor past lower limit
+        - Verify error message and log current position
+        - Re-index on home switch
+        - Verify state after command
+        - Testing park position
+        - Verify state after command
+        - Verify current position
+
+extractorErrCheckout.scr
+         Extractor device error test script
+        - Initialize the Mask Assembly
+        - Index the Mask assembly
+        - Try invalid position strings with the check directive
+        - Try out of bounds positions with the check directive
+        - Try invalid velocities with the check directive
+        - Ensure upper & lower position limits are reachable
+        - Drive into upper limit and check response
+        - Attempt to move without first indexing
+        - Attempt to move further into upper limit
+        - Drive into lower limit and check response
+        - Attempt to move without first indexing
+        - Attempt to move further into lower limit
+
+gripCheckout.scr
+        Grip device functionality test script
+        - Verify startup state
+        - Log the current device record configuration
+        - Test gripper device INIT mode
+        - Verify state after command
+        - Test gripper device TEST mode
+        - Verify state after command
+        - Testing lower limit switch
+        - Verify state after command
+        - Testing upper limit switch
+        - Verify state after command
+        - Test indexing gripper
+        - Verify state after command
+        - Attempting to move gripper past limit
+        - Verify error message and log current position
+        - Indexing gripper
+        - Verify state after command
+        - Place gripper device in grip position
+        - Test feedback switches
+        - Verify state after command
+        - Place gripper in release position
+        - Testing feedback switches
+        - Verify state after command
+        - Place gripper between release and grip positions
+        - Testing feedback switches
+        - Verify state after command
+        - Indexing gripper
+        - Verify state after command
+
+maskCheckout.scr
+        Mask assembly functionality test script (IFU and mask(s) loaded)
+        - Test Initialization function
+        - Test Index Function
+        - Test index at both ends with IFU in tow
+        - Test index at both ends with mask in tow
+        - Insert first mask from lookup table (IFU)
+        - Loading a mask (last entry in table)
+        - Parking function test
+
+maskNoIfuCheckout.scr
+        Mask assembly functionality test script (only mask(s) loaded - no IFU)
+        - Test Initialization function
+        - Test Index Function
+        - Test index at both ends with mask in tow
+        - Insert first mask from lookup table
+        - Loading a new mask (last entry in table)
+        - Parking function test
+
+maskIcdCheckout.scr
+        Comprehensive mask assembly test script
+        - Test Initialization function
+        - Test Index Function
+        - Execute the Test Function
+        - Try entering invalid mask ID attributes
+        - Try entering invalid mask location attributes
+        - Try entering invalid park location attributes
+        - Stopping UPDATE sequence in progress
+        - Do an UPDATE and allow it to complete
+        - Insert first mask from lookup table (IFU)
+        - Re-load the same mask (IFU)
+        - Removing current mask (IFU)
+        - Mess up a re-load by moving the gripper first
+        - Reloading the current mask (IFU)
+        - Loading a mask (last entry in table)
+        - Start to load 1st mask (IFU) then stop it
+        - Parking function test
+        - Now ask for current mask (IFU) moved out to un-park assembly
+ 
+maskOptoDelayCheckout.scr
+        Mask assembly Opto Sensor Delay Script
+        - Verify status fields
+        - Check state of the three opto switches - should be Unknown
+        - Enable then immediately check state of opto switches - still Unknown
+        - Check state of opto switches - all affirmative
+        - Disable then immediately check state of opto switches
+        - Test Initialization function
+        - Verify status fields
+        - Check state of opto switches - should be Unknown
+        - INDEX the mask assembly
+        - Verify status fields
+        - PARK in position two to allow cassette to be re-loaded
+        - Verify status fields
+        - Check state of opto switches - should be Unknown
+        - Set mask DBUG to FULL
+        - Set optoSensorDelay to 0 then Park at position two again
+        - Set optoSensorDelay to 1 then Park at position two again
+        - Set optoSensorDelay to 2 then Park at position two again
+        - Set optoSensorDelay to 3 then Park at position two again
+        - Set optoSensorDelay to 4 then Park at position two again
+        - Set optoSensorDelay to 5 then Park at position two again
+        - Set optoSensorDelay to 6 then Park at position two again
+        - Set optoSensorDelay to 7 then Park at position two again
+        - Set optoSensorDelay to 8 then Park at position two again
+        - Set optoSensorDelay to 9 then Park at position two again
+        - Set optoSensorDelay to 10 then Park at position two again
+        - Set mask DBUG to NONE
+
+maskOptoSensorCheckout.scr
+        Mask assembly Opto Sensor Test
+        - Verify status fields
+        - Check state of the three opto switches - should be Unknown
+        - Enable then immediately check state of opto switches - still Unknown
+        - Sleep then check state of opto switches - Unknown
+        - Check state of opto switches - all affirmative
+        - Disable then immediately check state of opto switches
+        - Sleep then check state of opto switches - should be Unknown
+        - Enable then immediately check state of opto switches - affirmative
+        - Sleep then check state of opto switches - all affirmative
+        - Test Initialization function
+        - Verify status fields
+        - Check state of opto switches - should be Unknown
+        - INDEX the mask assembly
+        - Verify status fields
+        - PARK in position two to allow cassette to be re-loaded
+        - Verify status fields
+        - Enable then check state of opto switches -  should be Unknown
+        - MOVE the extractor into the "grip" position but don't move the gripper
+        - Enable, check state of opto switches - all affirmative - then disable
+        - INDEX the mask assembly
+        - Verify status fields
+        - Check state of opto switches - should be Unknown
+        - Loading a mask into the focal plane (last entry in table)
+        - Verify status fields
+        - Verify mask in focal plane
+        - Put the mask back into its cassette
+        - Verify status fields
+
+maskUpdateCheckout.scr
+        Mask assembly Full Update and Move Test
+        - Verify status fields
+        - Test Initialization function
+        - Verify status fields
+        - Test Index Function
+        - Verify status fields
+        - Test Update Function
+        - Verify status fields
+        - Load each mask listed in the lookup table
+        - Verify status fields to catch any fatal errors during mask loading
+        - Parking function test
+        - Verify status fields
+
+releaseCheckout.scr
+        Release device functionality test script
+        - Verify startup state
+        - Log the current device record configuration
+        - Test device INIT mode
+        - Verify state after command
+        - Test release device TEST mode
+        - Verify state after command
+        - Testing lower limit switch
+        - Verify state after command
+        - Testing upper limit switch
+        - Verify state after command
+        - Test indexing release
+        - Verify state after command
+        - Attempting to move release beyond limit
+        - Verify error message and log current position
+        - Indexing release
+        - Verify state after command
+        - Place release device in release position
+        - Test feedback switches
+        - Verify state after command
+        - Place release device in lock position
+        - Testing feedback switches
+        - Verify state after command
+        - Place release between release and lock positions
+        - Testing feedback switches
+        - Verify state after command
+        - Indexing release
+        - Verify state after command
+
+wfsCheckout.scr
+        OIWFS assembly basic functionality test script
+        - Verify assembly configuration
+        - Test OIWFS assembly INIT mode
+        - Verify state after command
+        - Test OIWFS assembly INDEX mode
+        - Log the actual XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Verify state after command
+        - Test the upper soft limit with pickoff
+        - Log the pickoff motor position and XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Test the lower soft limit with pickoff
+        - Log the pickoff motor position and XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Test the upper soft limit with base
+        - Log the base motor position and XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Test the lower soft limit with base
+        - Log the base motor position and XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Do a series of short probe moves
+        - Checking field coverage - min X edge
+        - Checking field coverage - max Y edge
+        - Checking field coverage - max X edge
+        - Checking field coverage - min Y edge
+        - Verify state after command
+        - Put the wfs to the optical axis
+        - Log the actual XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Test receipt of new target while already moving
+        - Verify state after command
+        - Test OIWFS PARK command
+        - Log the actual XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Verify state after command
+        - Move the OIWFS Probe and lose park flag
+        - Verify state after command
+
+wfsIcdCheckout.scr
+        OIWFS/TCS ICD functionality test script
+        - Verify startup state
+        - Verify assembly configuration
+        - Test OIWFS assembly INIT mode
+        - Verify state after command
+        - Test OIWFS assembly TEST mode
+        - Verify state after command
+        - Test OIWFS assembly INDEX mode
+        - Log the actual XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Verify state after command
+        - Try entering invalid Mask X Target attributes
+        - Try entering invalid Mask Y Target attributes
+        - Checking field coverage - lower left
+        - Log the actual XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Verify state after command
+        - Checking field coverage - upper left
+        - Log the actual XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Verify state after command
+        - Checking field coverage - upper right
+        - Log the actual XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Verify state after command
+        - Checking field coverage - lower right
+        - Log the actual XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Verify state after command
+        - Put the wfs to the optical axis
+        - Log the actual XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Test receipt of new target while already moving
+        - Verify state after command
+        - Test OIWFS PARK command
+        - Log the actual XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Verify state after command
+        - Move the OIWFS Probe and lose park flag
+        - Verify state after command
+
+wfsPatrolCheckout.scr
+        OIWFS Patrol Area Perimeter test
+        - Verify assembly configuration
+        - Test OIWFS assembly INIT mode
+        - Verify state after command
+        - Test OIWFS assembly INDEX mode
+        - Log the actual XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+        - Verify state after command
+        - Checking field coverage - min X edge
+        - Checking field coverage - max Y edge
+        - Checking field coverage - max X edge
+        - Checking field coverage - min Y edge
+        - Verify state after command
+        - Put the wfs to the optical axis
+        - Log the actual XY coordinates
+        - Log the base/pickoff angles calculated from sin/cos pots
+
+
+Postfocal plane and IS checkout scripts
+---------------------------------------
+
+detectorCheckout.scr
+        Test GMOS/NOAO detector controller
+        - Verify startup state
+        - Test detector controller INIT command
+        - Test detector controller TEST command
+        - Test detector controller DATUM command
+        - Verify detector controller setup command
+        - Verify region of interest setup command
+        - Make an observation
+        - Check status alarm database
+
+filterCheckout.scr
+        Test filter assembly
+        - Test Initialization function
+        - Test Index Function
+        - Select a pair of filters on different wheels - specifying
+          wheel 1 first
+        - Select a pair of filters on different wheels - specifying
+          wheel 2 first
+        - Select exactly the same pair of filters again to check that
+          null moves are ok
+        - Select a pair of filters on the same wheel
+        - Select a non-existent filter A
+        - Select a non-existent filter B
+        - Select a non-existent filter A and B
+        - Repeat Index Function
+        - Test initialization function with garbage LUT file
+        - Change lookup table name back as it was
+        - Initialize properly to restore filter assembly
+        - Test update function - full update mode
+        - Test update function - quick update mode
+        - Test parking function
+
+filterNoUpdateCheckout.scr
+        Test filter assembly without UPDATE
+        - As above without the update function tests
+
+gratingCalibCheckout.scr
+        Test grating tilt calibration.
+        - Test Initialization function
+        - Test Index Function
+        - Select grating A, tilt angle 10,20,30,40,50,60,65,70,80 degrees
+        - Select grating B, tilt angle 10,20,30,40,50,60,65,70,80 degrees
+        - Select grating C, tilt angle 10,20,30,40,50,60,65,70,80 degrees
+        - Select grating D, tilt angle 10,20,30,40,50,60,65,70,80 degrees
+        - Test parking function
+
+gratingCheckout.scr
+        Test grating assembly.
+        - Test Initialization function
+        - Test Index Function
+        - Check turret position visually before proceeding
+        - Select a grating and angle (1 and 31.2)
+        - Select another grating and angle (2 and 10.1)
+        - Go back to first grating (1) - select only
+        - Select another grating and angle (3 and 65.0)
+        - Select another grating and angle (4 and 81.4) to test the final
+          grating position
+        - Select the same grating and angle (4 and 81.4) to test that null
+          movements are ok
+        - Keep the same grating but change the tilt to 41.8
+        - Select a non-existent grating
+        - Select an out of (high) range grating angle
+        - Select an out of (low) range grating angle
+        - Repeat Index Function
+        - Test initialization function with garbage LUT file
+        - Change lookup table name back as it was
+        - Initialize properly to restore grating assembly
+        - Test update function
+        - Test parking function
+
+gratingNoUpdateCheckout.scr
+        Test grating assembly without UPDATE
+        - As above without the update function tests
+
+instrumentConfigCheckout.scr
+        Select a random instrument configuration.
+        - Verify startup state
+        - Reconfigure the instrument
+
+instrumentConfigSetupCheckout.scr
+        Set up instrument for reconfiguration tests
+        - Verify startup state
+        - Test instrument sequencer INIT command
+        - Test instrument sequencer TEST command
+        - Test instrument sequencer DATUM command
+
+lifterCheckout.scr
+        Test grating lifter mechanism
+        - Verify startup state
+        - Switch on grating turret power
+        - Test grating lifter up function
+        - Move grating turret away to position C
+        - Verify turret state and log position
+        - Move grating turret back to position B
+        - Verify turret state and log position
+        - Visual check for positioning accuracy at position B
+        - Test grating lifter down function
+        - Test grating lifter will not operate during an interlock
+        - Test grating lifter will not carry on when interlock removed
+        - Test grating lifter up function for a second time
+        - Move grating turret away to position C
+        - Verify turret state and log position
+        - Move grating turret back to position B
+        - Verify turret state and log position
+        - Visual check for positioning accuracy at position B
+        - Test grating lifter down function for a second time
+        - Test grating lifter up function
+        - Test lifter will recover when turret lowered onto guard ring
+        - Verify turret state and log position
+        - Visual check for positioning between positions B and C
+        - Test grating lifter recovery from lowering onto guard ring
+        - Verify status fields and check lifter has raised automatically
+        - Move grating turret to position B
+        - Verify turret state and log position
+        - Visual check for positioning accuracy at position B
+        - Test grating lifter down function for a second time
+        - Switch off grating turret power
+
+
+tiltACheckout.scr
+tiltBCheckout.scr
+tiltCCheckout.scr
+tiltDCheckout.scr
+        Test grating tilt devices A, B, C and D
+        - Verify startup state
+        - Log the current device record configuration
+        - Test grating cell device INIT mode
+        - Test grating cell device TEST mode
+        - Test lower limit switch
+        - Test upper limit switch
+        - Index grating cell
+        - Deliberately move grating cell A into upper soft limit
+        - Index grating cell again
+        - Request position well below lower software limit and check response
+        - Request position well above upper software limit and check response
+        - Move grating cell to barcode reading position
+        - Verify state and log barcode position
+
+translationCheckout.scr
+        Test the detector translation assembly
+        - Test Initialization function
+        - Test Index Function
+        - Test edges of patrol area: Move to (-25,-10,100) microns - no lut conversion
+        - Move to (100,-10,1000) microns - no lut conversion
+        - Move to (225,-10,2000) microns - no lut conversion
+        - Move to (225,108,1000) microns - no lut conversion
+        - Move to (225,225,3000) microns - no lut conversion
+        - Move to (100,225,4000) microns - no lut conversion
+        - Move to (-25,225,4500) microns - no lut conversion
+        - Move to (-25,108,50) microns - no lut conversion
+        - Return to (-25,-10,100) microns - no lut conversion
+        - Test small adjustments: Move to (100,108,4160) microns - no lut conversion
+        - Move to (102,106,4100) microns - no lut conversion
+        - Move to (100,103,4110) microns - no lut conversion
+        - Move to (98,109,4100) microns - no lut conversion
+        - Move to (97,110,4101) microns - no lut conversion
+        - Move to (105,112,4100) microns - no lut conversion
+        - Select an out of (low) range X position
+        - Select an out of (high) range X position
+        - Select an out of (low) range Y position
+        - Select an out of (high) range Y position
+        - Select an out of (low) range Z position
+        - Select an out of (high) range Z position
+        - Repeat Index Function
+        - Test initialization function with non-existent LUT file
+        - Test initialization function with garbage LUT file
+        - Change lookup table name back as it was
+        - Initialize properly to restore translation assembly
+        - Test parking function
+
+turretBacklashCPCheckout.scr
+turretBacklashCheckout.scr
+        CP or MK turret device backlash removal experiment
+        - Check the lifter is raised
+        - Log the device record velocity and backlash configuration
+        - Manually switch on the turret power
+        - Make sure the turret begins at position B
+        - Move grating turret towards position C - slowly, with no BLCO
+        - Move grating turret to position C - normal velocity with BLCO
+        - Move grating turret towards position D - slowly, with no BLCO
+        - Move grating turret to position D - normal velocity with BLCO
+        - Move grating turret towards position A - slowly, with no BLCO
+        - Move grating turret to position A - normal velocity with BLCO
+        - Move grating turret towards position D - slowly, with no BLCO
+        - Move grating turret to position D - normal velocity with negative
+          BLCO
+        - Move grating turret towards position C - slowly, with no BLCO
+        - Move grating turret to position C - normal velocity with negative
+          BLCO
+        - Move grating turret towards position B - slowly, with no BLCO
+        - Move grating turret to position B - normal velocity with negative
+          BLCO
+        - Restore the BLCO back to normal and reindex
+        - Move grating turret back to position B - normal velocity with
+          BLCO
+        - Finally switch off the turret power
+
+turretCheckout.scr
+        Test the grating turret device
+        - Check the lifter is raised
+        - Verify turret startup state - must be unindexed and stopped
+        - Log the current device record configuration
+        - Test grating turret device INIT mode
+        - Test grating turret device TEST mode
+        - Manually switch on the turret power
+        - Test lower limit switch
+        - Test upper limit switch
+        - Restore original indexing mode
+        - Indexing grating turret
+        - Adjust upper and lower target limits
+        - Deliberately move grating turret into upper soft limit
+        - Indexing grating turret
+        - Request position well below lower software limit and check response
+        - Request position well above upper software limit and check response
+        - Move grating turret to position B
+        - Visual check for positioning accuracy at position B
+        - Move grating turret to position C
+        - Visual check for positioning accuracy at position C
+        - Move grating turret to position D
+        - Visual check for positioning accuracy at position D
+        - Move grating turret to position A
+        - Visual check for positioning accurancy at position A
+
+turretQuickCheckout.scr
+        Test the grating turret device positioning accuracy only
+        - Check the lifter is raised
+        - Verify turret startup state - must be indexed and stopped
+        - Log the current device record configuration
+        - Index the grating turret
+        - Move grating turret to position B
+        - Visual check for positioning accuracy at position B
+        - Move grating turret to position C
+        - Visual check for positioning accuracy at position C
+        - Move grating turret to position D
+        - Visual check for positioning accuracy at position D
+        - Move grating turret to position A
+        - Visual check for positioning accurancy at position A
+
+turretFullCheckout.scr
+        Test the grating turret device thoroughly
+        - Check the lifter is raised
+        - Verify turret startup state - must be unindexed and stopped
+        - Log the current device record configuration
+        - Test grating turret device INIT mode
+        - Test grating turret device TEST mode
+        - Manually switch on the turret power
+        - Test lower limit switch
+        - Test upper limit switch
+        - Restore original indexing mode
+        - Indexing grating turret
+        - Adjust upper and lower target limits
+        - Deliberately move grating turret into upper soft limit
+        - Indexing grating turret
+        - Request position well below lower software limit and check response
+        - Request position well above upper software limit and check response
+        - Move grating turret to position B
+        - Visual check for positioning accuracy at position B
+        - Move grating turret to position C
+        - Visual check for positioning accuracy at position C
+        - Move grating turret to position D
+        - Visual check for positioning accuracy at position D
+        - Move grating turret to position A
+        - Visual check for positioning accurancy at position A
+        - Move grating turret backwards to position D
+        - Visual check for positioning accuracy at position D
+        - Move grating turret backwards to position C
+        - Visual check for positioning accuracy at position C
+        - Move grating turret backwards to position B
+        - Visual check for positioning accuracy at position B
+        - Test long move directly to position A
+        - Visual check for positioning accuracy at position A
+        - Test long backwards move to position B
+        - Visual check for positioning accuracy at position B
+
+
+turretIndexCheckout.scr
+        Index the turret on the lower hard limit switch.
+        (Only necessary when the limit switches are broken).
+
+turretJudderCPCheckout.scr
+turretJudderCheckout.scr
+        Take the CP or MK grating turret device through a series
+        of moves to look for juddering. (Only necessary to check
+        whether the drive has worn and needs refurbishment).
+
+turretSetupCheckout.scr
+        Obsolete setup script?
+        (Only necessary when the limit switches are broken).
+
+wheel1Checkout.scr
+wheel2Checkout.scr
+        Test the filter wheel devices
+        - Verify startup state
+        - Log the current device record configuration
+        - Test filter wheel device INIT mode
+        - Test filter wheel device TEST mode
+        - Index filter wheel
+        - Place filter wheel device in each position in turn
+        - Test in-position switche
+        - Place filter wheel device in the gaps between two positions in turn
+        - Test in-position switches
+        - Reindex filter wheel
+
+xaxisCheckout.scr
+yaxisCheckout.scr
+        Test the detector translation X and Y axis devices
+        - Verify startup state
+        - Log the current device record configuration
+        - Test translation stage device INIT mode
+        - Test translation stage device TEST mode
+        - Test lower limit switch
+        - Test upper limit switch
+        - Index translation stage device
+        - Deliberately move translation stage device into lower soft limit
+        - Index translation stage device from lower limit
+        - Deliberately move translation stage device into upper soft limit
+        - Index translation stage device from upper limit
+        - Request position well below lower software limit and check response
+        - Request position well above upper software limit and check response
+        - Move translation stage device to park position
+        - Verify state and log park position
+
+zaxisCheckout.scr
+        Test the detector translation Z axis device
+        - Verify startup state
+        - Log the current device record configuration
+        - Test translation stage Z axis device INIT mode
+        - Test translation stage Z axis device TEST mode
+        - Test lower limit switch
+        - Test upper limit switch
+        - Index translation stage Z axis
+        - Deliberately move translation stage Z axis into upper soft limit
+        - Index translation stage Z axis
+        - Request position well below lower software limit and check response
+        - Request position well above upper software limit and check response
+        - Move translation stage Z axis to park position
+        - Verify state and log park position
+
+General purpose checkout scripts
+--------------------------------
+
+nullCheckout.scr
+        NULL checkout script used for testing higher level shell scripts.
+
+
+Shell Scripts
+-------------
+
+add
+        binary (see src directory)
+        This Unix program is designed to be called from a C shell script
+        when there is a need to add together two or more floating point
+        variables. All the arguments supplied to the program on the command
+        line are added together and the result written to the standard output.
+        Used by: ?
+
+assemblyCommand
+        To start an Assembly record command and monitor its progress.
+        Used by: cassetteErrCheckout; extractorErrCheckout.
+
+checkAlign
+        Check whether mask slot is aligned then advance to next slot.
+        Keep checking until no more cassettes are found or an error. 
+        Used by: cassettePinCheckout.
+
+checkCommand
+        To check a Device record command and monitor for
+        acceptance or rejection.
+        Used by: cassetteErrCheckout; extractorErrCheckout.
+
+checkState
+        To wait for a record to go into a given state.
+        Used by: filterCheckout; filterNoUpdateCheckout; gratingCalibCheckout;
+        gratingCheckout; gratingNoUpdateCheckout; maskCheckout; maskIcdCheckout; 
+        maskUpdateCheckout; translationCheckout; wfsCheckout;
+        wfsIcdCheckout; wfsPatrolCheckout.
+
+compareField
+        To compare contents of an epics record field with the value of
+        another field.
+        Used by: cassetteCheckout; extractorCheckout; filterCheckout;
+        filterNoUpdateCheckout; gratingCalibCheckout; gratingCheckout;
+        gratingNoUpdateCheckout; maskCheckout; maskIcdCheckout;
+        maskOptoDelayCheckout; maskOptoSensorCheckout; maskUpdateCheckout;
+        translationCheckout.
+
+deviceCommand
+        To start a Device record command and monitor its progress.
+        Used by: cassetteCheckout; cassetteErrCheckout; cassettePinCheckout; 
+        extractorCheckout; extractorErrCheckout; grip Checkout; 
+        lifterCheckout; maskCheckout; maskIcdCheckout;
+        maskOptoSensorCheckout; releaseCheckout; tiltACheckout;
+        tiltBCheckout; tiltCCheckout; tiltDCheckout;
+        turretBacklashCPCheckout; turretBacklashCheckout; turretCheckout;
+        turretFullCheckout; turretIndexCheckout; turretJudderCPCheckout;
+        turretJudderCheckout; turretSetupCheckout; wfsCheckout;
+        wheel1Checkout; wheel2Checkout; xaxisCheckout; yzxisCheckout;
+        zaxisCheckout.
+
+executeAcquisition
+        To start a GMOS observation and wait for the data acquisition 
+        to finish.
+        Used by: flexLog
+
+executeApplyCommand
+        To start a CAD/CAR record command via the "apply" record.
+        Used by: instrumentCheckout.
+
+executeCommand
+        To start a CAD/CAR record command.
+        Used by: detectorCheckout; filterCheckout; filterNoUpdateCheckout;
+        gratingCalibCheckout; gratingCheckout; gratingNoUpdateCheckout;
+        maskCheckout; maskIcdCheckout; maskOptoDelayCheckout;
+        maskOptoSensorCheckout; maskUpdateCheckout; translationCheckout;
+        wfsCheckout; wfsIcdCheckout; wfsPatrolCheckout.
+
+executeObserve
+        To start a GMOS observation and wait for the whole thing to finish.
+        Used by: flexLog; flexLog_sciOnly; crosstalk*; focusLog;  hartAB;
+        hartABCD; hartCD; hartFocusRun; logImages;
+
+finishCommand
+        To wait for a CAD/CAR command to complete.
+        Used by: filterCheckout; filterNoUpdateCheckout; gratingCalibCheckout;
+        gratingCheckout; gratingNoUpdateCheckout; maskCheckout; maskIcdCheckout;
+        maskUpdateCheckout; translationCheckout; wfsCheckout; 
+        wfsIcdCheckout; wfsPatrolCheckout.
+
+getChannel
+        To get the value of an EPICS channel and report it to stdout.
+        Used by: ?
+
+getFilterId
+        To recover a filter ID from the lookup table and 
+        load it into the assembly record.
+        Used by: filterCheckout; filterNoUpdateCheckout.
+
+getFirstMaskId
+        To recover the first mask ID from the lookup table and 
+        load it into the assembly record.
+        Used by: maskCheckout; maskIcdCheckout.
+
+getGratingId
+        To recover a grating ID from the lookup table and 
+        load it into the assembly record.
+        Used by: gratingCheckout; gratingNoUpdateCheckout.
+
+getLastMaskId
+        To recover the last mask ID from the lookup table and 
+        load it into the assembly record.
+        Used by: maskCheckout; maskIcdCheckout; maskOptoSensorCheckout.
+
+getMaskId
+        To recover a mask ID from the lookup table and 
+        load it into the assembly record.
+        Used by: maskUpdateCheckout
+
+getMaskNum
+        To recover number of masks in mask lookup table.
+        Used by: ?
+
+lifterExhaust
+        To activate the lifter exhaust for a few seconds.
+        This primitive may be used to guard against leaks
+        into the grating lifter while running a checkout
+        script.
+        Used by: (An option for gratingJuggle and logImages)
+
+lifterRaise
+        To activate the lifter raise for a few seconds.
+        This primitive may be used to guard against leaks
+        in the grating lifter that might cause the lifter to
+        drift downwards while running a checkout script.
+        Used by: (An option for gratingJuggle and logImages)
+
+moveAssembly
+        To configure a GMOS assembly.
+        Used by: flexLog; flexLog_sciOnly; crosstalk*; focusLog; hartAB;
+        hartABCD; hartCD; hartFocusRun; logImages;
+
+moveCommand
+        To request a move of a Device record. It will check the
+        acknowledgement of the command and wait until the BUSY
+        line goes to IDLE or ERR.  It will then check the
+        MPOS matches the requested position and that the
+        current motor is STOPPED.  It will also check that
+        the home position is valid.
+        If a last argument is given, then this is a move to
+        a named position.
+        Used by: ?
+
+mult
+        binary (see src directory)
+        This Unix program is designed to be called from a C shell script
+        when there is a need to multiply together two or more floating point
+        variables. All the arguments supplied to the program on the command
+        line are multiplied together and the result written to the standard 
+        output.
+        Used by: gratingJuggle; logImages; logTemps; turretSimUpdate;
+        turretSimupdateSim.
+
+presetCommand
+        To preset an Assembly record command and monitor for
+        acceptance or rejection.
+        Used by: filterCheckout; filterNoUpdateCheckout; gratingCheckout;
+        gratingNoUpdateCheckout; maskIcdCheckout; translationCheckout;
+        wfsIcdCheckout.
+
+rand
+        binary (see src directory)
+        Generate a seeded random integer between 0 and N-1.
+        This Unix program is designed to be called from a C shell script.
+        Used by: instrumentConfigCheckout
+
+setField
+        To load an epics record field with the value of another field.
+        Used by: cassetteErrCheckout; extractorErrCheckout; maskCheckout;
+        wfsCheckout; wfsIcdCheckout.
+
+setObserveFilename
+        To set the file name for a GMOS observation.
+        Used by: flexLog; flexLog_sciOnly; crosstalk*; focusLog; hartAB;
+        hartABCD; hartCD; hartFocusRun; logImages;
+
+setObserveROI
+        To set the file name for a GMOS observation.
+        Used by: flexLog; flexLog_sciOnly;
+
+setWfsFilename
+        To set the file name for a GMOS wavefront sensor observation.
+        Used by: flexLog; flexLog_sciOnly; wfsImageLog;
+
+startCommand
+        To start a CAD/CAR record command.
+        Used by: filterCheckout; filterNoUpdateCheckout; gratingCalibCheckout;
+        gratingCheckout; gratingNoUpdateCheckout; maskCheckout; maskIcdCheckout;
+        maskUpdateCheckout; translationCheckout; wfsCheckout;
+        wfsIcdCheckout; wfsPatrolCheckout.
+
+stopCommand
+        To stop a CAD/CAR command.
+        Used by: maskIcdCheckout.
+
+tolower
+        binary (see src directory)
+        Convert all characters to lower case. Accept string(s).  This 
+        Unix program is designed to be called from a C shell script.
+        Used by: flexLog; flexLog_sciOnly; focusLog; hartAB;
+        hartABCD; hartCD; hartFocusRun.
+
+wfsObserve
+        To start a GMOS WFS observation.
+        Used by: flexLog; flexLog_sciOnly; wfsImageLog;

@@ -1,0 +1,162 @@
+GROUP NULL MAIN
+
+   $GUIDANCE
+   Top level alarm group for GMOS CC - $(name)
+   $END
+
+   GROUP MAIN TEMPERATURES
+
+      $GUIDANCE
+      Instrument temperature alarms.
+      Silence forever alarms from faulty sensors.
+      --------------------------------------------
+      Check coolant supply to electronics enclosures if overheating.
+      Beware of icing and/or condensation if too cold.
+      Beware of instrument seeing if too hot.
+      Excessive temperature gradients can cause instrument flexure.
+      $END
+
+      CHANNEL TEMPERATURES $(top)cc:temp0
+      $ALIAS FOSS/ISS
+
+      CHANNEL TEMPERATURES $(top)cc:temp1
+      $ALIAS WFS CCD Controller Case
+
+      CHANNEL TEMPERATURES $(top)cc:temp2
+      $ALIAS Collimator Barrel Front
+
+      CHANNEL TEMPERATURES $(top)cc:temp3
+      $ALIAS Electronics Enclosure 2
+
+      CHANNEL TEMPERATURES $(top)cc:temp4
+      $ALIAS Filter Assembly or CCD Stage Body
+
+      CHANNEL TEMPERATURES $(top)cc:temp5
+      $ALIAS Collimator Beam Air
+
+      CHANNEL TEMPERATURES $(top)cc:temp6
+      $ALIAS Science CCD Controller Case
+
+      CHANNEL TEMPERATURES $(top)cc:temp7
+      $ALIAS Electronics Enclosure 1
+
+      CHANNEL TEMPERATURES $(top)cc:temp8
+      $ALIAS Camera Barrel Midpoint
+
+   GROUP MAIN TEMPCHANGES
+
+      $GUIDANCE
+      Instrument temperature change alarms.
+      Silence forever alarms from faulty sensors.
+      --------------------------------------------
+      Excessive temperature gradients can cause instrument flexure.
+      An alarm here means it would be prudent to take another
+      calibration frame before proceeding with science observations.
+      --------------------------------------------
+      Very large temperature gradients can damage the optics.
+      Protect the instrument with a blanket or similar material.
+      $END
+
+      CHANNEL TEMPCHANGES $(top)cc:tempChange0
+      $ALIAS FOSS/ISS
+
+      CHANNEL TEMPCHANGES $(top)cc:tempChange1
+      $ALIAS WFS CCD Controller Case
+
+      CHANNEL TEMPCHANGES $(top)cc:tempChange2
+      $ALIAS Collimator Barrel Front
+
+      CHANNEL TEMPCHANGES $(top)cc:tempChange3
+      $ALIAS Electronics Enclosure 2
+
+      CHANNEL TEMPCHANGES $(top)cc:tempChange4
+      $ALIAS Filter Assembly or CCD Stage Body
+
+      CHANNEL TEMPCHANGES $(top)cc:tempChange5
+      $ALIAS Collimator Beam Air
+
+      CHANNEL TEMPCHANGES $(top)cc:tempChange6
+      $ALIAS Science CCD Controller Case
+
+      CHANNEL TEMPCHANGES $(top)cc:tempChange7
+      $ALIAS Electronics Enclosure 1
+
+      CHANNEL TEMPCHANGES $(top)cc:tempChange8
+      $ALIAS Camera Barrel Midpoint
+
+   GROUP MAIN INTERLOCKS
+
+      $GUIDANCE
+      Interlocks reported by the GMOS electronics.
+      The cause of an interlock must be located and
+      corrected before GMOS can resume.
+      --------------------------------------------
+      Check the status of the access doors and the
+      instrument emergency stop buttons. Check the
+      software is up and running and generating the
+      watchdog signal.
+      $END
+
+      CHANNEL INTERLOCKS $(top)cc:gisDemand
+      $ALIAS GIS Demand
+
+      CHANNEL INTERLOCKS $(top)cc:gisError
+      $ALIAS GIS Demand Error
+
+      CHANNEL INTERLOCKS $(top)cc:gisEvent
+      $ALIAS GMOS Interlock Event
+
+      CHANNEL INTERLOCKS $(top)cc:gisEventError
+      $ALIAS GMOS Interlock Event Error
+
+      CHANNEL INTERLOCKS $(top)cc:masterDisabled
+      $ALIAS GMOS Shutdown
+
+   GROUP MAIN DOORS
+
+      $GUIDANCE
+      Instrument access door alarms.
+      Locate the open door and close it.
+      ------------------------------------------
+      Door sensors may be switched to cheat with
+      care if engineering access is needed.
+      $END
+
+      CHANNEL DOORS $(top)cc:door1
+      $ALIAS EE1 Front Door
+
+      CHANNEL DOORS $(top)cc:door2
+      $ALIAS EE1 Back Door
+
+      CHANNEL DOORS $(top)cc:door3
+      $ALIAS EE2 Front Door
+
+      CHANNEL DOORS $(top)cc:door4
+      $ALIAS EE2 Back Door
+
+      CHANNEL DOORS $(top)cc:door5
+      $ALIAS Grating/Camera Access Door
+
+      CHANNEL DOORS $(top)cc:door6
+      $ALIAS Mask Access Door
+
+      CHANNEL DOORS $(top)cc:door7
+      $ALIAS Filter Access Door
+
+      CHANNEL DOORS $(top)cc:door8
+      $ALIAS Emergency Hand Paddle
+
+   GROUP MAIN AIRPRESSURE
+
+      $GUIDANCE
+      Air pressure in instrument pnuematic system.
+      An alarm here means the grating cannot be changed.
+      Check the air supply to GMOS.
+      $END
+
+      CHANNEL AIRPRESSURE $(top)cc:upstreamOk
+      $ALIAS Upstream Air Pressure
+
+      CHANNEL AIRPRESSURE $(top)cc:downstreamOk
+      $ALIAS Downstream Air Pressure
+

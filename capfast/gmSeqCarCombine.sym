@@ -1,0 +1,31 @@
+[symbol2]
+bbox 192 288 640 640
+port 304 512 100 1792 HRWFS symbol 1 192 512 0
+port 304 576 100 1792 CC symbol 1 192 576 0
+port 304 448 100 1792 PWFS1 symbol 1 192 448 0
+port 304 384 100 1792 PWFS2 symbol 1 192 384 0
+port 304 320 100 1792 OIWFS symbol 1 192 320 0
+uniq 3
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 432 480 values
+l 100 0 0 416 512 Combine CAR
+r 0 256 288 640 640
+v 0 192 512
+256 512
+_
+v 0 192 576
+256 576
+_
+v 0 192 448
+256 448
+_
+v 0 192 384
+256 384
+_
+v 0 192 320
+256 320
+_
+[comments]

@@ -1,0 +1,229 @@
+#!/usr/local/bin/tcsh -f
+#
+# soak
+#
+# Description:
+#
+#   This sets the environment variables and runs a checkout test
+#   over and over again to check the reliability of a component.
+#
+#   It is assumed this script is being run from the "test" directory
+#   and that wish4.2 is in the current PATH.
+#
+# Invocation:
+#
+#   soak scriptname name N delay -auto
+#
+#   where scriptname is the name of the script to be executed
+#         name       is the name of the component to be checked out
+#                    (NULL if no reset is required).
+#         N          is the number of iterations to run the script
+#                    (including the initial test iteration)
+#         delay      (optional) delay in seconds between iterations
+#         -auto      (optional) for executing first iteration -auto
+#
+# Deficiencies:
+#    The script will generate an error message whenever the assemblyReset and deviceReset
+#    commands are executed because it cannot tell whether a components is a device or an
+#    assembly. This shouldn't affect the tests but it looks untidy.
+#
+
+#
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!($?GMOS_MK_ACCESS)) then
+    echo ""
+    echo "GMOS MK safety check failed."
+    echo ""
+    echo "Before executing this script, which will move real MK hardware,"
+    echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+    echo ""
+    exit
+else
+    echo "GMOS MK safety check passed."
+endif
+
+#
+# Bail out if the scripts directory does not exist.
+#
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+if (${#argv} < 3) then
+    echo "Usage - soak scriptname name N [delay] [-auto]"
+    exit
+endif
+
+#
+# Create the "logfiles" directory if it doesn't exist.
+#
+if ( !(-e logfiles) ) then
+
+   echo "Creating logfiles directory..." 
+   mkdir logfiles
+endif
+
+#
+# Define the environment variable pointing to the config files
+#
+setenv DEFAULT_CONFIG_DIR ./configFiles
+
+#
+# Make sure the device and assembly prefixes are defined.
+#
+source setDevicePrefixes
+
+#
+# Execute the test script once first and allow the user to be prompted.
+# If the script works once it can then be executed many times in "-auto" mode.
+#
+
+if ( $4 == "-auto" || $5 == "-auto" ) then
+
+   set automode = "-auto"
+else
+
+   set automode = ""
+endif
+
+#
+# Determine the time interval between iterations
+#
+echo ""
+echo "-----------------------------------------"
+if ( $4 != "" && $4 != "-auto" ) then
+
+   set intervalSeconds = $4
+   echo "There will be "$3" executions with a "$intervalSeconds" seconds delay."
+else
+
+   set intervalSeconds = 0
+   echo "There will be "$3" executions with no delay."
+endif
+echo "-----------------------------------------"
+sleep 1
+
+wish4.2 ./dhsTestCmdr.tk -a scripts/${1}Checkout.asm -i scripts/${1}Checkout.scr $automode
+
+#
+# Make a backup copy of the log file with the current date and time appended
+#
+\cp ./scripts/${1}Checkout.scr.log ./logfiles/${1}Checkout.log.`date +%H:%M:%S-%d-%h-20%y`
+
+#
+# If the string Fatal occurs anywhere in the log file that means a test has failed.
+#
+
+if (`grep Fatal scripts/${1}Checkout.scr.log | wc -l` != 0) then
+    echo ""
+    echo "The first iteration of the script has failed. Aborting."
+    echo ""
+    goto abort
+endif
+
+#
+# Look for the string PASSED in the log file, to ensure that at least one test
+# was run and passed. If no tests were run this means the script was most likely
+# cancelled by the user.
+#
+
+if (`grep PASSED scripts/${1}Checkout.scr.log | wc -l` == 0) then
+    echo ""
+    echo "The first iteration of the script was cancelled. Aborting."
+    echo ""
+    goto abort
+endif
+
+#
+# Run the soak test. Each iteration around this loop will overwrite the log file of
+# the previous iteration. There will be ($3 - 1) further iterations.
+#
+
+set countUp  = 1
+@ countDown = ${3} - 1
+set prefix = `printenv $2`
+
+while ($countDown > 0)
+
+#
+# Wait for the appropriate length of time
+# (Do not wait if the first iteration was not "-auto")
+#
+
+    echo ""
+    echo "-----------------------------------------"
+    echo "Completed "$countUp" executions of "$1" checkout script."
+    echo $countDown" tests to go."
+    echo ""
+    echo "Type Ctrl-c to stop the script."
+
+    if ( $countUp > 1 || $automode == "-auto" ) then
+       if ( $intervalSeconds > 0 ) then
+
+          echo "Waiting for ${intervalSeconds} seconds..."
+          sleep $intervalSeconds
+       endif
+    endif
+
+    echo "-----------------------------------------"
+    echo ""
+
+#
+# Reset the device or assembly so the script may be restarted. (The script cannot tell if
+# the components being tested is an assembly or device, so it tries both and relies on the
+# fact that failure of either of the following two commands is non-fatal).
+#
+
+    if ( $prefix != "" ) then
+
+       assemblyReset gm:cc: ${prefix}
+       deviceReset gm:cc: ${prefix}
+    endif
+
+#
+# Execute the script
+#
+    wish4.2 ./dhsTestCmdr.tk -a scripts/${1}Checkout.asm -i scripts/${1}Checkout.scr -auto
+
+#
+# Make a backup copy of the log file with the current date and time appended
+#
+    \cp ./scripts/${1}Checkout.scr.log ./logfiles/${1}Checkout.log.`date +%H:%M:%S-%d-%h-20%y`
+
+#
+# Check the log file for PASSED and Fatal strings as before
+#
+    if (`grep Fatal scripts/${1}Checkout.scr.log | wc -l` != 0) then
+        echo ""
+        echo "The script has failed. Aborting."
+        echo ""
+        goto abort
+    endif
+
+    if (`grep PASSED scripts/${1}Checkout.scr.log | wc -l` == 0) then
+        echo ""
+        echo "The script has been cancelled. Aborting."
+        echo ""
+        goto abort
+    endif
+
+#
+# Decrement/Increment the counters and go around the loop again
+#
+    @ countUp = $countUp + 1
+    @ countDown = $countDown - 1
+end
+
+echo ""
+echo "Soak test of $3 iterations of $1 script complete."
+exit
+
+abort:
+
+exit

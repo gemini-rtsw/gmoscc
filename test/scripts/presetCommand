@@ -1,0 +1,28 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: presetCommand
+#
+# Purpose: 
+#	To preset an Assembly record command and monitor for
+#	acceptance or rejection.
+#
+# Assumptions:
+#       DAR_DIR_PRESET = 2
+#       assembly record success status = 0
+#
+
+set dirResponse = `caput $1 "2"`
+sleep 1
+
+set ackResponse = `caget $2 | grep $2 | grep 0`
+
+if ( $#ackResponse != 2 ) then
+        set assname = `basename $1 .DIR`
+        set errmsg = `caget -t ${assname}.MESS`
+	echo "Command rejected - $errmsg"
+	exit
+endif
+
+echo "Command accepted"
+
+exit

@@ -1,0 +1,5 @@
+echo "An X terminal window will be created on display $DISPLAY"
+echo "Its output will be logged to a file called"
+echo "`pwd`/Xtermlog.xxx"
+echo "where xxx is a yet-to-be-determined string."
+xterm -l -T "GMOS logged X terminal" &

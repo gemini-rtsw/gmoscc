@@ -1,0 +1,144 @@
+
+#
+# DHS Test Commander
+# instrument sequencer functionality test script
+#
+
+#
+# Declare the variables used by this script....
+#
+
+VAR     gmosIs           isApplyCommand          applyCommand           1
+VAR     gmosIs           isApplyAcknowledge      applyAcknowledge       1
+VAR     gmosIs           isApplyCarVal           applyCar               1
+
+VAR     gmosIs           isTestCommand           testCommand            1
+VAR     gmosIs           isTestAcknowledge       testAcknowledge        1
+VAR     gmosIs           isTestCarVal            testCar                1
+
+VAR     gmosIs           isInitCommand           initCommand            1
+VAR     gmosIs           isInitAcknowledge       initAcknowledge        1
+VAR     gmosIs           isInitCarVal            initCar                1
+
+VAR     gmosIs           isDatumCommand          datumCommand           1
+VAR     gmosIs           isDatumAcknowledge      datumAcknowledge       1
+VAR     gmosIs           isDatumCarVal           datumCar               1
+
+VAR     gmosIs           isParkCommand           parkCommand            1
+VAR     gmosIs           isParkAcknowledge       parkAcknowledge        1
+VAR     gmosIs           isParkCarVal            parkCar                1
+
+VAR     gmosIs           sadIsState              sadState               1
+VAR     gmosIs           sadIsHealth             sadHealth              1
+VAR     gmosIs           sadIsIndexed            sadIndexed             1
+
+VAR     gmosIs           isMskNameMenu1          mskNameMenu1           1
+VAR     gmosIs           isMskNameMenu2          mskNameMenu2           1
+VAR     gmosIs           isMskNameMenu3          mskNameMenu3           1
+VAR     gmosIs           isMskPosMask            mskSelectedMask        1
+
+VAR     gmosIs           isGrNameMenu            grNameMenu             1
+VAR     gmosIs           isGrSelectWavelength    grSelectWavelength     1
+VAR     gmosIs           isGrSelectOrder         grSelectOrder          1
+VAR     gmosIs           isFltNameMenu1          fltNameMenu1           1
+VAR     gmosIs           isFltNameMenu2          fltNameMenu2           1
+
+VAR     gmosIs           isDtaTrackXoff          dtaTrackXoff           1
+VAR     gmosIs           isDtaTrackYoff          dtaTrackYoff           1
+VAR     gmosIs           isDtaTrackZoff          dtaTrackZoff           1
+
+#***********************************************************
+
+
+#
+# Verify startup state
+#
+
+TEST "Verify startup state"
+FATAL
+
+DESC "Verify startup state"
+
+DESC "Initial state must be RUNNING"
+GETVAL sadState
+OUTPUT *VAL* RUNNING*
+OUTPUT *
+
+DESC "Must be indexed"
+GETVAL sadIndexed
+OUTPUT *VAL* 1*
+
+DESC "Initial health must be GOOD"
+GETVAL sadHealth
+OUTPUT *VAL* GOOD*
+OUTPUT *
+
+ENDTEST
+
+#
+# Then reconfigure the instrument sequencer
+#
+
+TEST "Reconfigure the instrument"
+STOP
+
+DESC "Reconfigure instrument"
+
+DESC "Setup random mask config"
+CMD  "setRandomMask mskNameMenu1 mskNameMenu2 mskNameMenu3 mskSelectedMask /sw3/home/smb/gmos/lut/msk.lut"
+OUTPUT *Success*
+
+DESC "Setup random filter config"
+CMD  "setRandomFilters fltNameMenu1 fltNameMenu2 /sw3/home/smb/gmos/lut/flt.lut"
+OUTPUT *Success*
+
+DESC "Setup random grating config"
+CMD  "setRandomGrating grNameMenu grSelectWavelength grSelectOrder /sw3/home/smb/gmos/lut/gr.lut"
+OUTPUT *Success*
+
+DESC "Setup random dta config"
+CMD  "setRandomDtaOffsets dtaTrackXoff dtaTrackYoff dtaTrackZoff"
+OUTPUT *Success*
+
+DESC "Start the command and wait for car to finish"
+CMD  "presetCommand applyCommand applyAcknowledge"
+OUTPUT *accepted*
+
+ENDSTOP
+
+DESC "Start the command and wait for car to finish"
+CMD  "executeApply applyCommand applyAcknowledge applyCar"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify instrument sequencer state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+GETVAL sadState
+OUTPUT *
+
+DESC "Must still be indexed"
+GETVAL sadIndexed
+OUTPUT *VAL* 1*
+
+DESC "Health must still be GOOD"
+GETVAL sadHealth
+OUTPUT *VAL* GOOD*
+OUTPUT *
+
+ENDTEST
+
+COMMENT "Instrument sequencer tests completed"
+
+
+
+
+
+
+

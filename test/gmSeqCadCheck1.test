@@ -1,0 +1,142 @@
+# This is a file of tests for the GMOS sequencer in a suitable format to be read
+# by the tcsTests.tk procedure.
+# 
+# This particular test file is aimed at checking that CAD
+# commands are rejected or accepted as specified whilst observing.
+#
+#
+# Comments are introduced by a # in the first column
+# Blank lines can be left if required.
+# The currently allowed keywords are (case is immaterial)
+#
+#  Test   <testId>
+#  Command <commandName>
+#  Field   <CAD field> <value>
+#  Response Accept | Reject
+#  Timeout <msecs>
+#  OnError Continue | Abort
+#  Log     <recordName>
+#  Directive Start | Preset
+
+# This first part before the first Test keyword can be used to setup 
+# global values for Response, TimeOut and OnError. These global values
+# can be over ridden within specific tests
+
+Response Reject
+TimeOut  5000
+OnError  Continue
+
+Help
+Help This set of test is aimed at checking that CAD
+Help commands are rejected or accepted as specified whilst observing.
+Help
+Help The first test starts an observation using the 'observe' CAD
+Help Then all GMOS Sequencer CADs are tested to see whether they
+Help are accepted or rejected as specified.
+Help Press continue when ready
+Help
+
+# Tests start here. Each test must start with the Test keyword, end with
+# a Directive keyword and have at least one Command keyword. Any Field
+# keywords are assumed to apply to the last command
+
+Test UT07010
+Summary Send 'observe' command
+Help Send 'observe' command
+
+TimeOut  2000
+
+ Command   observe
+ Field  DIR MARK 
+ Response  Accept 
+ Directive Start
+
+Test UT07020
+Summary Check acceptance of abort command whilst observing
+Help Check acceptance of abort command whilst observing
+
+TimeOut  5000
+
+ Command abort
+ Response  Accept 
+ Directive Start
+
+Test UT07030
+Summary Check acceptance of continue command whilst observing
+Help Check acceptance of continue command whilst observing
+
+ Command continue
+ Response  Accept 
+ Directive Start
+
+Test UT07040
+Summary Check acceptance of debug command whilst observing
+Help Check acceptance of debug command whilst observing
+
+ Command   debug
+ Response  Accept 
+ Directive Start
+
+Test UT07050
+Summary Check acceptance of endGuide command whilst observing
+Help Check acceptance of endGuide command whilst observing
+
+ Command   endGuide
+ Response  Accept 
+ Directive Start
+
+Test UT07060
+Summary Check acceptance of endObserve command whilst observing
+Help Check acceptance of endObserve command whilst observing
+
+ Command   endObserve
+ Response  Accept 
+ Directive Start
+
+Test UT07070
+Summary Check acceptance of endVerify command whilst observing
+Help Check acceptance of endVerify command whilst observing
+
+ Command   endVerify
+ Response  Accept 
+ Directive Start
+
+Test UT07080
+Summary Check acceptance of guide command whilst observing
+Help Check acceptance of guide command whilst observing
+  
+ Command   guide 
+ Response  Accept 
+ Directive Start
+
+Test UT07085
+Summary Check acceptance of verify command whilst observing
+Help Check acceptance of verify command whilst observing
+  
+ Command   verify 
+ Response  Accept 
+ Directive Start
+
+Test UT07090
+Summary Check acceptance of pause command whilst observing
+Help Check acceptance of pause command whilst observing
+
+ Command   pause
+ Response  Accept 
+ Directive Start
+
+Test UT07100
+Summary Re-send 'observe' command after pause
+Help Re-send 'observe' command after pause
+
+ Command   observe   
+ Response  Accept 
+ Directive Start
+
+Test UT07110
+Summary Check acceptance of stop command whilst observing
+Help Check acceptance of stop command whilst observing
+
+ Command   stop
+ Response  Accept 
+ Directive Start

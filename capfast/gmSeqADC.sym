@@ -1,0 +1,27 @@
+[symbol2]
+bbox -640 -288 32 192
+port -464 -48 100 0 RDOUT symbol 1 -640 -48 0
+port -464 96 100 0 ILOCK symbol 1 -640 96 0
+port -464 -208 100 0 CC symbol 1 -640 -208 0
+uniq 1
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 150 0 0 -336 96 AtmDC Control
+l 150 0 0 -336 144 GMOS Sequencer
+r 0 -288 -256 -160 32
+r 0 -480 -288 32 192
+v 0 -288 -256
+-160 32
+_
+v 0 -640 -48
+-480 -48
+_
+v 0 -640 96
+-480 96
+_
+v 0 -640 -208
+-480 -208
+_
+[comments]

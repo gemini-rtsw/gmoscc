@@ -1,0 +1,23 @@
+[symbol2]
+bbox -304 -16 -32 160
+port -240 0 100 0 SLNK symbol 1 -304 16 0
+port -256 112 80 0 ILOCK symbol 1 -304 112 0
+port -240 48 80 0 RDOUT symbol 1 -304 48 0
+uniq 0
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 -192 112 Motion
+l 100 0 0 -192 64 Disabled?
+r 0 -256 -16 -32 160
+v 0 -304 16
+-256 16
+_
+v 0 -304 112
+-256 112
+_
+v 0 -304 48
+-256 48
+_
+[comments]

@@ -1,0 +1,246 @@
+file {
+	name="gmOiwfsProbe.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="0"
+	npc="7"
+	nstr="66"
+	ndynamic="0"
+	nplot="2"
+	nrd="0"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="827"
+		height="462"
+	}
+	clr="0"
+	bclr="13"
+	nwords_dspy="1076"
+	nwords_sta="228"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="920"
+	osta="692"
+	odynamic="920"
+	oplot="920"
+	ord="1064"
+	oes="1064"
+	okd="1064"
+	opd="1076"
+	opo="1076"
+	opc="68"
+	ostr="140"
+	ocmap="692"
+	ocrules="692"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1280"
+	pixht="977"
+	mmwid="338"
+	mmht="257"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="7"
+		y="15"
+		width="812"
+		height="31"
+		groupid="0"
+	}
+	textix="OIWFS Probe Position"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="3"
+		y="47"
+		width="817"
+		height="1"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="3"
+		y="47"
+	}
+	point[1] {
+		x="820"
+		y="48"
+	}
+	orgpoint[0] {
+		x="0"
+		y="0"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="1000"
+	}
+}
+"cartesian plot" {
+	object {
+		x="420"
+		y="56"
+		width="400"
+		height="350"
+		groupid="0"
+	}
+	plotcom {
+		title="Probe Location (Approximate Absolute)"
+		xlabel="X"
+		ylabel="Y"
+		clr="11"
+		bclr="13"
+		package=""
+		label="channel"
+	}
+	style="point plot"
+	erase_oldest="on"
+	count="0"
+	trace[0] {
+		xdata="F $(T)$(D)AbsX"
+		ydata="F $(T)$(D)AbsY"
+		data_clr="11"
+	}
+	trace[1] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trace[2] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trace[3] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trace[4] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trace[5] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trace[6] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trace[7] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trigger="$(T)$(D)AbsX"
+}
+"cartesian plot" {
+	object {
+		x="3"
+		y="56"
+		width="400"
+		height="350"
+		groupid="0"
+	}
+	plotcom {
+		title="Probe Location (Accurate Incremental)"
+		xlabel="X"
+		ylabel="Y"
+		clr="11"
+		bclr="13"
+		package=""
+		label="channel"
+	}
+	style="point plot"
+	erase_oldest="on"
+	count="0"
+	trace[0] {
+		xdata="F $(T)$(D)CurX"
+		ydata="F $(T)$(D)CurY"
+		data_clr="23"
+	}
+	trace[1] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trace[2] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trace[3] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trace[4] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trace[5] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trace[6] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trace[7] {
+		xdata=""
+		ydata=""
+		data_clr="0"
+	}
+	trigger="$(T)$(D)CurX"
+}
+"kill display" {
+	object {
+		x="735"
+		y="417"
+		width="77"
+		height="38"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="none"
+}

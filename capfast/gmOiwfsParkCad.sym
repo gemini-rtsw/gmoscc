@@ -1,0 +1,26 @@
+[symbol2]
+bbox 32 0 288 256
+port 224 64 100 2048 ParkFollowState symbol 2 288 64 0
+port 224 192 100 2048 ParkMODE symbol 2 288 192 0
+port 224 128 100 2048 ParkDIR symbol 2 288 128 0
+uniq 393
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 7 0 128 240 Park CAD
+l 100 2 0 208 16 gmOiwfsParkCad
+r 0 32 0 224 256
+v 0 224 64
+288 64
+_
+v 0 224 128
+288 128
+_
+v 0 224 192
+288 192
+_
+v 0 32 224
+224 224
+_
+[comments]

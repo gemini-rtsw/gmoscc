@@ -1,0 +1,20 @@
+# monitor_init.cau
+#
+# cau macro which monitors CAD/CAR records associated with init.
+# Invoked using cau "source" command.
+#
+monitor g8:init.DIR
+monitor g8:init.VAL
+monitor g8:init.A
+monitor g8:cc:init.DIR
+monitor g8:cc:init.VAL
+monitor g8:cc:init.A
+monitor g8:dc:init.DIR
+monitor g8:dc:init.VAL
+monitor g8:dc:init.A
+
+monitor g8:cc:initC.VAL
+monitor g8:dc:initC.VAL
+monitor g8:initC.VAL
+
+# Type dataOut cau_init.log

@@ -1,0 +1,317 @@
+#!/usr/local/bin/tcsh -f
+#
+# dumpFits
+#
+# Description:
+#
+#   A simple script to dump the current contents of the Status Alarm
+#   Database into a file looking like a FITS header.
+#
+#   It is assumed this script is being run from the "test" directory.
+#   The GMOS CC database must be running somewhere.
+#   This script will not attempt to move any mechanisms.
+#
+# Invocation:
+#   dumpFits filename
+#
+# NOTE:
+#   This script is designed to be as simple as possible, so it does not do as much
+#   checking as a dhsTestCmdr script. It is designed to generate test data rather
+#   than to check out the correct operation of the instrument.
+#
+# EXTERNAL REFERENCES:
+#   Requires "caget -t" channel access utility.
+#
+
+#
+# Check for arguments
+#
+
+if ($#argv != 1) then
+    echo "Please supply file name"
+    exit
+endif
+
+#
+# Get the current day
+#
+
+set day = `date +%d%h%y`
+
+#
+# Bail out if the scripts directory does not exist.
+#
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+#
+# Create the log directory if need be...
+#
+
+echo ""
+if (!(-e logfiles/$day)) then
+   mkdir logfiles/$day
+   echo "Creating directory ./logfiles/"$day" for FITS header file"
+endif
+
+if (!(-e logfiles/$day/${1})) then
+   echo "FITS header info will be stored in ./logfiles/"$day"/"$1
+   echo " "  | cat > ./logfiles/$day/$1
+else
+   echo "FITS header info will be appended to ./logfiles/"$day"/"$1
+   echo " "  | cat >> ./logfiles/$day/$1
+endif
+
+echo "FITS header saved at `date`" | cat >> ./logfiles/$day/$1
+echo "-------------------------------------------------" | cat >> ./logfiles/$day/$1
+
+#
+# Basic observation and instrument identification
+#
+
+set instrume = `caget -t gm:sad:name`
+echo "INSTRUME	" $instrume "	/ Instrument name /" | cat >> ./logfiles/$day/$1
+
+set gmoscc = `caget -t gm:sad:cc:name`
+echo "GMOSCC  	" $gmoscc "	/ Components Controller name /" | cat >> ./logfiles/$day/$1
+
+set gmosdc = `caget -t gm:sad:dc:name`
+echo "GMOSDC  	" $gmosdc "	/ Detector Controller name /" | cat >> ./logfiles/$day/$1
+
+set conID = `caget -t gm:sad:dc:conID`
+echo "CONID   	" $conID "	/ Detector controller ID /" | cat >> ./logfiles/$day/$1
+
+set dataLabel = `caget -t gm:sad:dc:dataLabel`
+echo "DHSLABEL 	" $dataLabel "	/ DHS data label /" | cat >> ./logfiles/$day/$1
+
+#
+# Instrument configuration information
+#
+
+set mskID = `caget -t gm:sad:cc:mskID`
+echo "MASKID  	" $mskID "	/ Barcode of mask or IFU in beam /" | cat >> ./logfiles/$day/$1
+
+set mskFP = `caget -t gm:sad:cc:mskFP`
+if ( $mskFP == 1 ) then
+   set mskType = "MASK"
+else if ( $mskFP == -1 ) then
+   set mskType = "IFU"
+else
+   set mskType = "UNKNOWN"
+endif
+echo "MASKTYP 	" $mskType "	/ Type of mask device in beam /" | cat >> ./logfiles/$day/$1
+
+set mskLoc = `caget -t gm:sad:cc:mskLoc`
+if ( $mskLoc == 0 ) then
+   set mskWhere = "BEAM"
+else if ( $mskLoc == -1 ) then
+   set mskWhere = "CASSETTE"
+else
+   set mskWhere = "UNKNOWN"
+endif
+echo "MASKLOC 	" $mskWhere "	/ Location of mask device /" | cat >> ./logfiles/$day/$1
+
+set filtName1 = `caget -t gm:sad:filtName1`
+echo "FILTER1 	" $filtName1 "	/ Filter 1 name /" | cat >> ./logfiles/$day/$1
+
+set fltID1 = `caget -t gm:sad:cc:fltID1`
+echo "FILTID1 	" $fltID1 "	/ Filter 1 barcode /" | cat >> ./logfiles/$day/$1
+
+set filtName2 = `caget -t gm:sad:filtName2`
+echo "FILTER2 	" $filtName2 "	/ Filter 2 name /" | cat >> ./logfiles/$day/$1
+
+set fltID2 = `caget -t gm:sad:cc:fltID2`
+echo "FILTID2 	" $fltID2 "	/ Filter 2 barcode /" | cat >> ./logfiles/$day/$1
+
+set grName = `caget -t gm:sad:grName`
+echo "GRATING 	" $grName "	/ Grating name /" | cat >> ./logfiles/$day/$1
+
+set grID = `caget -t gm:sad:cc:grID`
+echo "GRATID  	" $grID "	/ Grating barcode /" | cat >> ./logfiles/$day/$1
+
+set grWavelen = `caget -t gm:sad:grWavelen`
+echo "GRWLEN  	" $grWavelen "	/ Grating wavelength (nm) /" | cat >> ./logfiles/$day/$1
+
+set grOrder = `caget -t gm:sad:grOrder`
+echo "GRORDER 	" $grOrder "	/ Grating order /" | cat >> ./logfiles/$day/$1
+
+set grTilt = `caget -t gm:sad:cc:grTilt`
+echo "GRTILT  	" $grTilt "	/ Grating tilt (degrees) /" | cat >> ./logfiles/$day/$1
+
+
+#
+# Flexure control information
+#
+
+set dtaZStart = `caget -t gm:sad:dtaZStart`
+echo "DTAZST  	" $dtaZStart "	/ Focus at observation start (microns) /" | cat >> ./logfiles/$day/$1
+
+set dtaZEnd = `caget -t gm:sad:dtaZEnd`
+echo "DTAZEN  	" $dtaZEnd "	/ Focus at observation end (microns) /" | cat >> ./logfiles/$day/$1
+
+set dtaZMean = `caget -t gm:sad:dtaZMean`
+echo "DTAZME  	" $dtaZMean "	/ Mean focus during observation (microns) /" | cat >> ./logfiles/$day/$1
+
+#
+# Atmospheric dispersion compensation information
+#
+
+set atmPresent = `caget -t gm:sad:cc:atmPresent`
+if ( $atmPresent == 1 ) then
+   set atmUsed = "YES"
+else
+   set atmUsed = "NO"
+endif
+echo "ADCUSED 	" $atmUsed "	/ AtmDC installed /" | cat >> ./logfiles/$day/$1
+
+if ( $atmPresent == 1 ) then
+
+   set atmEnpStart = `caget -t gm:sad:atmEnpStart`
+   echo "ACDENPST	" $atmEnpStart "	/ Entrance prism angle (deg) at obs start /" | cat >> ./logfiles/$day/$1
+
+   set atmExpStart = `caget -t gm:sad:atmExpStart`
+   echo "ACDEXPST	" $atmExpStart "	/ Exit prism angle (deg) at obs start /" | cat >> ./logfiles/$day/$1
+
+   set atmEnpEnd = `caget -t gm:sad:atmEnpEnd`
+   echo "ACDENPEN	" $atmEnpEnd "	/ Entrance prism angle (deg) at obs end /" | cat >> ./logfiles/$day/$1
+
+   set atmExpEnd = `caget -t gm:sad:atmExpEnd`
+   echo "ACDENPEN	" $atmExpEnd "	/ Exit prism angle (deg) at obs end /" | cat >> ./logfiles/$day/$1
+
+
+   set atmEnpMean = `caget -t gm:sad:atmEnpMean`
+   echo "ACDENPME	" $atmEnpMean "	/ Mean entrance prism angle (deg) during obs /" | cat >> ./logfiles/$day/$1
+
+   set atmExpMean = `caget -t gm:sad:atmExpMean`
+   echo "ACDENPME	" $atmExpMean "	/ Mean exit prism angle (deg) during obs /" | cat >> ./logfiles/$day/$1
+
+   set atmWavelen1 = `caget -t gm:sad:atmWavelen1`
+   echo "ACDWLEN1	" $atmWavelen1 "	/ Lower AtmDC wavelength (nm) /" | cat >> ./logfiles/$day/$1
+
+   set atmWavelen2 = `caget -t gm:sad:atmWavelen2`
+   echo "ACDWLEN2	" $atmWavelen2 "	/ Upper AtmDC wavelength (nm) /" | cat >> ./logfiles/$day/$1
+
+endif
+
+#
+# Detector Controller configuration information
+#
+
+set detType = `caget -t gm:sad:dc:detType`
+echo "DETTYPE 	" $detType "	/ Detector array type /" | cat >> ./logfiles/$day/$1
+
+set detId = `caget -t gm:sad:dc:detId`
+echo "DETID   	" $detId "	/ Chip IDs /" | cat >> ./logfiles/$day/$1
+
+set detTemp = `caget -t gm:sad:dc:detTemp`
+echo "DETTEMP 	" $detTemp "	/ Detector chip temperature (C) /" | cat >> ./logfiles/$day/$1
+
+#
+# Information on regions of interest (this should already be included in the data description
+# but is saved here for additional info).
+#
+
+set roiCnt = `caget -t gm:sad:dc:roiCnt`
+echo "DETNROI 	" $roiCnt "	/ No. regions of interest /" | cat >> ./logfiles/$day/$1
+
+if ( $roiCnt > 0 ) then
+
+   set roi1X = `caget -t gm:sad:dc:roi1X`
+   echo "DETRO1X 	" $roi1X "	/ ROI 1 X start /" | cat >> ./logfiles/$day/$1
+
+   set roi1XSize = `caget -t gm:sad:dc:roi1XSize`
+   echo "DETRO1XS	" $roi1XSize "	/ ROI 1 X size /" | cat >> ./logfiles/$day/$1
+
+   set roi1Y = `caget -t gm:sad:dc:roi1Y`
+   echo "DETRO1Y 	" $roi1Y "	/ ROI 1 Y start /" | cat >> ./logfiles/$day/$1
+
+   set roi1YSize = `caget -t gm:sad:dc:roi1YSize`
+   echo "DETRO1YS	" $roi1YSize "	/ ROI 1 Y size /" | cat >> ./logfiles/$day/$1
+endif
+
+
+if ( $roiCnt > 1 ) then
+
+   set roi2X = `caget -t gm:sad:dc:roi2X`
+   echo "DETRO2X 	" $roi2X "	/ ROI 2 X start /" | cat >> ./logfiles/$day/$1
+
+   set roi2XSize = `caget -t gm:sad:dc:roi2XSize`
+   echo "DETRO2XS	" $roi2XSize "	/ ROI 2 X size /" | cat >> ./logfiles/$day/$1
+
+   set roi2Y = `caget -t gm:sad:dc:roi2Y`
+   echo "DETRO2Y 	" $roi2Y "	/ ROI 2 Y start /" | cat >> ./logfiles/$day/$1
+
+   set roi2YSize = `caget -t gm:sad:dc:roi2YSize`
+   echo "DETRO2YS	" $roi2YSize "	/ ROI 2 Y size /" | cat >> ./logfiles/$day/$1
+endif
+
+
+if ( $roiCnt > 2 ) then
+
+   set roi3X = `caget -t gm:sad:dc:roi3X`
+   echo "DETRO3X 	" $roi3X "	/ ROI 3 X start /" | cat >> ./logfiles/$day/$1
+
+   set roi3XSize = `caget -t gm:sad:dc:roi3XSize`
+   echo "DETRO3XS	" $roi3XSize "	/ ROI 3 X size /" | cat >> ./logfiles/$day/$1
+
+   set roi3Y = `caget -t gm:sad:dc:roi3Y`
+   echo "DETRO3Y 	" $roi3Y "	/ ROI 3 Y start /" | cat >> ./logfiles/$day/$1
+
+   set roi3YSize = `caget -t gm:sad:dc:roi3YSize`
+   echo "DETRO3YS	" $roi3YSize "	/ ROI 3 Y size /" | cat >> ./logfiles/$day/$1
+endif
+
+
+if ( $roiCnt > 3 ) then
+
+   set roi4X = `caget -t gm:sad:dc:roi4X`
+   echo "DETRO4X 	" $roi4X "	/ ROI 4 X start /" | cat >> ./logfiles/$day/$1
+
+   set roi4XSize = `caget -t gm:sad:dc:roi4XSize`
+   echo "DETRO4XS	" $roi4XSize "	/ ROI 4 X size /" | cat >> ./logfiles/$day/$1
+
+   set roi4Y = `caget -t gm:sad:dc:roi4Y`
+   echo "DETRO4Y 	" $roi4Y "	/ ROI 4 Y start /" | cat >> ./logfiles/$day/$1
+
+   set roi4YSize = `caget -t gm:sad:dc:roi4YSize`
+   echo "DETRO4YS	" $roi4YSize "	/ ROI 4 Y size /" | cat >> ./logfiles/$day/$1
+endif
+
+
+set xBin = `caget -t gm:sad:dc:xBin`
+echo "XBIN    	" $xBin "	/ Binning factor for columns /" | cat >> ./logfiles/$day/$1
+
+set yBin = `caget -t gm:sad:dc:yBin`
+echo "YBIN    	" $yBin "	/ Binning factor for rows /" | cat >> ./logfiles/$day/$1
+
+#
+# Detector controller dynamic header (this should already be contained with the data
+# but is saved here for additional info)
+#
+
+set utstart = `caget -t gm:sad:dc:utstart`
+echo "UTSTART 	" $utstart "	/ UT at exposure start /" | cat >> ./logfiles/$day/$1
+
+set utend = `caget -t gm:sad:dc:utend`
+echo "UTEND   	" $utend "	/ UT at exposure end /" | cat >> ./logfiles/$day/$1
+
+set exposed = `caget -t gm:sad:dc:exposed`
+echo "EXPOSED 	" $exposed "	/ Total integration time (seconds) /" | cat >> ./logfiles/$day/$1
+
+set elapsed = `caget -t gm:sad:dc:elapsed`
+echo "ELAPSED 	" $elapsed "	/ Total elapsed time (seconds) /" | cat >> ./logfiles/$day/$1
+
+set darktime = `caget -t gm:sad:dc:darktime`
+echo "DARKTIME	" $darktime "	/ Total dark time (seconds) /" | cat >> ./logfiles/$day/$1
+
+
+exit
+
+
+
+
+
+

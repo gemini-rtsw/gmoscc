@@ -1,0 +1,31 @@
+#
+# VxWorks script for testing the GMOS interlock hardware.
+# This script assumes the GMOS software has already been loaded.
+#
+
+# Change the shell prompt to remind the user to reboot after
+shellPromptSet "GMOS Interlock Test > "
+
+# cd to application install directory (beware automounter problems)
+cd "$(install)"
+pwd
+
+# Load the OMS test routines.
+ld < $(install)/bin/$(arch)/testOms844.o
+
+# Disable all motors
+omsAllOff
+
+# Turn OFF all Solid State Relays
+pvload "$(version)/data/ssrOff.pv","top=gm:"
+
+# Wait for 5 seconds
+taskDelay(300)
+
+# Enable all motors one by one
+omsAllOnSlow
+
+# Turn ON all Solid State Relays
+pvload "$(version)/data/ssrOn.pv","top=gm:"
+
+# Interlock test script finished. Now please reboot.

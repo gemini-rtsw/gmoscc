@@ -1,0 +1,152 @@
+#!/usr/local/bin/tcsh -f
+#
+# logImages
+#
+# Description:
+#
+#   A simple script to log the state of the filter wheel switches
+#
+#   It is assumed this script is being run from the "test" directory.
+#   The detector controller must already have been initalised
+#   and set into the desired configuration.
+#
+# Invocation:
+#   logImages interval
+#
+# NOTE:
+#   This script is designed to be as simple as possible, so it does not do as much
+#   checking as a dhsTestCmdr script. It is designed to generate test data rather
+#   than to check out the correct operation of the instrument.
+#
+
+#
+# Check for arguments
+#
+
+if ($#argv != 0) then
+    echo "No arguments accepted"
+    exit
+endif
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+#if (!($?GMOS_MK_ACCESS)) then
+#    echo ""
+#    echo "GMOS MK safety check failed."
+#    echo ""
+#    echo "Before executing this script, which will move real MK hardware,"
+#    echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+#    echo ""
+#    exit
+#else
+#    echo ""
+#     echo "GMOS MK safety check passed."
+#    echo ""
+#endif
+
+echo "Simulating - no safety check required"
+
+if (!(-e wheel2log)) then
+    echo "Creating log file wheel2log"
+    echo "newSwitchState wheel2pos" | cat >> wheel2log
+    sleep 1
+endif
+
+echo "Switch information will be stored in file wheel2log"
+sleep 1
+
+echo ""
+echo "It is assumed you have executed INIT, INDEX on the filter wheel2 device."
+echo ""
+echo "Type Ctrl-c when you want to finish the script."
+echo "(type <ret> when ready to proceed)"
+set dummy = $<
+
+echo ""
+
+echo "" | cat >> wheel2log
+
+#
+# Start the observations.
+#
+
+#
+# Move filter wheel 2 to near its lower software limit.
+#
+
+echo "Indexing wheel2..."
+caput "g7:cc:flt2Device.MODE" "3"
+caput "g7:cc:flt2Device.DIR" "2"
+
+set busyState = "BUSY"
+
+sleep 1
+
+while ($busyState == BUSY)
+    set busyState = `caget "g7:cc:flt2Device.BUSY" | sed 's|g7:cc:flt2Device.BUSY||g'`
+end
+
+echo "Moving wheel2 to lower limit..."
+caput "g7:cc:flt2Device.MODE" "1"
+caput "g7:cc:flt2Device.VAL" "-14.5"
+caput "g7:cc:flt2Device.DIR" "2"
+
+set busyState = BUSY
+
+sleep 1
+
+while ($busyState == BUSY)
+    set busyState = `caget "g7:cc:flt2Device.BUSY" | sed 's|g7:cc:flt2Device.BUSY||g'`
+end
+
+set wheel2Velocity = `caget "g7:cc:flt2Device.VELO" | sed 's|g7:cc:flt2Device.VELO||g'`
+echo "Current wheel2 velocity is "$wheel2Velocity
+
+caput "g7:cc:flt2Device.VELO" "0.1"
+echo "New wheel2 velocity is 0.1"
+
+#
+# Now slowly move filter wheel 2 to near its software upper limit.
+#
+
+set switch = -1
+set wheel2mpos = start
+
+echo "Moving wheel2 slowly to upper limit..."
+caput "g7:cc:flt2Device.MODE" "1"
+caput "g7:cc:flt2Device.VAL" "14.5"
+caput "g7:cc:flt2Device.DIR" "2"
+
+set busyState = BUSY
+
+sleep 1
+
+while ($busyState == BUSY)
+
+    set newSwitch = `caget "g7:cc:flt2inPos.VAL" | sed 's|g7:cc:flt2inPos.VAL||g'`
+    if ($newSwitch != $switch) then
+	set switch = $newSwitch
+	echo "Switch state is "$switch
+	set wheel2mpos = `caget "g7:cc:flt2Device.MPOS" | sed 's|g7:cc:flt2Device.MPOS||g'`
+	echo $switch $wheel2mpos | cat >> wheel2log
+    endif
+
+    set busyState = `caget "g7:cc:flt2Device.BUSY" | sed 's|g7:cc:flt2Device.BUSY||g'`
+end
+
+caput "g7:cc:flt2Device.VELO" $wheel2Velocity
+echo "New wheel2 velocity is "$wheel2Velocity
+
+exit
+
+
+
+
+
+
+
+
+

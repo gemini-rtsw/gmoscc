@@ -1,0 +1,14 @@
+# monitor_update.cau
+#
+# cau macro which monitors CAD/CAR records associated with update.
+# Invoked using cau "source" command.
+#
+monitor g8:update.DIR
+monitor g8:update.VAL
+monitor g8:cc:update.DIR
+monitor g8:cc:update.VAL
+
+monitor g8:cc:updateC.VAL
+monitor g8:updateC.VAL
+
+# Type dataOut cau_update.log

@@ -1,0 +1,28 @@
+[symbol2]
+bbox 192 384 704 640
+port 592 416 100 0 FLNK symbol 2 704 416 0
+port 592 544 100 0 MESS symbol 2 704 544 0
+port 592 592 100 0 CAR symbol 2 704 608 0
+port 304 608 100 1792 LOADED symbol 1 192 608 0
+uniq 5
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 320 512 GMOS subsystem applyC
+l 100 0 0 320 480 and CommSentC values
+l 100 0 0 320 448 combined
+r 0 256 384 640 640
+v 0 640 416
+704 416
+_
+v 0 640 544
+704 544
+_
+v 0 640 608
+704 608
+_
+v 0 192 608
+256 608
+_
+[comments]

@@ -1,0 +1,44 @@
+#!/bin/csh
+#
+# setDevicePrefixes
+#
+# Description:
+#
+#   Define environment variables containing the assembly and device
+#   prefixes used in the GMOS EPICS database.
+#
+# Invocation:
+#   source setDevicePrefixes
+
+#
+# Assembly prefixes
+#
+setenv wfs            probe
+setenv mask           msk
+setenv filter         flt
+setenv grating        gr
+setenv translation    dta
+
+#
+# Device prefixes
+#
+setenv base           probeBas
+setenv pickoff        probePko
+
+setenv extractor      mskExt
+setenv cassette       mskCas
+setenv gripper        mskGrp
+setenv release        mskRel
+
+setenv wheel1         flt1
+setenv wheel2         flt2
+
+setenv tiltA          grA
+setenv tiltB          grB
+setenv tiltC          grC
+setenv tiltD          grD
+setenv turret         grt
+
+setenv xaxis          dta1
+setenv yaxis          dta2
+setenv zaxis          dta3

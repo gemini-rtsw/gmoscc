@@ -1,0 +1,2132 @@
+#
+# DHS Test Commander
+# Checkout script for:
+#
+#	Gmos Translation Assembly checkout
+#
+
+
+#
+# Define the variables used in this script, and the configuration files
+# which contain their translation into EPICS channel names.
+#
+#     Config file     Config file name          Named used here      Mystery number
+#     -----------     ---------------------     -----------------    --------------
+
+VAR   postFpIcd       translationDirective           cmdDir               1
+VAR   postFpIcd       translationMode                dtaMode              1
+
+VAR   postFpIcd       translationX                   dtaTargetX           1
+VAR   postFpIcd       translationY                   dtaTargetY           1
+VAR   postFpIcd       translationZ                   dtaTargetZ           1
+VAR   postFpIcd       translationLut                 dtaUseLut            1
+
+VAR   postFpIcd       translationAcknowledge         cmdAck               1
+VAR   postFpIcd       translationBusy                cmdAction            1
+VAR   postFpIcd       translationMessage             cmdError             1
+VAR   postFpIcd       translationState               cmdState             1
+
+VAR   postFpIcd       translationCarMess             dtaCarMsg            1
+VAR   postFpIcd       translationCarErr              dtaCarErr            1
+
+VAR   postFpIcd       sadXposition                   sadXposition         1
+VAR   postFpIcd       sadYposition                   sadYposition         1
+VAR   postFpIcd       sadZposition                   sadZposition         1
+
+VAR   postFpIcd       sadTranslationInitialized      sadInit              1
+VAR   postFpIcd       sadTranslationIndexed          sadIndex             1
+VAR   postFpIcd       sadTranslationParked           sadPark              1
+VAR   postFpIcd       sadTranslationHealth           sadHealth            1
+VAR   postFpIcd       sadTranslationState            sadState             1
+
+VAR   postFpIcd       sadTranslationDebug            sadDebug             1
+VAR   postFpIcd       sadTranslationSimulate         sadSimm              1
+
+VAR   translationAssembly  assemblyTranslationFile   dtaLutFile           1
+VAR   translationAssembly  assemblyTranslationDir    dtaLutDir            1
+
+VAR   translationXDevice   devPosition               dta1Pos              1
+#VAR   translationXDevice   devDir                    dta1Dir              1
+#VAR   translationXDevice   devMode                   dta1Mode             1
+#VAR   translationXDevice   devTarget                 dta1Target           1
+#VAR   translationXDevice   devNamedTarget            dta1NamedTarget      1
+#VAR   translationXDevice   devVelocity               dta1Velocity         1
+#VAR   translationXDevice   devAck                    dta1Ack              1
+#VAR   translationXDevice   devBusy                   dta1Busy             1 
+#VAR   translationXDevice   devState                  dta1State            1
+#VAR   translationXDevice   devMess                   dta1Mess             1
+
+VAR   translationYDevice   devPosition               dta2Pos              1
+#VAR   translationYDevice   devDir                    dta2Dir              1
+#VAR   translationYDevice   devMode                   dta2Mode             1
+#VAR   translationYDevice   devTarget                 dta2Target           1
+#VAR   translationYDevice   devNamedTarget            dta2NamedTarget      1
+#VAR   translationYDevice   devVelocity               dta2Velocity         1
+#VAR   translationYDevice   devAck                    dta2Ack              1
+#VAR   translationYDevice   devBusy                   dta2Busy             1
+#VAR   translationYDevice   devState                  dta2State            1
+#VAR   translationYDevice   devMess                   dta2Mess             1
+
+VAR   translationZDevice   devPosition               dta3Pos              1
+#VAR   translationZDevice   devDir                    dta3Dir              1
+#VAR   translationZDevice   devMode                   dta3Mode             1
+#VAR   translationZDevice   devTarget                 dta3Target           1
+#VAR   translationZDevice   devNamedTarget            dta3NamedTarget      1
+#VAR   translationZDevice   devVelocity               dta3Velocity         1
+#VAR   translationZDevice   devAck                    dta3Ack              1
+#VAR   translationZDevice   devBusy                   dta3Busy             1
+#VAR   translationZDevice   devState                  dta3State            1
+#VAR   translationZDevice   devMess                   dta3Mess             1
+
+#
+# check starting point, should be freshly rebooted and not indexed....
+#
+# (NOTE: It is possible to test this script without rebooting by poking the
+# translation assembly's INIT, INDX and HLTH fields to the correct values).
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly not indexed?"
+GETVAL sadIndex
+OUTPUT *VAL* 0*
+
+DESC "Translation assembly initialization state"
+GETVAL sadInit
+OUTPUT *
+
+DESC "Translation assembly not parked?"
+GETVAL sadPark
+OUTPUT *VAL* 0*
+
+DESC "Translation assembly health"
+GETVAL sadHealth
+OUTPUT *
+
+DESC "Ensure you're using the right LUT filename"
+GETVAL dtaLutFile
+OUTPUT *TFIL * dta.lut*
+
+DESC "Log the LUT directory"
+GETVAL dtaLutDir
+OUTPUT *TDIR *
+
+ENDTEST
+
+#
+# Start by testing the translation assembly initialisation function
+#
+
+TEST "Test Initialization function"
+FATAL
+
+DESC "Initializing translation assembly"
+
+PUTVAL dtaMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the translation assembly 
+# initialisation flag has been set, the translation assembly and translation CAR records have
+# both gone idle, and the health has changed to GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Test index function
+#
+
+TEST "Test Index Function"
+FATAL
+
+DESC "Indexing Translation Assembly"
+
+PUTVAL dtaMode "3"
+OUTPUT *MODE*INIT*MODE*INDEX*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the translation assembly 
+# indexed flag has been set, the initialised flag is still set, the translation assembly
+# and translation CAR records have both gone idle, and the health is still GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Move around the extreme edges of the XY field with Z varying each time
+#
+
+#
+# --------------------------------------------------------------------------------------
+# Move close to bottom left hand corner
+#
+
+TEST "Test edges of patrol area: Move to (-25,-10,100) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "-25.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "-10.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "100.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*INDEX*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+#
+# The actual position may not be exactly the same as the demanded position,
+# since the motor can only position to the nearest step, but the SAD should reflect
+# the actual position of the mechanism.
+#
+
+DESC "Record the actual XYZ position"
+
+GETVAL dta1Pos
+OUTPUT *
+
+GETVAL dta2Pos
+OUTPUT *
+
+GETVAL dta3Pos
+OUTPUT *
+
+DESC "Verify XYZ records in SAD are correct"
+
+GETVAL sadXposition
+OUTPUT *
+CMD "compareField sadXposition dta1Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadYposition dta2Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadZposition dta3Pos"
+OUTPUT *Equal*
+
+ENDTEST
+
+
+#
+# --------------------------------------------------------------------------------------
+# Move to middle of bottom edge
+#
+
+TEST "Move to (100,-10,1000) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "100.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "-10.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "1000.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+#
+# The actual position may not be exactly the same as the demanded position,
+# since the motor can only position to the nearest step, but the SAD should reflect
+# the actual position of the mechanism.
+#
+
+DESC "Record the actual XYZ position"
+
+GETVAL dta1Pos
+OUTPUT *
+
+GETVAL dta2Pos
+OUTPUT *
+
+GETVAL dta3Pos
+OUTPUT *
+
+DESC "Verify XYZ records in SAD are correct"
+
+GETVAL sadXposition
+OUTPUT *
+CMD "compareField sadXposition dta1Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadYposition dta2Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadZposition dta3Pos"
+OUTPUT *Equal*
+
+ENDTEST
+
+
+#
+# --------------------------------------------------------------------------------------
+# Move close to bottom right hand corner
+#
+
+TEST "Move to (225,-10,2000) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "225.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "-10.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "2000.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+#
+# The actual position may not be exactly the same as the demanded position,
+# since the motor can only position to the nearest step, but the SAD should reflect
+# the actual position of the mechanism.
+#
+
+DESC "Record the actual XYZ position"
+
+GETVAL dta1Pos
+OUTPUT *
+
+GETVAL dta2Pos
+OUTPUT *
+
+GETVAL dta3Pos
+OUTPUT *
+
+DESC "Verify XYZ records in SAD are correct"
+
+GETVAL sadXposition
+OUTPUT *
+CMD "compareField sadXposition dta1Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadYposition dta2Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadZposition dta3Pos"
+OUTPUT *Equal*
+
+ENDTEST
+
+
+
+#
+# --------------------------------------------------------------------------------------
+# Move to middle of right hand edge
+#
+
+TEST "Move to (225,108,1000) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "225.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "108.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "1000.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+#
+# The actual position may not be exactly the same as the demanded position,
+# since the motor can only position to the nearest step, but the SAD should reflect
+# the actual position of the mechanism.
+#
+
+DESC "Record the actual XYZ position"
+
+GETVAL dta1Pos
+OUTPUT *
+
+GETVAL dta2Pos
+OUTPUT *
+
+GETVAL dta3Pos
+OUTPUT *
+
+DESC "Verify XYZ records in SAD are correct"
+
+GETVAL sadXposition
+OUTPUT *
+CMD "compareField sadXposition dta1Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadYposition dta2Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadZposition dta3Pos"
+OUTPUT *Equal*
+
+ENDTEST
+
+
+
+#
+# --------------------------------------------------------------------------------------
+# Move close to top right hand corner
+#
+
+TEST "Move to (225,225,3000) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "225.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "225.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "3000.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+#
+# The actual position may not be exactly the same as the demanded position,
+# since the motor can only position to the nearest step, but the SAD should reflect
+# the actual position of the mechanism.
+#
+
+DESC "Record the actual XYZ position"
+
+GETVAL dta1Pos
+OUTPUT *
+
+GETVAL dta2Pos
+OUTPUT *
+
+GETVAL dta3Pos
+OUTPUT *
+
+DESC "Verify XYZ records in SAD are correct"
+
+GETVAL sadXposition
+OUTPUT *
+CMD "compareField sadXposition dta1Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadYposition dta2Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadZposition dta3Pos"
+OUTPUT *Equal*
+
+ENDTEST
+
+
+
+#
+# --------------------------------------------------------------------------------------
+# Move to middle of top edge
+#
+
+TEST "Move to (100,225,4000) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "100.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "225.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "4000.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+#
+# The actual position may not be exactly the same as the demanded position,
+# since the motor can only position to the nearest step, but the SAD should reflect
+# the actual position of the mechanism.
+#
+
+DESC "Record the actual XYZ position"
+
+GETVAL dta1Pos
+OUTPUT *
+
+GETVAL dta2Pos
+OUTPUT *
+
+GETVAL dta3Pos
+OUTPUT *
+
+DESC "Verify XYZ records in SAD are correct"
+
+GETVAL sadXposition
+OUTPUT *
+CMD "compareField sadXposition dta1Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadYposition dta2Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadZposition dta3Pos"
+OUTPUT *Equal*
+
+ENDTEST
+
+
+
+#
+# --------------------------------------------------------------------------------------
+# Move close to top left hand corner
+#
+
+TEST "Move to (-25,225,4500) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "-25.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "225.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "4500.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+#
+# The actual position may not be exactly the same as the demanded position,
+# since the motor can only position to the nearest step, but the SAD should reflect
+# the actual position of the mechanism.
+#
+
+DESC "Record the actual XYZ position"
+
+GETVAL dta1Pos
+OUTPUT *
+
+GETVAL dta2Pos
+OUTPUT *
+
+GETVAL dta3Pos
+OUTPUT *
+
+DESC "Verify XYZ records in SAD are correct"
+
+GETVAL sadXposition
+OUTPUT *
+CMD "compareField sadXposition dta1Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadYposition dta2Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadZposition dta3Pos"
+OUTPUT *Equal*
+
+ENDTEST
+
+
+
+#
+# --------------------------------------------------------------------------------------
+# Move to middle of left hand edge
+#
+
+TEST "Move to (-25,108,50) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "-25.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "108.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "50.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+#
+# The actual position may not be exactly the same as the demanded position,
+# since the motor can only position to the nearest step, but the SAD should reflect
+# the actual position of the mechanism.
+#
+
+DESC "Record the actual XYZ position"
+
+GETVAL dta1Pos
+OUTPUT *
+
+GETVAL dta2Pos
+OUTPUT *
+
+GETVAL dta3Pos
+OUTPUT *
+
+DESC "Verify XYZ records in SAD are correct"
+
+GETVAL sadXposition
+OUTPUT *
+CMD "compareField sadXposition dta1Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadYposition dta2Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadZposition dta3Pos"
+OUTPUT *Equal*
+
+ENDTEST
+
+
+
+#
+# --------------------------------------------------------------------------------------
+# Return close to bottom left hand corner
+#
+
+TEST "Return to (-25,-10,100) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "-25.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "-10.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "100.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+#
+# The actual position may not be exactly the same as the demanded position,
+# since the motor can only position to the nearest step, but the SAD should reflect
+# the actual position of the mechanism.
+#
+
+DESC "Record the actual XYZ position"
+
+GETVAL dta1Pos
+OUTPUT *
+
+GETVAL dta2Pos
+OUTPUT *
+
+GETVAL dta3Pos
+OUTPUT *
+
+DESC "Verify XYZ records in SAD are correct"
+
+GETVAL sadXposition
+OUTPUT *
+CMD "compareField sadXposition dta1Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadYposition dta2Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadZposition dta3Pos"
+OUTPUT *Equal*
+
+ENDTEST
+
+#
+# Now move to the middle and check that the translation assembly
+# can make small adjustments to its position - the sort of
+# adjustments necessary during flexure control. The SAD checks are
+# removed so the assembly gets more frequent updates.
+#
+
+#
+# --------------------------------------------------------------------------------------
+# Move to the middle best focus position
+#
+
+TEST "Test small adjustments: Move to (100,108,4160) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "100.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "108.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "4160.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# --------------------------------------------------------------------------------------
+# Make a small position adjustment
+#
+
+TEST "Move to (102,106,4100) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "102.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "106.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "4100.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# --------------------------------------------------------------------------------------
+# Make a small position adjustment
+#
+
+TEST "Move to (100,103,4110) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "100.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "103.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "4110.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# --------------------------------------------------------------------------------------
+# Make a small position adjustment
+#
+
+TEST "Move to (98,109,4100) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "98.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "109.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "4100.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# --------------------------------------------------------------------------------------
+# Make a small position adjustment
+#
+
+TEST "Move to (97,110,4101) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "102.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "106.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "4100.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# --------------------------------------------------------------------------------------
+# Make a small position adjustment
+#
+
+TEST "Move to (105,112,4100) microns - no lut conversion"
+FATAL
+
+DESC "Moving Translation Assembly"
+
+PUTVAL dtaTargetX "105.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "112.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "4100.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the translation assembly 
+# status.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+# --------------------------------------------------------------------------------------
+
+#
+# Select an out of (low) range X position and check this fails.
+#
+
+TEST "Select an out of (low) range X position"
+FATAL
+
+DESC "Select an out of (low) range X position"
+
+PUTVAL dtaTargetX "-50.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "0.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "100.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message of the form 'X (value) < (minimum)'"
+GETVAL cmdError
+OUTPUT *X*
+
+ENDTEST
+
+#
+# Select an out of (high) range X position and check this fails.
+#
+
+TEST "Select an out of (high) range X position"
+FATAL
+
+DESC "Select an out of (high) range X position"
+
+PUTVAL dtaTargetX "300.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "0.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "100.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message of the form 'X (value) > (maximum)'"
+GETVAL cmdError
+OUTPUT *X*
+
+ENDTEST
+
+#
+# Select an out of (low) range Y position and check this fails.
+#
+
+TEST "Select an out of (low) range Y position"
+FATAL
+
+DESC "Select an out of (low) range Y position"
+
+PUTVAL dtaTargetX "0.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "-50.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "100.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message of the form 'Y (value) < (minimum)'"
+GETVAL cmdError
+OUTPUT *Y*
+
+ENDTEST
+
+
+#
+# Select an out of (high) range Y position and check this fails.
+#
+
+TEST "Select an out of (high) range Y position"
+FATAL
+
+DESC "Select an out of (high) range Y position"
+
+PUTVAL dtaTargetX "0.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "300.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "100.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message of the form 'Y (value) > (maximum)'"
+GETVAL cmdError
+OUTPUT *Y*
+
+ENDTEST
+
+
+#
+# Select an out of (low) range Z position and check this fails.
+#
+
+TEST "Select an out of (low) range Z position"
+FATAL
+
+DESC "Select an out of (low) range Z position"
+
+PUTVAL dtaTargetX "0.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "0.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "-10.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message of the form 'Z (value) < (minimum)'"
+GETVAL cmdError
+OUTPUT *Z*
+
+ENDTEST
+
+#
+# Select an out of (high) range Z position and check this fails.
+#
+
+TEST "Select an out of (high) range Z position"
+FATAL
+
+DESC "Select an out of (high) range Z position"
+
+PUTVAL dtaTargetX "0.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "0.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "5000.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL dtaMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message of the form 'Z (value) > (maximum)'"
+GETVAL cmdError
+OUTPUT *Z*
+
+ENDTEST
+
+#
+# Reindex the translation assembly
+#
+
+TEST "Repeat Index Function"
+FATAL
+
+DESC "Restore targets"
+
+PUTVAL dtaTargetX "0.0"
+OUTPUT *
+
+PUTVAL dtaTargetY "0.0"
+OUTPUT *
+
+PUTVAL dtaTargetZ "0.0"
+OUTPUT *
+
+PUTVAL dtaUseLut "0"
+OUTPUT *
+
+DESC "Reindexing Translation Assembly"
+
+PUTVAL dtaMode "3"
+OUTPUT *MODE*MOVE*MODE*INDEX*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the translation assembly 
+# indexed flag has been set, the initialised flag is still set, the translation assembly
+# and translation CAR records have both gone idle, and the health is still GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+#
+# Test for failure of the translation assembly initialisation function
+# when it is given a non-existent file.
+#
+
+TEST "Test initialization function with non-existent LUT file"
+FATAL
+
+DESC "Initializing translation assembly with non-existent LUT file"
+
+PUTVAL dtaLutFile "nosuchfile.lut"
+OUTPUT *TFIL*TFIL* nosuchfile.lut*
+
+PUTVAL dtaMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Command Failed*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Failed to open LUT file'"
+GETVAL cmdError
+OUTPUT *Failed to open LUT file*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the translation assembly 
+# initialisation flag has been unset and the health has changed to WARNING.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 0*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health WARNING?"
+
+GETVAL sadHealth
+OUTPUT *VAL*WARNING*
+
+ENDTEST
+
+#
+# Test for failure of the translation assembly initialisation function
+# when it is given a garbage file.
+#
+
+TEST "Test initialization function with garbage LUT file"
+FATAL
+
+DESC "Initializing translation assembly with garbage LUT file"
+
+PUTVAL dtaLutFile "garbage.lut"
+OUTPUT *TFIL *TFIL * garbage.lut*
+
+PUTVAL dtaMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Command Failed*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Incorrect LUT file type'"
+GETVAL cmdError
+OUTPUT *Incorrect LUT file type*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the translation assembly 
+# initialisation flag is still unset and the health is still WARNING.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 0*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health WARNING?"
+
+GETVAL sadHealth
+OUTPUT *VAL*WARNING*
+
+ENDTEST
+
+
+#
+# Change the lookup table name back as it was
+#
+
+TEST "Change lookup table name back as it was"
+FATAL
+
+DESC "Reset the LUT filename"
+PUTVAL dtaLutFile "dta.lut"
+OUTPUT *TFIL *TFIL * dta.lut*
+
+ENDTEST
+
+
+#
+# Restore the translation assembly by reinitialising
+#
+
+TEST "Initialize properly to restore translation assembly"
+FATAL
+
+DESC "Initializing translation assembly properly"
+
+PUTVAL dtaMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the translation assembly 
+# initialisation flag has been set, the translation assembly and translation CAR records have
+# both gone idle, and the health has changed to GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Transltion assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+
+
+#
+# Finally, park the Assembly
+#
+
+TEST "Test parking function"
+FATAL
+
+DESC "Parking assembly"
+
+PUTVAL dtaMode "4"
+OUTPUT *MODE*INIT*MODE*PARK*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+
+CMD "sleep 1"
+OUTPUT *
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Translation assembly parked?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadPark
+OUTPUT *VAL* 1*
+ 
+DESC "Translation assembly indexed?"
+
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Translation assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Translation assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Record the actual XYZ parking position"
+
+GETVAL dta1Pos
+OUTPUT *
+
+GETVAL dta2Pos
+OUTPUT *
+
+GETVAL dta3Pos
+OUTPUT *
+
+DESC "Verify XYZ records in SAD are correct"
+
+GETVAL sadXposition
+OUTPUT *
+CMD "compareField sadXposition dta1Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadYposition dta2Pos"
+OUTPUT *Equal*
+
+GETVAL sadZposition
+OUTPUT *
+CMD "compareField sadZposition dta3Pos"
+OUTPUT *Equal*
+
+ENDTEST
+
+
+#
+#  Translation Assembly functions are OK
+#
+
+COMMENT "Translation assembly OK"

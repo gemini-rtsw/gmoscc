@@ -1,0 +1,37 @@
+#
+#  Set all the CAD input fields to NULL
+#
+put g2:observe.A ""
+put g2:debug.A NONE
+# put g2:simulate.A ""
+put g2:update.A ""
+put g2:atmTrack.A ""
+put g2:atmTrack.B ""
+put g2:atmTrack.C ""
+put g2:atmTrack.D ""
+put g2:atmTrack.E ""
+put g2:atmPos.A ""
+put g2:atmPos.B ""
+put g2:mskPos.A ""
+put g2:mskPos.B ""
+put g2:grSelect.A ""
+put g2:grSelect.B ""
+put g2:grSelect.C ""
+put g2:grSelect.D ""
+put g2:fltPos.A ""
+put g2:fltPos.B ""
+put g2:dtaTrack.A ""
+put g2:dtaTrack.B ""
+put g2:dtaTrack.C ""
+put g2:dtaTrack.D ""
+put g2:dtaPos.A ""
+put g2:dtaPos.B ""
+put g2:dtaPos.C ""
+#
+#   Now issue an INIT CAD command
+#
+put g2:init.DIR CLEAR
+put g2:init.DIR MARK
+put g2:apply.DIR START
+quit
+

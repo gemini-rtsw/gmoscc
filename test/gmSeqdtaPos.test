@@ -1,0 +1,195 @@
+# This is a file of tests for the GMOS sequencer in a suitable format to be read
+# by the tcsTests.tk procedure.
+# 
+# This particular test file is aimed at checking the input ranges to 
+# the GMOS 'dtaPos' CAD command.
+#
+#
+# Comments are introduced by a # in the first column
+# Blank lines can be left if required.
+# The currently allowed keywords are (case is immaterial)
+#
+#  Test   <testId>
+#  Command <commandName>
+#  Field   <CAD field> <value>
+#  Response Accept | Reject
+#  Timeout <msecs>
+#  OnError Continue | Abort
+#  Log     <recordName>
+#  Directive Start | Preset
+
+# This first part before the first Test keyword can be used to setup 
+# global values for Response, TimeOut and OnError. These global values
+# can be over ridden within specific tests
+
+Response Reject
+TimeOut  30000
+OnError  Continue
+
+Help
+Help These tests checks the trapping of invalid input to the
+Help dtaPos command.
+Help
+Help The first tests check for null input. If the commands in question have
+Help been run at any time after booting and prior to running these tests then
+Help there will already be input on the CAD fields and so these null tests
+Help will fail. To validate the trapping of null input you will have to
+Help reboot the GMOS sequencer and start these tests again.
+Help
+Help Press continue when ready
+Help
+
+# Tests start here. Each test must start with the Test keyword, end with
+# a Directive keyword and have at least one Command keyword. Any Field
+# keywords are assumed to apply to the last command
+
+Test UT06010
+Summary Check rejection of null input
+Help Check rejection of null input
+
+ Command dtaPos 
+ Field  DIR MARK   
+ Response  Reject 
+ Directive Start
+ 
+Test UT06015
+Summary Check rejection of null input to Y and Z-axis position fields
+Help Check rejection of null input to Y and Z-axis position fields
+
+ Command dtaPos
+ Field  A   1.0
+ Field  DIR MARK   
+ Response  Reject 
+ Directive Start
+
+Test UT06020
+Summary Check rejection of null input to Z-axis position field
+Help Check rejection of null input to X-axis position field
+
+ Command dtaPos 
+ Field  A  1.0
+ Field  B  1.0
+ Response  Reject 
+ Directive Start
+
+Test UT06030
+Summary Check rejection of invalid input to X-axis position field
+Help Check rejection of invalid input to X-axis position field
+
+ Command dtaPos 
+ Field  A  XXXX
+ Field  B  1.0
+ Field  C  1.0
+ Response  Reject 
+ Directive Start
+
+Test UT06040
+Summary Check rejection of invalid input to Y-axis position field
+Help Check rejection of invalid input to Y-axis position field
+
+ Command dtaPos 
+ Field  A  1.0
+ Field  B  XXXX
+ Field  C  1.0
+ Response  Reject 
+ Directive Start
+
+Test UT06050
+Summary Check rejection of invalid input to Z-axis position field
+Help Check rejection of invalid input to Z-axis position field
+
+ Command dtaPos 
+ Field  A  1.0
+ Field  B  1.0
+ Field  C  XXXX
+ Response  Reject 
+ Directive Start
+
+Test UT06060
+Summary Check rejection of out-of-range (positive) input to X-axis position field
+Help Check rejection of out-of-range (positive) input to X-axis position field
+
+ Command dtaPos 
+ Field  A  300.0
+ Field  B  1.0
+ Field  C  1.0
+ Response  Reject 
+ Directive Start
+
+Test UT06070
+Summary Check rejection of out-of-range (positive) input to Y-axis position field
+Help Check rejection of out-of-range (positive) input to Y-axis position field
+
+ Command dtaPos 
+ Field  A  1.0
+ Field  B  300.0
+ Field  C  1.0
+ Response  Reject 
+ Directive Start
+
+Test UT06080
+Summary Check rejection of out-of-range (positive) input to Z-axis position field
+Help Check rejection of out-of-range (positive) input to Z-axis position field
+
+ Command dtaPos 
+ Field  A  1.0
+ Field  B  1.0
+ Field  C  300.0
+ Response  Reject 
+ Directive Start
+
+Test UT06090
+Summary Check rejection of out-of-range (negative) input to X-axis position field
+Help Check rejection of out-of-range (negative) input to X-axis position field
+
+ Command dtaPos 
+ Field  A  -100.0
+ Field  B  1.0
+ Field  C  1.0
+ Response  Reject 
+ Directive Start
+
+Test UT06100
+Summary Check rejection of out-of-range (negative) input to Y-axis position field
+Help Check rejection of out-of-range (negative) input to Y-axis position field
+
+ Command dtaPos 
+ Field  A  1.0
+ Field  B  -100.0
+ Field  C  1.0
+ Response  Reject 
+ Directive Start
+
+Test UT06110
+Summary Check rejection of out-of-range (negative) input to Z-axis position field
+Help Check rejection of out-of-range (negative) input to Z-axis position field
+
+ Command dtaPos 
+ Field  A  100.0
+ Field  B  100.0
+ Field  C  -1.0
+ Response  Reject 
+ Directive Start
+
+Test UT06120
+Summary Check acceptance of valid positions
+Summary Check acceptance of valid positions
+
+  Aftertest Pause
+
+  Log c2:dtaAssembly.A
+  Log c2:dtaAssembly.B
+  Log c2:dtaAssembly.C
+
+ Command dtaPos 
+  Field  A  100.0
+  Field  B  200.0
+  Field  C  300.0
+  Response  Accept
+  Directive Start
+  
+# Test UT06130
+# Summary Check that rejection by Components Controller is reported correctly
+# NO TEST AVAILABLE
+#
+

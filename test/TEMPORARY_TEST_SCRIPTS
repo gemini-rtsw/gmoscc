@@ -1,0 +1,87 @@
+This file describes the scripts (contained in this directory and the 
+old_scripts sub-directory) that are not part of the GMOS acceptance 
+test procedure. Several such scripts have been written to help with
+the development and testing of the instrument.
+
+-----------------------------------------------
+
+./dumpFits - Reads the GMOS status records and dumps the contents
+             to a file resembling a FITS header. This script
+             simulates what the OCS will do when an observation
+             completes.
+
+./flexLog - developed for the flexure tests. Script will prompt for 
+            configuration details for the science images, and allow 
+            user to initiate a set of three "hartmann mask" images,
+            and N WFS images.
+
+./flexLog_sciOnly - as above, but without taking WFS images. This is
+                    for use whilst the WFS controller is faulty.
+
+./focusLog -  developed for focus runs. Takes a series of Science
+              images with the translation assembly z-stage at different
+              positions.
+
+./focusLogSim - as above, simulation mode.
+
+./logFilterSwitches - for testing the integrity of the filter wheel 2 in
+                      position switches and electronics. Also a test of
+                      EPICS monitoring software. Script slowly moves the 
+                      wheel for one revolution whilst monitoring the 
+                      switch state.
+
+./logFilterSwitchesSim - as above, simulation mode.
+
+./logImages <pause (minutes)> - written for the GMOS cold tests. The script
+                                takes a triplet of "hartmann images" from
+                                the science camera - moving the filter wheels
+                                to achieve this, and then pauses for the 
+                                specified time. The script will repeat this
+                                cycle until stopped
+
+./logImagesSim <pause (minutes)> - as above, simulation mode.
+
+./logTemps <pause (minutes)> - written for the GMOS cold tests. The script 
+                               periodically logs the measured temperatures 
+                               from the components controller and detector
+                               controller
+
+./logTempsSim <pause (minutes)> - as above, simulation mode.
+
+./turretSimUpdateCP - Simulates a grating assembly UPDATE at periodic
+                      intervals to test the CP grating turret. Runs
+                      continuously until interrupted.
+
+./hartAB - allows the user to take, when ready, a pair of images using teh hartmann A and B masks installed in the filter wheels.
+
+./hartCD - allows the user to take, when ready, a pair of images using teh hartmann C and D masks installed in the filter wheels.
+
+./hartABCD - allows the user to take, when ready, a quartet of images using teh hartmann A, B, C and D masks installed in the filter wheels.
+
+./hartFocusRun - child of the focusLog and hartABCD scripts. Takes the hartmann quartet several times, incrementing the translation stage z-position as it does so.
+
+./wfsImageLog - <pause (minutes)> - periodically take and log WFS images.
+
+-----------------------------------------------------
+
+./old_scripts/checkTurretBacklash - repeatedly calls "checout turretBacklash 
+                                    -auto". Obsolete.
+
+./old_scripts/gratingJiggle - repeatedly take images, "jiggling" the grating 
+                              (mirror) tilt to remove residual stresses. Now
+                              obsolete as software incorporates jiggling.
+
+./old_scripts/gratingJiggleSim - as above, simulation mode.
+
+./old_scripts/gratingRepeat - written for the jiggle-juggle tests. Now obsolete.
+
+./old_scripts/gratingRepeatNonContact - as gratingRepeat, non-contact mode. Obsolete.
+
+./old_scripts/gratingRepeatSim - as gratingRepeat, simulation mode. Obsolete.
+
+./old_scripts/logDisplacements - Version of logImages with jiggling. Obsolete
+
+./old_scripts/logDisplacementsSim - as above, simulation mode.
+
+
+

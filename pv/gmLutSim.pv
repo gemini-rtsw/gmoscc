@@ -1,0 +1,39 @@
+#
+# Change GMOS lookup table directory for simulation mode
+#
+# This pvload script changes the directory used by the GMOS
+# assemblies to maintain lookup tables, and ensures that a
+# different set of lookup tables is used in simulation mode.
+#
+# NOTE: This script should only be executed when running in simulation mode.
+#
+
+string $(top)cc:atmAssembly.TDIR   = "/home/smb/gmos/lut/sim" ;
+#string $(top)cc:atmEnpDevice.TDIR = "/home/smb/gmos/lut/sim" ;
+#string $(top)cc:atmExpDevice.TDIR = "/home/smb/gmos/lut/sim" ;
+
+string $(top)cc:mskAssembly.TDIR  = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:mskCasDevice.TDIR = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:mskExtDevice.TDIR = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:mskGrpDevice.TDIR = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:mskRelDevice.TDIR = "/home/smb/gmos/lut/sim" ;
+
+string $(top)cc:fltAssembly.TDIR = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:flt1Device.TDIR  = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:flt2Device.TDIR  = "/home/smb/gmos/lut/sim" ;
+
+string $(top)cc:grAssembly.TDIR  = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:grADevice.TDIR   = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:grBDevice.TDIR   = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:grCDevice.TDIR   = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:grDDevice.TDIR   = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:grtDevice.TDIR   = "/home/smb/gmos/lut/sim" ;
+
+string $(top)cc:dtaAssembly.TDIR = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:dta1Device.TDIR  = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:dta2Device.TDIR  = "/home/smb/gmos/lut/sim" ;
+string $(top)cc:dta3Device.TDIR  = "/home/smb/gmos/lut/sim" ;
+
+string $(top)wfs:probeAssembly.TDIR  = "/home/smb/gmos/lut/sim" ;
+string $(top)wfs:probeBasDevice.TDIR = "/home/smb/gmos/lut/sim" ;
+string $(top)wfs:probePkoDevice.TDIR = "/home/smb/gmos/lut/sim" ;

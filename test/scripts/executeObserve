@@ -1,0 +1,17 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: executeObserve
+#
+# Purpose: 
+#	To start a GMOS observation and wait for the whole thing to finish
+#
+# Invocation:
+#       executeObserve gm:
+#
+# Assumptions:
+#       The executeCommand script is available in the current PATH
+#
+
+executeCommand ${1}dc:observe.DIR ${1}dc:observe.VAL ${1}dc:observeC.VAL
+
+exit

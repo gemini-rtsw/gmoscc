@@ -1,0 +1,75 @@
+#!/usr/local/bin/tcsh -f
+#
+# checkout
+#
+# Description:
+#
+#   This sets the environment variables and runs the checkout test
+#
+#   It is assumed this script is being run from the "test" directory
+#   and that wish4.2 is in the current PATH.
+#
+# Invocation:
+#
+#   checkout name -auto -debug
+#
+#   where name is the name of the entity to be checked out.
+#   -auto (optional) runs the script automatically
+#   -debug (optional) adds diagnostic messages useful for debugging a script
+#
+
+#
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!($?GMOS_MK_ACCESS)) then
+    echo ""
+    echo "GMOS MK safety check failed."
+    echo ""
+    echo "Before executing this script, which will move real MK hardware,"
+    echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+    echo ""
+    exit
+else
+    echo "GMOS MK safety check passed."
+endif
+
+#
+# Bail out if the scripts directory does not exist.
+#
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+#
+# Create the "logfiles" directory if it doesn't exist.
+#
+if ( !(-e logfiles) ) then
+
+   echo "Creating logfiles directory..." 
+   mkdir logfiles
+endif
+
+#
+# Define the environment variable pointing to the config files
+#
+setenv DEFAULT_CONFIG_DIR ./configFiles
+
+#
+# Run the tests
+#
+wish4.2 ./dhsTestCmdr.tk -a scripts/${1}Checkout.asm -i scripts/${1}Checkout.scr $2 $3
+
+#
+# Move the log file generated into the "logfiles" directory
+#
+\mv ./scripts/${1}Checkout.scr.log ./logfiles/${1}Checkout.log
+
+#
+# Make a backup copy of the log file with the current date and time appended
+#
+\cp ./logfiles/${1}Checkout.log ./logfiles/${1}Checkout.log.`date +%H:%M:%S-%d-%h-20%y`

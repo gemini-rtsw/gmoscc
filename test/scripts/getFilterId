@@ -1,0 +1,43 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: getFilterId
+#
+# Purpose: 
+#	To recover a filter ID from the lookup table and 
+#	load it into the assembly record
+#	Input args:
+#		$1 record name and field where the ID is to be written
+#		$2 lookup table filename and path
+#               $3 wheel number
+#		$4 nth filter in lookup table for this wheel
+#	Writes filter barcode ID for nth filter in lookup table to record
+#       if they exist and returns with "Command Success". Otherwise
+#       returns with "Cannot set filter ID" if the caput fails or
+#       "Failed, not that many filters" if you've requested a filter
+#       number greater than those that exist.
+#
+
+if ( $3 > 2 || $3 < 1 ) then
+	echo "Failed, invalid wheel number, $3"
+	exit
+endif
+
+@ filterNum = ($4 * 3 - 2)
+set updateLine = `head -50 $2 | grep -v "#" | grep "pos" | grep " $3 "`
+@ filterTotal = ($#updateLine / 3)
+if ( $filterTotal < $4 ) then
+	echo "Failed, not that many filters"
+	exit
+endif
+
+set response = `caput $1 $updateLine[$filterNum] | grep $1 | grep $updateLine[$filterNum]`
+
+if ( $#response == 0 ) then
+	echo "Cannot set filter ID"
+	exit
+endif
+
+echo "Command Success"
+exit
+
+

@@ -1,0 +1,782 @@
+#
+# DHS Test Commander
+# Checkout script for:
+#     
+#    Mask Assembly Opto Sensor Delay Script
+#
+#  1.  Read assumptions - okay?
+#  2.  Verify Status
+#  3.  Check State of Opto Switches folowing database initialization
+#  4.  Enable opto switches and immediately check their states again
+#  5.  Install cassette #2.  Does the mask sensor screen now indicate 
+#      that there is a cassette installed, mask in slot and mask aligned?
+#  6.  Check state of opto switches - all affirmative
+#  7.  Disable opto switches and immediately check opto switch states again
+#  8.  Just for fun, initialize the mask assembly, which should disable 
+#      the opto sensors to "Unknown" state.
+#  9.  Check resulting status fields....
+# 10.  Check state of opto switches - should be Unknown
+# 11.  Remove the cassette #2 for safety before attempting index.  
+#      Are all cassettes now removed?
+# 12.  INDEX the mask assembly
+# 13.  check resulting status fields....
+# 14.  PARK in position two to allow cassette to be re-loaded
+# 15.  check resulting status fields....
+# 16.  Check state of opto switches - should be Unknown
+# 17.  Install cassette #2.  Does the mask sensor screen now indicate 
+#      that there is a cassette installed, mask in slot and mask aligned?
+# 18.  For the remaining tests capture all the debug output on the IOC.
+#      Ready to capture IOC screen?
+# 19.  Set mask DBUG to FULL
+# 20.  Set optoSensorDelay to 0 clock ticks then Park at position two again
+# 21.  Set optoSensorDelay to 1 then PARK at position two again
+# 22.  Set optoSensorDelay to 2 then Park at position two again
+# 23.  Set optoSensorDelay to 3 then PARK at position two again
+# 24.  Set optoSensorDelay to 4 then Park at position two again
+# 25.  Set optoSensorDelay to 5 then PARK at position two again
+# 26.  Set optoSensorDelay to 6 then Park at position two again
+# 27.  Set optoSensorDelay to 7 then PARK at position two again
+# 28.  Set optoSensorDelay to 8 then Park at position two again
+# 29.  Set optoSensorDelay to 9 then PARK at position two again
+# 30.  Set optoSensorDelay to 10 then Park at position two again
+# 31.  Set mask DBUG to NONE
+# 32.  Analyze IOC log for optimum delay or send it to Bob
+
+
+
+#
+# First get all those funky variables sorted out
+#
+
+VAR   preFpIcd     maskDirective           cmdDir               1
+
+VAR   preFpIcd     maskMode                mskMode              1
+VAR   preFpIcd     maskDebug               mskDebug             1
+VAR   preFpIcd     maskTarget              mskSelect            1
+VAR   preFpIcd     maskLocation            mskLocation          1
+VAR   preFpIcd     maskPark                mskParkingSpot       1
+VAR   preFpIcd     maskExtFast             mskExtFast           1
+VAR   preFpIcd     maskExtSlow             mskExtSlow           1
+
+VAR   preFpIcd     maskAcknowledge         cmdAck               1
+VAR   preFpIcd     maskBusy                cmdAction            1
+VAR   preFpIcd     maskMessage             cmdError             1
+VAR   preFpIcd     maskState               cmdState             1
+
+VAR   preFpIcd     maskCarMess             mskCarMsg            1
+VAR   preFpIcd     maskCarErr              mskCarErr            1
+
+VAR   preFpIcd     sadMaskLoadId           sadSelect            1
+VAR   preFpIcd     sadMaskLocation         sadLocation          1
+
+VAR   preFpIcd     sadMaskInitialized      sadInit              1
+VAR   preFpIcd     sadMaskIndexed          sadIndex             1
+VAR   preFpIcd     sadMaskParked           sadPark              1
+VAR   preFpIcd     sadMaskHealth           sadHealth            1
+VAR   preFpIcd     sadMaskFP               sadInFp              1
+
+VAR   preFpIcd     sadMaskState            sadState             1
+
+VAR   preFpIcd     sadMaskGripper          sadGripper           1
+VAR   preFpIcd     sadMaskRelease          sadRelease           1
+
+VAR   preFpIcd     sadMaskDebug            sadDebug             1
+VAR   preFpIcd     sadMaskSimulate         sadSimm              1
+
+VAR   maskAssembly assemblyTranslationFile mskLutFile           1
+VAR   maskAssembly assemblyTranslationDir  mskLutDir            1
+
+VAR   gripDevice   devDir                  gripDir              1
+VAR   gripDevice   devMode                 gripMode             1
+VAR   gripDevice   devTarget               gripTarget           1
+VAR   gripDevice   devNamedTarget          gripNamedTarget      1
+VAR   gripDevice   devAck                  gripAck              1
+VAR   gripDevice   devBusy                 gripBusy             1 
+VAR   gripDevice   devMess                 gripMess             1
+
+VAR   extractorDevice   devPosition        extPosition          1
+VAR   extractorDevice   devDir             extDir               1
+VAR   extractorDevice   devMode            extMode              1
+VAR   extractorDevice   devTarget          extTarget            1
+VAR   extractorDevice   devNamedTarget     extNamedTarget       1
+VAR   extractorDevice   devVelocity        extVelocity          1
+VAR   extractorDevice   devAck             extAck               1
+VAR   extractorDevice   devBusy            extBusy              1
+VAR   extractorDevice   devState           extState             1
+VAR   extractorDevice   devMess            extMess              1
+
+VAR   maskStatus        lvdtVal            lvdtVal              1
+VAR   maskStatus        optSensorVal       optSensorVal         1
+VAR   maskStatus        cassetteMissing    cassetteMissing      1
+VAR   maskStatus        slotMisaligned     slotMisaligned       1
+VAR   maskStatus        slotEmpty          slotEmpty            1
+VAR   maskStatus        optSensorDelay     optSensorDelay       1
+
+#
+# Is it safe to proceed?
+#
+
+PROMPT "Read the assumptions.  Is it safe to load a cassette and move the extractor?"
+
+#
+# check starting point, should be freshly rebooted....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly not indexed?"
+GETVAL sadIndex
+OUTPUT *VAL* 0*
+
+DESC "Mask assembly initialization state"
+GETVAL sadInit
+OUTPUT *
+
+DESC "Mask assembly not parked?"
+GETVAL sadPark
+OUTPUT *VAL* 0*
+
+DESC "Mask assembly health"
+GETVAL sadHealth
+OUTPUT *
+
+DESC "Mask Opto Sensors Disabled?"
+GETVAL optSensorVal
+OUTPUT *VAL* OFF*
+
+DESC "Mask Opto Sensors Delay 0?"
+GETVAL optSensorDelay
+OUTPUT *SIM* 0*
+
+
+ENDTEST
+
+
+#
+# Check State of Opto Switches folowing database initialization
+#
+#    cassetteMissing == CassetteInstalled | Unknown
+#    slotEmpty       == InSlot | Unknown
+#    slotMisaligned  == Aligned | Unknown
+#
+#  Should all be "Unknown" when they are disabled
+#
+
+TEST "Check state of the three opto switches - should be Unknown"
+FATAL
+
+DESC "Cassette installed?"
+GETVAL cassetteMissing
+OUTPUT *VAL* Unknown*
+
+DESC "Mask in slot?"
+GETVAL slotEmpty
+OUTPUT *VAL* Unknown*
+
+DESC "Slot aligned?"
+GETVAL slotMisaligned
+OUTPUT *VAL* Unknown*
+
+ENDTEST
+
+
+#
+# Enable opto switches and immediately check their states again
+#
+#    cassetteMissing == CassetteInstalled | Unknown
+#    slotEmpty       == InSlot | Unknown
+#    slotMisaligned  == Aligned | Unknown
+#
+#  Should all still be "Unknown" when they are enabled
+#
+
+TEST "Enable then immediately check state of opto switches - still Unknown"
+FATAL
+
+DESC "Enable opto switches"
+PUTVAL optSensorVal "0"
+OUTPUT *VAL* OFF* ON* 
+
+DESC "Cassette installed?"
+GETVAL cassetteMissing
+OUTPUT *VAL* Unknown*
+
+DESC "Mask in slot?"
+GETVAL slotEmpty
+OUTPUT *VAL* Unknown*
+
+DESC "Slot aligned?"
+GETVAL slotMisaligned
+OUTPUT *VAL* Unknown*
+
+ENDTEST
+
+#
+# Install a cassette?
+#
+
+PROMPT "Install cassette #2.  Does the mask sensor screen now indicate that there is a cassette installed, mask in slot and mask aligned?"
+
+#
+# Check their states again
+#
+#    cassetteMissing == CassetteInstalled | Unknown
+#    slotEmpty       == InSlot | Unknown
+#    slotMisaligned  == Aligned | Unknown
+#
+#  Should all be affirmative now.
+#
+
+TEST "Check state of opto switches - all affirmative"
+FATAL
+
+DESC "Cassette installed?"
+GETVAL cassetteMissing
+OUTPUT *VAL* CassetteInstalled*
+
+DESC "Mask in slot?"
+GETVAL slotEmpty
+OUTPUT *VAL* InSlot*
+
+DESC "Slot aligned?"
+GETVAL slotMisaligned
+OUTPUT *VAL* Aligned*
+
+ENDTEST
+
+#
+# Disable opto switches and immediately check opto switch states again
+#
+#    cassetteMissing == CassetteInstalled | Unknown
+#    slotEmpty       == InSlot | Unknown
+#    slotMisaligned  == Aligned | Unknown
+#
+#  All will probably go to unknown, but may not if the machine 
+#  running these tests is particularly fast.
+#
+
+TEST "Disable then immediately check state of opto switches"
+FATAL
+
+DESC "Disable opto switches"
+PUTVAL optSensorVal "1"
+OUTPUT *VAL* ON* OFF* 
+
+DESC "Cassette installed?"
+GETVAL cassetteMissing
+OUTPUT *VAL* Unknown*
+
+DESC "Mask in slot?"
+GETVAL slotEmpty
+OUTPUT *VAL* Unknown*
+
+DESC "Slot aligned?"
+GETVAL slotMisaligned
+OUTPUT *VAL* Unknown*
+
+ENDTEST
+
+#
+# Just for fun, initialize the mask assembly
+# This should disable the opto sensors to "Unknown" state.
+#
+
+TEST "Test Initialization function"
+FATAL
+
+DESC "Initializing mask assembly"
+
+PUTVAL mskMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Check opto switch states again
+#
+#    cassetteMissing == CassetteInstalled | Unknown
+#    slotEmpty       == InSlot | Unknown
+#    slotMisaligned  == Aligned | Unknown
+#
+#  Should all be Unknown now.
+#
+
+TEST "Check state of opto switches - should be Unknown"
+FATAL
+
+DESC "Cassette installed?"
+GETVAL cassetteMissing
+OUTPUT *VAL* Unknown*
+
+DESC "Mask in slot?"
+GETVAL slotEmpty
+OUTPUT *VAL* Unknown*
+
+DESC "Slot aligned?"
+GETVAL slotMisaligned
+OUTPUT *VAL* Unknown*
+
+ENDTEST
+
+#
+#  Remove the cassette for safety before attempting index
+#
+
+PROMPT "Remove the cassette #2 for safety before attempting index.  Are all cassettes now removed?"
+
+#
+#  INDEX the mask assembly
+#
+
+TEST "INDEX the mask assembly"
+FATAL
+
+DESC "Indexing Mask Assembly"
+
+PUTVAL mskMode "3"
+OUTPUT *MODE*INIT*MODE*INDEX*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+#  PARK in position two to allow cassette to be re-loaded
+#
+
+TEST "PARK in position two to allow cassette to be re-loaded"
+FATAL
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+DESC "Parking Mask Assembly at position two"
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly parked?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadPark
+OUTPUT *VAL* 1*
+ 
+DESC "Mask assembly indexed?"
+
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+
+#
+# Check opto switch states
+#
+#    cassetteMissing == CassetteInstalled | Unknown
+#    slotEmpty       == InSlot | Unknown
+#    slotMisaligned  == Aligned | Unknown
+#
+#  Should all be Unknown.
+#
+
+TEST "Check state of opto switches - should be Unknown"
+FATAL
+
+DESC "Cassette installed?"
+GETVAL cassetteMissing
+OUTPUT *VAL* Unknown*
+
+DESC "Mask in slot?"
+GETVAL slotEmpty
+OUTPUT *VAL* Unknown*
+
+DESC "Slot aligned?"
+GETVAL slotMisaligned
+OUTPUT *VAL* Unknown*
+
+DESC "Enable opto switches for next test"
+PUTVAL optSensorVal "0"
+OUTPUT *VAL* OFF* ON* 
+
+ENDTEST
+
+#
+#  Install cassette #2 (loaded full of masks)
+#
+
+PROMPT "Install cassette #2.  Does the mask sensor screen now indicate that there is a cassette installed, mask in slot and mask aligned?"
+
+#
+#  For the remaining tests capture all the debug output on the IOC.
+#  Ready to capture IOC screen?
+#
+
+PROMPT "For the remaining tests YOU must capture all the debug output on the IOC - ready to capture IOC screen?"
+
+#
+#  Set mask DBUG to FULL 
+#
+
+TEST "Set mask DBUG to FULL"
+FATAL
+
+DESC "Disable opto switches from previous test"
+PUTVAL optSensorVal "1"
+OUTPUT *VAL* ON* OFF* 
+
+DESC "Set mask DBUG to FULL"
+PUTVAL mskDebug "2"
+OUTPUT *DBUG* FULL* 
+
+ENDTEST
+
+#
+#  Set optoSensorDelay to 0 then Park at position two again
+#
+
+TEST "Set optoSensorDelay to 0 then Park at position two again"
+FATAL
+
+DESC "Set opto sensor delay to 0 ticks"
+PUTVAL optSensorDelay "0"
+OUTPUT *SIM* 0*
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+DESC "Parking Mask Assembly at position two"
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+
+#
+#  Set optoSensorDelay to 1 then Park at position two again
+#
+
+TEST "Set optoSensorDelay to 1 then Park at position two again"
+FATAL
+
+DESC "Set opto sensor delay to 1 ticks"
+PUTVAL optSensorDelay "1"
+OUTPUT *SIM* 1*
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+DESC "Parking Mask Assembly at position two"
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  Set optoSensorDelay to 2 then Park at position two again
+#
+
+TEST "Set optoSensorDelay to 2 then Park at position two again"
+FATAL
+
+DESC "Set opto sensor delay to 2 ticks"
+PUTVAL optSensorDelay "2"
+OUTPUT *SIM* 2*
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+DESC "Parking Mask Assembly at position two"
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  Set optoSensorDelay to 3 then Park at position two again
+#
+
+TEST "Set optoSensorDelay to 3 then Park at position two again"
+FATAL
+
+DESC "Set opto sensor delay to 3 ticks"
+PUTVAL optSensorDelay "3"
+OUTPUT *SIM* 3*
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+DESC "Parking Mask Assembly at position two"
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  Set optoSensorDelay to 4 then Park at position two again
+#
+
+TEST "Set optoSensorDelay to 4 then Park at position two again"
+FATAL
+
+DESC "Set opto sensor delay to 4 ticks"
+PUTVAL optSensorDelay "4"
+OUTPUT *SIM* 4*
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+DESC "Parking Mask Assembly at position two"
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  Set optoSensorDelay to 5 then Park at position two again
+#
+
+TEST "Set optoSensorDelay to 5 then Park at position two again"
+FATAL
+
+DESC "Set opto sensor delay to 5 ticks"
+PUTVAL optSensorDelay "5"
+OUTPUT *SIM* 5*
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+DESC "Parking Mask Assembly at position two"
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  Set optoSensorDelay to 6 then Park at position two again
+#
+
+TEST "Set optoSensorDelay to 6 then Park at position two again"
+FATAL
+
+DESC "Set opto sensor delay to 6 ticks"
+PUTVAL optSensorDelay "6"
+OUTPUT *SIM* 6*
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+DESC "Parking Mask Assembly at position two"
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  Set optoSensorDelay to 7 then Park at position two again
+#
+
+TEST "Set optoSensorDelay to 7 then Park at position two again"
+FATAL
+
+DESC "Set opto sensor delay to 7 ticks"
+PUTVAL optSensorDelay "7"
+OUTPUT *SIM* 7*
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+DESC "Parking Mask Assembly at position two"
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  Set optoSensorDelay to 8 then Park at position two again
+#
+
+TEST "Set optoSensorDelay to 8 then Park at position two again"
+FATAL
+
+DESC "Set opto sensor delay to 8 ticks"
+PUTVAL optSensorDelay "8"
+OUTPUT *SIM* 8*
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+DESC "Parking Mask Assembly at position two"
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  Set optoSensorDelay to 9 then Park at position two again
+#
+
+TEST "Set optoSensorDelay to 9 then Park at position two again"
+FATAL
+
+DESC "Set opto sensor delay to 9 ticks"
+PUTVAL optSensorDelay "9"
+OUTPUT *SIM* 9*
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+DESC "Parking Mask Assembly at position two"
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  Set optoSensorDelay to 10 then Park at position two again
+#
+
+TEST "Set optoSensorDelay to 10 then Park at position two again"
+FATAL
+
+DESC "Set opto sensor delay to 10 ticks"
+PUTVAL optSensorDelay "10"
+OUTPUT *SIM* 10*
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+DESC "Parking Mask Assembly at position two"
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  Return mask DBUG to NONE 
+#
+
+TEST "Set mask DBUG to NONE"
+FATAL
+
+DESC "Set mask DBUG to NONE"
+PUTVAL mskDebug "0"
+OUTPUT *DBUG* FULL* NONE* 
+
+ENDTEST
+
+#
+#  Analyze IOC debug log to determine optimum optoSensorDelay value.
+#
+
+COMMENT "All that's left is for YOU to copy the IOC log from the screen to a file. Ready to copy IOC log?"

@@ -1,0 +1,143 @@
+#
+# VxWorks startup script to load and execute system (iocCore) software.
+#
+# First, vxWorks startup issues:
+#
+# DESCRIPTION:  Loads the GMOS Instrument Sequencer database.
+#
+#  Adapted from gmoscc/startup/ccStartup2.vws   (26/1/00)
+#
+
+# Make delete key work for backspace
+tyBackspaceSet 0177
+
+# Set the shell prompt
+shellPromptSet "GMOS IS MK >"
+
+# cd to application install directory (beware automounter problems)
+cd "$(install)"
+pwd
+
+# The local file contains site-specific information
+# such as the default router and the vxWorks password file.
+# (Commented out, since already done in startup_MINIMAL)
+#< $(install)/bin/$(arch)/local
+
+# Load EPICS core and record stuff
+ld < $(epics)/base/bin/$(arch)/iocCore
+ld < $(epics)/base/bin/$(arch)/drvSup
+ld < $(epics)/base/bin/$(arch)/recSup
+ld < $(epics)/base/bin/$(arch)/devSup
+
+# Add this for pvload
+ld < $(epics)/extensions/bin/$(arch)/pvload
+
+# If using state programs, load the sequencer
+ld < $(epics)/base/bin/$(arch)/seq
+
+# Load any application records, device support or drivers here,
+# or code for subroutine records. It is assumed
+# that Gemini libraries are available in the standard /gemini directory).
+
+ld < /gemini/slalib/bin/$(arch)/slalib
+ld < /gemini/timelib/bin/$(arch)/timelib
+ld < /gemini/astlib/bin/$(arch)/astlib
+
+ld < $(version)/../gmoscc/bin/$(arch)/drvOmsVme.o
+ld < $(version)/../gmoscc/bin/$(arch)/devDeviceControl.o
+ld < $(version)/../gmoscc/bin/$(arch)/devBarcode.o
+ld < $(version)/../gmoscc/bin/$(arch)/recAssControl.o
+ld < $(version)/../gmoscc/bin/$(arch)/recDeviceControl.o
+ld < $(version)/../gmoscc/bin/$(arch)/gmosGensubLib.o
+
+ld < $(version)/../gmoscc/bin/$(arch)/gmMaskGenSubs.o
+ld < $(version)/../gmoscc/bin/$(arch)/devMaskControl.o
+ld < $(version)/../gmoscc/bin/$(arch)/gmOiwfsCalc.o
+ld < $(version)/../gmoscc/bin/$(arch)/gmOiwfsGenSubs.o
+ld < $(version)/../gmoscc/bin/$(arch)/gmOiwfsCadSupport.o
+ld < $(version)/../gmoscc/bin/$(arch)/tcs_simulator.o
+ld < $(version)/../gmoscc/bin/$(arch)/devOiwfsControl.o
+ld < $(version)/../gmoscc/bin/$(arch)/devFilterAss.o
+ld < $(version)/../gmoscc/bin/$(arch)/gmosLutLib.o
+ld < $(version)/../gmoscc/bin/$(arch)/devGratingAss.o
+ld < $(version)/../gmoscc/bin/$(arch)/lifter.o
+ld < $(version)/../gmoscc/bin/$(arch)/devTranslationAss.o
+
+ld < $(version)/../gmoscc/bin/$(arch)/gmosCcCadLib.o
+
+ld < $(version)/bin/$(arch)/gmSeqAppl
+
+# Load sequences here
+ld < $(version)/../gmoscc/bin/$(arch)/assemblyCar.o
+ld < $(version)/../gmoscc/bin/$(arch)/systemCar.o
+ld < $(version)/../gmoscc/bin/$(arch)/commandCar.o
+ld < /gemini/timelib/bin/mv167/timeSeq
+
+# Initialise the Gemini Time System (1=master, 1=simulate, intPerSecond, intPerTick, timeOffset)
+timeClockInit 0, 1, 60, 1, 0
+
+# Configure the Timestamp system, 1=Master IOC
+TSconfigure 1, 0, 0, 0, 0, 0
+
+# Load one or more ASCII databases here
+dbLoad "$(version)/../gmoscc/data/default.dctsdr"
+dbLoadRecords "$(version)/../gmoscc/data/gmosCcTopMKRR.db"
+dbLoadRecords "$(version)/../gmoscc/data/gmosCcSadTopMKRR.db"
+dbLoadRecords "$(version)/data/gmSeqTopMK.db"
+dbLoadRecords "$(version)/data/gmSeqSadTopMK.db"
+
+# This turns off logging
+# iocLogDisable=1
+
+iocInit "$(version)/../gmoscc/data/resource.def"
+
+# Ensure master enable is disabled while startup script executes
+dbpf "gm:cc:msEnableEnable","0"
+
+#Define the database name
+dbpf "gm:sad:cc:name.VAL","GMOS CC Mauna Kea (IS)"
+
+
+# Load initialization files
+pvload "$(version)/../gmoscc/data/gmOiwfs.pv","top=gm:wfs:"
+pvload "$(version)/../gmoscc/data/gmMask.pv","top=gm:cc:"
+pvload "$(version)/data/gmSeq.pv","top=gm:, sadtop=gm:"
+
+# Start sequences
+seq &assemblyCar, "top=gm:cc:, dev=msk, priority=75"
+seq &assemblyCar, "top=gm:, dev=wfs:probe, priority=75"
+seq &commandCar, "top=gm:, dev=wfs:, priority=75"
+seq &assemblyCar, "top=gm:cc:, dev=flt, priority=75"
+seq &assemblyCar, "top=gm:cc:, dev=gr, priority=75"
+seq &assemblyCar, "top=gm:cc:, dev=dta, priority=75"
+seq &systemCar,   "top=gm:cc:, cad=init, priority=75"
+seq &systemCar,   "top=gm:cc:, cad=test, priority=75"
+seq &systemCar,   "top=gm:cc:, cad=datum, priority=75"
+seq &systemCar,   "top=gm:cc:, cad=update, priority=75"
+seq &systemCar,   "top=gm:cc:, cad=park, priority=75"
+
+# Trigger reading in the filter, grating and mask data
+dbpf "gm:getWheelNames.PROC","1"
+dbpf "gm:getGratingNames.PROC","1"
+dbpf "gm:getMaskNames.PROC","1"
+ 
+# Enable master enable on completion of startup script
+#dbpf "gm:cc:msEnableEnable","1"
+
+
+dbpf "gm:sad:cc:historyLog","Grating turret switch faulty"
+dbpf "gm:sad:cc:historyLog2","Turn on master enable manually"
+
+# *******************************************************
+# WARNING - grating turret limit switch is faulty
+# Please make sure that:
+#
+# 1. The turret is positioned at it's lower hard limit
+#    (fully clockwise as viewed from the rear of the
+#     instrument).
+#
+# 2. You have cycled the power to the VME crate.
+#
+# If these have been done then turn on the master enable
+# using the switch on the top level dm screen.
+# *************************************

@@ -1,0 +1,110 @@
+#! /bin/csh -f
+#
+# Shell script: gmSeqObsInterlock
+#
+#   Test for GMOS Sequencer CAD commands 
+#   accept/reject when observing in progress
+#
+#    16/6/00 PBT    Amended after table 
+#                   of command interlocks finalised
+#
+#    20/9/00 PBT    Changed for real system tests
+
+
+# Set the expected error string
+setenv GMOS_ERRSTRING "GMOS currently observing"
+#
+# First check whether reading-out/configuring
+#
+if ($GMOS_PREFIX == "") then
+  echo 'Error: environment variable GMOS_PREFIX undefined'
+  exit 1
+endif
+set v = `caget -n ${GMOS_PREFIX}sad:dc:rdout.VAL`
+shift v
+if ($v != 0) then
+  echo "Error - rdout flag non-zero"
+  exit 1
+endif
+set v = `caget -n ${GMOS_PREFIX}applyC.VAL`
+shift v
+if ($v != 0) then
+  echo "Error - applyC not IDLE"
+  exit 1
+endif
+#
+#  Set the detector controller to exposure time 100 secs.
+#
+doCadWait dc:dcSetup 200 100 OPEN 1 FAST ALL ##
+#
+# Test for observing, if not start it
+#
+set v = `caget -n ${GMOS_PREFIX}dc:observeC.VAL`
+shift v
+if ($v != 2) then
+#
+# not observing, issue CAD observe
+#
+  doCad observe || goto failObserve
+  sleep 1
+  set v = `caget -n ${GMOS_PREFIX}dc:observeC.VAL`
+  shift v
+  if ($v != 2) then
+    echo "Cannot run tests - not observing"
+    exit 1
+  endif
+endif
+#
+# First, those that are expected to be rejected 
+#
+doCad atmPos 45 45 && goto failTest
+doCad atmTrack MOVE 45 45 && goto failTest
+doCad datum && goto failTest
+doCad dtaPos 1 1 1  && goto failTest
+doCad dtaTrack MOVE 1 1 1 && goto failTest
+doCad fltPos Hartmann_A Z1 && goto failTest
+doCad grSelect SEL 600+ && goto failTest
+doCad init && goto failTest
+doCad mskPos 78 IN-BEAM && goto failTest
+doCad observe && goto failTest
+doCad park && goto failTest
+doCad test && goto failTest
+doCad update && goto failTest
+doCad endObserve && goto failTest
+#
+# Should be still observing...
+# These should be accepted and not affect observing
+#
+doCad guide || goto failTest
+sleep 1
+doCad endGuide || goto failTest
+sleep 1
+doCad verify || goto failTest
+sleep 1
+doCad endVerify || goto failTest
+sleep 1
+#
+# And these should be accepted. Abort should stop observing;
+# so need to restart observing 
+#
+doCad pause || goto failTest
+waitApply
+doCad continue || goto failTest
+doCad abort || goto failTest
+waitApply
+doCad observe || goto failObserve
+doCad stop || goto failTest
+waitApply
+echo "************************************************"
+echo "* Test script $0 completed OK *"
+echo "************************************************"
+exit 0
+#
+failTest:
+  echo "Test failed: response not as expected"
+  exit 1
+#
+failObserve:
+  echo "Error trying to (re-)start observing"
+  exit 1
+#

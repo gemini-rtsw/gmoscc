@@ -1,0 +1,33 @@
+#
+# Database of available GMOS filters.
+# This is an example Instrument Sequencer database.
+#
+
+# name            barcodeId      focusOffset
+
+blank              20000000         +0.000
+clear              20000100         +0.000
+
+red                20000001         +0.010
+orange             20000002         +0.015
+yellow             20000003         -0.002
+green              20000004         -0.150
+blue               20000005         +0.056
+indigo             20000006         -0.081
+violet             20000007         +0.093
+cyan               20000008         +0.100
+mauve              20000009         -0.090
+purple             20000010         +0.033
+pink               20000011         +0.015
+
+nd101              20000101         -0.101
+nd102              20000102         -0.102
+nd103              20000103         -0.103
+nd104              20000104         -0.104
+nd105              20000105         -0.105
+nd106              20000106         -0.106
+nd107              20000107         -0.107
+nd108              20000108         -0.108
+nd109              20000109         -0.109
+nd110              20000110         -0.110
+nd111              20000111         -0.111

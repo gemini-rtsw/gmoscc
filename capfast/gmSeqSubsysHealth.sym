@@ -1,0 +1,29 @@
+[symbol2]
+bbox -336 -128 160 128
+port -16 48 100 0 HEALTH symbol 2 160 64 0
+port 16 0 100 0 MESS symbol 2 160 0 0
+port -208 64 100 0 DISV symbol 1 -336 64 0
+port -208 -64 100 0 SLNK symbol 1 -336 -64 0
+port 16 -80 100 0 FLNK symbol 2 160 -80 0
+uniq 0
+[tools]
+[attributes]
+[layers]
+<symbol>
+r 0 -224 -128 64 128
+v 0 64 64
+160 64
+_
+v 0 -336 64
+-224 64
+_
+v 0 -336 -64
+-224 -64
+_
+v 0 64 0
+160 0
+_
+v 0 64 -80
+160 -80
+_
+[comments]

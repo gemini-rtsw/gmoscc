@@ -1,0 +1,188 @@
+
+#
+# DHS Test Commander
+# instrument sequencer functionality test script
+#
+
+#
+# Declare the variables used by this script....
+#
+
+VAR     gmosIs           isApplyCommand          applyCommand           1
+VAR     gmosIs           isApplyAcknowledge      applyAcknowledge       1
+VAR     gmosIs           isApplyCarVal           applyCar               1
+
+VAR     gmosIs           isTestCommand           testCommand            1
+VAR     gmosIs           isTestAcknowledge       testAcknowledge        1
+VAR     gmosIs           isTestCarVal            testCar                1
+
+VAR     gmosIs           isInitCommand           initCommand            1
+VAR     gmosIs           isInitAcknowledge       initAcknowledge        1
+VAR     gmosIs           isInitCarVal            initCar                1
+
+VAR     gmosIs           isDatumCommand          datumCommand           1
+VAR     gmosIs           isDatumAcknowledge      datumAcknowledge       1
+VAR     gmosIs           isDatumCarVal           datumCar               1
+
+VAR     gmosIs           isParkCommand           parkCommand            1
+VAR     gmosIs           isParkAcknowledge       parkAcknowledge        1
+VAR     gmosIs           isParkCarVal            parkCar                1
+
+VAR     gmosIs           sadIsState              sadState               1
+VAR     gmosIs           sadIsHealth             sadHealth              1
+VAR     gmosIs           sadIsIndexed            sadIndexed             1
+
+VAR     gmosIs           isMskNameMenu           mskNameMenu            1
+VAR     gmosIs           isGrNameMenu            grNameMenu             1
+VAR     gmosIs           isGrSelectWavelength    grSelectWavelength     1
+VAR     gmosIs           isGrSelectOrder         grSelectOrder          1
+VAR     gmosIs           isFltNameMenu1          fltNameMenu1           1
+VAR     gmosIs           isFltNameMenu2          fltNameMenu2           1
+
+VAR     gmosIs           isDtaTrackXoff          dtaTrackXoff           1
+VAR     gmosIs           isDtaTrackYoff          dtaTrackYoff           1
+VAR     gmosIs           isDtaTrackZoff          dtaTrackZoff           1
+
+#***********************************************************
+
+
+#
+# Verify startup state
+#
+
+TEST "Verify startup state"
+FATAL
+
+DESC "Verify startup state"
+
+DESC "Initial state must be RUNNING"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadState
+#OUTPUT *VAL* RUNNING*
+OUTPUT *
+
+DESC "Initial health must be GOOD"
+GETVAL sadHealth
+#OUTPUT *VAL* GOOD*
+OUTPUT *
+
+ENDTEST
+
+#
+# Initialize the instrument sequencer
+#
+
+TEST "Test instrument sequencer INIT command"
+FATAL
+
+DESC "Initializing instrument sequencer"
+
+DESC "Start the command and wait for car to finish"
+CMD "executeApplyCommand initCommand applyCommand applyAcknowledge applyCar"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify instrument sequencer state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadState
+OUTPUT *
+
+DESC "Health must still be GOOD"
+GETVAL sadHealth
+#OUTPUT *VAL* GOOD*
+OUTPUT *
+
+ENDTEST
+
+#
+# Testing the instrument sequencer
+#
+
+TEST "Test instrument sequencer TEST command"
+FATAL
+
+DESC "Testing instrument sequencer"
+
+DESC "Start the command and wait for car to finish"
+CMD "executeApplyCommand testCommand applyCommand applyAcknowledge applyCar"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify instrument sequencer state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadState
+OUTPUT *
+
+DESC "Health must still be GOOD"
+GETVAL sadHealth
+#OUTPUT *VAL* GOOD*
+OUTPUT *
+
+ENDTEST
+
+#
+# Then datum the instrument sequencer
+#
+
+TEST "Test instrument sequencer DATUM command"
+FATAL
+
+DESC "Indexing instrument sequencer"
+
+DESC "Start the command and wait for car to finish"
+CMD "executeApplyCommand datumCommand applyCommand applyAcknowledge applyCar"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify instrument sequencer state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadState
+OUTPUT *
+
+DESC "Must now be indexed"
+GETVAL sadIndexed
+OUTPUT *VAL* 1*
+
+DESC "Health must still be GOOD"
+GETVAL sadHealth
+#OUTPUT *VAL* GOOD*
+OUTPUT *
+
+ENDTEST
+
+COMMENT "Instrument sequencer setup completed"
+
+ 
+
+
+
+
+

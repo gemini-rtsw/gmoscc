@@ -1,0 +1,61 @@
+#!/bin/csh
+#
+# assemblyReset
+#
+# Description:
+#
+#   Reset an assembly to make it look as if it has just
+#   been booted. This is useful to save rebooting the
+#   VME crate when testing a checkout script.
+#
+# Invocation:
+#   assemblyReset <top> <dev>
+#
+#   where <top> is the top level database prefix and <dev> is the
+#   EPICS record string used for the assembly. Examples
+#
+#   top = g7:cc: for simulation mode
+#   top = gm:cc: for MK system
+#   dev = msk for mask assembly
+#   dev = gr for grating assembly
+#   dev = flt for filter assembly
+#   dev = dta for translation assembly
+
+#
+# Get the record prefix strings
+#
+set gtop = $1
+set gdev = $2
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if ("$gtop" == "gm:cc:") then
+
+    #
+    # Check for gmos safety
+    #
+
+    if (!($?GMOS_MK_ACCESS)) then
+	echo ""
+	echo "GMOS MK safety check failed."
+	echo ""
+	echo "Before executing this script, which will affect the MK hardware,"
+	echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+	echo ""
+	exit
+    else
+	echo "GMOS MK safety check passed."
+    endif
+endif
+
+#
+# Reset the assembly record flags with caput.
+#
+echo Resetting ${gtop}${gdev}Assembly
+caput ${gtop}${gdev}Assembly.INIT 0
+caput ${gtop}${gdev}Assembly.INDX 0
+caput ${gtop}${gdev}Assembly.PARK 0
+caput ${gtop}${gdev}Assembly.HLTH 1

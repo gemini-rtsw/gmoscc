@@ -1,0 +1,824 @@
+#
+# DHS Test Commander
+# Translation X axis device functionality test script
+#
+
+#
+# Define the variables used in this script, and the configuration files
+# which contain their translation into EPICS channel names.
+#
+#       Config file        Config file name        Named used here     Mystery number
+#       -----------        ---------------------   -----------------   --------------
+
+# Device INPUTS
+VAR     translationXDevice      devDir                  devDir	            1
+VAR     translationXDevice      devMode                 devMode             1
+VAR     translationXDevice      devTarget               devTarget           1
+VAR     translationXDevice      devNamedTarget          devNamedTarget      1
+VAR     translationXDevice      devIndexType            devIndexType        1
+VAR     translationXDevice      devDbug                 devDbug             1
+VAR     translationXDevice      devSimm                 devSimm             1
+VAR     translationXDevice      devMinPosition          devMinPosition      1
+VAR     translationXDevice      devMaxPosition          devMaxPosition      1
+VAR     translationXDevice      devBacklash             devBacklash         1
+VAR     translationXDevice      devRounding             devRounding         1
+VAR     translationXDevice      devVelocity             devVelocity         1
+VAR     translationXDevice      devMinVelocity          devMinVelocity      1
+VAR     translationXDevice      devMaxVelocity          devMaxVelocity      1
+VAR     translationXDevice      devAcceleration         devAcceleration     1
+VAR     translationXDevice      devLutFile              devLutFile          1
+VAR     translationXDevice      devLutDirectory         devLutDirectory     1
+VAR     translationXDevice      devDevType              devDevType          1
+VAR     translationXDevice      devEgu                  devEgu              1
+VAR     translationXDevice      devMotorRes             devMotorRes         1
+VAR     translationXDevice      devMotionDeadBand       devMotionDeadBand   1
+VAR     translationXDevice      devBaseVelo             devBaseVelo         1
+VAR     translationXDevice      devFinalIndexVelo       devFinalIndexVelo   1
+VAR     translationXDevice      devUsePwrStatus         devUsePwrStatus     1
+VAR     translationXDevice      devPwrStatusTimeout     devPwrStatusTimeout 1
+VAR     translationXDevice      devPower                devPower            1
+VAR     translationXDevice      devUseBrkStatus         devUseBrkStatus     1
+VAR     translationXDevice      devBrkStatusTimeout     devBrkStatusTimeout 1
+VAR     translationXDevice      devBrake                devBrake            1
+VAR     translationXDevice      devUseAuxPwr            devUseAuxPwr        1
+VAR     translationXDevice      devUseEncoder           devUseEncoder       1
+VAR     translationXDevice      devEncoderRes           devEncoderRes       1
+VAR     translationXDevice      devEncoderDeadBand      devEncoderDeadBand  1
+
+# Device OUTPUTS
+VAR     translationXDevice      devPosition             devPosition         1
+VAR     translationXDevice      devRawPosition          devRawPosition      1
+VAR     translationXDevice      devAck                  devAck              1
+VAR     translationXDevice      devBusy                 devBusy             1
+VAR     translationXDevice      devState                devState            1
+VAR     translationXDevice      devMess                 devMess             1
+VAR     translationXDevice      devIndexed              devIndexed          1
+VAR     translationXDevice      devLimited              devLimited          1
+VAR     translationXDevice      devAtHome               devAtHome           1
+
+#
+# Is it safe to proceed?
+#
+
+PROMPT "Read the assumptions.  Is it safe to move the translation stage?"
+
+#
+# Verify startup state. The device should be unindexed, stopped and unpowered.
+#
+
+TEST "Verify startup state"
+FATAL
+
+DESC "Verify startup state"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Log the current device record configuration
+#
+TEST "Log the current device record configuration"
+FATAL
+
+DESC "Get deviceControl record device layer type"
+GETVAL devDevType
+OUTPUT *.DTYP*DEV CTL OMS 8/44*
+
+DESC "Get simulation level - script cannot work in simulation mode"
+DESC "It relies on getting feedback from limit switches and power status"
+GETVAL devSimm
+OUTPUT *.SIMM*NONE*
+
+DESC "Get debug level"
+GETVAL devDbug
+OUTPUT *.DBUG*
+
+DESC "Get enginering units"
+GETVAL devEgu
+OUTPUT *.EGU*
+
+DESC "Get motor resolution, in microsteps per EGU"
+GETVAL devMotorRes
+OUTPUT *.MRES*
+
+DESC "Get motion deadband"
+GETVAL devMotionDeadBand
+OUTPUT *.MDBD*
+
+DESC "Get upper target limit, max EGU target allowed"
+GETVAL devMaxPosition
+OUTPUT *.PHLM*
+
+DESC "Get lower target limit, min EGU target allowed"
+GETVAL devMinPosition
+OUTPUT *.PLLM*
+
+DESC "Get motion velocity"
+GETVAL devVelocity
+OUTPUT *.VELO*
+
+DESC "Get upper velocity limit, max EGU velocity allowed"
+GETVAL devMaxVelocity
+OUTPUT *.VHLM*
+
+DESC "Get lower velocity limit, min EGU velocity allowed"
+GETVAL devMinVelocity
+OUTPUT *.VLLM*
+
+DESC "Get motion startup velocity"
+GETVAL devBaseVelo
+OUTPUT *.VBAS*
+
+DESC "Get final indexing velocity"
+GETVAL devFinalIndexVelo
+OUTPUT *.FIVL*
+
+DESC "Get acceleration, VBAS to VELO in EGUs per second per second"
+GETVAL devAcceleration
+OUTPUT *.ACCL*
+
+DESC "Get backlash correction in motor steps"
+GETVAL devBacklash
+OUTPUT *.BLCO*
+
+DESC "Get motor position rounding in motor steps"
+GETVAL devRounding
+OUTPUT *.MRND*
+
+DESC "Get the indexing algorithm number - should be 2 for translation stage X axis"
+GETVAL devIndexType
+OUTPUT *.IALG* 2*
+
+DESC "Using Power status? Should be YES for translation stage"
+GETVAL devUsePwrStatus
+#Removed until power status problem fixed
+#OUTPUT *.UPSB* YES*
+OUTPUT *
+
+DESC "Get the power status timeout"
+GETVAL devPwrStatusTimeout
+OUTPUT *.PTMO*
+
+DESC "Using Brake status? Should be NO for translation stage"
+GETVAL devUseBrkStatus
+OUTPUT *.UBSB* NO*
+
+DESC "Get the brake status timeout - should be zero for translation stage"
+GETVAL devBrkStatusTimeout
+OUTPUT *.BTMO* 0*
+
+DESC "Using AUX to enable drives?"
+GETVAL devUseAuxPwr
+OUTPUT *.UAPB* YES*
+
+DESC "Using Encoder? Should be NO for translation stage"
+GETVAL devUseEncoder
+OUTPUT *.UEIP* NO*
+
+DESC "Get encoder resolution in counts per EGU"
+GETVAL devEncoderRes
+OUTPUT *.ERES*
+
+DESC "Get encoder deadband"
+GETVAL devEncoderDeadBand
+OUTPUT *.EDBD*
+
+DESC "Get lookup table name"
+GETVAL devLutFile
+OUTPUT *.TFIL* dta1.lut*
+
+DESC "Get lookup table directory name"
+GETVAL devLutDirectory
+OUTPUT *.TDIR*
+
+ENDTEST
+
+#
+# First try to initialize the device control record
+#
+
+TEST "Test translation stage X axis device INIT mode"
+FATAL
+
+DESC "Initializing translation stage X axis"
+
+PUTVAL devTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL devMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+ENDTEST
+
+#
+# Test translation stage X axis device TEST mode
+#
+
+TEST "Test translation stage X axis device TEST mode"
+FATAL
+
+DESC "Testing translation stage X axis"
+
+PUTVAL devMode "5"
+OUTPUT *MODE*MODE*TEST*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+ENDTEST
+
+#
+# Test lower limit switch by indexing on lower soft limit
+#
+
+TEST "Testing lower limit switch"
+FATAL
+
+DESC "Testing lower limit switch"
+
+PUTVAL devIndexType "4"
+OUTPUT *
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Test full travel and upper limit switch by indexing on 
+# upper soft limit switch
+#
+
+TEST "Testing upper limit switch"
+FATAL
+
+DESC "Testing upper limit switch"
+
+PUTVAL devIndexType "5"
+OUTPUT *
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Change indexing mode back to lower home switch
+#
+
+TEST "Restore original indexing mode"
+FATAL
+
+PUTVAL devIndexType "2"
+OUTPUT *
+
+ENDTEST
+
+#
+# Index the device to get back to normal
+#
+
+TEST "Indexing translation stage X axis"
+FATAL
+
+DESC "Indexing translation stage X axis"
+
+PUTVAL devTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command and check current position"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devAtHome
+#OUTPUT *.HSWA* 0* 
+# Comment out HSWA check temporarily until device record bug fixed.
+OUTPUT *
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+DESC "Check index position is zero"
+GETVAL devPosition
+OUTPUT *.MPOS* 0* 
+
+GETVAL devRawPosition
+OUTPUT *.RRBV* 0* 
+
+ENDTEST
+
+#
+# Adjust upper and lower target limits to allow moves beyond limits
+#
+
+TEST "Adjust upper and lower target limits"
+FATAL
+
+DESC "Adjust upper and lower target limits"
+
+PUTVAL devMinPosition "-100.0"
+OUTPUT *.PLLM*
+
+PUTVAL devMaxPosition "400.0"
+OUTPUT *.PHLM*
+
+ENDTEST
+
+#
+# Check and record the motor position at the lower soft limit.
+#
+
+TEST "Deliberately move translation stage X axis into lower soft limit"
+FATAL
+
+DESC "Moving to lower soft limit"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devTarget "-60"
+OUTPUT *VAL*VAL* -60*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Failed*
+
+ENDTEST
+
+#
+# Verify error message and log current position
+#
+
+TEST "Verify error message and log current position"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* ERROR* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+GETVAL devAtHome
+#OUTPUT *.HSWA* 0*
+# Comment out HSWA check temporarily until device record bug fixed.
+OUTPUT *
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+GETVAL devMess
+OUTPUT *.MESS*Device hit a soft limit*
+
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Index the device again to get back to normal
+#
+
+TEST "Indexing translation stage X axis from lower limit"
+FATAL
+
+DESC "Indexing translation stage X axis from lower limit"
+
+PUTVAL devTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command and check current position"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devAtHome
+#OUTPUT *.HSWA* 0* 
+# Comment out HSWA check temporarily until device record bug fixed.
+OUTPUT *
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+
+#
+# Check and record the motor position at the upper soft limit.
+#
+
+TEST "Deliberately move translation stage X axis into upper soft limit"
+FATAL
+
+DESC "Moving to upper soft limit"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devTarget "300"
+OUTPUT *VAL*VAL* 300*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Failed*
+
+ENDTEST
+
+#
+# Verify error message and log current position
+#
+
+TEST "Verify error message and log current position"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* ERROR* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+GETVAL devAtHome
+#OUTPUT *.HSWA* 1* 
+# Comment out HSWA check temporarily until device record bug fixed.
+OUTPUT *
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+GETVAL devMess
+OUTPUT *.MESS*Device hit a soft limit*
+
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Index the device again to get back to normal
+#
+
+TEST "Indexing translation stage X axis from upper limit"
+FATAL
+
+DESC "Indexing translation stage X axis from upper limit"
+
+PUTVAL devTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command and check current position"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devAtHome
+#OUTPUT *.HSWA* 0* 
+# Comment out HSWA check temporarily until device record bug fixed.
+OUTPUT *
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Check allowed position range - lower limit.
+#
+
+TEST "Request position well below lower software limit and check response"
+FATAL
+
+DESC "Requesting position well below lower limit for translation stage X axis"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devTarget "-200"
+OUTPUT *VAL*VAL* -200*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Command rejected*
+
+ENDTEST
+
+#
+# Verify device state and error message
+#
+
+TEST "Verify device state and error message"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Look for error message 'Target position out of range'"
+GETVAL devMess
+OUTPUT *.MESS*Target position out of range*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Check allowed position range - upper limit.
+#
+
+TEST "Request position well above upper software limit and check response"
+FATAL
+
+DESC "Requesting position well above upper limit for translation stage X axis"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devTarget "2000"
+OUTPUT *VAL*VAL* 2000*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Command rejected*
+
+ENDTEST
+
+#
+# Verify device state and error message
+#
+
+TEST "Verify device state and error message"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Look for error message 'Target position out of range'"
+GETVAL devMess
+OUTPUT *.MESS*Target position out of range*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Finally, verify that the translation stage can move to the park position
+#
+
+TEST "Move translation stage X axis to park position"
+FATAL
+
+DESC "Moving to barcode reading position"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+DESC "Put zero into target position to avoid device control bug"
+PUTVAL devTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL devNamedTarget "park"
+OUTPUT *VALS*VALS* park*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify error message and log current position
+#
+
+TEST "Verify state and log park position"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+ENDTEST
+
+#
+#  All translation stage X axis functions check out OK!
+#
+
+COMMENT "Translation X axis checks out OK"
+
+
+ 

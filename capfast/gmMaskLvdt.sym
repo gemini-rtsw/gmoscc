@@ -1,0 +1,18 @@
+[symbol2]
+bbox 32 64 320 192
+port 272 128 100 768 zones symbol 2 320 128 0
+uniq 427
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 4 0 144 160 Mask LVDT
+l 100 5 0 256 64 gmMaskLvdt
+r 0 32 64 256 192
+v 0 256 128
+320 128
+_
+v 0 32 160
+256 160
+_
+[comments]

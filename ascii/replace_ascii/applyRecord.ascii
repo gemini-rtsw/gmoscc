@@ -1,0 +1,83 @@
+! applyRecord.ascii
+!
+!       Author: Bret Goodrich
+!       Date:   12 February, 1996
+!               04nov96,bdg  added MARK to save old directive
+!
+!       Experimental Physics and Industrial Control System (EPICS)
+!
+!       Copyright 1991, the Regents of the University of California,
+!       and the University of Chicago Board of Governors.
+!
+!       This software was produced under  U.S. Government contracts:
+!       (W-7405-ENG-36) at the Los Alamos National Laboratory,
+!       and (W-31-109-ENG-38) at Argonne National Laboratory.
+!
+!       Initial development by:
+!               The Controls and Automation Group (AT-8)
+!               Ground Test Accelerator
+!               Accelerator Technology Division
+!               Los Alamos National Laboratory
+!
+!       Co-developed with
+!               The Controls and Computing Group
+!               Accelerator Systems Division
+!               Advanced Photon Source
+!               Argonne National Laboratory
+!
+#include <dbDefs.h>
+#include <special.h>
+#include <choiceGbl.h>
+#include <choiceCadCar.h>
+#include <dbFldTypes.h>
+#define INCdbRecDesh
+#include <dbRecDes.h>
+#include <guigroup.h>
+
+
+RECTYP "apply"
+!
+! Comment fld_name special Security Type pp(CA) interest size initial prompt range1 range2 conversion
+!
+"Return Error Code"     VAL  0          ASL1 DBF_LONG       NO    1    0                 0
+"CAD Directive"         DIR  0          ASL0 DBF_RECCHOICE  YES   1  0 CAD_REC_DIRECTIVE GUI_OUTPUT
+"Client ID"             CLID 0          ASL1 DBF_LONG       NO    1 0 0
+"Message"  	        MESS 0	        ASL1 DBF_STRING     NO    1 40 0
+"Old Message"  	        OMSS SPC_NOMOD  ASL1 DBF_STRING     NO    1 40 0
+"Mark"                  MARK SPC_NOMOD  ASL1 DBF_SHORT      NO    1 0  0 0
+!NOTE the following 8 fields must be consecutive
+"Output Link A"        OUTA  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                      GUI_OUTPUT
+"Output Link B"        OUTB  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output Link C"        OUTC  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output Link D"        OUTD  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output Link E"        OUTE  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output Link F"        OUTF  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output Link G"        OUTG  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output Link H"        OUTH  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+!NOTE the following 8 fields must be consecutive
+"Output CLID Link A"        OCLA  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output CLID Link B"        OCLB  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output CLID Link C"        OCLC  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output CLID Link D"        OCLD  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output CLID Link E"        OCLE  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output CLID Link F"        OCLF  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output CLID Link G"        OCLG  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+"Output CLID Link H"        OCLH  SPC_NOMOD  ASL1 DBF_OUTLINK    NO    1                     GUI_OUTPUT
+!NOTE the following 8 fields must be consecutive
+"Input Link A"         INPA  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Link B"         INPB  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Link C"         INPC  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Link D"         INPD  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Link E"         INPE  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Link F"         INPF  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Link G"         INPG  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Link H"         INPH  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+!NOTE the following 8 fields must be consecutive
+"Input Msg Link A"         INMA  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Msg Link B"         INMB  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Msg Link C"         INMC  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Msg Link D"         INMD  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Msg Link E"         INME  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Msg Link F"         INMF  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Msg Link G"         INMG  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS
+"Input Msg Link H"         INMH  SPC_NOMOD  ASL1 DBF_INLINK     NO    1                     GUI_INPUTS

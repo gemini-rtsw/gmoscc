@@ -1,0 +1,5 @@
+#! /bin/csh -f
+/bin/rm -f *.cau
+/bin/sed -e "s/GM/$1/g" gmSeqInit.tmp >gmSeqInit.cau
+cau <gmSeqInit.cau
+exit

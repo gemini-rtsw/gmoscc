@@ -1,0 +1,345 @@
+#!/usr/local/bin/tcsh -f
+#
+# crosstalkXNolog
+#
+# Description:
+#
+#   A simple script to check out how the Y stage position varies when the X stage is moved
+#
+#   It is assumed this script is being run from the "test" directory.
+#   The translation assembly and detector controller must already have been initalised
+#   and set into the desired configuration.
+#
+# Invocation:
+#   crosstalkXNolog starting-file-number
+#
+# NOTE:
+#   This script is designed to be as simple as possible, so it does not do as much
+#   checking as a dhsTestCmdr script. It is designed to generate test data rather
+#   than to check out the correct operation of the instrument.
+#
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!($?GMOS_MK_ACCESS)) then
+    echo ""
+    echo "GMOS MK safety check failed."
+    echo ""
+    echo "Before executing this script, which will move real MK hardware,"
+    echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+    echo ""
+    exit
+else
+    echo "GMOS MK safety check passed."
+endif
+
+#
+# Bail out if the scripts directory does not exist.
+#
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+#
+# Save the current day
+#
+set day = `date +%d%h%y`
+
+echo " "
+echo "Checking cross talk as X stage is moved."
+date
+echo " "
+echo "It is assumed you have already configured the detector controller"
+echo "and initialized and indexed the translation assembly."
+
+#
+# Log the current instrument configuration
+#
+echo " "
+set maskID = `getChannel gm:sad:cc:mskID`
+echo "Current mask ID        = "$maskID
+echo "Current mask location  = "`getChannel gm:sad:cc:mskLoc`
+
+set filter1 = `getChannel gm:sad:filtName1`
+set filter2 = `getChannel gm:sad:filtName2`
+echo "Current filters        = $filter1 and $filter2"
+echo "Filter wheel positions = "`getChannel gm:sad:cc:fltPos1`" and "`getChannel gm:sad:cc:fltPos1`
+
+set grating = `getChannel gm:sad:grName`
+echo "Current grating name   = "$grating
+echo "Ruling density         = "`getChannel gm:sad:grRulingDensity`
+echo "Blaze direction        = "`getChannel gm:sad:grBlazeDir`
+echo "Central wavelength     = "`getChannel gm:sad:grWavelen`
+echo "Order                  = "`getChannel gm:sad:grOrder`
+
+set grID = `getChannel gm:sad:cc:grID`
+set grTilt = `getChannel gm:sad:cc:grTilt`
+echo "Current grating ID     = "$grID
+echo "Current grating tilt   = "$grTilt
+
+#
+# Define the measurement parameters:
+#
+# ypos = fixed y position in microns (centre of travel)
+# zpos = fixed Z position in microns (best focus)
+# xstart = starting X position in microns
+# xstep  = X increment in microns
+# ncount = Number of measurements (xend = xstart + ncounts*xstep)
+# filecount = Initial file name counter
+#
+
+set ypos = 108.0
+#set zpos = 4160.0
+set zpos = 1835.0
+
+set xmin = -25.0
+set xmax = 225.0
+
+set xstart = $xmin
+set xstep = 5.0
+set ncount = 50
+set filecount = $1
+
+echo " "
+echo "Y position = $ypos microns"
+echo "Z position = $zpos microns"
+echo "There will be $ncount X measurements from $xstart microns in $xstep micron increments"
+
+#
+# Add column headers to the log file
+#
+echo " "
+echo "--------------------------------------------------------------------------------------------------"
+echo "File	Exposure	Grating	Tilt	Filter1	Filter2	MaskId	xpos	ypos	zpos	deltaX(therm)	deltaY(therm)	deltaZ(therm)	deltaX(x-talk)	deltaY(x-talk)"
+echo "    	(secs)  	(degrees)   	       	       	      	(um)	(um)	(um)	    (um)     	    (um)     	    (um)     	    (um)      	    (um)"
+
+#
+# Move the translation assembly to the centre/best focus position position
+#
+
+set moveResponse = `moveAssembly gm:cc:dtaAssembly 100.0 $ypos $zpos`
+set moveStatus = `echo $moveResponse | grep 'Command Success'`
+if ( $#moveStatus != 2 ) then
+
+   echo "Assembly move failed"
+   caget gm:cc:dtaAssembly.MESS
+   exit -1
+endif
+
+set actualX = `getChannel gm:cc:dta1Device.MPOS`
+set actualY = `getChannel gm:cc:dta2Device.MPOS`
+set actualZ = `getChannel gm:cc:dta3Device.MPOS`
+
+set dxth = `getChannel gm:cc:dtaAssembly.VALA`
+set dyth = `getChannel gm:cc:dtaAssembly.VALB`
+set dzth = `getChannel gm:cc:dtaAssembly.VALC`
+
+#
+# TEMPORARY ADDITION FOR COLD TESTS
+#
+set dxx = `getChannel  gm:cc:dtacrossx.VAL`
+set dyx = `getChannel  gm:cc:dtacrossy.VAL`
+
+#
+# Set the file name
+#
+
+set filename = g0${filecount}
+set fileResponse = `setObserveFilename gm: ${filename}`
+set fileStatus = `echo $fileResponse | grep 'Command Success'`
+@ filecount = $filecount + 1
+if ( $#fileStatus != 2 ) then
+
+   echo "Setting filename failed"
+   exit -1
+endif
+
+#
+# Make an observation
+#
+
+set observeResponse = `executeObserve gm:`
+set observeStatus = `echo $observeResponse | grep 'Command Success'`
+if ( $#observeStatus != 2 ) then
+
+   echo "Observation failed"
+   exit -1
+endif
+set exposure = `getChannel gm:sad:dc:exposed`
+
+#
+# Log the result
+#
+
+echo "$filename	$exposure	$grID	$grTilt	$filter1	$filter2	$maskID	$actualX	$actualY	$actualZ	$dxth	$dyth	$dzth	$dxx	$dyx"
+
+#
+# Initialise the translation assembly to the lowest possible X position
+# then increment X in steps until the whole X range has been covered.
+#
+
+set xpos = $xstart
+set count = 0
+
+while ( $count <= $ncount )
+
+#
+# Move the X axis
+#
+
+   set moveResponse = `moveAssembly gm:cc:dtaAssembly $xpos $ypos $zpos`
+   set moveStatus = `echo $moveResponse | grep 'Command Success'`
+   if ( $#moveStatus != 2 ) then
+
+      echo "Assembly move failed at X = " $xpos
+      caget gm:cc:dtaAssembly.MESS
+      exit -1
+   endif
+
+   set actualX = `getChannel gm:cc:dta1Device.MPOS`
+   set actualY = `getChannel gm:cc:dta2Device.MPOS`
+   set actualZ = `getChannel gm:cc:dta3Device.MPOS`
+
+   set dxth = `getChannel gm:cc:dtaAssembly.VALA`
+   set dyth = `getChannel gm:cc:dtaAssembly.VALB`
+   set dzth = `getChannel gm:cc:dtaAssembly.VALC`
+
+#
+# TEMPORARY ADDITION FOR COLD TESTS
+#
+   set dxx = `getChannel  gm:cc:dtacrossx.VAL`
+   set dyx = `getChannel  gm:cc:dtacrossy.VAL`
+
+#
+# Set the file name
+#
+
+   set filename = g0${filecount}
+   set fileResponse = `setObserveFilename gm: ${filename}`
+   set fileStatus = `echo $fileResponse | grep 'Command Success'`
+   @ filecount = $filecount + 1
+   if ( $#fileStatus != 2 ) then
+
+      echo "Setting filename failed at X = " $xpos
+      exit -1
+   endif
+
+#
+# Make an observation
+#
+
+   set observeResponse = `executeObserve gm:`
+   set observeStatus = `echo $observeResponse | grep 'Command Success'`
+   if ( $#observeStatus != 2 ) then
+
+      echo "Observation failed at X = " $xpos
+      exit -1
+   endif
+   set exposure = `getChannel gm:sad:dc:exposed`
+
+#
+# Log the result
+#
+
+   echo "$filename	$exposure	$grID	$grTilt	$filter1	$filter2	$maskID	$actualX	$actualY	$actualZ	$dxth	$dyth	$dzth	$dxx	$dyx"
+
+#
+# Increment the X axis position by ystep microns, increment the counter and repeat the loop.
+#
+
+   set xpos = `add $xpos $xstep`
+   @ count = $count + 1
+end
+
+#
+# Set the translation assembly to the highest possible X position
+# then decrement X in steps until the whole X range has been covered.
+# again.
+#
+
+down:
+
+set xpos = $xmax
+set count = 0
+
+echo " "
+echo "There will now be $ncount X measurements from $xpos microns in $xstep micron decrements"
+
+while ( $count <= $ncount )
+
+#
+# Move the X axis
+#
+
+   set moveResponse = `moveAssembly gm:cc:dtaAssembly $xpos $ypos $zpos`
+   set moveStatus = `echo $moveResponse | grep 'Command Success'`
+   if ( $#moveStatus != 2 ) then
+
+      echo "Assembly move failed at X = " $xpos
+      caget gm:cc:dtaAssembly.MESS
+      exit -1
+   endif
+
+   set actualX = `getChannel gm:cc:dta1Device.MPOS`
+   set actualY = `getChannel gm:cc:dta2Device.MPOS`
+   set actualZ = `getChannel gm:cc:dta3Device.MPOS`
+
+   set dxth = `getChannel gm:cc:dtaAssembly.VALA`
+   set dyth = `getChannel gm:cc:dtaAssembly.VALB`
+   set dzth = `getChannel gm:cc:dtaAssembly.VALC`
+
+#
+# TEMPORARY ADDITION FOR COLD TESTS
+#
+   set dxx = `getChannel  gm:cc:dtacrossx.VAL`
+   set dyx = `getChannel  gm:cc:dtacrossy.VAL`
+
+#
+# Set the file name
+#
+
+   set filename = g0${filecount}
+   set fileResponse = `setObserveFilename gm: g0${filecount}`
+   set fileStatus = `echo $fileResponse | grep 'Command Success'`
+   @ filecount = $filecount + 1
+   if ( $#fileStatus != 2 ) then
+
+      echo "Setting filename failed at X = " $xpos
+      exit -1
+   endif
+
+#
+# Make an observation
+#
+
+   set observeResponse = `executeObserve gm:`
+   set observeStatus = `echo $observeResponse | grep 'Command Success'`
+   if ( $#observeStatus != 2 ) then
+
+      echo "Observation failed at X = " $xpos
+      exit -1
+   endif
+   set exposure = `getChannel gm:sad:dc:exposed`
+
+#
+# Log the result
+#
+
+   echo "$filename	$exposure	$grID	$grTilt	$filter1	$filter2	$maskID	$actualX	$actualY	$actualZ	$dxth	$dyth	$dzth	$dxx	$dyx"
+
+#
+# Decrement the X axis position by xstep microns, increment the counter and repeat the loop.
+#
+
+   set xpos = `add $xpos -$xstep`
+   @ count = $count + 1
+end
+
+echo "Script completed successfully."
+
+exit

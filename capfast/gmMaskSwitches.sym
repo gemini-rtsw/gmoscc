@@ -1,0 +1,30 @@
+[symbol2]
+bbox -32 64 320 224
+port 32 96 100 1280 bc_trigger symbol 1 -32 96 0
+port 272 96 100 768 barcode symbol 2 320 96 0
+port 272 160 100 768 switches symbol 2 320 160 0
+port 272 128 100 768 zones symbol 2 320 128 0
+uniq 427
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 5 0 256 64 gmMaskSwitches
+l 100 4 0 144 192 Mask Switches
+r 0 32 64 256 224
+v 0 32 96
+-32 96
+_
+v 0 320 96
+256 96
+_
+v 0 320 160
+256 160
+_
+v 0 32 192
+256 192
+_
+v 0 320 128
+256 128
+_
+[comments]

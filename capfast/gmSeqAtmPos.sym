@@ -1,0 +1,25 @@
+[symbol2]
+bbox 32 32 352 416
+port 336 304 100 512 MESS symbol 2 352 304 0
+port 336 336 100 512 VAL symbol 2 352 336 0
+port 48 336 100 0 DIR symbol 1 32 336 0
+port 48 304 100 0 ICID symbol 1 32 304 0
+uniq 105
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 128 256 Corrector
+l 100 0 0 128 288 Dispersion
+l 100 0 0 128 320 Atmospheric
+l 100 7 0 176 400 atmPos
+l 100 0 0 128 224 Positioning
+r 0 144 48 240 208
+r 0 32 32 352 416
+v 0 144 48
+240 208
+_
+v 0 32 384
+352 384
+_
+[comments]

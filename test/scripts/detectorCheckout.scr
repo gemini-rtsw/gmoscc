@@ -1,0 +1,515 @@
+
+#
+# DHS Test Commander
+# detector controller functionality test script
+#
+
+#
+# Declare the variables used by this script....
+#
+
+VAR     gmosDc           dcTestCommand           testCommand            1
+VAR     gmosDc           dcTestAcknowledge       testAcknowledge        1
+VAR     gmosDc           dcTestCarVal            testCar                1
+
+VAR     gmosDc           dcInitCommand           initCommand            1
+VAR     gmosDc           dcInitAcknowledge       initAcknowledge        1
+VAR     gmosDc           dcInitCarVal            initCar                1
+VAR     gmosDc           dcInitMode              initMode               1
+#VAR     gmosDC           dcInitDone              initDone               1
+
+VAR     gmosDc           dcDatumCommand          datumCommand           1
+VAR     gmosDc           dcDatumAcknowledge      datumAcknowledge       1
+VAR     gmosDc           dcDatumCarVal           datumCar               1
+
+VAR     gmosDc           dcParkCommand           parkCommand            1
+VAR     gmosDc           dcParkAcknowledge       parkAcknowledge        1
+VAR     gmosDc           dcParkCarVal            parkCar                1
+
+VAR     gmosDc           dcObserveCommand        observeCommand         1
+VAR     gmosDc           dcObserveAcknowledge    observeAcknowledge     1
+VAR     gmosDc           dcObserveCarVal         observeCar             1
+VAR     gmosDc           dcObserveDataLabel      observeDataLabel       1
+
+VAR     gmosDc           dcPauseCommand          pauseCommand           1
+VAR     gmosDc           dcPauseAcknowledge      pauseAcknowledge       1
+
+VAR     gmosDc           dcContinueCommand       continueCommand        1
+VAR     gmosDc           dcContinueAcknowledge   continueAcknowledge    1
+
+VAR     gmosDc           dcStopCommand           stopCommand            1
+VAR     gmosDc           dcStopAcknowledge       stopAcknowledge        1
+
+VAR     gmosDc           dcAbortCommand          abortCommand           1
+VAR     gmosDc           dcAbortAcknowledge      abortAcknowledge       1
+
+VAR     gmosDc           dcSetupCommand          setupCommand           1
+VAR     gmosDc           dcSetupAcknowledge      setupAcknowledge       1
+VAR     gmosDc           dcSetupTime             setupTime              1
+VAR     gmosDc           dcSetupShutter          setupShutter           1
+VAR     gmosDc           dcSetupGain             setupGain              1
+VAR     gmosDc           dcSetupReadoutRate      setupReadoutRate       1
+VAR     gmosDc           dcSetupReadoutPorts     setupReadoutPorts      1
+VAR     gmosDc           dcSetupFilename         setupFilename          1
+VAR     gmosDc           dcSetupCarVal           setupCar               1
+VAR     gmosDc           dcSetupCarMessage       setupCarMessage        1
+#VAR     gmosDc           dcSetupDone             setupDone              1
+
+VAR     gmosDc           dcRoiCommand            roiCommand             1
+VAR     gmosDc           dcRoiAcknowledge        roiAcknowledge         1
+VAR     gmosDc           dcRoiMessage            roiMessage             1
+VAR     gmosDc           dcRoiX1Min              roiX1Min               1
+VAR     gmosDc           dcRoiY1Min              roiY1Min               1
+VAR     gmosDc           dcRoiX1Size             roiX1Size              1
+VAR     gmosDc           dcRoiY1Size             roiY1Size              1
+VAR     gmosDc           dcRoiX2Min              roiX2Min               1
+VAR     gmosDc           dcRoiY2Min              roiY2Min               1
+VAR     gmosDc           dcRoiX2Size             roiX2Size              1
+VAR     gmosDc           dcRoiY2Size             roiY2Size              1
+VAR     gmosDc           dcRoiX3Min              roiX3Min               1
+VAR     gmosDc           dcRoiY3Min              roiY3Min               1
+VAR     gmosDc           dcRoiX3Size             roiX3Size              1
+VAR     gmosDc           dcRoiY3Size             roiY3Size              1
+VAR     gmosDc           dcRoiX4Min              roiX4Min               1
+VAR     gmosDc           dcRoiY4Min              roiY4Min               1
+VAR     gmosDc           dcRoiX4Size             roiX4Size              1
+VAR     gmosDc           dcRoiY4Size             roiY4Size              1
+VAR     gmosDc           dcRoiXBin               roiXBin                1
+VAR     gmosDc           dcRoiYBin               roiYBin                1
+#VAR     gmosDc           dcRoiDone               roiDone                1
+
+VAR     gmosDc           sadDcState              sadState               1
+VAR     gmosDc           sadDcHealth             sadHealth              1
+VAR     gmosDc           sadDcDataLabel          sadDataLabel           1
+VAR     gmosDc           sadDcDhsHealth          sadDhsHealth           1
+VAR     gmosDc           sadDcShutHealth         sadShutHealth          1
+VAR     gmosDc           sadDcInit               sadInitialized         1
+VAR     gmosDc           sadDcDetectorType       sadDetType             1
+VAR     gmosDc           sadDcDetectorId         sadDetId               1
+VAR     gmosDc           sadDcControllerId       sadControllerId        1
+VAR     gmosDc           sadDcDetectorTemp       sadDetTemp             1
+
+VAR     gmosDc           sadDcExposedTarget      sadExposedTarget       1
+VAR     gmosDc           sadDcExposedActual      sadExposedActual       1
+VAR     gmosDc           sadDcUtstart            sadUtstart             1
+VAR     gmosDc           sadDcUtend              sadUtend               1
+VAR     gmosDc           sadDcDarktimeActual     sadDarktime            1
+VAR     gmosDc           sadDcShutterActual      sadShutter             1
+
+VAR     gmosDc           sadDcXBin               sadXBin                1
+VAR     gmosDc           sadDcYBin               sadYBin                1
+VAR     gmosDc           sadDcNumberOfRegions    sadNoRegions           1
+VAR     gmosDc           sadDcX1Min              sadX1Min               1
+VAR     gmosDc           sadDcY1Min              sadY1Min               1
+VAR     gmosDc           sadDcX1Size             sadX1Size              1
+VAR     gmosDc           sadDcY1Size             sadY1Size              1
+VAR     gmosDc           sadDcX2Min              sadX2Min               1
+VAR     gmosDc           sadDcY2Min              sadY2Min               1
+VAR     gmosDc           sadDcX2Size             sadX2Size              1
+VAR     gmosDc           sadDcY2Size             sadY2Size              1
+VAR     gmosDc           sadDcX3Min              sadX3Min               1
+VAR     gmosDc           sadDcY3Min              sadY3Min               1
+VAR     gmosDc           sadDcX3Size             sadX3Size              1
+VAR     gmosDc           sadDcY3Size             sadY3Size              1
+VAR     gmosDc           sadDcX4Min              sadX4Min               1
+VAR     gmosDc           sadDcY4Min              sadY4Min               1
+VAR     gmosDc           sadDcX4Size             sadX4Size              1
+VAR     gmosDc           sadDcY4Size             sadY4Size              1
+
+#***********************************************************
+
+
+#
+# Verify startup state
+#
+
+TEST "Verify startup state"
+FATAL
+
+DESC "Verify startup state"
+
+DESC "Initial state must be RUNNING"
+GETVAL sadState
+OUTPUT *VAL* RUNNING*
+
+DESC "Initial health must be GOOD"
+GETVAL sadHealth
+OUTPUT *VAL* GOOD*
+
+DESC "Log the initial DHS health - might be BAD if DHS not being used"
+GETVAL sadDhsHealth
+OUTPUT *
+
+DESC "Initial shutter health must be GOOD"
+GETVAL sadShutHealth
+OUTPUT *VAL* GOOD*
+
+DESC "Log the detector type"
+GETVAL sadDetType
+OUTPUT *
+
+DESC "Log the detector chip IDs"
+GETVAL sadDetId
+OUTPUT *
+
+DESC "Log the controller ID"
+GETVAL sadControllerId
+OUTPUT *
+
+DESC "Log the initial detector temperature"
+GETVAL sadDetTemp
+OUTPUT *
+
+ENDTEST
+
+#
+# Initialize the detector controller
+#
+
+TEST "Test detector controller INIT command"
+FATAL
+
+DESC "Initializing detector controller"
+
+DESC "Start the command and wait for car to finish"
+CMD "executeCommand initCommand initAcknowledge initCar"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify detector controller state after command
+#
+
+TEST "Verify state after command"
+# THIS TEST FAILS - DETECTOR CONTROLLER BUG BELOW
+#FATAL
+
+DESC "Verify state after command"
+
+GETVAL sadState
+OUTPUT *
+
+DESC "Must be initialised after INIT command"
+#GETVAL initDone
+#OUTPUT *VAL* 0*
+
+GETVAL sadInitialized
+# THIS TEST FAILS - DETECTOR CONTROLLER BUG
+OUTPUT *VAL* 1*
+
+DESC "Health must still be GOOD"
+GETVAL sadHealth
+OUTPUT *VAL* GOOD*
+
+DESC "Shutter health must still be GOOD"
+GETVAL sadShutHealth
+OUTPUT *VAL* GOOD*
+
+ENDTEST
+
+#
+# Testing the detector controller
+#
+
+TEST "Test detector controller TEST command"
+FATAL
+
+DESC "Testing detector controller"
+
+DESC "Start the command and wait for car to finish"
+CMD "executeCommand testCommand testAcknowledge testCar"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify detector controller state after command
+#
+
+TEST "Verify state after command"
+#FATAL
+
+DESC "Verify state after command"
+
+GETVAL sadState
+OUTPUT *
+
+DESC "Health must still be GOOD"
+GETVAL sadHealth
+OUTPUT *VAL* GOOD*
+
+DESC "Shutter health must still be GOOD"
+GETVAL sadShutHealth
+OUTPUT *VAL* GOOD*
+
+ENDTEST
+
+#
+# Then datum the detector controller
+#
+
+TEST "Test detector controller DATUM command"
+FATAL
+
+DESC "Indexing detector controller"
+
+DESC "Start the command and wait for car to finish"
+CMD "executeCommand datumCommand datumAcknowledge datumCar"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify detector controller state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL sadState
+OUTPUT *
+
+DESC "Health must still be GOOD"
+GETVAL sadHealth
+OUTPUT *VAL* GOOD*
+
+DESC "Shutter health must still be GOOD"
+GETVAL sadShutHealth
+OUTPUT *VAL* GOOD*
+
+ENDTEST
+
+#
+# Set the controller for a 5 second exposure writing to the file "testscript1"
+#
+
+TEST "Verify detector controller setup command"
+FATAL
+
+DESC "5 second exposure"
+PUTVAL setupTime "5.0"
+OUTPUT *.A*.A* 5*
+
+DESC "Filename testscript1"
+PUTVAL setupFilename "testscript1"
+OUTPUT *.F*.F* testscript1*
+
+DESC "Start the command and wait for car to finish"
+CMD "executeCommand setupCommand setupAcknowledge setupCar"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify detector controller state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL sadState
+OUTPUT *
+
+#DESC "Must be set up now"
+#GETVAL setupDone
+#OUTPUT *VAL* 0*
+
+DESC "Health must still be GOOD"
+GETVAL sadHealth
+OUTPUT *VAL* GOOD*
+
+DESC "Shutter health must still be GOOD"
+GETVAL sadShutHealth
+OUTPUT *VAL* GOOD*
+
+ENDTEST
+
+#
+# Set the controller for one 100x100 pixel region of interest
+#
+
+TEST "Verify region of interest setup command"
+FATAL
+
+DESC "X start = 1"
+PUTVAL roiX1Min "1"
+OUTPUT *.B*.B* 1*
+
+DESC "Y start = 1"
+PUTVAL roiY1Min "1"
+OUTPUT *.C*.C* 1*
+
+DESC "X size = 100"
+PUTVAL roiX1Size "100"
+OUTPUT *.D*.D* 100*
+
+DESC "Y size = 100"
+PUTVAL roiY1Size "100"
+OUTPUT *.E*.E* 100*
+
+DESC "Zero other ROI regions"
+PUTVAL roiX2Min "0"
+OUTPUT *.F*.F* 0*
+PUTVAL roiY2Min "0"
+OUTPUT *.G*.G* 0*
+PUTVAL roiX2Size "0"
+OUTPUT *.H*.H* 0*
+PUTVAL roiY2Size "0"
+OUTPUT *.I*.I* 0*
+
+PUTVAL roiX3Min "0"
+OUTPUT *.J*.J* 0*
+PUTVAL roiY3Min "0"
+OUTPUT *.K*.K* 0*
+PUTVAL roiX3Size "0"
+OUTPUT *.L*.L* 0*
+PUTVAL roiY3Size "0"
+OUTPUT *.M*.M* 0*
+
+PUTVAL roiX4Min "0"
+OUTPUT *.N*.N* 0*
+PUTVAL roiY4Min "0"
+OUTPUT *.O*.O* 0*
+PUTVAL roiX4Size "0"
+OUTPUT *.P*.P* 0*
+PUTVAL roiY4Size "0"
+OUTPUT *.Q*.Q* 0*
+
+DESC "Set binning factors to 1"
+PUTVAL roiXBin "1"
+OUTPUT *.S*.S* 1*
+PUTVAL roiYBin "1"
+OUTPUT *.T*.T* 1*
+
+DESC "Start the command and wait for car to finish"
+CMD "executeCommand roiCommand roiAcknowledge setupCar"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify detector controller state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL sadState
+OUTPUT *
+
+#DESC "Must have ROI set up now"
+#GETVAL roiDone
+#OUTPUT *VAL* 0*
+
+DESC "Health must still be GOOD"
+GETVAL sadHealth
+OUTPUT *VAL* GOOD*
+
+DESC "Shutter health must still be GOOD"
+GETVAL sadShutHealth
+OUTPUT *VAL* GOOD*
+
+ENDTEST
+
+#
+# Make an observation
+#
+
+TEST "Make an observation"
+FATAL
+
+DESC "Start the command and wait for car to finish"
+CMD "executeCommand observeCommand observeAcknowledge observeCar"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify detector controller state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL sadState
+OUTPUT *
+
+DESC "Health must still be GOOD"
+GETVAL sadHealth
+OUTPUT *VAL* GOOD*
+
+DESC "Shutter health must still be GOOD"
+GETVAL sadShutHealth
+OUTPUT *VAL* GOOD*
+
+ENDTEST
+
+#
+# Verify the information in the status alarm database corresponds to the
+# parameters for the observation just made.
+#
+
+TEST "Check status alarm database"
+# WILL FAIL DUE TO DETECTOR CONTROLLER BUGS
+#FATAL
+
+DESC "Log data label"
+GETVAL sadDataLabel
+OUTPUT *
+
+DESC "Target exposure time was 5 seconds"
+GETVAL sadExposedTarget
+OUTPUT *VAL* 5*
+
+DESC "Log the actual exposure times"
+GETVAL sadExposedActual
+OUTPUT *
+GETVAL sadUtstart
+OUTPUT *
+GETVAL sadUtend
+OUTPUT *
+GETVAL sadDarktime
+OUTPUT *
+
+DESC "Log shutter state"
+GETVAL sadShutter
+OUTPUT *
+
+DESC "One region of interest?"
+GETVAL sadNoRegions
+OUTPUT *VAL* 1*
+
+DESC "Correct ROI parameters?"
+GETVAL sadX1Min
+OUTPUT *VAL* 0*
+GETVAL sadX2Min
+OUTPUT *VAL* 0*
+GETVAL sadX1Size
+OUTPUT *VAL* 100*
+GETVAL sadX2Size
+OUTPUT *VAL* 100*
+
+DESC "Binning factors set to 1?"
+GETVAL sadXBin
+OUTPUT *VAL* 1*
+GETVAL sadYBin
+OUTPUT *VAL* 1*
+
+DESC "Log the final detector temperature"
+GETVAL sadDetTemp
+OUTPUT *
+
+ENDTEST
+
+COMMENT "Detector controller tests completed"
+
+ 

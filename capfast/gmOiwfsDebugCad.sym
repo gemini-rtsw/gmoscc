@@ -1,0 +1,18 @@
+[symbol2]
+bbox 32 32 288 256
+port 224 160 100 2048 DEBUG symbol 2 288 160 0
+uniq 271
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 7 0 128 240 Debug CAD
+l 100 8 0 224 48 gmOiwfsDebugCad
+r 0 32 32 224 256
+v 0 224 160
+288 160
+_
+v 0 32 224
+224 224
+_
+[comments]

@@ -1,0 +1,959 @@
+
+#
+# DHS Test Commander
+# wfs assembly functionality test script
+#
+
+#
+# Do the variable substitution thing....
+#
+
+VAR     wfsAssembly      assemblyDirective       wfsDir              1
+VAR     wfsAssembly      assemblyMode            wfsMode             1
+VAR     wfsAssembly      assemblyAAttribute      wfsMXTarget         1
+VAR     wfsAssembly      assemblyBAttribute      wfsMYTarget         1
+VAR     wfsAssembly      assemblyCAttribute      wfsSol              1
+VAR     wfsAssembly      assemblyAttributeAMin   wfsAttributeAMin    1
+VAR     wfsAssembly      assemblyAttributeAMax   wfsAttributeAMax    1
+VAR     wfsAssembly      assemblyAttributeBMin   wfsAttributeBMin    1
+VAR     wfsAssembly      assemblyAttributeBMax   wfsAttributeBMax    1
+
+VAR     wfsAssembly      assemblyAcknowledge     wfsAck              1
+VAR     wfsAssembly      assemblyBusy            wfsBusy             1
+VAR     wfsAssembly      assemblyMessage         wfsMess             1
+
+VAR     wfsAssembly      assemblyDebug           wfsDebug            1
+VAR     wfsAssembly      assemblySimulation      wfsSimulation       1
+VAR     wfsAssembly      assemblyLutFile         wfsLutFile          1
+VAR     wfsAssembly      assemblyLutDir          wfsLutDir           1
+VAR     wfsAssembly      assemblyNumberOfDevices wfsNumDev           1
+VAR     wfsAssembly      assemblyDevType         wfsDevType          1
+
+VAR     wfsAssembly      assemblyState           wfsState            1
+VAR     wfsAssembly      assemblyIndexed         wfsIndexed          1
+VAR     wfsAssembly      assemblyInitialized     wfsInitialized      1
+VAR     wfsAssembly      assemblyHealth          wfsHealth           1
+VAR     wfsAssembly      assemblyParked          wfsParked           1
+
+VAR     wfsCommands      wfsMXPos                wfsMXPos            1
+VAR     wfsCommands      wfsMYPos                wfsMYPos            1
+VAR     wfsCommands      wfsXMax                 wfsXMax             1
+VAR     wfsCommands      wfsYMax                 wfsYMax             1
+VAR     wfsCommands      wfsXMin                 wfsXMin             1
+VAR     wfsCommands      wfsYMin                 wfsYMin             1
+VAR     wfsCommands      wfsBasAbs               wfsBasAbs           1
+VAR     wfsCommands      wfsPkoAbs               wfsPkoAbs           1
+VAR     wfsCommands      wfsAbsBaseZero          wfsAbsBaseZero      1
+VAR     wfsCommands      wfsAbsPickoffZero       wfsAbsPickoffZero   1
+
+VAR     baseDevice       devicePosition          basePos             1
+VAR     baseDevice       deviceDirective         baseDir             1
+VAR     baseDevice       deviceMode              baseMode            1
+VAR     baseDevice       deviceTarget            baseTarget          1
+VAR     baseDevice       deviceAcknowledge       baseAck             1
+VAR     baseDevice       deviceBusy              baseBusy            1
+VAR     baseDevice       deviceMessage           baseMess            1
+VAR     baseDevice       devicePower             basePower           1
+
+VAR     pickoffDevice    devicePosition          pickoffPos          1
+VAR     pickoffDevice    deviceDirective         pickoffDir          1
+VAR     pickoffDevice    deviceMode              pickoffMode         1
+VAR     pickoffDevice    deviceTarget            pickoffTarget       1
+VAR     pickoffDevice    deviceAcknowledge       pickoffAck          1
+VAR     pickoffDevice    deviceBusy              pickoffBusy         1
+VAR     pickoffDevice    deviceMessage           pickoffMess         1
+VAR     pickoffDevice    devicePower             pickoffPower        1
+
+#***********************************************************
+
+#
+# Is it safe to proceed?
+#
+
+PROMPT "Is it safe to move the wavefront sensor"
+
+#
+# Verify assembly configuration
+#
+
+TEST "Verify assembly configuration"
+FATAL
+
+DESC "Get assembly device layer type"
+GETVAL wfsDevType
+OUTPUT *.DTYP* Oiwfs*
+
+DESC "Get assembly debug level"
+GETVAL wfsDebug
+OUTPUT *.DBUG* 
+
+DESC "Get assembly simulation level"
+GETVAL wfsSimulation
+OUTPUT *.SIMM* NONE*
+
+DESC "Get lookup table directory"
+GETVAL wfsLutDir
+OUTPUT *.TDIR* 
+
+DESC "Get lookup table filename"
+GETVAL wfsLutFile
+OUTPUT *.TFIL* 
+
+DESC "Get number of devices connected to assembly"
+GETVAL wfsNumDev
+OUTPUT *.NMDV* 2*
+
+DESC "Get minimum X value"
+
+GETVAL wfsAttributeAMin
+OUTPUT *.AALL* 
+
+DESC "Get maximum X value"
+
+GETVAL wfsAttributeAMax
+OUTPUT *.AAHL* 
+
+DESC "Get minimum Y value"
+
+GETVAL wfsAttributeBMin
+OUTPUT *.ABLL* 
+
+DESC "Get maximum Y value"
+
+GETVAL wfsAttributeBMax
+OUTPUT *.ABHL* 
+
+
+ENDTEST
+
+#
+# Initialize the wfs assembly
+#
+
+TEST "Test OIWFS assembly INIT mode"
+FATAL
+
+DESC "Initializing wfs assembly"
+
+DESC "Set MODE to INIT"
+PUTVAL wfsMode "0"
+OUTPUT *.MODE*.MODE*INIT*
+
+DESC "Start the command and wait for car to finish"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify assembly state after command
+#
+
+TEST "Verify state after command"
+#FATAL
+
+DESC "Verify state after command"
+
+GETVAL wfsState
+OUTPUT *.ASTA* IDLE* 
+
+GETVAL wfsInitialized
+OUTPUT *.INIT* 1* 
+
+GETVAL wfsIndexed
+OUTPUT *.INDX* 
+
+GETVAL wfsParked
+OUTPUT *.PARK* 0* 
+
+GETVAL wfsHealth
+OUTPUT *.HLTH* GOOD* 
+
+ENDTEST
+
+#
+# Then index the wfs assembly
+#
+
+TEST "Test OIWFS assembly INDEX mode"
+FATAL
+
+DESC "Indexing wfs"
+
+DESC "Set MODE to INDEX"
+PUTVAL wfsMode "3"
+OUTPUT *.MODE*.MODE*INDEX*
+
+DESC "Start the command"
+CMD "startCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Started*
+
+DESC "Check the state"
+CMD "checkState wfsState INDEXING"
+OUTPUT *Success*
+
+DESC "Check the Car"
+GETVAL wfsBusy
+OUTPUT *.BUSY*BUSY*
+
+DESC "Check device power status"
+GETVAL basePower
+OUTPUT *.PSTA* 1* 
+GETVAL pickoffPower
+OUTPUT *.PSTA* 1* 
+
+DESC "Look for successful completion"
+CMD "finishCommand wfsBusy"
+OUTPUT *Success*
+
+
+ENDTEST
+
+#
+# Log the actual XY coordinates
+#
+TEST "Log the actual XY coordinates"
+FATAL
+
+DESC "Log the current X position"
+GETVAL wfsMXPos
+OUTPUT *VALA*
+
+DESC "Log the current Y position"
+GETVAL wfsMYPos
+OUTPUT *VALB*
+
+ENDTEST
+
+#
+# Log the base/pickoff angles calculated from sin/cos pots
+#
+TEST "Log the base/pickoff angles calculated from sin/cos pots"
+FATAL
+
+DESC "Log the absolute base angle"
+GETVAL wfsBasAbs
+OUTPUT *VALA*
+
+DESC "Log the absolute pickoff angle"
+GETVAL wfsPkoAbs
+OUTPUT *VALB*
+
+DESC "Log the angle used to zero the absolute base to incremental base"
+GETVAL wfsAbsBaseZero
+OUTPUT *VAL*
+
+DESC "Log the angle used to zero the absolute pickoff to incremental pickoff"
+GETVAL wfsAbsPickoffZero
+OUTPUT *VAL*
+
+ENDTEST
+
+#
+# Verify assembly state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL wfsState
+OUTPUT *.ASTA* IDLE* 
+
+GETVAL wfsInitialized
+OUTPUT *.INIT* 1* 
+
+GETVAL wfsIndexed
+OUTPUT *.INDX* 1* 
+
+GETVAL wfsParked
+OUTPUT *.PARK* 0* 
+
+GETVAL wfsHealth
+OUTPUT *.HLTH* GOOD* 
+
+GETVAL basePower
+OUTPUT *.PSTA* 0* 
+
+GETVAL pickoffPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+
+
+#
+# Move the probe to lower left corner
+#
+
+TEST "Checking field coverage - min X edge"
+FATAL
+
+DESC "Moving to first corner"
+
+DESC "Load X attribute with minimum value"
+PUTVAL wfsMXTarget "-7.1"
+OUTPUT *.A*.A* -7.1*
+
+DESC "Load Y attribute with minimum value"
+PUTVAL wfsMYTarget "-21.7"
+OUTPUT *.B*.B* -21.7*
+
+DESC "Set MODE to TRACK"
+PUTVAL wfsMode "2"
+OUTPUT *.MODE*.MODE*TRACK*
+
+DESC "Set solution type to 1"
+PUTVAL wfsSol "1"
+OUTPUT *.C*.C* 1*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "-10"
+OUTPUT *.B*.B* -10*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "0"
+OUTPUT *.B*.B* 0*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "10"
+OUTPUT *.B*.B* 10*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "20"
+OUTPUT *.B*.B* 20*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "30"
+OUTPUT *.B*.B* 30*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "40"
+OUTPUT *.B*.B* 40*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "50"
+OUTPUT *.B*.B* 50*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "60"
+OUTPUT *.B*.B* 60*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "70"
+OUTPUT *.B*.B* 70*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "80"
+OUTPUT *.B*.B* 80*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "90"
+OUTPUT *.B*.B* 90*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "100"
+OUTPUT *.B*.B* 100*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "110"
+OUTPUT *.B*.B* 110*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "120"
+OUTPUT *.B*.B* 120*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "130"
+OUTPUT *.B*.B* 130*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Move the probe to upper left corner
+#
+
+TEST "Checking field coverage - max Y edge"
+FATAL
+
+DESC "Moving to next corner"
+
+DESC "Load X attribute with minimum value"
+PUTVAL wfsMXTarget "-7.1"
+OUTPUT *.A*.A* -7.1*
+
+DESC "Load Y attribute with maximum value"
+PUTVAL wfsMYTarget "133.3"
+OUTPUT *.B*.B* 133.3*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "0"
+OUTPUT *.A*.A* 0*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "10"
+OUTPUT *.A*.A* 10*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "20"
+OUTPUT *.A*.A* 20*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "30"
+OUTPUT *.A*.A* 30*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "40"
+OUTPUT *.A*.A* 40*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "50"
+OUTPUT *.A*.A* 50*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "60"
+OUTPUT *.A*.A* 60*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "70"
+OUTPUT *.A*.A* 70*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "80"
+OUTPUT *.A*.A* 80*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "90"
+OUTPUT *.A*.A* 90*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "100"
+OUTPUT *.A*.A* 100*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "110"
+OUTPUT *.A*.A* 110*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "120"
+OUTPUT *.A*.A* 120*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+
+#
+# Move the probe to lower right corner
+#
+
+TEST "Checking field coverage - max X edge"
+FATAL
+
+DESC "Moving to next corner"
+
+DESC "Load X attribute with maximum value"
+PUTVAL wfsMXTarget "125.0"
+OUTPUT *.A*.A* 125*
+
+DESC "Load Y attribute with maximum value"
+PUTVAL wfsMYTarget "133.3"
+OUTPUT *.B*.B* 133.3*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "130"
+OUTPUT *.B*.B* 130*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "120"
+OUTPUT *.B*.B* 120*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "110"
+OUTPUT *.B*.B* 110*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "100"
+OUTPUT *.B*.B* 100*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "90"
+OUTPUT *.B*.B* 90*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "80"
+OUTPUT *.B*.B* 80*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "70"
+OUTPUT *.B*.B* 70*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "60"
+OUTPUT *.B*.B* 60*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "50"
+OUTPUT *.B*.B* 50*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "40"
+OUTPUT *.B*.B* 40*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "30"
+OUTPUT *.B*.B* 30*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "20"
+OUTPUT *.B*.B* 20*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "10"
+OUTPUT *.B*.B* 10*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "0"
+OUTPUT *.B*.B* 0*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "-10"
+OUTPUT *.B*.B* -10*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next Y"
+PUTVAL wfsMYTarget "-20"
+OUTPUT *.B*.B* -20*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Move the probe to lower left corner
+#
+
+TEST "Checking field coverage - min Y edge"
+FATAL
+
+DESC "Moving to next corner"
+
+DESC "Load Y attribute with minimum value"
+PUTVAL wfsMYTarget "-21.7"
+OUTPUT *.B*.B* -21.7*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "120"
+OUTPUT *.A*.A* 120*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "110"
+OUTPUT *.A*.A* 110*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "100"
+OUTPUT *.A*.A* 100*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "90"
+OUTPUT *.A*.A* 90*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "80"
+OUTPUT *.A*.A* 80*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "70"
+OUTPUT *.A*.A* 70*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "60"
+OUTPUT *.A*.A* 60*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "50"
+OUTPUT *.A*.A* 50*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "40"
+OUTPUT *.A*.A* 40*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "30"
+OUTPUT *.A*.A* 30*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "20"
+OUTPUT *.A*.A* 20*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "10"
+OUTPUT *.A*.A* 10*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "0"
+OUTPUT *.A*.A* 0*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+DESC "Load next X"
+PUTVAL wfsMXTarget "-7.1"
+OUTPUT *.A*.A* -7.1*
+
+DESC "Execute the command"
+CMD "executeCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+
+#
+# Verify assembly state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL wfsState
+OUTPUT *.ASTA* IDLE* 
+
+GETVAL wfsInitialized
+OUTPUT *.INIT* 1* 
+
+GETVAL wfsIndexed
+OUTPUT *.INDX* 1* 
+
+GETVAL wfsParked
+OUTPUT *.PARK* 0* 
+
+GETVAL wfsHealth
+OUTPUT *.HLTH* GOOD* 
+
+DESC "Check device power status"
+GETVAL basePower
+OUTPUT *.PSTA* 1* 
+GETVAL pickoffPower
+OUTPUT *.PSTA* 1* 
+
+ENDTEST
+
+#
+# And back to center
+#
+
+TEST "Put the wfs to the optical axis"
+FATAL
+
+DESC "Putting the wfs to center"
+
+PUTVAL wfsMXTarget "0.0"
+OUTPUT *0*
+
+PUTVAL wfsMYTarget "0.0"
+OUTPUT *0*
+
+DESC "Set MODE to MOVE"
+PUTVAL wfsMode "1"
+OUTPUT *.MODE*.MODE*MOVE*
+
+DESC "Start the command"
+CMD "startCommand wfsDir wfsAck wfsBusy"
+OUTPUT *Started*
+
+DESC "Check the state"
+CMD "checkState wfsState MOVING"
+OUTPUT *Success*
+
+DESC "Check the Car"
+GETVAL wfsBusy
+OUTPUT *.BUSY*BUSY*
+
+DESC "Look for successful completion"
+CMD "finishCommand wfsBusy"
+OUTPUT *Success*
+
+DESC "Check device power status"
+GETVAL basePower
+OUTPUT *.PSTA* 0* 
+GETVAL pickoffPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Log the actual XY coordinates
+#
+TEST "Log the actual XY coordinates"
+FATAL
+
+DESC "Log the current X position"
+GETVAL wfsMXPos
+OUTPUT *VALA*
+
+DESC "Log the current Y position"
+GETVAL wfsMYPos
+OUTPUT *VALB*
+
+ENDTEST
+
+#
+# Log the base/pickoff angles calculated from sin/cos pots
+#
+TEST "Log the base/pickoff angles calculated from sin/cos pots"
+FATAL
+
+DESC "Log the absolute base angle"
+GETVAL wfsBasAbs
+OUTPUT *VALA*
+
+DESC "Log the absolute pickoff angle"
+GETVAL wfsPkoAbs
+OUTPUT *VALB*
+
+ENDTEST
+
+
+
+COMMENT "wfs patrol field checks out OK"
+
+ 

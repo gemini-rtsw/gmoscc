@@ -1,0 +1,15 @@
+#
+# Database of available GMOS gratings.
+# This is an example Instrument Sequencer database.
+#
+
+# name            barcodeId     linesPerMm    blazeDir
+
+blank              30000000              0           0
+mirror             30000100              0           0
+200+               30000001            200          +1
+200-               30000002            200          -1
+800+               30000003            800          +1
+800-               30000004            800          -1
+1200+              30000005           1200          +1
+1200-              30000006           1200          -1

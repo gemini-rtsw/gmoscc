@@ -1,0 +1,34 @@
+[symbol2]
+bbox 128 160 384 384
+port 320 192 100 512 Y symbol 2 384 192 0
+port 320 224 100 512 AbsPko symbol 2 384 224 0
+port 320 256 100 512 AbsBas symbol 2 384 256 0
+port 320 288 100 512 IncrPko symbol 2 384 288 0
+port 320 320 100 512 IncrBas symbol 2 384 320 0
+uniq 132
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 5 0 320 160 gmOiwfsEncoders
+l 100 4 0 224 352 Encoders
+r 0 128 160 320 384
+v 0 384 192
+320 192
+_
+v 0 384 256
+320 256
+_
+v 0 384 224
+320 224
+_
+v 0 384 320
+320 320
+_
+v 0 384 288
+320 288
+_
+v 0 128 352
+320 352
+_
+[comments]

@@ -1,0 +1,522 @@
+file {
+	name="gmosTranslationHelp.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="0"
+	npc="1"
+	nstr="109"
+	ndynamic="0"
+	nplot="0"
+	nrd="1"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="624"
+		height="703"
+	}
+	clr="1"
+	bclr="13"
+	nwords_dspy="2298"
+	nwords_sta="504"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="2126"
+	osta="1622"
+	odynamic="2126"
+	oplot="2126"
+	ord="2126"
+	oes="2286"
+	okd="2286"
+	opd="2298"
+	opo="2298"
+	opc="68"
+	ostr="72"
+	ocmap="1622"
+	ocrules="1622"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1600"
+	pixht="1200"
+	mmwid="320"
+	mmht="240"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="12"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="GMOS Translation Assembly Help"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="120"
+		y="34"
+		width="350"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="120"
+		y="34"
+	}
+	point[1] {
+		x="470"
+		y="34"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="12"
+		y="52"
+		width="510"
+		height="20"
+		groupid="0"
+	}
+	textix="Read the general assembly help screen for"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="12"
+		y="75"
+		width="510"
+		height="20"
+		groupid="0"
+	}
+	textix="information about modes and directives -->"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="9"
+		y="120"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="1) Ensure the assembly has been initialized"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="143"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   and indexed before proceeding."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="183"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="2) To position the detector translation fill in"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="205"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   the X, Y, Z target coordinates in microns,"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="225"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   then select MOVE then START."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="265"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="3) Use the 'Correction' menu to switch"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="287"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   cross talk and thermal correction"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="307"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   on or off."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="343"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="4) To center the assembly select PARK then"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="365"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   START."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="458"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="The three menus at the bottom are:"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="9"
+		y="494"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Control - Direct control of translation devices"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="517"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="          (engineering only)."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="551"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Status - Display translation status and SAD."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="574"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="         'device summary' and 'XYZ graph'"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="634"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Engineering - Engineering screens (such as."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="657"
+		width="500"
+		height="20"
+		groupid="0"
+	}
+	textix="              interlocks)."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="597"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="         are useful displays."
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="9"
+		y="398"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="5) The thermal model can be reset by"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="420"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   selecting UPDATE then START."
+	align="horiz. left"
+}
+"related display" {
+	object {
+		x="536"
+		y="70"
+		width="75"
+		height="25"
+		groupid="0"
+	}
+	selfkill="off"
+	display[0] {
+		label="Assembly modes"
+		name="gmosAssemblyHelp.dl"
+		args=""
+	}
+	display[1] {
+		label=""
+		name=""
+		args=""
+	}
+	display[2] {
+		label=""
+		name=""
+		args=""
+	}
+	display[3] {
+		label=""
+		name=""
+		args=""
+	}
+	display[4] {
+		label=""
+		name=""
+		args=""
+	}
+	display[5] {
+		label=""
+		name=""
+		args=""
+	}
+	display[6] {
+		label=""
+		name=""
+		args=""
+	}
+	display[7] {
+		label=""
+		name=""
+		args=""
+	}
+	display[8] {
+		label=""
+		name=""
+		args=""
+	}
+	display[9] {
+		label=""
+		name=""
+		args=""
+	}
+	display[10] {
+		label=""
+		name=""
+		args=""
+	}
+	display[11] {
+		label=""
+		name=""
+		args=""
+	}
+	display[12] {
+		label=""
+		name=""
+		args=""
+	}
+	display[13] {
+		label=""
+		name=""
+		args=""
+	}
+	display[14] {
+		label=""
+		name=""
+		args=""
+	}
+	display[15] {
+		label=""
+		name=""
+		args=""
+	}
+	display[16] {
+		label=""
+		name=""
+		args=""
+	}
+	display[17] {
+		label=""
+		name=""
+		args=""
+	}
+	display[18] {
+		label=""
+		name=""
+		args=""
+	}
+	display[19] {
+		label=""
+		name=""
+		args=""
+	}
+	display[20] {
+		label=""
+		name=""
+		args=""
+	}
+	display[21] {
+		label=""
+		name=""
+		args=""
+	}
+	display[22] {
+		label=""
+		name=""
+		args=""
+	}
+	display[23] {
+		label=""
+		name=""
+		args=""
+	}
+	clr="9"
+	bclr="1"
+	menu_title="Help"
+	decorate="none"
+}
+"kill display" {
+	object {
+		x="529"
+		y="659"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

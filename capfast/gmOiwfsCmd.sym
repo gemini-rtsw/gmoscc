@@ -1,0 +1,30 @@
+[symbol2]
+bbox -32 32 304 224
+port 232 168 80 0 DIR symbol 2 288 160 0
+port 236 108 80 0 MODE symbol 2 288 96 0
+port -76 168 80 0 ActiveState symbol 1 -32 160 0
+port -76 108 80 0 FollowState symbol 1 -32 96 0
+uniq 146
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 80 7 0 128 208 Assembly Command
+l 100 2 0 224 48 gmOiwfsCmd
+r 0 32 32 224 224
+v 0 292 96
+224 96
+_
+v 0 224 160
+292 160
+_
+v 0 -32 160
+32 160
+_
+v 0 -32 96
+32 96
+_
+v 0 224 192
+32 192
+_
+[comments]

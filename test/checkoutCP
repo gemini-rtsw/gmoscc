@@ -1,0 +1,68 @@
+#!/usr/local/bin/tcsh -f
+#
+# checkoutSim
+#
+# Description:
+#
+#   This sets the environment variables and runs the checkout test
+#   SIMULATION VERSION
+#
+#   It is assumed this script is being run from the "test" directory
+#   and that wish4.2 is in the current PATH.
+#
+# Invocation:
+#
+#   checkoutSim name -auto -debug
+#
+#   where name is the name of the entity to be checked out.
+#   -auto (optional) runs the script automatically
+#   -debug (optional) adds diagnostic messages useful for debugging a script
+#
+
+#
+# Bail out if the scripts directory does not exist.
+#
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+#
+# Create the "logfiles" directory if it doesn't exist.
+#
+if ( !(-e logfiles) ) then
+
+   echo "Creating logfiles directory..." 
+   mkdir logfiles
+endif
+
+#
+# Update the barcode files in the simulation directory from the ones
+# in the main directory.
+#
+\cp /home/smb/gmos/lut/msk.lut /home/smb/gmos/lut/sim
+\cp /home/smb/gmos/lut/flt.lut /home/smb/gmos/lut/sim
+\cp /home/smb/gmos/lut/gr.lut /home/smb/gmos/lut/sim
+
+#
+# Define the environment variable pointing to the config files
+#
+setenv DEFAULT_CONFIG_DIR ./configFilesCP
+
+#
+# Run the tests
+#
+wish4.2 ./dhsTestCmdr.tk -a scripts/${1}Checkout.asm -i scripts/${1}Checkout.scr $2 $3
+
+#
+# Move the log file generated into the "logfiles" directory
+# Logfiles made in simulation mode have the string "Sim" appended
+# to their name.
+#
+\mv ./scripts/${1}Checkout.scr.log ./logfiles/${1}CheckoutCP.log
+
+#
+# Make a backup copy of the log file with the current date and time appended
+#
+\cp ./logfiles/${1}CheckoutCP.log ./logfiles/${1}CheckoutCP.log.`date +%H:%M:%S-%d-%h-20%y`

@@ -1,0 +1,52 @@
+#!/bin/sh -f
+#
+# Install script for Gemini GMOS system
+#
+
+host=`hostname`
+if [ "`egrep $host /etc/hosts | egrep '^10\.'`" -ne "" ]; then
+    site=MK;
+else
+    site=CP;
+fi
+
+#
+# Create the "gmosdc" directory link, destroying any existing link first.
+#
+
+#echo "Creating gmosdc link to " ${GMOS_DC}
+rm -f `find . -name "gmosdc" -type l -prune`
+ln -s ${GMOS_DC} ./gmosdc
+
+#
+# Set up the UAE environment.
+#
+
+applSetup -install . -T mv167 -s Makefile.subdirs \
+          -I alh -I ascii -I capfast -I dl -I pv -I src -I startup -I sys  \
+          -X db -X ar \
+          -depends /gemini/astlib -depends /gemini/slalib \
+          -depends /gemini/timelib \
+          -site $site $1 > gmosBuild.log 2>&1
+
+applSetup  >> gmosBuild.log 2>&1
+
+#
+# Update the local startup script with GMOS version (TEMPORARY).
+#
+
+cp ./local.vws ./startup
+
+#
+# Go to the dl directory and explicitly make the color templates.
+#
+
+cd ./dl; adl2dl2.4 gmColors.adl; adl2dl2.4 colors.adl; cd ..
+
+#
+# Build everything.
+#
+
+gmake >> gmosBuild.log 2>&1
+
+exit 0

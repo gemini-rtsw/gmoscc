@@ -1,0 +1,83 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: executeAcquisition
+#
+# Purpose: 
+#	To start a GMOS observation and wait for the data acquisition to finish
+#
+# Invocation:
+#       executeAcquisition gm:
+#
+# Assumptions:
+#       CAD_MARK  = 0
+#       CAD_START = 3
+#       CAD record success status = 0
+#       ACQ_BUSY = 1
+#       ACQ_IDLE = 0
+#
+
+set cadrecord = ${1}dc:observe
+set acqrecord = ${1}sad:dc:acq
+set carrecord = ${1}dc:observeC
+
+set dirResponse = `caput ${cadrecord}.DIR "0"`
+set dirResponse = `caput ${cadrecord}.DIR "3"`
+
+set ackResponse = `caget ${cadrecord}.VAL | grep ${cadrecord}.VAL | grep 0`
+
+if ( $#ackResponse != 2 ) then
+        set errmsg = `caget -t ${cadrecord}.MESS`
+	echo "Command rejected - $errmsg"
+	exit
+endif
+
+# Wait until the data acquisition starts
+
+while ( 1 )
+
+	sleep 1
+
+	set carResponse = `caget $carrecord`
+	set acqResponse = `caget $acqrecord`
+
+	set commandDone = `echo $carResponse | grep $carrecord | grep BUSY`
+	set acqDone = `echo $acqResponse | grep $acqrecord | grep 1`
+
+	if ( $#commandDone == 2 && $#acqDone == 2 ) then
+		break
+	endif
+end
+
+# Now wait until data acquisition ends, or the observation CAR goes IDLE,
+# whichever happens first.
+
+while ( 1 )
+
+	sleep 1
+
+	set acqResponse = `caget $acqrecord`
+
+	set acqDone = `echo $acqResponse | grep $acqrecord | grep 0`
+	if ( $#acqDone == 2 ) then
+		echo "Command Success"
+		exit
+	endif
+
+	set carResponse = `caget $carrecord`
+
+	set commandDone = `echo $carResponse | grep $carrecord | grep IDLE`
+	if ( $#commandDone == 2 ) then
+		echo "Command Success"
+		exit
+	endif
+
+	set commandFailed = `echo $carResponse | grep $carrecord | grep ERR`
+	if ( $#commandFailed == 2 ) then
+                set errmsg = `caget -t ${carResponse}.OMSS`
+		echo "Command Failed - $errmsg"
+		exit
+	endif
+
+end
+
+exit

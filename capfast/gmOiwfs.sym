@@ -1,0 +1,98 @@
+[symbol2]
+bbox -32 -192 288 384
+port 224 -128 100 512 CUR_POS symbol 2 288 -128 0
+port 48 -96 100 0 DBUG symbol 1 -32 -96 0
+port 48 -64 100 0 SIMM symbol 1 -32 -64 0
+port 224 288 100 512 MESS symbol 2 288 288 0
+port 224 160 100 512 CAR symbol 2 288 160 0
+port 224 320 100 512 VAL symbol 2 288 320 0
+port 224 0 100 512 X_CUR symbol 2 288 0 0
+port 224 -32 100 512 Y_CUR symbol 2 288 -32 0
+port 224 -96 100 512 PR_CUR symbol 2 288 -96 0
+port 48 320 100 0 DIR symbol 1 -32 320 0
+port 48 288 100 0 MODE symbol 1 -32 288 0
+port 48 224 100 0 X_M symbol 1 -32 224 0
+port 48 192 100 0 Y_M symbol 1 -32 192 0
+port 48 160 100 0 SOL symbol 1 -32 160 0
+port 224 -64 100 512 Z_CUR symbol 2 288 -64 0
+port 224 256 100 512 HLTH symbol 2 288 256 0
+port 224 128 100 512 OMSS symbol 2 288 128 0
+port 224 96 100 512 OERR symbol 2 288 96 0
+port 224 64 100 512 CFLK symbol 2 288 64 0
+port 224 224 100 512 FLNK symbol 2 288 224 0
+uniq 196
+[tools]
+[attributes]
+p 32 -224 100 0 -1 seta:top gm:wfs:
+p 32 -256 100 0 -1 setc:dev probe
+p 32 -288 100 0 -1 sete:dtyp Oiwfs
+p 32 -320 100 0 -1 setf:simm NONE
+[layers]
+<symbol>
+l 100 7 0 128 368 OIWFS Assy.
+l 100 5 0 224 -192 gmOiwfs
+r 0 32 -192 224 384
+v 0 224 -128
+288 -128
+_
+v 0 -32 -96
+32 -96
+_
+v 0 -32 -64
+32 -64
+_
+v 0 224 -96
+288 -96
+_
+v 0 224 -32
+288 -32
+_
+v 0 224 0
+288 0
+_
+v 0 224 288
+288 288
+_
+v 0 224 160
+288 160
+_
+v 0 224 320
+288 320
+_
+v 0 -32 160
+32 160
+_
+v 0 -32 192
+32 192
+_
+v 0 -32 224
+32 224
+_
+v 0 -32 288
+32 288
+_
+v 0 -32 320
+32 320
+_
+v 0 32 352
+224 352
+_
+v 0 224 -64
+288 -64
+_
+v 0 224 256
+288 256
+_
+v 0 224 128
+288 128
+_
+v 0 224 96
+288 96
+_
+v 0 224 64
+288 64
+_
+v 0 224 224
+288 224
+_
+[comments]

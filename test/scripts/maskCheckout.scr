@@ -1,0 +1,709 @@
+#
+# DHS Test Commander
+# Checkout script for:
+#
+#	Gmos Mask Assembly checkout
+#
+
+
+#
+# First get all those funky variables sorted out
+#
+
+VAR   preFpIcd     maskDirective           cmdDir               1
+
+VAR   preFpIcd     maskMode                mskMode              1
+VAR   preFpIcd     maskTarget              mskSelect            1
+VAR   preFpIcd     maskLocation            mskLocation          1
+VAR   preFpIcd     maskPark                mskParkingSpot       1
+VAR   preFpIcd     maskExtFast             mskExtFast           1
+VAR   preFpIcd     maskExtSlow             mskExtSlow           1
+
+VAR   preFpIcd     maskAcknowledge         cmdAck               1
+VAR   preFpIcd     maskBusy                cmdAction            1
+VAR   preFpIcd     maskMessage             cmdError             1
+VAR   preFpIcd     maskState               cmdState             1
+
+VAR   preFpIcd     maskCarMess             mskCarMsg            1
+VAR   preFpIcd     maskCarErr              mskCarErr            1
+
+VAR   preFpIcd     sadMaskLoadId           sadSelect            1
+VAR   preFpIcd     sadMaskLocation         sadLocation          1
+
+VAR   preFpIcd     sadMaskInitialized      sadInit              1
+VAR   preFpIcd     sadMaskIndexed          sadIndex             1
+VAR   preFpIcd     sadMaskParked           sadPark              1
+VAR   preFpIcd     sadMaskHealth           sadHealth            1
+VAR   preFpIcd     sadMaskFP               sadInFp              1
+
+VAR   preFpIcd     sadMaskState            sadState             1
+
+VAR   preFpIcd     sadMaskGripper          sadGripper           1
+VAR   preFpIcd     sadMaskRelease          sadRelease           1
+
+VAR   preFpIcd     sadMaskDebug            sadDebug             1
+VAR   preFpIcd     sadMaskSimulate         sadSimm              1
+
+VAR   maskAssembly assemblyTranslationFile mskLutFile           1
+VAR   maskAssembly assemblyTranslationDir  mskLutDir            1
+
+VAR   gripDevice   devDir                  gripDir              1
+VAR   gripDevice   devMode                 gripMode             1
+VAR   gripDevice   devTarget               gripTarget           1
+VAR   gripDevice   devNamedTarget          gripNamedTarget      1
+VAR   gripDevice   devAck                  gripAck              1
+VAR   gripDevice   devBusy                 gripBusy             1 
+VAR   gripDevice   devMess                 gripMess             1
+
+VAR   extractorDevice   devPosition        extPosition          1
+VAR   extractorDevice   devDir             extDir               1
+VAR   extractorDevice   devMode            extMode              1
+VAR   extractorDevice   devTarget          extTarget            1
+VAR   extractorDevice   devNamedTarget     extNamedTarget       1
+VAR   extractorDevice   devVelocity        extVelocity          1
+VAR   extractorDevice   devAck             extAck               1
+VAR   extractorDevice   devBusy            extBusy              1
+VAR   extractorDevice   devState           extState             1
+VAR   extractorDevice   devMess            extMess              1
+
+VAR   maskStatus        lvdtVal            lvdtVal              1
+
+
+#
+# check starting point, should be freshly rebooted....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly not indexed?"
+GETVAL sadIndex
+OUTPUT *VAL* 0*
+
+DESC "Mask assembly initialization state"
+GETVAL sadInit
+OUTPUT *
+
+DESC "Mask assembly not parked?"
+GETVAL sadPark
+OUTPUT *VAL* 0*
+
+DESC "Mask assembly health"
+GETVAL sadHealth
+OUTPUT *
+
+DESC "Ensure you're using the right LUT filename"
+GETVAL mskLutFile
+OUTPUT *TFIL * msk.lut*
+
+DESC "Log the LUT directory"
+GETVAL mskLutDir
+OUTPUT *TDIR *
+
+ENDTEST
+
+#
+# Start with mask assembly setup functions
+#
+
+TEST "Test Initialization function"
+FATAL
+
+DESC "Initializing mask assembly"
+
+PUTVAL mskMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Test index function
+#
+
+TEST "Test Index Function"
+FATAL
+
+DESC "Indexing Mask Assembly"
+
+PUTVAL mskMode "3"
+OUTPUT *MODE*INIT*MODE*INDEX*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+# Test index at both ends with IFU in tow
+#
+
+TEST "Test index at both ends with IFU in tow"
+FATAL
+
+DESC "Loading first mask"
+CMD "getFirstMaskId mskSelect /home/smb/gmos/lut/msk.lut"
+OUTPUT *Success*
+PUTVAL mskMode "1"
+OUTPUT *MODE*MODE*MOVE*
+PUTVAL mskLocation "0"
+OUTPUT *B* 0*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL* -1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+DESC "Move extractor back to grip position"
+PUTVAL extNamedTarget "grip"
+OUTPUT *VALS* grip*
+PUTVAL extMode "1"
+OUTPUT *MODE*MODE*MOVE*
+CMD "deviceCommand extDir extAck extBusy"
+OUTPUT *Success*
+
+DESC "Log extractor position"
+GETVAL extPosition
+OUTPUT *.MPOS*
+GETVAL lvdtVal
+OUTPUT *VAL*
+
+DESC "Set extractor velocity to slow"
+CMD "setField extVelocity mskExtSlow"
+OUTPUT *Success*
+
+DESC "Index extractor on i4 soft limit"
+PUTVAL extNamedTarget "i4"
+OUTPUT *VALS* i4*
+PUTVAL extMode "1"
+OUTPUT *MODE*MODE*MOVE*
+CMD "deviceCommand extDir extAck extBusy"
+OUTPUT *Success*
+
+DESC "Log extractor position"
+GETVAL extPosition
+OUTPUT *.MPOS*
+GETVAL lvdtVal
+OUTPUT *VAL*
+
+DESC "Move extractor to i4gripper position"
+PUTVAL extNamedTarget "i4gripper"
+OUTPUT *VALS* i4gripper*
+PUTVAL extMode "1"
+OUTPUT *MODE*MODE*MOVE*
+CMD "deviceCommand extDir extAck extBusy"
+OUTPUT *Success*
+
+DESC "Log extractor position"
+GETVAL extPosition
+OUTPUT *.MPOS*
+GETVAL lvdtVal
+OUTPUT *VAL*
+
+DESC "Index extractor on home switch"
+PUTVAL extMode "3"
+OUTPUT *MODE*MODE*INDEX*
+CMD "deviceCommand extDir extAck extBusy"
+OUTPUT *Success*
+
+DESC "Set extractor velocity to fast"
+CMD "setField extVelocity mskExtFast"
+OUTPUT *Success*
+
+DESC "Move extractor to grip position"
+PUTVAL extNamedTarget "grip"
+OUTPUT *VALS* grip*
+PUTVAL extMode "1"
+OUTPUT *MODE*MODE*MOVE*
+CMD "deviceCommand extDir extAck extBusy"
+OUTPUT *Success*
+
+DESC "Log extractor position"
+GETVAL extPosition
+OUTPUT *.MPOS*
+GETVAL lvdtVal
+OUTPUT *VAL*
+
+DESC "Index mask assembly" 
+PUTVAL mskMode "3"
+OUTPUT *MODE*MODE*INDEX*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+# Test index at both ends with mask in tow
+#
+
+TEST "Test index at both ends with mask in tow"
+FATAL
+
+DESC "Loading last mask"
+CMD "getLastMaskId mskSelect /home/smb/gmos/lut/msk.lut"
+OUTPUT *Success*
+PUTVAL mskMode "1"
+OUTPUT *MODE*MODE*MOVE*
+PUTVAL mskLocation "0"
+OUTPUT *B* 0*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with mask?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL* 1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+DESC "Move extractor back to grip position"
+PUTVAL extNamedTarget "grip"
+OUTPUT *VALS* grip*
+PUTVAL extMode "1"
+OUTPUT *MODE*MODE*MOVE*
+CMD "deviceCommand extDir extAck extBusy"
+OUTPUT *Success*
+
+DESC "Log extractor position"
+GETVAL extPosition
+OUTPUT *.MPOS*
+GETVAL lvdtVal
+OUTPUT *VAL*
+
+DESC "Set extractor velocity to slow"
+CMD "setField extVelocity mskExtSlow"
+OUTPUT *Success*
+
+DESC "Index extractor on i4 soft limit"
+PUTVAL extNamedTarget "i4"
+OUTPUT *VALS* i4*
+PUTVAL extMode "1"
+OUTPUT *MODE*MODE*MOVE*
+CMD "deviceCommand extDir extAck extBusy"
+OUTPUT *Success*
+
+DESC "Log extractor position"
+GETVAL extPosition
+OUTPUT *.MPOS*
+GETVAL lvdtVal
+OUTPUT *VAL*
+
+DESC "Move extractor to i4gripper position"
+PUTVAL extNamedTarget "i4gripper"
+OUTPUT *VALS* i4gripper*
+PUTVAL extMode "1"
+OUTPUT *MODE*MODE*MOVE*
+CMD "deviceCommand extDir extAck extBusy"
+OUTPUT *Success*
+
+DESC "Log extractor position"
+GETVAL extPosition
+OUTPUT *.MPOS*
+GETVAL lvdtVal
+OUTPUT *VAL*
+
+DESC "Index extractor on home switch"
+PUTVAL extMode "3"
+OUTPUT *MODE*MODE*INDEX*
+CMD "deviceCommand extDir extAck extBusy"
+OUTPUT *Success*
+
+DESC "Set extractor velocity to fast"
+CMD "setField extVelocity mskExtFast"
+OUTPUT *Success*
+
+DESC "Move extractor to grip position"
+PUTVAL extNamedTarget "grip"
+OUTPUT *VALS* grip*
+PUTVAL extMode "1"
+OUTPUT *MODE*MODE*MOVE*
+CMD "deviceCommand extDir extAck extBusy"
+OUTPUT *Success*
+
+DESC "Log extractor position"
+GETVAL extPosition
+OUTPUT *.MPOS*
+GETVAL lvdtVal
+OUTPUT *VAL*
+
+DESC "Index mask assembly" 
+PUTVAL mskMode "3"
+OUTPUT *MODE*MODE*INDEX*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+# Insert the first mask found (should be an IFU!)
+#
+
+TEST "Insert first mask from lookup table - an IFU"
+FATAL
+
+DESC "Loading first mask"
+
+CMD "getFirstMaskId mskSelect /home/smb/gmos/lut/msk.lut"
+OUTPUT *Success*
+
+PUTVAL mskMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL mskLocation "0"
+OUTPUT *B* 0*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper gripped?"
+
+GETVAL sadGripper
+OUTPUT *VAL* -1*
+
+DESC "Release released?"
+
+GETVAL sadRelease
+OUTPUT *VAL* 1*
+
+DESC "Focal plane occupied with IFU?"
+
+GETVAL sadInFp
+OUTPUT *VAL* -1*
+
+ENDTEST
+
+#
+# Verify mask in focal plane
+#
+
+TEST "Verify mask in focal plane"
+FATAL
+
+DESC "Correct mask in Focal Plane?"
+
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC " Mask location in-beam?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+ENDTEST
+
+#
+# Log extractor position to verify it is in IFU position 
+#
+
+TEST "Log extractor position to verify it is in IFU position"
+FATAL
+
+DESC "Log extractor position"
+
+GETVAL extPosition
+OUTPUT *.MPOS*
+
+ENDTEST
+
+#
+# Select the last mask found (should be a mask!)
+#
+
+TEST "Loading a mask (last entry in table)"
+FATAL
+
+DESC "Loading mask (last entry in table)"
+
+CMD "getLastMaskId mskSelect /home/smb/gmos/lut/msk.lut"
+OUTPUT *Success*
+
+PUTVAL mskLocation "0"
+OUTPUT *B*0*B* 0*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "sleep 1"
+OUTPUT *
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper gripped?"
+
+GETVAL sadGripper
+OUTPUT *VAL* -1*
+
+DESC "Release released?"
+
+GETVAL sadRelease
+OUTPUT *VAL* 1*
+
+DESC "Focal plane occupied?"
+
+GETVAL sadInFp
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+# Verify mask in focal plane
+#
+
+TEST "Verify mask in focal plane"
+FATAL
+
+DESC "Correct mask in Focal Plane?
+
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC " Mask location in-beam?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+ENDTEST
+
+#
+# Parking the Assembly
+#
+
+TEST "Parking function test"
+FATAL
+
+DESC "Parking assembly"
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MOVE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+
+CMD "sleep 1"
+OUTPUT *
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly parked?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadPark
+OUTPUT *VAL* 1*
+ 
+DESC "Mask assembly indexed?"
+
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper gripped?"
+
+GETVAL sadGripper
+OUTPUT *VAL* 1*
+
+DESC "Release released?"
+
+GETVAL sadRelease
+OUTPUT *VAL* -1*
+
+DESC "Focal plane not occupied?"
+
+GETVAL sadInFp
+OUTPUT *VAL* 0*
+
+DESC " Mask location in-cassette?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+#  Mask Assembly functions are OK
+#
+
+COMMENT "Mask assembly OK"

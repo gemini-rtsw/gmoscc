@@ -1,0 +1,75 @@
+[symbol2]
+bbox -32 -32 288 256
+port 32 64 100 1280 flt symbol 1 -32 64 0
+port 32 96 100 1280 velo symbol 1 -32 96 0
+port 32 128 100 1280 val symbol 1 -32 128 0
+port 32 160 100 1280 vals symbol 1 -32 160 0
+port 32 192 100 1280 mode symbol 1 -32 192 0
+port 32 224 100 1280 dir symbol 1 -32 224 0
+port 240 64 100 768 lswa symbol 2 288 64 0
+port 240 96 100 768 mip symbol 2 288 96 0
+port 240 128 100 768 mpos symbol 2 288 128 0
+port 240 160 100 768 msgl symbol 2 288 160 0
+port 240 192 100 768 bsyl symbol 2 288 192 0
+port 240 224 100 768 ack symbol 2 288 224 0
+port 32 0 100 1280 dbug symbol 1 -32 0 0
+port 32 32 100 1280 simm symbol 1 -32 32 0
+uniq 84
+[tools]
+[attributes]
+p 32 -64 100 0 -1 seta:dev ccc
+p 32 -96 100 0 -1 setb:motor Cn Sn
+p 32 -128 100 0 -1 setc:power Cn Sn
+p 32 -160 100 0 -1 setd:brake Cn Sn
+[layers]
+<symbol>
+l 100 1 0 128 80 (all)
+l 100 5 0 224 -32 devctlpb
+l 100 1 0 128 176 deviceControl
+l 100 1 0 128 112 & Brake Ctrl
+l 100 1 0 128 144 w/Power Stat
+r 0 32 -32 224 256
+r 0 192 48 192 48
+v 0 -32 224
+32 224
+_
+v 0 -32 192
+32 192
+_
+v 0 -32 160
+32 160
+_
+v 0 -32 128
+32 128
+_
+v 0 -32 96
+32 96
+_
+v 0 -32 64
+32 64
+_
+v 0 224 224
+288 224
+_
+v 0 224 192
+288 192
+_
+v 0 224 160
+288 160
+_
+v 0 224 128
+288 128
+_
+v 0 224 96
+288 96
+_
+v 0 224 64
+288 64
+_
+v 0 -32 32
+32 32
+_
+v 0 -32 0
+32 0
+_
+[comments]

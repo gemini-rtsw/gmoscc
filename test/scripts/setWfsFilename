@@ -1,0 +1,32 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: setWfsFilename
+#
+# Purpose: 
+#	To set the file name for a GMOS wavefront sensor observation
+#
+# Invocation:
+#       setWfsFilename pwfs2: filename
+#
+# Assumptions:
+#
+
+#
+# Write the desired filename. It is assumed the other detector setup parameters
+# have already been specified.
+#
+
+set caputResponse = `caput ${1}dc:observe.D $2`
+set okay = `echo $caputResponse | grep $2`
+
+# The number of strings in $okay will be 7 if field was previously empty, 8 if not.
+
+if ( $#okay == 7 || $#okay == 8 ) then
+    echo "Command Success"
+    exit
+else
+    echo "Command Failed"
+    exit -1
+endif
+
+exit

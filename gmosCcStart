@@ -1,0 +1,90 @@
+#!/bin/csh
+#
+# Start the GMOS components controller "dm" screens.
+#
+# Invocation:
+#   ./gmosCcStart
+#
+# Assumptions:
+#   The script must be invoked from the top level "gmos" directory.
+#
+# Original Author: Steven M Beard
+#
+# $Id$
+#
+
+set arg = "$1"
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!("$arg" == "SS" || "$arg" == "SIM" || "$arg" == "CP")) then
+
+    #
+    # Check for gmos safety
+    #
+
+    if (!($?GMOS_MK_ACCESS)) then
+	echo ""
+	echo "GMOS MK safety check failed."
+	echo ""
+	echo "Before starting these screens, which will allow control of real MK hardware,"
+	echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+	echo ""
+	exit
+    else
+	echo "GMOS MK safety check passed."
+    endif
+endif
+
+if ("$arg" == "CP") then
+
+    #
+    # Check for gmos safety
+    #
+
+    if (!($?GMOS_CP_ACCESS)) then
+	echo ""
+	echo "GMOS CP safety check failed."
+	echo ""
+	echo "Before starting these screens, which will allow control of real CP hardware,"
+	echo 'you must type "gmosCP" to confirm that it is safe to do so.'
+	echo ""
+	exit
+    else
+	echo "GMOS CP safety check passed."
+    endif
+endif
+
+if "$arg" == "CP" then
+   echo "Connecting to GMOS Cerro Pachon CC database"
+   source ./bin/solaris/gmosCcStartCP
+else if "$arg" == "RS" then
+   echo "Connecting to GMOS Mauna Kea CC database - simulated post focal-plane"
+   source ./bin/solaris/gmosCcStartMKRS
+else if "$arg" == "PRE" then
+   echo "Connecting to GMOS Mauna Kea CC database - simulated post focal-plane"
+   source ./bin/solaris/gmosCcStartMKRS
+else if "$arg" == "SR" then
+   echo "Connecting to GMOS Mauna Kea CC database - simulated pre focal-plane"
+   source ./bin/solaris/gmosCcStartMKSR
+else if "$arg" == "POST" then
+   echo "Connecting to GMOS Mauna Kea CC database - simulated pre focal-plane"
+   source ./bin/solaris/gmosCcStartMKSR
+else if "$arg" == "SS" then
+   echo "Connecting to GMOS Mauna Kea CC database - simulated"
+   source ./re./bin/solaris/gmosCcStartMKSS
+else if "$arg" == "SIM" then
+   echo "Connecting to GMOS Mauna Kea CC database - simulated"
+   source ./bin/solaris/gmosCcStartMKSS
+else if "$arg" == "SIM2" then
+   echo "Connecting to GMOS Mauna Kea CC database - simulated2"
+   source ./bin/solaris/gmosCcStartMKSS2
+else
+   echo "Connecting to GMOS Mauna Kea CC database"
+   source ./bin/solaris/gmosCcStartMKRR
+endif
+
+

@@ -1,0 +1,27 @@
+[symbol2]
+bbox 224 480 800 672
+port 704 544 100 1792 MESS symbol 2 800 544 0
+port 704 640 100 1792 VAL symbol 2 800 640 0
+port 336 544 100 1792 ICID symbol 1 224 544 0
+port 336 640 100 1792 DIR symbol 1 224 640 0
+uniq 1
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 496 608 GMOS
+l 100 0 0 480 560 Commands
+r 0 288 672 736 480
+v 0 736 544
+800 544
+_
+v 0 736 640
+800 640
+_
+v 0 224 544
+288 544
+_
+v 0 224 640
+288 640
+_
+[comments]

@@ -1,0 +1,946 @@
+#
+# DHS Test Commander
+# Checkout script for:
+#
+#	Gmos Grating lifter device checkout
+#
+
+
+#
+# Define the variables used in this script, and the configuration files
+# which contain their translation into EPICS channel names.
+#
+#     Config file     Config file name          Named used here      Mystery number
+#     -----------     ---------------------     -----------------    --------------
+
+VAR   lifterDevice    lifterDownValve            lifterDownValve      1
+VAR   lifterDevice    lifterUpValve              lifterUpValve        1
+VAR   lifterDevice    lifterCommand              lifterCommand        1
+VAR   lifterDevice    lifterProcess              lifterProcess        1
+VAR   lifterDevice    lifterAck                  lifterAck            1
+VAR   lifterDevice    lifterInterlock            lifterInterlock      1
+VAR   lifterDevice    lifterState                lifterState          1
+VAR   lifterDevice    lifterMess                 lifterMess           1
+
+VAR   gratingStatus   gratingInPosition          grInpos              1
+VAR   gratingStatus   gratingLifterUp            lifterUp             1
+VAR   gratingStatus   gratingLifterDown          lifterDown           1
+VAR   gratingStatus   upstreamOk                 upstreamOk           1
+VAR   gratingStatus   downstreamOk               downstreamOk         1
+VAR   gratingStatus   turretPowerControl         turretPwrDemand      1
+VAR   gratingStatus   turretPowerResponse        turretPwrResponse    1
+
+# Turret device INPUTS
+VAR   gratingTurretDevice    devDir              turretDevDir	            1
+VAR   gratingTurretDevice    devMode             turretDevMode              1
+VAR   gratingTurretDevice    devTarget           turretDevTarget            1
+VAR   gratingTurretDevice    devNamedTarget      turretDevNamedTarget       1
+VAR   gratingTurretDevice    devIndexType        turretDevIndexType         1
+VAR   gratingTurretDevice    devDbug             turretDevDbug              1
+VAR   gratingTurretDevice    devSimm             turretDevSimm              1
+VAR   gratingTurretDevice    devMinPosition      turretDevMinPosition       1
+VAR   gratingTurretDevice    devMaxPosition      turretDevMaxPosition       1
+VAR   gratingTurretDevice    devBacklash         turretDevBacklash          1
+VAR   gratingTurretDevice    devRounding         turretDevRounding          1
+VAR   gratingTurretDevice    devVelocity         turretDevVelocity          1
+VAR   gratingTurretDevice    devMinVelocity      turretDevMinVelocity       1
+VAR   gratingTurretDevice    devMaxVelocity      turretDevMaxVelocity       1
+VAR   gratingTurretDevice    devAcceleration     turretDevAcceleration      1
+VAR   gratingTurretDevice    devLutFile          turretDevLutFile           1
+VAR   gratingTurretDevice    devLutDirectory     turretDevLutDirectory      1
+VAR   gratingTurretDevice    devDevType          turretDevDevType           1
+VAR   gratingTurretDevice    devEgu              turretDevEgu               1
+VAR   gratingTurretDevice    devMotorRes         turretDevMotorRes          1
+VAR   gratingTurretDevice    devMotionDeadBand   turretDevMotionDeadBand    1
+VAR   gratingTurretDevice    devBaseVelo         turretDevBaseVelo          1
+VAR   gratingTurretDevice    devFinalIndexVelo   turretDevFinalIndexVelo    1
+VAR   gratingTurretDevice    devUsePwrStatus     turretDevUsePwrStatus      1
+VAR   gratingTurretDevice    devPwrStatusTimeout turretDevPwrStatusTimeout  1
+VAR   gratingTurretDevice    devPower            turretDevPower             1
+VAR   gratingTurretDevice    devUseBrkStatus     turretDevUseBrkStatus      1
+VAR   gratingTurretDevice    devBrkStatusTimeout turretDevBrkStatusTimeout  1
+VAR   gratingTurretDevice    devBrake            turretDevBrake             1
+VAR   gratingTurretDevice    devUseAuxPwr        turretDevUseAuxPwr         1
+VAR   gratingTurretDevice    devUseEncoder       turretDevUseEncoder        1
+VAR   gratingTurretDevice    devEncoderRes       turretDevEncoderRes        1
+VAR   gratingTurretDevice    devEncoderDeadBand  turretDevEncoderDeadBand   1
+VAR   gratingTurretDevice    devManualPower      turretDevManualPower       1
+
+# Turret device OUTPUTS
+VAR   gratingTurretDevice    devPosition         turretDevPosition          1
+VAR   gratingTurretDevice    devAck              turretDevAck               1
+VAR   gratingTurretDevice    devBusy             turretDevBusy              1
+VAR   gratingTurretDevice    devState            turretDevState             1
+VAR   gratingTurretDevice    devMess             turretDevMess              1
+VAR   gratingTurretDevice    devIndexed          turretDevIndexed           1
+VAR   gratingTurretDevice    devLimited          turretDevLimited           1
+
+#
+# check starting point. The air pressure should be ok and the lifter should be down....
+#
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Upstream air pressure ok?"
+GETVAL upstreamOk
+OUTPUT *VAL* OK*
+
+DESC "Downstream air pressure ok?"
+GETVAL downstreamOk
+OUTPUT *VAL* OK*
+
+DESC "Lifter must be initially down"
+GETVAL lifterUp
+OUTPUT *VAL* NOTUP*
+
+GETVAL lifterDown
+OUTPUT *VAL* DOWN*
+
+DESC "Turret must indexed"
+GETVAL turretDevIndexed
+OUTPUT *.HPVL* 1*
+
+DESC "Log initial position of turret"
+GETVAL turretDevPosition
+OUTPUT *.MPOS*
+
+ENDTEST
+
+#
+# Before moving the lifter switch on the grating turret power
+#
+
+TEST "Switch on grating turret power"
+FATAL
+
+DESC "Switching on grating turret power"
+
+PUTVAL turretPwrDemand "1"
+OUTPUT *VAL*VAL* ON*
+
+ENDTEST
+
+TEST "Verify turret power status"
+FATAL
+
+DESC "Turret power switched on?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL turretPwrResponse
+OUTPUT *VAL* ON*
+
+ENDTEST
+
+#
+# Raise the lifter
+#
+
+TEST "Test grating lifter up function"
+FATAL
+
+DESC "Raising grating lifter"
+
+PUTVAL lifterCommand "2"
+OUTPUT *A*A*2*
+
+PUTVAL lifterProcess "1"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for seven seconds and then check the lifter has successfully raised.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Lifter acknowledgement OK?"
+
+CMD "sleep 7"
+OUTPUT *
+GETVAL lifterAck
+OUTPUT *VAL* 0*
+
+DESC "Lifter state IDLE?"
+
+GETVAL lifterState
+OUTPUT *VAL* RAISED*
+
+GETVAL lifterMess
+OUTPUT *VALF* IDLE*
+
+DESC "Lifter raised?"
+
+GETVAL lifterUp
+OUTPUT *VAL* UP*
+
+GETVAL lifterDown
+OUTPUT *VAL* NOTDOWN*
+
+ENDTEST
+
+#
+# Move the grating away to position C and back to position B, to wind up backlash
+# and make safe to lower again.
+#
+
+TEST "Move grating turret away to position C"
+FATAL
+
+DESC "Moving turret away to position C"
+
+PUTVAL turretDevMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+DESC "Put zero into target position to avoid device control bug"
+PUTVAL turretDevTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL turretDevNamedTarget "posC"
+OUTPUT *VALS*VALS* posC*
+
+CMD "deviceCommand turretDevDir turretDevAck turretDevBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify state and log current position
+#
+
+TEST "Verify turret state and log position"
+FATAL
+
+DESC "Verify turret state after command"
+
+GETVAL turretDevState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL turretDevIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL turretDevLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check turret device power status"
+GETVAL turretDevPower
+OUTPUT *.PSTA* 1* 
+
+ENDTEST
+
+
+TEST "Move grating turret back to position B"
+FATAL
+
+DESC "Moving turret back to position B"
+
+PUTVAL turretDevMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+DESC "Put zero into target position to avoid device control bug"
+PUTVAL turretDevTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL turretDevNamedTarget "posB"
+OUTPUT *VALS*VALS* posB*
+
+CMD "deviceCommand turretDevDir turretDevAck turretDevBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify state and log current position
+#
+
+TEST "Verify turret state and log position"
+FATAL
+
+DESC "Verify turret state after command"
+
+GETVAL turretDevState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL turretDevIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL turretDevLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check turret device power status"
+GETVAL turretDevPower
+OUTPUT *.PSTA* 1* 
+
+DESC "Get current turret position"
+GETVAL turretDevPosition
+OUTPUT *.MPOS*
+
+ENDTEST
+
+TEST "Visual check for positioning accuracy at position B"
+FATAL
+
+DESC "Visual check for positioning accuracy at position B"
+PROMPT "Turret is at position B. Will it be safe to lower it here?"
+
+ENDTEST
+
+#
+# Lower the lifter
+#
+
+TEST "Test grating lifter down function"
+FATAL
+
+DESC "Lowering grating lifter"
+
+PUTVAL lifterCommand "1"
+OUTPUT *A*A*1*
+
+PUTVAL lifterProcess "1"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for seven seconds and then check the lifter has successfully lowered.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Lifter acknowledgement OK?"
+
+CMD "sleep 7"
+OUTPUT *
+GETVAL lifterAck
+OUTPUT *VAL* 0*
+
+DESC "Lifter state IDLE?"
+
+GETVAL lifterState
+OUTPUT *VAL* ENGAGED*
+
+GETVAL lifterMess
+OUTPUT *VALF* IDLE*
+
+DESC "Lifter lowered?"
+
+GETVAL lifterUp
+OUTPUT *VAL* NOTUP*
+
+GETVAL lifterDown
+OUTPUT *VAL* DOWN*
+
+ENDTEST
+
+
+#
+# Check that the lifter will not operate during an interlock
+#
+
+TEST "Test grating lifter will not operate during an interlock"
+FATAL
+
+DESC "Setting interlock"
+
+PUTVAL lifterInterlock "1"
+OUTPUT *D* 1*
+
+DESC "Attempting to raise grating lifter"
+
+PUTVAL lifterCommand "2"
+OUTPUT *A*A*2*
+
+PUTVAL lifterProcess "1"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for seven seconds and then check the lifter has NOT raised.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Lifter acknowledgement should indicate failure"
+
+CMD "sleep 7"
+OUTPUT *
+GETVAL lifterAck
+OUTPUT *VAL* -1*
+
+DESC "Lifter state interlocked?"
+
+GETVAL lifterState
+OUTPUT *VAL* ENGAGED*
+
+GETVAL lifterMess
+OUTPUT *VALF* Emergency stop/Interlock*
+
+DESC "Lifter still lowered?"
+
+GETVAL lifterUp
+OUTPUT *VAL* NOTUP*
+
+GETVAL lifterDown
+OUTPUT *VAL* DOWN*
+
+ENDTEST
+
+TEST "Test grating lifter will not carry on when interlock removed"
+FATAL
+
+DESC "Resetting interlock"
+
+PUTVAL lifterInterlock "0"
+OUTPUT *D* 0*
+
+DESC "Process the lifter genSub"
+
+PUTVAL lifterProcess "1"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for seven seconds and then check the lifter has NOT raised.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Lifter acknowledgement OK?"
+
+CMD "sleep 7"
+OUTPUT *
+GETVAL lifterAck
+OUTPUT *VAL* 0*
+
+DESC "Lifter state should now be IDLE and still lowered?"
+
+GETVAL lifterState
+OUTPUT *VAL* ENGAGED*
+
+GETVAL lifterMess
+OUTPUT *VALF* IDLE*
+
+DESC "Lifter still lowered?"
+
+GETVAL lifterUp
+OUTPUT *VAL* NOTUP*
+
+GETVAL lifterDown
+OUTPUT *VAL* DOWN*
+
+ENDTEST
+
+#
+# Raise the lifter one more time to make sure its function is not affected by the brief interlock
+#
+
+TEST "Test grating lifter up function for a second time"
+FATAL
+
+DESC "Raising grating lifter"
+
+PUTVAL lifterCommand "2"
+OUTPUT *A*A*2*
+
+PUTVAL lifterProcess "1"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for seven seconds and then check the lifter has successfully raised.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Lifter acknowledgement OK?"
+
+CMD "sleep 7"
+OUTPUT *
+GETVAL lifterAck
+OUTPUT *VAL* 0*
+
+DESC "Lifter state IDLE?"
+
+GETVAL lifterState
+OUTPUT *VAL* RAISED*
+
+GETVAL lifterMess
+OUTPUT *VALF* IDLE*
+
+DESC "Lifter raised?"
+
+GETVAL lifterUp
+OUTPUT *VAL* UP*
+
+GETVAL lifterDown
+OUTPUT *VAL* NOTDOWN*
+
+ENDTEST
+
+#
+# Move the grating away and back to position C again, to wind up backlash
+# and make safe to lower.
+#
+
+TEST "Move grating turret away to position C"
+FATAL
+
+DESC "Moving turret away to position C"
+
+PUTVAL turretDevMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+DESC "Put zero into target position to avoid device control bug"
+PUTVAL turretDevTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL turretDevNamedTarget "posC"
+OUTPUT *VALS*VALS* posC*
+
+CMD "deviceCommand turretDevDir turretDevAck turretDevBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify state and log current position
+#
+
+TEST "Verify turret state and log position"
+FATAL
+
+DESC "Verify turret state after command"
+
+GETVAL turretDevState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL turretDevIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL turretDevLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check turret device power status"
+GETVAL turretDevPower
+OUTPUT *.PSTA* 1* 
+
+ENDTEST
+
+
+TEST "Move grating turret back to position B"
+FATAL
+
+DESC "Moving turret back to position B"
+
+PUTVAL turretDevMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+DESC "Put zero into target position to avoid device control bug"
+PUTVAL turretDevTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL turretDevNamedTarget "posB"
+OUTPUT *VALS*VALS* posB*
+
+CMD "deviceCommand turretDevDir turretDevAck turretDevBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify state and log current position
+#
+
+TEST "Verify turret state and log position"
+FATAL
+
+DESC "Verify turret state after command"
+
+GETVAL turretDevState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL turretDevIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL turretDevLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check turret device power status"
+GETVAL turretDevPower
+OUTPUT *.PSTA* 1* 
+
+DESC "Get current turret position"
+GETVAL turretDevPosition
+OUTPUT *.MPOS*
+
+ENDTEST
+
+TEST "Visual check for positioning accuracy at position B"
+FATAL
+
+DESC "Visual check for positioning accuracy at position B"
+PROMPT "Turret is at position B. Will it be safe to lower it here?"
+
+ENDTEST
+
+#
+# Lower the lifter
+#
+
+TEST "Test grating lifter down function for a second time"
+FATAL
+
+DESC "Lowering grating lifter"
+
+PUTVAL lifterCommand "1"
+OUTPUT *A*A*1*
+
+PUTVAL lifterProcess "1"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for seven seconds and then check the lifter has successfully lowered.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Lifter acknowledgement OK?"
+
+CMD "sleep 7"
+OUTPUT *
+GETVAL lifterAck
+OUTPUT *VAL* 0*
+
+DESC "Lifter state IDLE?"
+
+GETVAL lifterState
+OUTPUT *VAL* ENGAGED*
+
+GETVAL lifterMess
+OUTPUT *VALF* IDLE*
+
+DESC "Lifter lowered?"
+
+GETVAL lifterUp
+OUTPUT *VAL* NOTUP*
+
+GETVAL lifterDown
+OUTPUT *VAL* DOWN*
+
+ENDTEST
+
+#
+# Raise the lifter
+#
+
+TEST "Test grating lifter up function"
+FATAL
+
+DESC "Raising grating lifter"
+
+PUTVAL lifterCommand "2"
+OUTPUT *A*A*2*
+
+PUTVAL lifterProcess "1"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for seven seconds and then check the lifter has successfully raised.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Lifter acknowledgement OK?"
+
+CMD "sleep 7"
+OUTPUT *
+GETVAL lifterAck
+OUTPUT *VAL* 0*
+
+DESC "Lifter state IDLE?"
+
+GETVAL lifterState
+OUTPUT *VAL* RAISED*
+
+GETVAL lifterMess
+OUTPUT *VALF* IDLE*
+
+DESC "Lifter raised?"
+
+GETVAL lifterUp
+OUTPUT *VAL* UP*
+
+GETVAL lifterDown
+OUTPUT *VAL* NOTDOWN*
+
+ENDTEST
+
+#
+# Move the grating in between position B and position C,
+# an unsafe place to lower
+#
+
+TEST "Test lifter will recover when turret lowered onto guard ring"
+FATAL
+
+DESC "Moving turret to between positions B and C"
+
+PUTVAL turretDevMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+DESC "Put location into target position"
+PUTVAL turretDevTarget "25.0"
+OUTPUT *VAL*VAL* 25.0*
+
+CMD "deviceCommand turretDevDir turretDevAck turretDevBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify state and log current position
+#
+
+TEST "Verify turret state and log position"
+FATAL
+
+DESC "Verify turret state after command"
+
+GETVAL turretDevState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL turretDevIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL turretDevLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check turret device power status"
+GETVAL turretDevPower
+OUTPUT *.PSTA* 1* 
+
+DESC "Get current turret position"
+GETVAL turretDevPosition
+OUTPUT *.MPOS*
+
+ENDTEST
+
+TEST "Visual check for positioning between positions B and C"
+FATAL
+
+DESC "Visual check for positioning between positions B and C"
+PROMPT "Turret is between positions B and C. It should not lower here. Confirm?"
+
+ENDTEST
+
+#
+# Lower the lifter - this should fail!
+#
+
+TEST "Test grating lifter recovery from lowering onto guard ring"
+FATAL
+
+DESC "Lowering grating lifter onto guard ring"
+
+PUTVAL lifterCommand "1"
+OUTPUT *A*A*1*
+
+PUTVAL lifterProcess "1"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for fifteen seconds and then check the lifter has NOT lowered.
+#
+
+TEST "Verify status fields and check lifter has raised automatically"
+FATAL
+
+DESC "Lifter acknowledgement should indicate failure"
+
+CMD "sleep 15"
+OUTPUT *
+GETVAL lifterAck
+OUTPUT *VAL* -1*
+
+DESC "Lifter state raised?"
+
+GETVAL lifterState
+OUTPUT *VAL* RAISED*
+
+GETVAL lifterMess
+OUTPUT *VALF* IDLE after FAILURE*
+
+DESC "Lifter switches show raised?"
+
+GETVAL lifterUp
+OUTPUT *VAL* UP*
+
+GETVAL lifterDown
+OUTPUT *VAL* NOTDOWN*
+
+ENDTEST
+
+#
+# Move the grating into position B again, to wind up backlash
+# and make safe to lower.
+#
+
+TEST "Move grating turret to position B"
+FATAL
+
+DESC "Moving turret to position B"
+
+PUTVAL turretDevMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+DESC "Put zero into target position to avoid device control bug"
+PUTVAL turretDevTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL turretDevNamedTarget "posB"
+OUTPUT *VALS*VALS* posB*
+
+CMD "deviceCommand turretDevDir turretDevAck turretDevBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify state and log current position
+#
+
+TEST "Verify turret state and log position"
+FATAL
+
+DESC "Verify turret state after command"
+
+GETVAL turretDevState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL turretDevIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL turretDevLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check turret device power status"
+GETVAL turretDevPower
+OUTPUT *.PSTA* 1* 
+
+DESC "Get current turret position"
+GETVAL turretDevPosition
+OUTPUT *.MPOS*
+
+ENDTEST
+
+TEST "Visual check for positioning accuracy at position B"
+FATAL
+
+DESC "Visual check for positioning accuracy at position B"
+PROMPT "Turret is at position B. Will it be safe to lower it here?"
+
+ENDTEST
+
+#
+# Lower the lifter
+#
+
+TEST "Test grating lifter down function for a second time"
+FATAL
+
+DESC "Lowering grating lifter"
+
+PUTVAL lifterCommand "1"
+OUTPUT *A*A*1*
+
+PUTVAL lifterProcess "1"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for seven seconds and then check the lifter has successfully lowered.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Lifter acknowledgement OK?"
+
+CMD "sleep 7"
+OUTPUT *
+GETVAL lifterAck
+OUTPUT *VAL* 0*
+
+DESC "Lifter state IDLE?"
+
+GETVAL lifterState
+OUTPUT *VAL* ENGAGED*
+
+GETVAL lifterMess
+OUTPUT *VALF* IDLE*
+
+DESC "Lifter lowered?"
+
+GETVAL lifterUp
+OUTPUT *VAL* NOTUP*
+
+GETVAL lifterDown
+OUTPUT *VAL* DOWN*
+
+ENDTEST
+
+#
+# Switch off the turret power
+#
+
+TEST "Switch off grating turret power"
+FATAL
+
+DESC "Switching off grating turret power"
+
+PUTVAL turretPwrDemand "0"
+OUTPUT *VAL*VAL* OFF*
+
+ENDTEST
+
+TEST "Verify turret power status"
+FATAL
+
+DESC "Turret power switched off?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL turretPwrResponse
+OUTPUT *VAL* OFF*
+
+ENDTEST
+
+#
+#  Grating Lifter functions are OK
+#
+
+COMMENT "Grating lifter OK. Turret power switched off."
+
+
+

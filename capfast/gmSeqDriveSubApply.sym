@@ -1,0 +1,28 @@
+[symbol2]
+bbox 224 432 768 672
+port 304 528 100 0 DIR symbol 1 224 528 0
+port 336 640 100 1792 SLNK symbol 1 224 640 0
+port 336 592 100 1792 SDIS symbol 1 224 592 0
+port 624 640 100 0 SUBVAL symbol 2 768 640 0
+uniq 0
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 432 512 with timeout handling
+l 100 0 0 496 544 Apply record
+l 100 0 0 432 576 Trigger GMOS subsystem
+r 0 288 432 704 672
+v 0 224 528
+288 528
+_
+v 0 224 640
+288 640
+_
+v 0 224 592
+288 592
+_
+v 0 704 640
+768 640
+_
+[comments]

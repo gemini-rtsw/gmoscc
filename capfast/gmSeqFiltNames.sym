@@ -1,0 +1,12 @@
+[symbol2]
+bbox -256 -112 -16 128
+port -320 16 100 0 SLNK symbol 1 -256 16 0
+port 0 -48 100 0 FLNK symbol 2 -16 -32 0
+uniq 0
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 -208 16 Filter Names
+r 0 -256 -112 -16 128
+[comments]

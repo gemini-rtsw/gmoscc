@@ -1,0 +1,22 @@
+[symbol2]
+bbox 192 -32 416 320
+port 208 160 100 0 B symbol 1 192 160 0
+port 208 128 100 0 INPB symbol 1 192 128 0
+port 400 96 100 512 CAR symbol 2 416 96 0
+port 400 256 100 512 VAL symbol 2 416 256 0
+port 400 224 100 512 MESS symbol 2 416 224 0
+port 400 192 100 512 FLNK symbol 2 416 192 0
+port 400 0 100 512 CFLK symbol 2 416 0 0
+port 400 32 100 512 OERR symbol 2 416 32 0
+port 400 64 100 512 OMSS symbol 2 416 64 0
+port 208 256 100 0 DIR symbol 1 192 256 0
+port 208 224 100 0 A symbol 1 192 224 0
+port 208 192 100 0 INPA symbol 1 192 192 0
+uniq 116
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 208 288 GMOS INIT COMMAND
+r 0 192 -32 416 320
+[comments]

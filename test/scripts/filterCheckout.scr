@@ -1,0 +1,1048 @@
+#
+# DHS Test Commander
+# Checkout script for:
+#
+#	Gmos Filter Assembly checkout
+#
+
+
+#
+# Define the variables used in this script, and the configuration files
+# which contain their translation into EPICS channel names.
+#
+#     Config file     Config file name          Named used here      Mystery number
+#     -----------     ---------------------     -----------------    --------------
+
+VAR   postFpIcd       filterDirective           cmdDir               1
+VAR   postFpIcd       filterMode                fltMode              1
+
+VAR   postFpIcd       filter1                   fltSelect1           1
+VAR   postFpIcd       filter2                   fltSelect2           1
+VAR   postFpIcd       filterUpdateFast          fltUpdateFast        1
+
+VAR   postFpIcd       filterAcknowledge         cmdAck               1
+VAR   postFpIcd       filterBusy                cmdAction            1
+VAR   postFpIcd       filterMessage             cmdError             1
+VAR   postFpIcd       filterState               cmdState             1
+
+VAR   postFpIcd       filterCarMess             fltCarMsg            1
+VAR   postFpIcd       filterCarErr              fltCarErr            1
+
+VAR   postFpIcd       sadFilterId1              sadSelect1           1
+VAR   postFpIcd       sadFilterId2              sadSelect2           1
+
+VAR   postFpIcd       sadFilterInitialized      sadInit              1
+VAR   postFpIcd       sadFilterIndexed          sadIndex             1
+VAR   postFpIcd       sadFilterParked           sadPark              1
+VAR   postFpIcd       sadFilterHealth           sadHealth            1
+
+VAR   postFpIcd       sadFilterState            sadState             1
+
+VAR   postFpIcd       sadFilterDebug            sadDebug             1
+VAR   postFpIcd       sadFilterSimulate         sadSimm              1
+
+VAR   filterAssembly  assemblyTranslationFile   fltLutFile           1
+VAR   filterAssembly  assemblyTranslationDir    fltLutDir            1
+
+#VAR   filter1Device   devPosition               flt1Pos              1
+#VAR   filter1Device   devDir                    flt1Dir              1
+#VAR   filter1Device   devMode                   flt1Mode             1
+#VAR   filter1Device   devTarget                 flt1Target           1
+#VAR   filter1Device   devNamedTarget            flt1NamedTarget      1
+#VAR   filter1Device   devVelocity               flt1Velocity         1
+#VAR   filter1Device   devAck                    flt1Ack              1
+#VAR   filter1Device   devBusy                   flt1Busy             1 
+#VAR   filter1Device   devState                  flt1State            1
+#VAR   filter1Device   devMess                   flt1Mess             1
+
+#VAR   filter2Device   devPosition               flt2Pos              1
+#VAR   filter2Device   devDir                    flt2Dir              1
+#VAR   filter2Device   devMode                   flt2Mode             1
+#VAR   filter2Device   devTarget                 flt2Target           1
+#VAR   filter2Device   devNamedTarget            flt2NamedTarget      1
+#VAR   filter2Device   devVelocity               flt2Velocity         1
+#VAR   filter2Device   devAck                    flt2Ack              1
+#VAR   filter2Device   devBusy                   flt2Busy             1
+#VAR   filter2Device   devState                  flt2State            1
+#VAR   filter2Device   devMess                   flt2Mess             1
+
+VAR   filterStatus   filter1InPosition          flt1Inpos            1
+VAR   filterStatus   filter2InPosition          flt2Inpos            1
+
+
+#
+# check starting point, should be freshly rebooted and not indexed....
+#
+# (NOTE: It is possible to test this script without rebooting by poking the
+# filter assembly's INIT, INDX and HLTH fields to the correct values).
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Filter assembly not indexed?"
+GETVAL sadIndex
+OUTPUT *VAL* 0*
+
+DESC "Filter assembly initialization state"
+GETVAL sadInit
+OUTPUT *
+
+DESC "Filter assembly not parked?"
+GETVAL sadPark
+OUTPUT *VAL* 0*
+
+DESC "Filter assembly health"
+GETVAL sadHealth
+OUTPUT *
+
+DESC "Ensure you're using the right LUT filename"
+GETVAL fltLutFile
+OUTPUT *TFIL * flt.lut*
+
+DESC "Log the LUT directory"
+GETVAL fltLutDir
+OUTPUT *TDIR *
+
+ENDTEST
+
+#
+# Start by testing the filter assembly initialisation function
+#
+
+TEST "Test Initialization function"
+FATAL
+
+DESC "Initializing filter assembly"
+
+PUTVAL fltMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the filter assembly 
+# initialisation flag has been set, the filter assembly and filter CAR records have
+# both gone idle, and the health has changed to GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Filter assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Filter assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "No filter IDs in Status Alarm Database?"
+
+GETVAL sadSelect1
+OUTPUT *VAL* -1*
+
+GETVAL sadSelect2
+OUTPUT *VAL* -1*
+
+ENDTEST
+
+#
+# Test index function
+#
+
+TEST "Test Index Function"
+FATAL
+
+DESC "Indexing Filter Assembly"
+
+PUTVAL fltMode "3"
+OUTPUT *MODE*INIT*MODE*INDEX*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the filter assembly 
+# indexed flag has been set, the initialised flag is still set, the filter assembly
+# and filter CAR records have both gone idle, and the health is still GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Filter assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Filter assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "No filter IDs in Status Alarm Database?"
+
+GETVAL sadSelect1
+OUTPUT *VAL* -1*
+
+GETVAL sadSelect2
+OUTPUT *VAL* -1*
+
+ENDTEST
+
+#
+# Select a pair of filters - filter 6 on wheel 1 and filter 11 on wheel 2
+#
+
+TEST "Select a pair of filters on different wheels - specifying wheel 1 first"
+FATAL
+
+DESC "Moving Filter Assembly"
+
+CMD "getFilterId fltSelect1 /home/smb/gmos/lut/flt.lut 1 6"
+OUTPUT *Success*
+CMD "getFilterId fltSelect2 /home/smb/gmos/lut/flt.lut 2 11"
+OUTPUT *Success*
+
+PUTVAL fltMode "1"
+OUTPUT *MODE*INDEX*MODE*MOVE*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the filter assembly 
+# indexed flag is still set, the initialised flag is still set, the filter assembly
+# and filter CAR records have both gone idle, and the health is still GOOD.
+# Also check that both "in position" switches are set and the filter position records
+# in the status alarm database have been set correctly.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Filter assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Filter assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Filter wheels are both in position?"
+
+GETVAL flt1Inpos
+OUTPUT *VAL* INPOSITION*
+
+GETVAL flt2Inpos
+OUTPUT *VAL* INPOSITION*
+
+DESC "Correct filter IDs in Status Alarm Database?"
+
+CMD "compareField sadSelect1 fltSelect1
+OUTPUT *Equal*
+CMD "compareField sadSelect2 fltSelect2
+OUTPUT *Equal*
+
+ENDTEST
+
+#
+# Select another pair of filters filter 3 on wheel 1 and filter 1 on wheel 2
+# only this time specify the wheel 2 filter first
+#
+
+TEST "Select a pair of filters on different wheels - specifying wheel 2 first"
+FATAL
+
+DESC "Moving Filter Assembly"
+
+CMD "getFilterId fltSelect1 /home/smb/gmos/lut/flt.lut 2 1"
+OUTPUT *Success*
+CMD "getFilterId fltSelect2 /home/smb/gmos/lut/flt.lut 1 3"
+OUTPUT *Success*
+
+PUTVAL fltMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the filter assembly 
+# indexed flag is still set, the initialised flag is still set, the filter assembly
+# and filter CAR records have both gone idle, and the health is still GOOD.
+# Also check that both "in position" switches are set and the filter position records
+# in the status alarm database have been set correctly.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Filter assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Filter assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Filter wheels are both in position?"
+
+GETVAL flt1Inpos
+OUTPUT *VAL* INPOSITION*
+
+GETVAL flt2Inpos
+OUTPUT *VAL* INPOSITION*
+
+DESC "Correct filter IDs in Status Alarm Database?"
+
+CMD "compareField sadSelect1 fltSelect2
+OUTPUT *Equal*
+CMD "compareField sadSelect2 fltSelect1
+OUTPUT *Equal*
+
+ENDTEST
+
+
+#
+# Select exactly the same pair of filters again, to make sure the assembly is tolerant
+# of null moves.
+#
+
+TEST "Select exactly the same pair of filters again to check that null moves are ok"
+FATAL
+
+DESC "Moving Filter Assembly"
+
+CMD "getFilterId fltSelect1 /home/smb/gmos/lut/flt.lut 2 1"
+OUTPUT *Success*
+CMD "getFilterId fltSelect2 /home/smb/gmos/lut/flt.lut 1 3"
+OUTPUT *Success*
+
+PUTVAL fltMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the filter assembly 
+# indexed flag is still set, the initialised flag is still set, the filter assembly
+# and filter CAR records have both gone idle, and the health is still GOOD.
+# Also check that both "in position" switches are set and the filter position records
+# in the status alarm database have been set correctly.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Filter assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Filter assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Filter wheels are both in position?"
+
+GETVAL flt1Inpos
+OUTPUT *VAL* INPOSITION*
+
+GETVAL flt2Inpos
+OUTPUT *VAL* INPOSITION*
+
+DESC "Correct filter IDs in Status Alarm Database?"
+
+CMD "compareField sadSelect1 fltSelect2
+OUTPUT *Equal*
+CMD "compareField sadSelect2 fltSelect1
+OUTPUT *Equal*
+
+ENDTEST
+
+#
+# Select a pair of filters on the same wheel and check this fails.
+#
+
+TEST "Select a pair of filters on the same wheel"
+FATAL
+
+DESC "Ask for two filters on same wheel"
+
+CMD "getFilterId fltSelect1 /home/smb/gmos/lut/flt.lut 1 3"
+OUTPUT *Success*
+CMD "getFilterId fltSelect2 /home/smb/gmos/lut/flt.lut 1 5"
+OUTPUT *Success*
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL fltMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'A and B on same wheel'"
+GETVAL cmdError
+OUTPUT *A and B on same wheel*
+
+ENDTEST
+
+#
+# Select a non-existent filter A and check this fails.
+#
+
+TEST "Select a non-existent filter A"
+FATAL
+
+DESC "Select a non-existent filter A"
+
+PUTVAL fltSelect1 "29999999"
+OUTPUT *
+
+CMD "getFilterId fltSelect2 /home/smb/gmos/lut/flt.lut 1 5"
+OUTPUT *Success*
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL fltMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Requested filter A not installed'"
+GETVAL cmdError
+OUTPUT *Requested filter A not installed*
+
+ENDTEST
+
+#
+# Select a non-existent filter B and check this fails.
+#
+
+TEST "Select a non-existent filter B"
+FATAL
+
+DESC "Select a non-existent filter B"
+
+CMD "getFilterId fltSelect1 /home/smb/gmos/lut/flt.lut 1 3"
+OUTPUT *Success*
+
+PUTVAL fltSelect2 "29999999"
+OUTPUT *
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL fltMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Requested filter B not installed'"
+GETVAL cmdError
+OUTPUT *Requested filter B not installed*
+
+ENDTEST
+
+#
+# Select non-existent filters A and B and check this fails.
+#
+
+TEST "Select a non-existent filter A and B"
+FATAL
+
+DESC "Select a non-existent filter A and B"
+
+PUTVAL fltSelect1 "29999999"
+OUTPUT *
+
+PUTVAL fltSelect2 "29999999"
+OUTPUT *
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL fltMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Requested filter A not installed'"
+GETVAL cmdError
+OUTPUT *Requested filter A not installed*
+
+ENDTEST
+
+#
+# Reindex the filter assembly
+#
+
+TEST "Repeat Index Function"
+FATAL
+
+DESC "Restore requested filters"
+
+PUTVAL fltSelect1 "0"
+OUTPUT *
+
+PUTVAL fltSelect2 "0"
+OUTPUT *
+
+DESC "Reindexing Filter Assembly"
+
+PUTVAL fltMode "3"
+OUTPUT *MODE*MOVE*MODE*INDEX*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the filter assembly 
+# indexed flag has been set, the initialised flag is still set, the filter assembly
+# and filter CAR records have both gone idle, and the health is still GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Filter assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Filter assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Test for failure of the filter assembly initialisation function
+# when it is given a garbage file.
+#
+
+TEST "Test initialization function with garbage LUT file"
+FATAL
+
+DESC "Initializing filter assembly with garbage LUT file"
+
+PUTVAL fltLutFile "garbage.lut"
+OUTPUT *TFIL *TFIL * garbage.lut*
+
+PUTVAL fltMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Command Failed*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Incorrect barcode file type'"
+GETVAL cmdError
+OUTPUT *Incorrect barcode file type*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the filter assembly 
+# initialisation flag is unset and the health has changed to BAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Filter assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 0*
+
+DESC "Filter assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Filter assembly health BAD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*WARNING*
+
+ENDTEST
+
+
+#
+# Change lookup table name back as it was
+#
+
+TEST "Change lookup table name back as it was"
+FATAL
+
+DESC "Reset the LUT filename"
+PUTVAL fltLutFile "flt.lut"
+OUTPUT *TFIL *TFIL * flt.lut*
+
+ENDTEST
+
+
+#
+# Restore the filter assembly by reinitialising
+#
+
+TEST "Initialize properly to restore filter assembly"
+FATAL
+
+DESC "Initializing filter assembly properly"
+
+PUTVAL fltMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the filter assembly 
+# initialisation flag has been set, the filter assembly and filter CAR records have
+# both gone idle, and the health has changed to GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Filter assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Filter assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "No filter IDs in Status Alarm Database?"
+
+GETVAL sadSelect1
+OUTPUT *VAL* -1*
+
+GETVAL sadSelect2
+OUTPUT *VAL* -1*
+
+ENDTEST
+
+#
+# Update the filter assembly - full update mode
+#
+
+TEST "Test update function - full update mode"
+FATAL
+
+DESC "Updating Filter Assembly - full mode"
+
+PUTVAL fltUpdateFast "0"
+OUTPUT *
+
+PUTVAL fltMode "6"
+OUTPUT *MODE*INIT*MODE*UPDATE*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the filter assembly 
+# indexed flag is still set, the initialised flag is still set, the filter assembly
+# and filter CAR records have both gone idle, and the health is still GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Filter assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Filter assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Display contents of LUT file just saved"
+
+CMD "cat /home/smb/gmos/lut/flt.lut"
+OUTPUT *
+
+ENDTEST
+
+#
+# Update the filter assembly - quick update mode to re-read any faulty barcodes
+#
+
+TEST "Test update function - quick update mode"
+FATAL
+
+DESC "Updating Filter Assembly - quick mode"
+
+PUTVAL fltUpdateFast "1"
+OUTPUT *
+
+PUTVAL fltMode "6"
+OUTPUT *MODE*MODE*UPDATE*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the filter assembly 
+# indexed flag is still set, the initialised flag is still set, the filter assembly
+# and filter CAR records have both gone idle, and the health is still GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Filter assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Filter assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Display contents of LUT file just saved"
+
+CMD "cat /home/smb/gmos/lut/flt.lut"
+OUTPUT *
+
+ENDTEST
+
+#
+# Finally, park the Assembly
+#
+
+TEST "Test parking function"
+FATAL
+
+DESC "Restore the quick update flag"
+
+PUTVAL fltUpdateFast "0"
+OUTPUT *
+
+DESC "Parking assembly"
+
+PUTVAL fltMode "4"
+OUTPUT *MODE*MODE* PARK*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+
+CMD "sleep 1"
+OUTPUT *
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Filter assembly parked?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadPark
+OUTPUT *VAL* 1*
+ 
+DESC "Filter assembly indexed?"
+
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Filter assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Filter assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "No filter IDs in Status Alarm Database?"
+
+GETVAL sadSelect1
+OUTPUT *VAL* -1*
+
+GETVAL sadSelect2
+OUTPUT *VAL* -1*
+
+ENDTEST
+
+
+#
+#  Filter Assembly functions are OK
+#
+
+COMMENT "Filter assembly OK"

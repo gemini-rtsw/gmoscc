@@ -1,0 +1,31 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: finishCommand 
+#
+# Purpose: 
+#	To wait for a CAD/CAR command to complete 
+#
+
+while ( 1 )
+
+	sleep 1
+
+	set busyResponse = `caget $1`
+
+	set commandDone = `echo $busyResponse | grep $1 | grep IDLE`
+	if ( $#commandDone == 2 ) then
+		echo "Command Success"
+		exit
+	endif
+
+	set commandFailed = `echo $busyResponse | grep $1 | grep ERR`
+	if ( $#commandFailed == 2 ) then
+                set carname = `basename $1 .VAL`
+                set errmsg = `caget -t ${carname}.OMSS`
+		echo "Command Failed - $errmsg"
+		exit
+	endif
+
+end
+
+exit

@@ -1,0 +1,29 @@
+[symbol2]
+bbox 288 0 608 448
+port 512 32 100 1792 FLNK symbol 2 608 32 0
+port 512 320 100 1792 CSOMSS symbol 2 608 320 0
+port 480 256 100 1792 SUBAPPLYC symbol 2 608 256 0
+port 512 384 100 1792 CSVAL symbol 2 608 384 0
+uniq 0
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 304 208 Subsystem applyC
+l 100 0 0 304 176 and CommSentC
+l 100 0 0 304 144 values
+l 100 0 0 304 240 GMOS
+r 0 288 448 544 0
+v 0 544 32
+608 32
+_
+v 0 544 256
+608 256
+_
+v 0 544 320
+608 320
+_
+v 0 544 384
+608 384
+_
+[comments]

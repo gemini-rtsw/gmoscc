@@ -1,0 +1,18 @@
+[symbol2]
+bbox -128 -176 64 96
+port -160 0 100 0 DC symbol 1 -128 0 0
+port -176 32 100 0 CC symbol 1 -128 48 0
+port 64 -58 100 0 DCSUBVAL symbol 2 64 -64 0
+port 64 38 100 0 CCSUBVAL symbol 2 64 32 0
+port -192 -112 100 0 DIRVAL symbol 1 -128 -112 0
+port -192 -80 100 0 SLNK symbol 1 -128 -80 0
+uniq 0
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 -80 -64 APPLYs
+l 100 0 0 -80 -16 Subsystem
+l 100 0 0 -80 32 Trigger
+r 0 -128 -176 64 96
+[comments]

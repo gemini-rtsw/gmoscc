@@ -1,0 +1,734 @@
+#
+# DHS Test Commander
+# Mask assembly error conditions test script
+#
+
+#
+# Do the variable substitution thing....
+#
+
+VAR     maskAssembly        assemblyDirective     maskDir              1
+VAR     maskAssembly        assemblyMode          maskMode             1
+VAR     maskAssembly        assemblyAAttribute    maskID               1
+VAR     maskAssembly        assemblyBAttribute    maskLoc              1
+VAR     maskAssembly        assemblyAcknowledge   maskAck              1
+VAR     maskAssembly        assemblyBusy          maskBusy             1
+VAR     maskAssembly        assemblyMessage       maskMess             1
+VAR     maskAssembly        assemblyIndexed       maskIndex            1
+VAR     maskAssembly        assemblyInitialized   maskInit             1
+
+VAR     maskStatus          cassetteMissing       cassetteDetected     1
+VAR     maskStatus          slotMisaligned        slotAligned          1
+VAR     maskStatus          slotEmpty             slotEmpty            1
+
+VAR     maskStatus          fpEmpty               fpOccupied           1
+VAR     maskStatus          maskNotDetected       maskInstalled        1
+VAR     maskStatus          ifuNotDetected        ifuInstalled         1
+
+VAR     maskStatus          gripNotGripped        maskGripped          1
+VAR     maskStatus          gripNotReleased       maskReleased         1
+VAR     maskStatus          lockNotEngaged        maskLocked           1
+VAR     maskStatus          lockNotReleased       maskUnlocked         1
+
+VAR     cassetteDevice      devDir                cassetteDir          1
+VAR     cassetteDevice      devMode               cassetteMode         1
+VAR     cassetteDevice      devNamedTarget        cassetteNamedTarget  1
+VAR     cassetteDevice      devTarget             cassetteTarget       1
+VAR     cassetteDevice      devMinPosition        cassetteMinPos       1
+VAR     cassetteDevice      devMaxPosition        cassetteMaxPos       1
+VAR     cassetteDevice      devMinVelocity        cassetteMinVel       1
+VAR     cassetteDevice      devMaxVelocity        cassetteMaxVel       1
+VAR     cassetteDevice      devVelocity           cassetteVelo         1
+VAR     cassetteDevice      devAck                cassetteAck          1
+VAR     cassetteDevice      devBusy               cassetteBusy         1
+VAR     cassetteDevice      devMess               cassetteMess         1
+VAR     cassetteDevice      devIndexed            cassetteIndex        1
+
+VAR     extractorDevice     devDir                extractorDir         1
+VAR     extractorDevice     devMode               extractorMode        1
+VAR     extractorDevice     devNamedTarget        extractorNamedTarget 1
+VAR     extractorDevice     devTarget             extractorTarget      1
+VAR     extractorDevice     devVelocity           extractorVelo        1 
+VAR     extractorDevice     devAck                extractorAck         1
+VAR     extractorDevice     devBusy               extractorBusy        1
+VAR     extractorDevice     devMess               extractorMess        1
+VAR     extractorDevice     devIndexed            extractorIndex       1
+
+VAR     releaseDevice       devDir                releaseDir           1
+VAR     releaseDevice       devMode               releaseMode          1
+VAR     releaseDevice       devNamedTarget        releaseNamedTarget   1
+VAR     releaseDevice       devTarget             releaseTarget        1
+VAR     releaseDevice       devVelocity           releaseVelo          1
+VAR     releaseDevice       devAck                releaseAck           1
+VAR     releaseDevice       devBusy               releaseBusy          1
+VAR     releaseDevice       devMess               releaseMess          1
+VAR     releaseDevice       devIndexed            releaseIndex         1
+
+
+
+#
+# Is it safe to proceed?
+#
+
+PROMPT "Is it safe to move the mask assembly?"
+
+
+#
+# First try to initialize the mask assembly
+#
+
+TEST "Initialize the Mask Assembly"
+FATAL
+
+DESC "Initializing mask"
+
+PUTVAL maskMode " 0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "assemblyCommand maskDir maskAck maskBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+
+#
+# Index the mask assembly
+#
+
+TEST "Index the Mask assembly"
+FATAL
+
+DESC "Indexing mask"
+
+PUTVAL maskMode "3"
+OUTPUT *MODE*INIT*MODE*INDEX*
+
+CMD "assemblyCommand maskDir maskAck maskBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  check invalid cassette modes
+#
+
+#TEST "Try using several invalid modes"
+#FATAL
+
+#DESC "Reject numerical mode less than 0"
+
+#PUTVAL cassetteMode "5"
+#OUTPUT *MODE*MODE*TEST*
+
+#PUTVAL cassetteMode "-1"
+#OUTPUT *MODE*TEST*Invalid value entered*
+
+#GETVAL cassetteMode
+#OUTPUT *MODE*TEST*
+
+#DESC "Reject numerical mode greater than 5"
+
+#PUTVAL cassetteMode "4"
+#OUTPUT *MODE*TEST*MODE*PARK*
+
+#PUTVAL cassetteMode "6"
+#OUTPUT *MODE*PARK*Invalid value entered*
+
+#GETVAL cassetteMode
+#OUTPUT *MODE*PARK*
+
+#DESC "Reject numeric mode w/trailing text"
+
+#PUTVAL cassetteMode "2"
+#OUTPUT *MODE*PARK*MODE*TRACK*
+
+#PUTVAL cassetteMode "1INDEX"
+#OUTPUT *MODE*TRACK*Invalid value entered*
+
+#GETVAL cassetteMode
+#OUTPUT *MODE*TRACK*
+
+#DESC "Reject alpha mode w/trailing number"
+
+#PUTVAL cassetteMode "4"
+#OUTPUT *MODE*TRACK*MODE*PARK*
+
+#PUTVAL cassetteMode "INDEX1"
+#OUTPUT *MODE*PARK*Invalid value entered*
+
+#GETVAL cassetteMode
+#OUTPUT *MODE*PARK*
+
+#DESC "Reject lower case alpha mode"
+
+#PUTVAL cassetteMode "2"
+#OUTPUT *MODE*PARK*MODE*TRACK*
+
+#PUTVAL cassetteMode "move"
+#OUTPUT *MODE*TRACK*Invalid value entered*
+
+#GETVAL cassetteMode
+#OUTPUT *MODE*TRACK*
+
+#DESC "Accept numeric mode"
+
+#PUTVAL cassetteMode "3"
+#OUTPUT *MODE*MODE*INDEX*
+
+#ENDTEST
+
+#
+#  check invalid cassette position strings
+#
+
+TEST "Try invalid position strings with the check directive"
+FATAL
+
+DESC "Reject invalid string"
+
+PUTVAL cassetteMode "1"
+OUTPUT *MODE*
+
+PUTVAL cassetteNamedTarget "c1s0"
+OUTPUT *VALS*
+
+CMD "checkCommand cassetteDir cassetteAck"
+OUTPUT *reject*
+
+DESC "check for correct cassette error message"
+
+GETVAL cassetteMess
+OUTPUT *MESS*Can not translate named position*
+
+PUTVAL cassetteNamedTarget "c1s1"
+OUTPUT *VALS*
+
+CMD "checkCommand cassetteDir cassetteAck"
+OUTPUT *accept*
+
+DESC "Reject valid string in Caps"
+
+PUTVAL cassetteNamedTarget "C1S1"
+OUTPUT *VALS*
+
+CMD "checkCommand cassetteDir cassetteAck"
+OUTPUT *reject*
+
+DESC "check for correct cassette error message"
+
+GETVAL cassetteMess
+OUTPUT *MESS*Can not translate named position*
+
+PUTVAL cassetteNamedTarget "c1s1"
+OUTPUT *VALS*
+
+CMD "checkCommand cassetteDir cassetteAck"
+OUTPUT *accept*
+
+ENDTEST
+
+#
+#  check out of bounds cassette positions
+#
+
+TEST "Try out of bounds positions with the check directive"
+FATAL
+
+DESC "Reject bottom limit position"
+
+PUTVAL cassetteMode "1"
+OUTPUT *MODE*
+
+PUTVAL cassetteTarget "-10.1"
+OUTPUT *VAL*
+
+CMD "checkCommand cassetteDir cassetteAck"
+OUTPUT *reject*
+
+GETVAL cassetteMess
+OUTPUT *MESS*Target position out of range*
+
+CMD "setField cassetteTarget cassetteMinPos"
+OUTPUT *Success*
+
+CMD "checkCommand cassetteDir cassetteAck"
+OUTPUT *accept*
+
+DESC "Reject top limit position"
+
+PUTVAL cassetteMode "1"
+OUTPUT *MODE*
+
+PUTVAL cassetteTarget "275.1"
+OUTPUT *VAL*
+
+CMD "checkCommand cassetteDir cassetteAck"
+OUTPUT *reject*
+
+GETVAL cassetteMess
+OUTPUT *MESS*Target position out of range*
+
+CMD "setField cassetteTarget cassetteMaxPos"
+OUTPUT *Success*
+
+CMD "checkCommand cassetteDir cassetteAck"
+OUTPUT *accept*
+
+#DESC "Reject alpha position"
+
+#PUTVAL cassetteMode "1"
+#OUTPUT *MODE*
+
+#PUTVAL cassetteTarget "c1s1"
+#OUTPUT *VAL*
+
+#CMD "checkCommand cassetteDir cassetteAck"
+#OUTPUT *reject*
+
+#GETVAL cassetteMess
+#OUTPUT *MESS*Target position out of range*
+
+#CMD "setField cassetteTarget cassetteMaxPos"
+#OUTPUT *Success*
+
+#CMD "checkCommand cassetteDir cassetteAck"
+#OUTPUT *accept*
+
+ENDTEST
+
+#
+#  check invalid cassette velocities
+#
+
+TEST "Try invalid velocities with the check directive"
+FATAL
+
+DESC "Reject velocities below low limit"
+
+PUTVAL cassetteMode "1"
+OUTPUT *MODE*
+
+PUTVAL cassetteVelo "4.9"
+OUTPUT *VELO*
+
+CMD "checkCommand cassetteDir cassetteAck"
+OUTPUT *reject*
+
+GETVAL cassetteMess
+OUTPUT *MESS*Velocity out of range*
+
+CMD "setField cassetteVelo cassetteMinVel"
+OUTPUT *Success*
+
+CMD "checkCommand cassetteDir cassetteAck"
+OUTPUT *accept*
+
+DESC "Reject velocities above high limit"
+
+PUTVAL cassetteMode "1"
+OUTPUT *MODE*
+
+PUTVAL cassetteVelo "25.1"
+OUTPUT *VELO*
+
+CMD "checkCommand cassetteDir cassetteAck"
+OUTPUT *reject*
+
+GETVAL cassetteMess
+OUTPUT *MESS*Velocity out of range*
+
+PUTVAL cassetteVelo "20"
+OUTPUT *VELO*
+
+CMD "checkCommand cassetteDir cassetteAck"
+OUTPUT *accept*
+
+ENDTEST
+
+#
+#  check cassette/extractor interlock
+#
+
+TEST "Attempt cassette move with extractor at ID"
+FATAL
+
+DESC "INDEX cassette"
+
+PUTVAL cassetteMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
+
+DESC "check to ensure cassette is currently indexed"
+
+GETVAL cassetteIndex
+OUTPUT *HPVL* 1*
+
+DESC "move extractor to ID position"
+
+PUTVAL extractorVelo "35"
+OUTPUT *
+
+PUTVAL extractorMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL extractorNamedTarget "id"
+OUTPUT *
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Success*
+
+DESC "attempt to INDEX cassette"
+
+PUTVAL cassetteMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Failed*
+
+DESC "check for correct cassette error message"
+
+GETVAL cassetteMess
+OUTPUT *MESS*no motor power ... interlocked?*
+
+DESC "check to ensure index is lost"
+
+GETVAL cassetteIndex
+OUTPUT *HPVL* 0*
+
+DESC "move extractor back to clear position"
+
+PUTVAL extractorNamedTarget "clear"
+OUTPUT *
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Success*
+
+DESC "INDEX cassette"
+
+PUTVAL cassetteMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
+
+DESC "check to ensure cassette is currently indexed"
+
+GETVAL cassetteIndex
+OUTPUT *HPVL* 1*
+
+ENDTEST
+
+#
+#  check cassette/release interlock
+#
+
+TEST "Attempt cassette move with release released"
+FATAL
+
+DESC "move release to release position"
+
+PUTVAL releaseMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL releaseNamedTarget "release"
+OUTPUT *VALS*
+
+CMD "deviceCommand releaseDir releaseAck releaseBusy"
+OUTPUT *Success*
+
+DESC "attempt to INDEX cassette"
+
+PUTVAL cassetteMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Failed*
+
+DESC "check for correct cassette error message"
+
+GETVAL cassetteMess
+OUTPUT *MESS*no motor power ... interlocked?*
+
+DESC "check to ensure index is lost"
+
+GETVAL cassetteIndex
+OUTPUT *HPVL* 0*
+
+DESC "move release back to lock position"
+
+PUTVAL releaseNamedTarget "lock"
+OUTPUT *VALS*
+
+CMD "deviceCommand releaseDir releaseAck releaseBusy"
+OUTPUT *Success*
+
+DESC "INDEX cassette"
+
+PUTVAL cassetteMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
+
+DESC "check to ensure cassette is currently indexed"
+
+GETVAL cassetteIndex
+OUTPUT *HPVL* 1*
+
+ENDTEST
+
+
+#
+#  Ensure position limits from gmMask.pv are reachable
+#
+
+TEST "Ensure upper & lower position limits are reachable"
+FATAL
+
+DESC "move to lower position limit"
+
+CMD "setField cassetteTarget cassetteMinPos"
+OUTPUT *Success*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
+
+DESC "move to upper position limit"
+
+CMD "setField cassetteTarget cassetteMaxPos"
+OUTPUT *Success*
+
+PUTVAL cassetteMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  Drive into upper limit and check response
+#
+
+TEST "Drive into upper limit and check response"
+FATAL
+
+DESC "index on upper limit switch"
+
+PUTVAL cassetteMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL cassetteNamedTarget "i5"
+OUTPUT *VALS*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
+
+GETVAL cassetteIndex
+OUTPUT *HPVL* 1*
+
+DESC "move negative 10 steps"
+
+PUTVAL cassetteMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL cassetteTarget "-10"
+OUTPUT *VAL*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
+
+DESC "attempt move positive 15 steps into limit"
+
+PUTVAL cassetteTarget "15"
+OUTPUT *VAL*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Failed*
+
+DESC "check for message 'Device hit a soft limit' "
+
+GETVAL cassetteMess
+OUTPUT *MESS*Device hit a soft limit*
+
+GETVAL cassetteIndex
+OUTPUT *HPVL* 0*
+
+ENDTEST
+
+#
+#  Attempt to move without first indexing
+#
+
+TEST "Attempt to move without first indexing"
+FATAL
+
+DESC "attempt another move positive 30 steps"
+
+PUTVAL cassetteTarget "30"
+OUTPUT *VAL*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *rejected*
+
+DESC "check for message 'Must re-index device before moving' "
+
+GETVAL cassetteMess
+OUTPUT *MESS*Must re-index device before moving*
+
+
+ENDTEST
+
+#
+#  Attempt to move further into upper limit
+#
+
+TEST "Attempt to move further into upper limit"
+FATAL
+
+DESC "index on upper limit switch"
+
+PUTVAL cassetteNamedTarget "i5"
+OUTPUT *VALS*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
+
+DESC "attempt another move positive 30 steps"
+
+PUTVAL cassetteMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL cassetteTarget "30"
+OUTPUT *VAL*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Failed*
+
+DESC "check for message 'Can not move into a soft limit' "
+
+GETVAL cassetteMess
+OUTPUT *MESS*Can not move into a soft limit*
+
+
+ENDTEST
+
+#
+#  Drive into lower limit and check response
+#
+
+TEST "Drive into lower limit and check response"
+FATAL
+
+DESC "index on lower limit switch"
+
+PUTVAL cassetteNamedTarget "i4"
+OUTPUT *VALS*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
+
+GETVAL cassetteIndex
+OUTPUT *HPVL* 1*
+
+DESC "move positive 10 steps"
+
+PUTVAL cassetteMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL cassetteTarget "10"
+OUTPUT *VAL*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
+
+DESC "attempt move negative 10 steps into limit"
+
+PUTVAL cassetteTarget "-10"
+OUTPUT *VAL*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Failed*
+
+GETVAL cassetteIndex
+OUTPUT *HPVL* 0*
+
+DESC "check for message 'Device hit a soft limit' "
+
+GETVAL cassetteMess
+OUTPUT *MESS*Device hit a soft limit*
+
+ENDTEST
+
+#
+#  Attempt to move without first indexing
+#
+
+TEST "Attempt to move without first indexing"
+FATAL
+
+DESC "attempt move again"
+
+PUTVAL cassetteTarget "-10"
+OUTPUT *VAL*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *rejected*
+
+DESC "check for message 'Must re-index device before moving' "
+
+GETVAL cassetteMess
+OUTPUT *MESS*Must re-index device before moving*
+
+
+ENDTEST
+
+#
+#  Attempt to move further into lower limit
+#
+
+TEST "Attempt to move further into lower limit"
+FATAL
+
+DESC "index on lower limit switch"
+
+PUTVAL cassetteNamedTarget "i4"
+OUTPUT *VALS*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
+
+DESC "attempt to move negative 10 steps"
+
+PUTVAL cassetteMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL cassetteTarget "-10"
+OUTPUT *VAL*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Failed*
+
+DESC "check for message 'Can not move into a soft limit' "
+
+GETVAL cassetteMess
+OUTPUT *MESS*Can not move into a soft limit*
+
+DESC "Index cassette"
+
+PUTVAL cassetteMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand cassetteDir cassetteAck cassetteBusy"
+OUTPUT *Success*
+
+GETVAL cassetteIndex
+OUTPUT *HPVL* 1*
+
+ENDTEST
+
+COMMENT "Cassette error check is OK"
+
+ 

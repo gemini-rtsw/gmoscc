@@ -1,0 +1,17 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: getMaskId
+#
+# Purpose: 
+#	To recover number of masks in mask lookup table 
+#	Input args:
+#		$1  mask lookup table filename and path
+#	Returns number of masks
+#
+
+set updateLine = `head -50 $1`
+@ maskNum = ($#updateLine / 3)
+echo $maskNum
+exit
+
+

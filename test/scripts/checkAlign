@@ -1,0 +1,298 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: checkAlign
+#
+# Purpose: 
+#       Check whether mask is aligned then advance to next
+#       Input args:
+#             $1 mask cassette device record
+#             $2 mask cassette installed bit
+#             $3 mask slot aligned bit
+#             $4 mask opto sensor power
+#
+#       Returns:
+#             Pass when slot is either aligned 
+#
+#       Assumptions:
+#             One cassette length is 100 mm
+#             One slot length 10 mm
+#             IFU location can only be in first slot
+#             Only slots 7 & 9 are occupied in ifu cassette
+#
+
+#
+# Initialise success, pinsFound & commandDone variables
+# Set initial cassette position target to c1s1
+# Read back target to verify
+# Read positive limit
+# Turn on opto sensors
+# Set mode to MOVE
+# While (target <= positive limit && success == pass)
+#    Set directive to GO
+#    Check for command acceptance
+#    While (1)
+#       Wait one second
+#       Check for command completion
+#       If (ERR)
+#          Set success to fail
+#          Exit this while loop
+#       If (IDLE)
+#          Exit this while loop
+#    End while
+#    If (success == fail)
+#       Exit while loop
+#    Check cassette installed bit
+#    Check slot aligned bit
+#    If (cassette installed)
+#       If (slot aligned)
+#          Increment pinsFound counter
+#          If (end of cassette one or two)
+#             Advance current target two slots
+#          Else 
+#             Advance current target by one slot
+#       Else if (current target is c1s1)
+#          Advance directly to c1s7, the IFU slot
+#       Else if (current target is c1s7)
+#          Advance directly to c1s9, the last slot in IFU cassette
+#       Else
+#          Set success to fail
+#          Exit while loop - should have been aligned
+#    Else if (c1s1)
+#       Advance to second cassette
+#    Else if (c2s1)
+#       Advance to third cassette
+#    Else if (c3s1)
+#       Exit while loop (no more cassettes)
+#    Else if (c3s9)
+#       Exit while loop (no more slots)
+#    Else
+#       Set success to fail
+#       Exit while loop (expecting cassette)
+#    Read back new target to verify
+# End while
+# Turn OFF opto sensors
+# If (success)
+#    If (pinsFound == 0)
+#       Fail - no pins found
+#    Else
+#       Pass - return number of pins found
+# Else
+#    Fail - return error code and # of pins Found
+# Exit script
+#
+
+
+date
+
+set success = 0
+set pinsFound = 0
+set commandDone = 0
+set ifuCassette = 0
+
+set setTarget = `caput $1.VAL "-5"`
+set response = `echo $setTarget | grep $1.VAL | grep "\-5.0000"`
+if ($#response != 8) then
+    echo "Fail - could not set cassette position target: $setTarget"
+    set success = -1
+#else echo "Setting target to -5 mm"
+endif
+
+set casPosition = `caget $1.VAL | grep $1.VAL`
+if ( $#casPosition != 2 ) then
+    echo "Fail - cannot read cassette position target: $casPosition"
+    set success = -2
+#else echo "Reading back target position: $casPosition[2] mm"
+endif
+
+set casPosLim = `caget $1.PHLM | grep $1.PHLM`
+if ( $#casPosLim != 2 ) then
+    echo "Fail - cannot read cassette positive limit"
+    set success = -3
+#else echo "Reading positive limit: $casPosLim[2]"
+endif
+
+set optoPowerOn = `caput $4 "0"`
+set response = `echo $optoPowerOn`
+if ($#response != 8) then
+    echo "Fail - could not turn on opto sensor power"
+    set success = -4
+#else echo "Turning opto sensor power: $response[8]"
+endif
+
+set casMode = `caput $1.MODE "1"`
+set response = `echo $casMode | grep New | grep $1.MODE | grep MOVE`
+if ($#response != 8) then
+    echo "Fail - could not set cassette mode to MOVE"
+    set success = -5
+#else echo "Setting mode to: $response[8]"
+endif
+
+while ( $casPosition[2] <= $casPosLim[2] && $success == 0) 
+
+    set casDirective = `caput $1.DIR "2"`
+    set response = `echo $casDirective`
+    if ($#response != 8) then
+        echo "Fail - could not set cassette directive to GO"
+        set success = -6
+        break
+#   else echo "Setting directive to GO"
+    endif
+
+    set casAcknowledge = `caget $1.ACK | grep $1.ACK | grep 0`
+    if ( $#casAcknowledge != 2) then
+        echo "Fail - command rejected"
+        set success = -7
+        break
+#   else echo "Command acknowledge: $casAcknowledge[2]"
+    endif
+
+    while (1)
+#       echo "Wait for command completion"
+        sleep 1
+        set casBusy = `caget $1.BUSY`
+
+        set commandDone = `echo $casBusy | grep $1.BUSY | grep IDLE`
+        set commandFailed = `echo $casBusy | grep $1.BUSY | grep ERR`
+
+        if ( $#commandDone == 2 ) then
+#           echo "Move finished successfully"
+            break
+        endif
+
+        if ( $#commandFailed == 2 ) then
+            echo "Fail - command error"
+            set success = -8
+            break
+        endif
+    end
+
+    if ($success != 0) then
+       break
+    endif
+
+    set casInstalled = `caget $2 | grep $2`
+    if ( $#casInstalled != 2 ) then
+        echo "Fail - cannot read cassette installed bit"
+        set success = -9
+        break
+#   else echo "Cassette Installed? $casInstalled[2]"
+    endif
+    set installed = `echo $casInstalled | grep CassetteInstalled`
+
+    set casAligned = `caget $3 | grep $3`
+    if ( $#casAligned != 2 ) then
+        echo "Fail - cannot read slot aligned bit"
+        set success = -10
+        break
+#   else echo "Slot aligned? $casAligned[2]"
+    endif
+    set aligned = `echo $casAligned | grep " Aligned"`
+
+    if ($#installed == 2) then
+
+#       echo "Cassette installed at this position"
+        if ($#aligned == 2) then
+#           echo "Slot aligned at this position"
+            @ pinsFound = ($pinsFound + 1)
+            if ($casPosition[2] == 75 || $casPosition[2] == 175) then
+                @ newPos = ($casPosition[2] + 20)
+#               echo "Advance to next cassette"
+            else
+                @ newPos = ($casPosition[2] + 10)
+#               echo "Advance to next slot"
+            endif
+            set setTarget = `caput $1.VAL $newPos | grep $1.VAL | grep New | grep $newPos`
+            if ($#setTarget != 4) then
+                echo "Fail - could not set cassette position target"
+                set success = -11
+                break
+            endif
+
+        else if ($casPosition[2] == -5) then
+            set ifuCassette = 1
+            set setTarget = `caput $1.VAL "55" | grep $1.VAL | grep New | grep 55`
+            if ($#setTarget != 4) then
+                echo "Fail - could not set cassette position target"
+                set success = -12
+                break
+            endif
+#           echo "Advance to IFU slot"
+
+        else if ($casPosition[2] == 65 && $ifuCassette == 1) then
+            set ifuCassette = 0
+            set setTarget = `caput $1.VAL "75" | grep $1.VAL | grep New | grep 75`
+            if ($#setTarget != 4) then
+                echo "Fail - could not set cassette position target"
+                set success = -13
+                break
+            endif
+#           echo "Advance to next slot"
+
+        else
+            echo "Fail - slot should have been aligned"
+            set success = -14
+            break
+
+        endif
+
+    else if ($casPosition[2] == -5) then
+        set setTarget = `caput $1.VAL "95" | grep $1.VAL | grep New | grep 95`
+        if ($#setTarget != 4) then
+            echo "Fail - could not set cassette position target"
+            set success = -15
+            break
+        endif
+#       echo "Advance to second cassette"
+
+    else if ($casPosition[2] == 95) then
+        set setTarget = `caput $1.VAL "195" | grep $1.VAL | grep New | grep 195`
+        if ($#setTarget != 4) then
+            echo "Fail - could not set cassette position target"
+            set success = -16
+            break
+        endif
+#       echo "Advance to third cassette"
+
+    else if ($casPosition[2] == 195) then
+#       echo "Done - no more cassettes"
+        break
+
+    else if ($casPosition[2] == 275) then
+#       echo "Done - no more slots"
+        break
+
+    else 
+        echo "Fail - expecting installed cassette"
+        set success = -17
+        break
+    endif
+
+    set casPosition = `caget $1.VAL | grep $1.VAL`
+    if ( $#casPosition != 2 ) then
+        echo "Fail - cannot read cassette position target: $casPosition"
+        set success = -18
+        break
+#   else echo "Reading back target position: $casPosition[2] mm"
+    endif
+
+end
+
+set optoPowerOff = `caput $4 "1" | grep $4 | grep New | grep OFF`
+if ($#optoPowerOff != 4) then
+    echo "Fail - could not turn off opto sensor power"
+    set success = -19
+#else echo "Turning opto sensor power $optoPowerOff[4]"
+endif
+
+if ($success == 0) then
+    if ($pinsFound == 0) then
+        echo "Fail - no pins found"
+    else
+        echo "Pass - $pinsFound pins found"
+    endif
+else 
+    echo "Failure code: $success"
+    echo "Found $pinsFound pins before failure"
+endif
+
+exit

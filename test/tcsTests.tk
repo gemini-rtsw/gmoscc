@@ -1,0 +1,1245 @@
+#  FILENAME
+#  tcsTests.tk
+#
+#  *INDENT-OFF*
+#  $log$
+#  *INDENT-ON*
+#+
+#  Function name:
+#  tcsTests.tk
+#
+#  Purpose:
+#  Utility to run a set of tests on the TCS
+#
+#  Description:
+#  The program reads in an ascii file which specifies a set of tests to be
+#  performed on the TCS. A scrolling window is provided to monitor the 
+#  running of the tests and full output is written to a separate file.
+#  Tests can be paused and then continued either by keywords in the ascii 
+#  input file or at any time by the user clicking a button. The test script
+#  can also be aborted should a problem occur. 
+#
+#  Invocation:
+#  et_wish tcsTests.tk prefix
+#
+#  Parameters: (">" input, "!" modified, "<" output)
+#     (>)   prefix    (string)   Standard database prefix
+#
+#  Function value:
+#  (<)  status  (int) Return status, 0 = OK
+#
+#  Prior requirements:
+#  The database that is being tested must already be loaded and running
+#
+#  Deficiencies:
+#  1. The pv stat command does not seem to work as advertised, pv info is used 
+#     instead
+#-
+
+
+proc main {argc argv} {
+
+  if {$argc < 1} {
+    puts "Usage: tcsTests <prefix> e.g. tcsTests tcs:"
+    exit 0
+  }
+
+  global top
+  global defResponse
+  global defTimeOut
+  global defOnError
+  global defAfterTest
+  global defTrigger
+  global defCar
+  global defOverride
+  global buttonPress
+  global defActResponse
+  global userPause
+  global afterTest
+  
+# initialise data
+
+  set GeminiBrown #c19c80
+  set top [lindex $argv 0]
+  set defResponse "ACCEPT"
+  set defTimeOut -999.9
+  set defOnError "CONTINUE"
+  set defAfterTest "CONTINUE"
+  set defActResponse "IDLE"
+  set defCar "applyC"
+  set defTrigger "APPLY"
+  set defOverride "OFF"
+  set buttonPress 0
+  set userPause 0
+  set afterTest CONTINUE 
+
+# inform window manager
+
+ wm title . "Testing $top"
+ wm minsize . 50 50
+ wm iconname . "Testing"
+ wm iconbitmap . @tcsTests.bit
+
+# set the background colour
+
+ . configure -bg PeachPuff
+
+# create a menubar
+
+ frame .mbar -relief raised -bd 2 -bg PeachPuff
+ frame .outer -bg PeachPuff
+ pack .mbar .outer -side top -fill x
+
+# add the menu buttons
+
+ menubutton .mbar.file -text File -underline 0 -menu .mbar.file.menu \
+         -bg PeachPuff
+ pack .mbar.file -side left
+
+ menu .mbar.file.menu -bg PeachPuff
+  .mbar.file.menu add command -label "Exit" -command exit
+
+
+ menubutton .mbar.help -text Help -underline 0 -menu .mbar.help.menu \
+         -bg PeachPuff
+ pack .mbar.help -side right
+
+ menu .mbar.help.menu -bg peachPuff
+ .mbar.help.menu add command -label "On tcsTests" \
+ -command {tt_dialog .d tcsTests PeachPuff \
+ {tcsTests automates some aspects of the testing of the TCS. \
+  Enter a test file and the name of a file to hold the results into the \
+  appropriate entry fields then press Execute tests. The text \
+  window will provide a summary of the progress of the tests \
+  and the results file will provide a more fuller and permanent record. \
+  The format of the test file is described in tcs_cjm_049.fm which \
+  can be obtained from any of the Gemini mirror sites.} \
+  {} -1 OK}
+ 
+# create a text widget for a summary of the test output
+
+ frame .scrollFrame -bg PeachPuff
+ text .testText -height 20 -width 75 -relief sunken -bd 2 \
+                -bg Grey75 -fg White -yscrollcommand ".scroll set"
+ scrollbar .scroll -command ".testText yview"
+
+ pack .scroll -side right -fill y -in .scrollFrame
+ pack .testText -side left -in .scrollFrame
+ pack .scrollFrame
+ 
+ .testText configure -state disabled
+
+# create the entry widgets for the input and output files
+
+ pack [frame .inFile -bg PeachPuff] -fill x -expand y 
+ pack [label .inFile.label -text "Test file:     " -bg PeachPuff -fg NavyBlue] \
+        -side left
+ pack [entry .inFile.entry -relief sunken -bg PeachPuff] \
+       -fill x -expand y
+ bind .inFile.entry <Return> { }
+
+ pack [frame .outFile -bg PeachPuff] -fill x -expand y 
+ pack [label .outFile.label -text "Results file:" -bg PeachPuff -fg NavyBlue] \
+       -side left
+ pack [entry .outFile.entry -relief sunken -bg PeachPuff] \
+       -fill x -expand y
+ bind .outFile.entry <Return> { }
+ 
+ pack [frame .doTests -bg PeachPuff] -fill x -expand y
+ button .doTests.butt1 -text "Execute tests"  -bg PeachPuff \
+        -fg NavyBlue -command doTests 
+ button .doTests.butt2 -text "Continue..."  -bg PeachPuff \
+        -fg NavyBlue -command continueTests 
+ .doTests.butt2 configure -state disabled
+ button .doTests.butt3 -text "Pause..."  -bg PeachPuff \
+        -fg NavyBlue -command pauseTests 
+ button .doTests.butt4 -text "Abort..."  -bg PeachPuff \
+        -fg NavyBlue -command abortTests 
+ pack .doTests.butt1 .doTests.butt3 .doTests.butt2 .doTests.butt4 \
+        -fill x -expand y -side left
+
+
+
+}
+
+proc doTests {} {
+
+
+# disable the push button so that a file can't be read until the current
+# one is complete 
+
+  .doTests.butt1 configure -state disabled
+
+# Set up keyword array to hold valid keywords
+
+  set keyWords(0) "RESPONSE"
+  set keyWords(1) "TIMEOUT"
+  set keyWords(2) "ONERROR"
+  set keyWords(3) "TEST"
+  set keyWords(4) "COMMAND"
+  set keyWords(5) "FIELD"
+  set keyWords(6) "LOG"
+  set keyWords(7) "DIRECTIVE"
+  set keyWords(8) "SUMMARY"
+  set keyWords(9) "AFTERTEST"
+  set keyWords(10) "TRIGGER"
+  set keyWords(11) "CAR"
+  set keyWords(12) "HELP"
+  set keyWords(13) "ACTRESPONSE"
+  set keyWords(14) "OVERRIDE"
+
+# open input file for reading
+
+  set inFile [.inFile.entry get]
+  if {$inFile == ""} {
+    tt_dialog .d tcsTests PeachPuff \
+    {You must specify a test file that contains the tests you want to run} \
+    warning -1 OK
+    .doTests.butt1 configure -state normal
+    return
+  }
+
+  if {([file exists $inFile] == 1) && ([file readable $inFile] == 1)} {
+   set inFileId [open $inFile r]
+  } else {
+   tt_dialog .d tcsTests PeachPuff \
+   {The file you have specified either doesn't exist or you don't have \
+    permission to read it.} \
+    error -1 OK
+    .doTests.butt1 configure -state normal
+    return
+  }
+
+# open output file for writing. Append the output if the file already exists
+
+  set outFile [.outFile.entry get]
+  if {$outFile == ""} {
+    tt_dialog .d tcsTests PeachPuff \
+    {You must specify a results file to hold the test results} \
+    warning -1 OK
+    close $inFileId
+    .doTests.butt1 configure -state normal
+    return
+  }
+  set outFileId [open $outFile a]
+
+# If successful, clear the scrolling window to hold the new output
+
+  .testText configure -state normal
+  .testText delete 1.0 end
+  .testText configure -state disabled
+  writeScreen "Starting tests ...\n"
+  writeScreen "\n"
+
+# Had to add a delay here or found that the "Starting tests ..." message
+# would not get flushed out if pv linkw couldn't connect
+
+  waitDelay 100 100
+
+# Write some indentification information. 
+
+  set date [exec date]
+  puts $outFileId " "
+  puts $outFileId "Results from test file $inFile invoked on $date"
+  puts $outFileId " "
+
+# Declare global data
+
+  global top
+  global commandName
+
+  global testId
+  global response
+  global timeOut
+  global onError
+  global afterTest
+  global directive
+  global numFields
+  global cadFieldVarList
+  global cadFieldNameList
+  global fld
+  global numLogs
+  global logRecList
+  global buttonPress
+  global userAbort
+
+  global keyWord
+  global keyWordVal1
+  global keyWordVal2
+
+  global readContext
+ 
+  global commandActive
+  global actionActive
+  global commDir
+  global testResult
+
+# Initialise data 
+
+  set readContext "GLOBAL"
+  set userAbort 0
+
+# Now read and parse the test file
+
+  while {[gets $inFileId inLine] >= 0} {
+
+    set keyWord ""
+    set keyWordVal1 ""
+    set keyWordVal2 ""
+
+# Discard blank lines and comments then parse and execute the command
+
+    set numVars [scan $inLine "%s" dummyLine]
+    set firstChar [string index $inLine 0]
+    if {($numVars > 0) && ($firstChar != "#")} {
+      if { [parseLine $inLine keyWords] == 1} break
+      if { [setupCommand $keyWord $keyWordVal1 $keyWordVal2] == 1} break
+
+# Check that the user hasn't aborted the tests whilst they were paused
+
+      if {$userAbort == 1} {
+        writeScreen "Tests aborting... \n"
+        break 
+      }
+
+      if { $keyWord != "HELP" } {
+       if {$readContext == "ACTIVE"} {
+         if { [linkToRecords] == 1} {
+           writeScreen "Tests abandoned ...\n"
+           break
+         }
+         writeTestInput $outFileId
+
+# Clear the directive in case any commands are marked. If the apply record
+# is being used then this ensures that only the records that are 
+# explicitly marked by the test get activated. If the CAD is being activated
+# directly then this step is irrelevant.
+
+         set commDir "CLEAR"
+         pv putq commDir
+
+# Write the fields of the CAD records
+
+         putFields
+
+# Activate the command
+
+         set message "Test $testId Running ...\n"
+         writeScreen $message
+         set commDir $directive 
+         set commandActive 1
+         set actionActive 1
+         pv putq commDir
+
+# Wait for completion and then write the results
+
+         waitForCommand
+         checkCompletion
+         writeTestOutput $outFileId
+
+         if {(($testResult == "FAIL") && ($onError == "ABORT"))
+             || $userAbort == 1} {
+           writeScreen "Tests aborting...\n"
+           break ;
+         }
+        
+       }
+     }
+    }
+
+    
+  }
+
+  writeScreen "\n"
+  writeScreen "Tests completed\n"
+  close $inFileId
+  close $outFileId
+  .doTests.butt1 configure -state normal
+
+}
+
+# Procedure to parse a line from a file and check that the syntax is correct
+
+proc parseLine {line keyWords} {
+
+  global keyWord
+  global keyWordVal1
+  global keyWordVal2
+
+  upvar $keyWords kArray
+
+  set numVars [scan $line "%s %s %s" keyWord keyWordVal1 keyWordVal2]
+
+  set inAllowedSet "False"
+  set keyWord [string toupper $keyWord]
+
+  if {($numVars < 2) && ($keyWord != "HELP")} {
+    writeScreen "Syntax error in test file, $keyWord requires a parameter\n"
+    return 1 
+  }
+
+  foreach i [array names kArray] {
+    if {$kArray($i) == $keyWord} {
+      set inAllowedSet  "True"
+      break 
+    }
+  }
+
+  if {$inAllowedSet == "True"} {
+    if {($keyWord != "COMMAND") && ($keyWord != "LOG") && 
+        ($keyWord != "SUMMARY") && ($keyWord != "CAR") &&
+        ($keyWord != "HELP") } {
+      set keyWordVal1 [string toupper $keyWordVal1]
+    }
+
+    switch $keyWord {
+     
+       TEST {}
+
+       COMMAND { }
+
+       LOG { }
+ 
+       CAR { }
+
+       ACTRESPONSE {
+          if {($keyWordVal1 != "IDLE") && ($keyWordVal1 != "ERR")} {
+            writeScreen "Syntax error in test file\n"
+            writeScreen "$keyWordVal1 is illegal for $keyWord\n"
+            return 1 
+          }
+       }
+
+       RESPONSE {
+          if {($keyWordVal1 != "ACCEPT") && ($keyWordVal1 != "REJECT")} {
+            writeScreen "Syntax error in test file\n"
+            writeScreen "$keyWordVal1 is illegal for $keyWord\n"
+            return 1 
+          }
+       }
+
+       ONERROR {
+          if {($keyWordVal1 != "CONTINUE") && ($keyWordVal1 != "ABORT")} {
+            writeScreen "Syntax error in test file\n"
+            writeScreen "$keyWordVal1 is illegal for $keyWord\n"
+            return 1 
+          }
+       }
+          
+       AFTERTEST {
+          if {($keyWordVal1 != "CONTINUE") && ($keyWordVal1 != "PAUSE")} {
+            writeScreen "Syntax error in test file\n"
+            writeScreen "$keyWordVal1 is illegal for $keyWord\n"
+            return 1 
+          }
+       }
+          
+       TRIGGER {
+          if {($keyWordVal1 != "CAD") && ($keyWordVal1 != "APPLY")} {
+            writeScreen "Syntax error in test file\n"
+            writeScreen "$keyWordVal1 is illegal for $keyWord\n"
+            return 1 
+          }
+       }
+          
+       OVERRIDE {
+          if {($keyWordVal1 != "ON") && ($keyWordVal1 != "OFF")} {
+            writeScreen "Syntax error in test file\n"
+            writeScreen "$keyWordVal1 is illegal for $keyWord\n"
+            return 1 
+          }
+       }
+          
+       DIRECTIVE {
+          if {($keyWordVal1 != "START") && ($keyWordVal1 != "PRESET") &&
+              ($keyWordVal1 != "CLEAR") && ($keyWordVal1 != "STOP")} {
+            writeScreen "Syntax error in test file\n"
+            writeScreen "$keyWordVal1 is illegal for $keyWord\n"
+            return 1 
+          }
+       }
+
+       TIMEOUT {
+          if {$keyWordVal1 == "NONE"} {
+            set keyWordVal1 = -999.0
+          } else {
+            set numVars [scan $keyWordVal1 "%f" keyWordVal1]
+            if { $numVars != 1} {
+              writeScreen "Syntax error: unable to decode timeout value\n"
+              return 1 
+            }
+          }
+        }
+
+       FIELD { 
+          if {$numVars < 3} {
+            writeScreen "Syntax error: $keyWord needs field and value\n"
+            return 1 
+          } else {
+            set startStr [string first $keyWordVal2 $line]
+            if {$keyWordVal1 == $keyWordVal2} {
+              set startStr [expr $startStr + [string length $keyWordVal1] ]
+            }
+            set keyWordVal2 [string range $line $startStr end]
+
+# This next line is needed as an extra character seems to get appended
+# to each line
+
+            set keyWordVal2 [string trim $keyWordVal2]
+          }
+       }
+  
+       SUMMARY {
+          set startStr [string first $keyWordVal1 $line]
+          set keyWordVal1 [string range $line $startStr end]
+       }
+          
+       HELP {
+          if {$numVars == 1} {
+            set keyWordVal1 " "
+          } else {
+            set startStr [string first $keyWordVal1 $line]
+            set keyWordVal1 [string range $line $startStr end]
+          }
+       }
+          
+    }
+  } else {
+    writeScreen "Invalid syntax: $keyWord is unknown\n"
+    return 1 
+  }
+
+  return 0
+
+}
+
+# Procedure to setup the command that will be issued to the TCS
+
+proc setupCommand {keyWord val1 val2 } {
+
+  global readContext
+  global defResonse
+  global defTimeOut
+  global defOnError
+  global defAfterTest
+  global defTrigger
+  global defCar
+  global defActResponse
+  global defOverride
+  global response
+  global timeOut
+  global onError 
+  global afterTest
+  global numFields
+  global commandName
+  global numLogs
+  global directive
+  global testId
+  global car
+  global trigger
+  global top
+  global cadFieldNameList
+  global cadFieldVarList
+  global fld
+  global logRecList
+  global logRecVarList
+  global logA
+  global sumStr
+  global expectedActResponse
+  global userPause
+  global override
+
+  if {$readContext == "GLOBAL"} {
+    if {$keyWord == "TEST"} {
+        if {$afterTest == "PAUSE" || $userPause == 1} {
+          .doTests.butt2 configure -state normal
+          .doTests.butt3 configure -state disabled 
+          tkwait variable buttonPress
+        }
+      set readContext "TEST"
+      set testId $val1
+      resetCommand
+    } elseif {$keyWord == "HELP"} {
+      writeScreen "$val1\n"
+      set afterTest PAUSE
+    } elseif {$keyWord == "RESPONSE"} {
+      set defResponse $val1
+    } elseif {$keyWord == "OVERRIDE"} {
+      set defOverride $val1
+    } elseif {$keyWord == "ACTRESPONSE"} {
+      set defActResponse $val1
+    } elseif {$keyWord == "TRIGGER"} {
+      set defTrigger $val1
+    } elseif {$keyWord == "CAR"} {
+      set defCar $val1
+    } elseif {$keyWord == "ONERROR"} {
+      set defOnError $val1
+    } elseif {$keyWord == "AFTERTEST"} {
+      set defAfterTest $val1
+    } elseif {$keyWord == "TIMEOUT"} {
+      set defTimeOut $val1
+    } else {
+      writeScreen "Syntax error: $keyWord not allowed before keyword TEST\n"
+      return 1 
+    }
+  } elseif { $readContext == "TEST"} {
+    if {$keyWord == "DIRECTIVE" } {
+      set readContext "ACTIVE"
+      set directive $val1
+    } elseif {$keyWord == "COMMAND"} {
+      set commandName ${top}${val1}
+    } elseif {$keyWord == "FIELD"} {
+      lappend cadFieldNameList ${commandName}.${val1}
+      lappend cadFieldVarList fld(${numFields})
+      set fld(${numFields}) $val2
+      incr numFields
+    } elseif {$keyWord == "HELP"} {
+      writeScreen "$val1\n"
+    } elseif {$keyWord == "SUMMARY"} {
+      set sumStr $val1
+    } elseif {$keyWord == "RESPONSE"} {
+      set response $val1
+    } elseif {$keyWord == "ACTRESPONSE"} {
+      set expectedActResponse $val1
+    } elseif {$keyWord == "TRIGGER"} {
+      set trigger $val1
+    } elseif {$keyWord == "CAR"} {
+      set car $val1
+    } elseif {$keyWord == "TIMEOUT"} {
+      set timeOut $val1
+    } elseif {$keyWord == "ONERROR"} {
+      set onError $val1
+    } elseif {$keyWord == "AFTERTEST"} {
+      set afterTest $val1
+    } elseif {$keyWord == "OVERRIDE"} {
+      set override $val1
+    } elseif {$keyWord == "LOG"} {
+      lappend logRecList ${top}${val1}
+      incr numLogs
+    } elseif {$keyWord == "TEST"} {
+      writeScreen "Syntax error: expected keyword DIRECTIVE before TEST\n"
+      return 1 
+    }
+  } elseif {$readContext == "ACTIVE"} {
+    if {$keyWord == "HELP"} {
+      writeScreen "$val1\n"
+    } elseif {$keyWord == "TEST"} {
+        if {$afterTest == "PAUSE" || $userPause == 1 } {
+          .doTests.butt2 configure -state normal
+          .doTests.butt3 configure -state disabled 
+          tkwait variable buttonPress
+        }
+      set readContext "TEST"
+      set testId $val1
+      resetCommand
+    } else {
+      writeScreen "Syntax error: expecting keyword TEST after DIRECTIVE\n"
+      return 1 
+    }
+ 
+  
+  }
+
+  return 0
+}
+
+proc resetCommand { } {
+
+  global cadFieldVarList
+  global cadFieldNameList
+  global logRecList
+  global logRecVarList
+
+  global response
+  global onError
+  global timeOut
+  global afterTest
+  global car
+  global trigger
+  global expectedActResponse
+  global override
+
+  global defResponse
+  global defTimeOut
+  global defOnError
+  global defAfterTest
+  global defTrigger
+  global defCar
+  global defActResponse
+  global defOverride
+
+  global numFields
+  global numLogs
+
+  set cadFieldVarList ""
+  set cadFieldNameList ""
+  set logRecList ""
+  set logRecVarList ""
+
+  set numFields 0
+  set numLogs 0
+
+  set response $defResponse
+  set timeOut $defTimeOut
+  set onError $defOnError
+  set afterTest $defAfterTest
+  set trigger $defTrigger
+  set car     $defCar
+  set expectedActResponse $defActResponse
+  set override $defOverride
+
+}
+
+# Output test specification to file
+
+proc writeTestInput fid {
+
+ global testId
+ global response
+ global directive
+ global onError
+ global numFields
+ global numLogs
+ 
+ global cadFieldVarList
+ global cadFieldNameList
+ global logRecList
+ global fld
+ global sumStr
+
+ puts $fid "*****************************************************************"
+ puts $fid "Test: $testId"
+ puts $fid " "
+ puts $fid "Summary: $sumStr"
+ puts $fid " "
+ puts $fid "Inputs:"
+ puts $fid " "
+ 
+ if {$numFields == 0} {
+   puts $fid "None"
+   puts $fid " "
+ } else {
+   for {set i 0} {$i < $numFields} {incr i} {
+     puts $fid "[lindex $cadFieldNameList $i]     $fld($i)"
+   }
+   puts $fid " "
+ }
+
+ puts $fid "Expected response: $response"
+ puts $fid " "
+
+ puts $fid "Directive: $directive"
+ puts $fid " "
+
+
+}
+
+proc writeTestOutput fid {
+
+  global testResult
+  global testMessage
+  global outMess
+  global numLogs
+  global logRecList
+  global outVar
+  global errorCode
+
+  puts $fid "Pass/Fail: $testResult -  $testMessage"
+  puts $fid " "
+  puts $fid "Reason:    $outMess"
+  puts $fid " "
+  puts $fid "Outputs:"
+  puts $fid " "
+
+  if {$numLogs == 0} {
+    puts $fid "None"
+  } else {
+    for {set i 0} {$i < $numLogs} {incr i} {
+       if { [pv linkw outVar [lindex $logRecList $i]] == 1} {
+         puts $fid "[lindex $logRecList $i]    Failed to connect: $errorCode"
+       } else {
+         pv getw outVar
+         puts $fid "[lindex $logRecList $i]    $outVar"
+       }
+    }
+  }
+  puts $fid " "
+
+}
+
+
+proc putFields { } {
+
+  global cadFieldNameList
+  global fld
+  global numFields
+
+# Care is needed when using linkw. If the variable cadFieldVarList is used
+# then linkw doesn't recognise that the associative array fld(0) etc already
+# exists and creates new local ones. This local array doesn't have the 
+# values that the global array has and so all fields are set to blanks
+# Also, with strings if pv link etc is called within a procedure the tcl
+# variable must be global
+
+  if {$numFields > 0} {
+    for {set i 0} {$i < $numFields} {incr i} {
+      global fld${i}
+      pv linkw fld${i} [lindex $cadFieldNameList $i]
+      set fld${i} $fld($i)
+      set linkState  [ pv info fld${i} state]
+      pv putq fld${i}
+      set putState [pv info fld${i} state]
+    }
+     
+  }
+ 
+
+}
+
+proc commandComplete { } {
+
+ global commandActive
+ 
+ if {$commandActive == 1} {
+   set commandActive 0
+ }
+
+}
+
+proc waitForCommand { } {
+
+ global commandActive
+ global commTimedOut
+ global loopCount
+
+ # set parameters for timeout to 10 secs. This should be ample time to accept
+ # or reject a command
+ 
+  set totalLoops 100
+  set loopCount  0
+  set loopPeriod 100
+  set commTimedOut 1
+ 
+  while {$totalLoops != $loopCount} {
+   after $loopPeriod {incr loopCount}
+   tkwait variable loopCount
+   if {$commandActive == 0} {
+     set commTimedOut 0 
+     break
+   }
+  }
+  
+}
+
+proc checkCompletion { } {
+
+  global testResult
+  global testMessage
+  global commMess
+  global actionMess
+  global commResponse 
+  global outMess
+  global directive
+  global response
+  global testId
+  global commTimedOut
+  global actionActive
+  global actionTimedOut
+  global timeOut
+  global actionResponse
+  global expectedActResponse
+  global override
+
+  pv getw commMess
+
+  if {$commTimedOut == 1} {
+    set actionActive 0
+    set testResult "FAIL"
+    set testMessage "Command timed out, no response from database"
+    set outMess " "
+    set message "Test $testId failed - $testMessage\n"
+    writeScreen $message
+  } elseif {($commResponse < 0) && ($response == "REJECT")} {
+    set actionActive 0
+    set testResult "PASS"
+    set testMessage "Response as expected "
+    set outMess $commMess
+    set message "Test $testId Passed\n"
+    writeScreen $message
+  } elseif {($commResponse >= 0) && ($response == "REJECT")} {
+    set testResult "FAIL"
+    set testMessage "Command accepted when expecting rejection"
+    set message "test $testId failed - $testMessage\n"
+    set outMess " "
+    writeScreen $message
+    writeScreen "Waiting for action to complete..."
+    waitForAction $timeOut 500
+    writeScreen "completed\n"
+  } elseif {($commResponse < 0) && ($response == "ACCEPT")} {
+    set actionActive 0
+    set testResult "FAIL"
+    set testMessage "Command rejected when expecting accept"
+    set message "test $testId failed - $testMessage\n"
+    set outMess $commMess
+    writeScreen $message
+    writeScreen "Reason: $commMess\n"
+  } elseif {($commResponse >= 0) && ($response == "ACCEPT")} {
+    if {$directive == "START"} {
+      set message "Test $testId Accepted\n"
+      writeScreen $message
+      writeScreen "Waiting for action to complete..."
+      waitForAction $timeOut 500
+      if {$actionTimedOut == 1} {
+        if {$override == "ON"} {
+          set testResult "PASS"
+          set testMessage "Action timed out as expected"
+          set outMess " "
+          writeScreen "timed out (as expected)\n"
+        } else {
+          set testResult "FAIL"
+          set testMessage "Command accepted but action timed out"
+          set outMess " "
+          writeScreen "timed out\n"
+        }
+      } else {
+        pv getw actionMess
+        if {$expectedActResponse == $actionResponse} {
+          set testResult "PASS"
+          set testMessage "Response as expected "
+          set outMess $actionMess
+          writeScreen "completed\n"
+        } else {
+          set testResult "FAIL"
+          set testMessage "Expecting $expectedActResponse but got $actionResponse"
+          set outMess $actionMess 
+        }
+      }
+    } elseif {$directive == "CLEAR"} {
+ 
+# There is nothing to do at the moment except clear the actionActive flag
+# and write out the results.
+
+      set actionActive 0
+      set testResult "PASS"
+      set testMessage "Response as expected "
+      set outMess $commMess
+      set message "Test $testId Passed\n"
+      writeScreen $message
+    } elseif {$directive == "STOP"} {
+
+# This needs more thought. It should probably be handled in the same way as 
+# START but at the moment do nothing. 
+    
+    }
+
+  }
+
+  
+}
+
+proc writeScreen {mess} {
+
+  .testText configure -state normal
+  .testText insert end $mess
+  .testText yview -pickplace end
+  .testText configure -state disabled
+
+}
+
+proc actionComplete { } {
+
+  global actionResponse 
+  global actionActive
+
+  if { $actionResponse != "BUSY"} {
+    set actionActive 0
+  }
+   
+}
+
+proc waitForAction {timePeriod pollPeriod } {
+  
+  global actionActive
+  global actionTimedOut
+  global numLoops
+ 
+  set actionTimedOut 1
+
+  if {$pollPeriod <= 0} {
+    set pollPeriod 500
+  }
+  set totalLoops [expr round($timePeriod/$pollPeriod)]
+  set numLoops 0
+
+  while { $totalLoops != $numLoops} {
+    after $pollPeriod {incr numLoops}
+    tkwait variable numLoops
+    if {$actionActive == 0} {
+      set actionTimedOut 0
+      break 
+    }
+  }
+
+}
+
+proc waitDelay {timePeriod pollPeriod } {
+  
+  global numWaitLoops
+ 
+  if {$pollPeriod <= 0} {
+    set pollPeriod 500
+  }
+  set totalLoops [expr round($timePeriod/$pollPeriod)]
+  set numWaitLoops 0
+
+  while { $totalLoops != $numWaitLoops} {
+    after $pollPeriod {incr numWaitLoops}
+    tkwait variable numWaitLoops
+  }
+
+}
+
+# This next procedure is pinched from the tk library example
+
+# dialog.tcl --
+#
+# This file defines the procedure tk_dialog, which creates a dialog
+# box containing a bitmap, a message, and one or more buttons.
+#
+# Copyright (c) 1992-1993 The Regents of the University of California.
+# All rights reserved.
+#
+# Permission is hereby granted, without written agreement and without
+# license or royalty fees, to use, copy, modify, and distribute this
+# software and its documentation for any purpose, provided that the
+# above copyright notice and the following two paragraphs appear in
+# all copies of this software.
+#
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+# DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+# OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+# CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+# AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
+# ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
+# PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+#
+
+#
+# tk_dialog:
+#
+# This procedure displays a dialog box, waits for a button in the dialog
+# to be invoked, then returns the index of the selected button.
+#
+# Arguments:
+# w -		Window to use for dialog top-level.
+# title -	Title to display in dialog's decorative frame.
+# background -  background colour
+# text -	Message to display in dialog.
+# bitmap -	Bitmap to display in dialog (empty string means none).
+# default -	Index of button that is to display the default ring
+#		(-1 means none).
+# args -	One or more strings to display in buttons across the
+#		bottom of the dialog box.
+
+proc tt_dialog {w title bg text bitmap default args} {
+    global tk_priv
+
+    # 1. Create the top-level window and divide it into top
+    # and bottom parts.
+
+    catch {destroy $w}
+    toplevel $w -class Dialog
+    wm title $w $title
+    wm iconname $w Dialog
+    frame $w.top -relief raised -bd 1 -bg $bg
+    pack $w.top -side top -fill both
+    frame $w.bot -relief raised -bd 1 -bg $bg
+    pack $w.bot -side bottom -fill both
+
+    # 2. Fill the top part with bitmap and message.
+
+    message $w.msg -width 3i -text $text \
+	    -font -Adobe-Times-Medium-R-Normal-*-180-* -bg $bg
+    pack $w.msg -in $w.top -side right -expand 1 -fill both -padx 5m -pady 5m
+    if {$bitmap != ""} {
+	label $w.bitmap -bitmap $bitmap -bg $bg
+	pack $w.bitmap -in $w.top -side left -padx 5m -pady 5m
+    }
+
+    # 3. Create a row of buttons at the bottom of the dialog.
+
+    set i 0
+    foreach but $args {
+	button $w.button$i -text $but -bg $bg -command "set tk_priv(button) $i"
+	if {$i == $default} {
+	    frame $w.default -relief sunken -bd 1
+	    raise $w.button$i $w.default
+	    pack $w.default -in $w.bot -side left -expand 1 -padx 3m -pady 2m
+	    pack $w.button$i -in $w.default -padx 2m -pady 2m \
+		    -ipadx 2m -ipady 1m
+	    bind $w <Return> "$w.button$i flash; set tk_priv(button) $i"
+	} else {
+	    pack $w.button$i -in $w.bot -side left -expand 1 \
+		    -padx 3m -pady 3m -ipadx 2m -ipady 1m
+	}
+	incr i
+    }
+
+    # 4. Withdraw the window, then update all the geometry information
+    # so we know how big it wants to be, then center the window in the
+    # display and de-iconify it.
+
+    wm withdraw $w
+    update idletasks
+    set x [expr [winfo screenwidth $w]/2 - [winfo reqwidth $w]/2 \
+	    - [winfo vrootx [winfo parent $w]]]
+    set y [expr [winfo screenheight $w]/2 - [winfo reqheight $w]/2 \
+	    - [winfo vrooty [winfo parent $w]]]
+    wm geom $w +$x+$y
+    wm deiconify $w
+
+    # 5. Set a grab and claim the focus too.
+
+    set oldFocus [focus]
+    grab $w
+    focus $w
+
+    # 6. Wait for the user to respond, then restore the focus and
+    # return the index of the selected button.
+
+    tkwait variable tk_priv(button)
+    destroy $w
+    focus $oldFocus
+    return $tk_priv(button)
+}
+
+proc continueTests {} {
+
+  global buttonPress
+  global userPause
+
+  set buttonPress [expr $buttonPress?0:1]
+  set userPause 0
+
+  .doTests.butt2 configure -state disabled
+  .doTests.butt3 configure -state normal 
+
+}
+
+proc pauseTests {} {
+
+  global userPause 
+  set userPause 1 
+  writeScreen "Pausing before starting next test\n"
+  writeScreen "Press continue when ready\n"
+  writeScreen "\n"
+
+}
+
+proc abortTests {} {
+
+  global userAbort 
+  global buttonPress
+  set userAbort 1 
+  set buttonPress [expr $buttonPress?0:1]
+  writeScreen "Aborting tests when current test is complete \n"
+  writeScreen "\n"
+
+}
+
+# Procedure to link to the records that will trigger and monitor for command
+# and action completion. Links are made either directly to a CAD (for a
+# non principal system ) or to the top level apply record.
+
+proc linkToRecords { } {
+
+  global top
+  global commandName
+  global trigger
+  global car
+
+  global commDir
+  global commMess
+  global commResponse
+  global actionResponse
+  global actionMess
+  
+  set recordCar ${top}${car}
+
+  if {$trigger == "CAD"} {
+    set recordName ${commandName}
+    set recordDir ${recordName}.DIR
+    set recordMess ${recordName}.MESS
+    set carMess ${recordCar}.OMSS
+  } else {
+    set recordName ${top}apply
+    set recordDir ${top}apply.DIR
+    set recordMess ${top}apply.MESS
+    set carMess ${top}applyC.OMSS
+  }
+ 
+  if {[pv linkw commDir $recordDir] == 1} {
+    writeScreen "Failed to link to $recordDir\n"
+    return 1
+  } else {
+    set commState [pv info commDir state]
+    if {$commState != "{commDir OK}"} {
+      writeScreen "State of $recordDir is $commState\n"
+      return 1
+    }
+  }
+
+  if {[pv linkw commMess $recordMess] == 1} {
+    writeScreen "Failed to link to $recordMess\n"
+    return 1
+  } else {
+    set commMessState [pv info commMess state]
+    if {$commMessState != "{commMess OK}"} {
+      writeScreen "State of $recordMess is $commMessState\n"
+      return 1
+    }
+  }
+
+  if {[pv linkw actionMess $carMess] == 1} {
+    writeScreen "Failed to link to $carMess\n"
+    return 1
+  } else {
+    set carMessState [pv info actionMess state]
+    if {$carMessState != "{actionMess OK}"} {
+      writeScreen "State of $carMess is $carMessState\n"
+      return 1
+    }
+  }
+
+  if {[pv linkw commResponse $recordName] == 1} {
+    writeScreen "Failed to link to $recordName\n"
+    return 1
+  } else {
+    set commRespState [pv info commResponse state]
+    if {$commRespState != "{commResponse OK}"} {
+      writeScreen "State of $recordName is $commRespState\n"
+      return 1
+    }
+  }
+
+  pv mon commResponse commandComplete
+
+  if {[pv linkw actionResponse $recordCar] == 1} {
+    writeScreen "Failed to link to $recordCar\n"
+    return 1
+  } else {
+    set actRespState [pv info actionResponse state]
+    if {$actRespState != "{actionResponse OK}"} {
+      writeScreen "State of $recordCar is $actRespState\n"
+      return 1
+    }
+  }
+
+  pv mon actionResponse actionComplete
+}
+
+
+main $argc $argv

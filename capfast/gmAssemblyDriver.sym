@@ -1,0 +1,9 @@
+[symbol2]
+bbox 32 32 288 160
+uniq 304
+[tools]
+[attributes]
+[layers]
+<symbol>
+r 0 32 32 288 160
+l 100 0 0 76 91 gmAssemblyDriver

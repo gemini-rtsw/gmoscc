@@ -1,0 +1,27 @@
+#!/bin/csh -f
+#
+# Description :
+#    C-shell script for finding the difference between two Capfast
+#    schematics (.sch) with the aid of the sort utility. This gets
+#    around the fact that Capfast tends to randomise the order in
+#    which it writes things to its files.
+# Usage:
+#    sortedDiff file1.sch file2.sch
+#
+if ( "$1" != "" && "$2" != "" ) then
+
+   set dir1 = `dirname $1`
+   set file1 = `basename $1 .sch`
+   set dir2 = `dirname $2`
+   set file2 = `basename $2 .sch`
+
+   echo "Differencing ${file1} and ${file2}"
+
+   sort <${dir1}/${file1}.sch >${file1}.SORTED
+   sort <${dir2}/${file2}.sch >${file2}.SORTED
+   diff ${file1}.SORTED ${file2}.SORTED | more
+
+   \rm ${file1}.SORTED ${file2}.SORTED
+else
+   echo Usage - sortedDiff file1 file2
+endif

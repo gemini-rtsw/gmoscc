@@ -1,0 +1,119 @@
+#!/bin/csh -f
+#
+# Sets up the GMOS EPICS UAE application directory after unpacking.
+#
+# Invocation:
+#   ./uaeSetup
+#
+# Original Author: Steven M Beard
+#
+# $Id$
+#
+
+# Check the EPICS startup script has been executed.
+
+if ( ${?EPICS} == 0 ) then
+
+   echo "EPICS environment variables have not been defined. Please execute" 
+   echo "your local EPICS setup script."
+   exit
+endif
+
+# Create the "gmosdc" directory link if it does not already exist
+
+if ( !(-e ./gmosdc) ) then
+
+   if ( ${?GMOS_DC} == 1 ) then
+
+      echo "Creating gmosdc link to " ${GMOS_DC}
+      ln -s ${GMOS_DC} ./gmosdc
+   else
+
+      echo "The location of the GMOS detector control software must be"
+      echo "defined in the GMOS_DC environment variable."
+      exit
+   endif
+endif
+
+
+# Set up the UAE environment. The external dependencies specified can vary
+# according to which of the GEMINI environment variables have been defined.
+#
+# NOTE: This elaborate scheme allows the software to be developed at
+# different sites which may or may not have access to all the necessary
+# libraries. On final delivery these checks could be removed and all the
+# libraries assumed to exist.
+
+set ext_depends = ""
+set ext_comment = ""
+
+#if ( ${?GEMINI_DHS} != 0 ) then
+#
+#	set ext_depends = "`echo ${ext_depends}` -depends `echo ${GEMINI_DHS}`"
+#	set ext_comment = "`echo ${ext_comment}` DHS"
+#endif
+
+if ( ${?GEMINI_ASTLIB} != 0 ) then
+
+	set ext_depends = "`echo ${ext_depends}` -depends `echo ${GEMINI_ASTLIB}`"
+	set ext_comment = "`echo ${ext_comment}` astLib"
+endif
+
+if ( ${?GEMINI_TIMELIB} != 0 ) then
+
+	set ext_depends = "`echo ${ext_depends}` -depends `echo ${GEMINI_TIMELIB}`"
+	set ext_comment = "`echo ${ext_comment}` timeLib"
+endif
+
+if ( ${?GEMINI_SLALIB} != 0 ) then
+
+	set ext_depends = "`echo ${ext_depends}` -depends `echo ${GEMINI_SLALIB}`"
+	set ext_comment = "`echo ${ext_comment}` slaLib"
+endif
+
+#if ( ${?GEMINI_CFITSIO} != 0 ) then
+#
+#	set ext_depends = "`echo ${ext_depends}` -depends `echo ${GEMINI_CFITSIO}`"
+#	set ext_comment = "`echo ${ext_comment}` cFitsIo"
+#endif
+
+
+echo "Setting up UAE environment with dependencies on `echo ${ext_comment}` libraries"
+applSetup -install . -s Makefile.subdirs `echo ${ext_depends}` -T mv167 -I alh -I ascii -I capfast -I dl -I pv -I src -I startup -I sys -X db -X ar
+
+# There is a bug in applSetup which means that occasionally some vital files in the config
+# directory are not created, and the script has to be repeated. Detect this failure.
+
+if ( ! (-e ./config/CONFIG) ) then
+
+   echo "------ applSetup bug detected. Repeating..."
+   applSetup
+endif
+
+#if ( -e ./capfast/makeLinks ) then
+#
+#   echo "Making links in capfast directory." 
+#   cd capfast
+#   ./makeLinks
+#   cd ..
+#endif
+
+#if ( -e ./pv/makeLinks ) then
+#
+#   echo "Making links in PV directory." 
+#   cd pv
+#   ./makeLinks
+#   cd ..
+#endif
+
+#
+# Allow the option of updating the local startup script and Capfast menu
+# files with GMOS versions.
+#
+
+cp -i local.vws ./startup
+cp -i cad.rc    ./capfast
+
+
+unset ext_depends
+unset ext_comment

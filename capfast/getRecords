@@ -1,0 +1,11 @@
+#!/bin/csh -f
+#
+# Description:
+#   Extracts the record names from a ".db" file and formats them as two columns
+#   that may be included as a table in the GMOS documentation.
+#
+# Invocation:
+#   getRecords filename.db
+#
+#cat $1 | grep "record(" | awk -F, '{print $2 $1}' | sed -e "s|record(||g" | sed -e "s|) {|   |g"
+cat $1 | egrep "record|DESC" | awk -F, '{print $2 $1}' | sed -e "s|record(||g" | sed -e "s|) {|   |g" | sed -e "s|field(DESC||g"

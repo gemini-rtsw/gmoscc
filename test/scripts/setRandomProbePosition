@@ -1,0 +1,41 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: setRandomGrating
+#
+# Purpose: 
+#	To select a random mask in the instrument sequencer
+#	Input args:
+#		$1 record name and field where probe X position is selected
+#		$2 record name and field where probe Y position is selected
+#
+
+# Set probe X position
+
+set seed = `date +"%S%M%H"`
+set probePositionX = `echo $seed 100 | rand`
+
+echo "Setting probe X position $probePositionX"
+
+set response = `caput -ts $1 $probePositionX | grep "CA.Client"`
+
+if ($#response != 0) then
+	echo "Command Failed"
+	exit
+endif
+
+# Set probe X position
+
+set seed = `date +"%S%H%M"`
+set probePositionY = `echo $seed 100 | rand`
+
+echo "Setting probe Y position $probePositionY"
+
+set response = `caput -ts $2 $probePositionY | grep "CA.Client"`
+
+if ($#response != 0) then
+	echo "Command Failed"
+	exit
+endif
+
+echo "Command Success"
+exit

@@ -1,0 +1,94 @@
+#
+# GMOS translation assembly initialization
+#
+# This file is used by pvload to initialise the main translation assembly
+# parameters on startup. Any minor parameters not initialised here are
+# initialised in the devTranslation.sch Capfast schematic.
+#
+
+#
+# Translation Assembly
+#
+group {
+   double $(top)dtaAssembly.AALL  =   -31.0;  # Minimum X axis position in microns
+   double $(top)dtaAssembly.AAHL  =   230.0;  # Maximum X axis position in microns
+   double $(top)dtaAssembly.ABLL  =   -19.0;  # Minimum Y axis position in microns
+   double $(top)dtaAssembly.ABHL  =   235.0;  # Maximum Y axis position in microns
+   double $(top)dtaAssembly.ACLL  =     0.0;  # Minimum Z axis position in microns
+   double $(top)dtaAssembly.ACHL  =  4740.0;  # Maximum Z axis position in microns
+}
+
+#
+# Translation X axis
+#
+group {
+   double $(top)dta1Device.ACCL =     240.0;  # Acceleration in microns/sec/sec
+   double $(top)dta1Device.BLCO =       0.0;  # Backlash compensation (0.0 for none)
+   long   $(top)dta1Device.BTMO =         0;  # Brake control timeout in 0.1 seconds (0=no brakes)
+   string $(top)dta1Device.EGU  = "microns";  # Device units
+   double $(top)dta1Device.FIVL =      80.4;  # Final indexing velocity
+   long   $(top)dta1Device.IALG =         2;  # Index algorithm
+   double $(top)dta1Device.MRES =       2.5;  # Motor resolution in motor steps per micron
+   double $(top)dta1Device.PHLM =     230.0;  # Upper limit of travel in microns
+   double $(top)dta1Device.PLLM =     -31.0;  # Lower limit of travel in microns
+   long   $(top)dta1Device.PREC =         1;  # Display precision for motor position
+   long   $(top)dta1Device.PTMO =        30;  # Power control timeout in 0.1 seconds
+   long   $(top)dta1Device.UAPB =         1;  # Control power with auxilliary power bit (0/1)?
+   long   $(top)dta1Device.UBSB =         0;  # Monitor brake status bit (0/1)?
+   long   $(top)dta1Device.UEIP =         0;  # Use encoders if present (0/1)?
+   long   $(top)dta1Device.UPSB =         0;  # Monitor power status bit (0/1)?
+   double $(top)dta1Device.VBAS =      80.0;  # Base velocity in microns/sec
+   double $(top)dta1Device.VELO =     110.0;  # Default velocity in microns/sec
+   double $(top)dta1Device.VHLM =     800.0;  # Absolute maximum velocity in microns/sec
+   double $(top)dta1Device.VLLM =       5.0;  # Absolute minimum velocity in microns/sec
+}
+
+#
+# Translation Y axis
+#
+group {
+   double $(top)dta2Device.ACCL =      96.0;  # Acceleration in microns/sec/sec
+   double $(top)dta2Device.BLCO =       0.0;  # Backlash compensation (0.0 for none)
+   long   $(top)dta2Device.BTMO =         0;  # Brake control timeout in 0.1 seconds (0=no brakes)
+   string $(top)dta2Device.EGU  = "microns";  # Device units
+   double $(top)dta2Device.FIVL =      32.2;  # Final indexing velocity
+   long   $(top)dta2Device.IALG =         2;  # Index algorithm
+   double $(top)dta2Device.MRES =      6.25;  # Motor resolution in motor steps per micron
+   double $(top)dta2Device.PHLM =     235.0;  # Upper limit of travel in microns
+   double $(top)dta2Device.PLLM =     -19.0;  # Lower limit of travel in microns
+   long   $(top)dta2Device.PREC =         1;  # Display precision for motor position
+   long   $(top)dta2Device.PTMO =        30;  # Power control timeout in 0.1 seconds
+   long   $(top)dta2Device.UAPB =         1;  # Control power with auxilliary power bit (0/1)?
+   long   $(top)dta2Device.UBSB =         0;  # Monitor brake status bit (0/1)?
+   long   $(top)dta2Device.UEIP =         0;  # Use encoders if present (0/1)?
+   long   $(top)dta2Device.UPSB =         0;  # Monitor power status bit (0/1)?
+   double $(top)dta2Device.VBAS =      32.0;  # Base velocity in microns/sec
+   double $(top)dta2Device.VELO =      40.0;  # Default velocity in microns/sec
+   double $(top)dta2Device.VHLM =     320.0;  # Absolute maximum velocity in microns/sec
+   double $(top)dta2Device.VLLM =       2.0;  # Absolute minimum velocity in microns/sec
+}
+
+#
+# Translation Z axis
+#
+group {
+   double $(top)dta3Device.ACCL =    1200.0;  # Acceleration in microns/sec/sec
+   double $(top)dta3Device.BLCO =       0.0;  # Backlash compensation (0.0 for none)
+   long   $(top)dta3Device.BTMO =         0;  # Brake control timeout in 0.1 seconds (0=no brakes)
+   string $(top)dta3Device.EGU  = "microns";  # Device units
+   double $(top)dta3Device.FIVL =     402.0;  # Final indexing velocity
+   long   $(top)dta3Device.IALG =         4;  # Index algorithm
+   double $(top)dta3Device.MRES =       0.5;  # Motor resolution in motor steps per micron
+   double $(top)dta3Device.PHLM =    4740.0;  # Upper limit of travel in microns
+   double $(top)dta3Device.PLLM =       0.0;  # Lower limit of travel in microns
+   long   $(top)dta3Device.PREC =         1;  # Display precision for motor position
+   long   $(top)dta3Device.PTMO =        30;  # Power control timeout in 0.1 seconds
+   long   $(top)dta3Device.UAPB =         1;  # Control power with auxilliary power bit (0/1)?
+   long   $(top)dta3Device.UBSB =         0;  # Monitor brake status bit (0/1)?
+   long   $(top)dta3Device.UEIP =         0;  # Use encoders if present (0/1)?
+   long   $(top)dta3Device.UPSB =         0;  # Monitor power status bit (0/1)?
+   double $(top)dta3Device.VBAS =     400.0;  # Base velocity in microns/sec
+   double $(top)dta3Device.VELO =    1200.0;  # Default velocity in microns/sec
+   double $(top)dta3Device.VHLM =    8000.0;  # Absolute maximum velocity in microns/sec
+   double $(top)dta3Device.VLLM =      40.0;  # Absolute minimum velocity in microns/sec
+}

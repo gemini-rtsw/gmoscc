@@ -1,0 +1,31 @@
+filter
+#
+# Database of current GMOS filter installation
+
+# Time : 2001/03/13 16:33:16.988 (UTC)
+# Barcode  Wheel Pos
+
+  20000018  1 pos6
+  20000006  2 pos6
+  20000019  1 pos7
+  20000007  2 pos7
+  20000020  1 pos8
+  20000008  2 pos8
+  20000021  1 pos9
+  20000009  2 pos9
+  20000022  1 pos10
+  20000010  2 pos10
+  20000023  1 pos11
+  20000011  2 pos11
+  20000024  1 pos0
+  20000012  2 pos0
+  20000013  1 pos1
+  20000001  2 pos1
+  20000014  1 pos2
+  20000002  2 pos2
+  20000015  1 pos3
+  20000003  2 pos3
+  20000016  1 pos4
+  20000004  2 pos4
+  20000017  1 pos5
+  20000005  2 pos5

@@ -1,0 +1,74 @@
+#!/usr/local/bin/tcsh -f
+#
+# checkout
+#
+# Description:
+#
+#   This runs the turret Backlash test ${1} times.
+#
+#   It is assumed this script is being run from the "test" directory
+#   and that wish4.2 is in the current PATH.
+#
+# Invocation:
+#
+#   checkTurretBacklash N
+#
+#   where N is the number of iterations to run turretBacklashCheckout.scr for.
+#
+
+#
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+#
+# Bail out if the scripts directory does not exist.
+#
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+if (${#argv} != 1) then
+    echo "You must supply exactly one argument -"
+    echo "the number of iterations to run the Backlash test script"
+    exit
+endif
+
+#
+# The setup script is no longer required now the turret microswitches are working.
+#
+
+#checkout turretSetup -auto
+#
+#if (`grep FAILED logfiles/turretSetupCheckout.log | wc -l` != 0) then
+#    echo ""
+#    echo "The setup script has failed"
+#    echo "Will not proceed to testing the turret"
+#    echo ""
+#    exit
+#endif
+
+set count = ${1}
+
+while ($count != 0)
+    echo ""
+    echo $count" tests to go..."
+
+    checkout turretBacklash -auto
+    if (`grep FAILED logfiles/turretBacklashCheckout.log | wc -l` != 0) then
+	echo ""
+	echo "The backlash script has failed"
+	echo "Will not proceed with further tests"
+	echo ""
+	exit
+    endif
+    @ count = $count - 1
+end
+
+echo ""
+echo "Backlash test complete."
+exit
+

@@ -1,0 +1,14 @@
+# monitor_simulate.cau
+#
+# cau macro which monitors CAD/CAR records associated with simulate.
+# Invoked using cau "source" command.
+#
+monitor g7:cc:simulate.DIR
+monitor g7:cc:simulate.VAL
+monitor g7:cc:simulate.A
+monitor g7:cc:simulate.OMSS
+
+monitor g7:cc:simulateC.VAL
+monitor g7:cc:simulateC.OMSS
+
+# Type dataOut cau_simulate.log

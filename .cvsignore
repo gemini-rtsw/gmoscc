@@ -1,0 +1,10 @@
+*%
+.applTop
+.epics
+.version
+config
+epics
+bin
+data
+include
+*.tar.gz

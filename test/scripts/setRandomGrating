@@ -1,0 +1,64 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: setRandomGrating
+#
+# Purpose: 
+#	To select a random mask in the instrument sequencer
+#	Input args:
+#		$1 record name and field where the mask is to be selected
+#		$2 record name and field where the wavelength is to be selected
+#		$3 record name and field where the grating order is to be selected
+#		$4 lookup table filename and path
+#
+
+set gratRange = `grep 30000 $4 | wc -l`
+if ($gratRange == 0) then
+    echo "Command Failed"
+    exit
+endif
+
+# Set the grating ID
+
+set seed = `date +"%S%M%H"`
+set gratNum = `echo $seed $gratRange | rand`
+
+echo "Setting grating num $gratNum"
+
+set response = `caput -ts $1 $gratNum | grep "CA.Client"`
+
+if ($#response != 0) then
+	echo "Command Failed"
+	exit
+endif
+
+# Set the grating order
+
+@ seed += 151700
+set gratOrder = `echo $seed 4 | rand`
+
+echo "Setting grating order $gratOrder"
+
+set response = `caput -ts $3 $gratOrder | grep "CA.Client"`
+
+if ($#response != 0) then
+	echo "Command Failed"
+	exit
+endif
+
+# Set the grating wavelength
+
+set seed = `date +"%S%M%H"`
+set gratWavelength = `echo $seed 650 | rand`
+@ gratWavelength += 350
+
+echo "Setting grating wavelength $gratWavelength"
+
+set response = `caput -ts $2 $gratWavelength | grep "CA.Client"`
+
+if ($#response != 0) then
+	echo "Command Failed"
+	exit
+endif
+
+echo "Command Success"
+exit

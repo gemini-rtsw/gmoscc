@@ -1,0 +1,31 @@
+[symbol2]
+bbox -96 -32 416 320
+uniq 90
+[tools]
+[attributes]
+p -96 -64 100 0 1 seta:top gm:
+p -96 -96 100 0 1 setb:sadtop gm:
+p -96 -128 100 0 1 setc:c1 cc:
+p -96 -160 100 0 1 setd:c2 cc:
+p -96 -192 100 0 1 sete:cc cc:
+[layers]
+<symbol>
+l 100 0 0 -32 272 GMOS Engineering Tools (optional)
+r 0 -96 -32 416 320
+r 0 0 160 64 224
+v 0 160 160
+160 128
+224 128
+224 192
+192 192
+192 224
+256 224
+256 128
+352 32
+320 0
+224 96
+128 96
+128 160
+160 160
+_
+[comments]

@@ -1,0 +1,717 @@
+#
+# DHS Test Commander
+# Release device functional test script
+#
+
+#
+# Do the variable substitution thing....
+#
+
+# Device INPUTS
+VAR     releaseDevice   devDir                  devDir	            1
+VAR     releaseDevice   devMode                 devMode             1
+VAR     releaseDevice   devTarget               devTarget           1
+VAR     releaseDevice   devNamedTarget          devNamedTarget      1
+VAR     releaseDevice   devIndexType            devIndexType        1
+VAR     releaseDevice   devDbug                 devDbug             1
+VAR     releaseDevice   devSimm                 devSimm             1
+VAR     releaseDevice   devMinPosition          devMinPosition      1
+VAR     releaseDevice   devMaxPosition          devMaxPosition      1
+VAR     releaseDevice   devVelocity             devVelocity         1
+VAR     releaseDevice   devMinVelocity          devMinVelocity      1
+VAR     releaseDevice   devMaxVelocity          devMaxVelocity      1
+VAR     releaseDevice   devAcceleration         devAcceleration     1
+VAR     releaseDevice   devLutFile              devLutFile          1
+VAR     releaseDevice   devLutDirectory         devLutDirectory     1
+VAR     releaseDevice   devDevType              devDevType          1
+VAR     releaseDevice   devEgu                  devEgu              1
+VAR     releaseDevice   devMotorRes             devMotorRes         1
+VAR     releaseDevice   devMotionDeadBand       devMotionDeadBand   1
+VAR     releaseDevice   devBaseVelo             devBaseVelo         1
+VAR     releaseDevice   devUsePwrStatus         devUsePwrStatus     1
+VAR     releaseDevice   devPower                devPower            1
+VAR     releaseDevice   devPwrStatusTimeout     devPwrStatusTimeout 1
+VAR     releaseDevice   devUseBrkStatus         devUseBrkStatus     1
+VAR     releaseDevice   devBrkStatusTimeout     devBrkStatusTimeout 1
+VAR     releaseDevice   devBrake                devBrake            1
+VAR     releaseDevice   devUseAuxPwr            devUseAuxPwr        1
+VAR     releaseDevice   devUseEncoder           devUseEncoder       1
+VAR     releaseDevice   devEncoderRes           devEncoderRes       1
+VAR     releaseDevice   devEncoderDeadBand      devEncoderDeadBand  1
+
+# Device OUPUTS
+VAR     releaseDevice   devPosition             devPosition         1
+VAR     releaseDevice   devAck                  devAck              1
+VAR     releaseDevice   devBusy                 devBusy             1
+VAR     releaseDevice   devState                devState            1
+VAR     releaseDevice   devMess                 devMess             1
+VAR     releaseDevice   devIndexed              devIndexed          1
+VAR     releaseDevice   devLimited              devLimited          1
+
+# other status
+VAR     maskStatus         lockNotEngaged          releaseNotLocked   1
+VAR     maskStatus         lockNotReleased         releaseNotReleased 1
+VAR     maskStatus         releasePosition         releasePosition    1
+
+#
+# Is it safe to proceed?
+#
+
+PROMPT "Is it safe to move the release mechanism?"
+
+#
+# Verify startup state
+#
+
+TEST "Verify startup state"
+FATAL
+
+DESC "Verify startup state"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Log the current device record configuration
+#
+TEST "Log the current device record configuration"
+FATAL
+
+DESC "Get deviceControl record device layer type"
+GETVAL devDevType
+OUTPUT *.DTYP*DEV CTL OMS 8/44*
+
+DESC "Get simulation level"
+GETVAL devSimm
+OUTPUT *.SIMM*NONE*
+
+DESC "Get debug level"
+GETVAL devDbug
+OUTPUT *.DBUG*
+
+DESC "Get enginering units"
+GETVAL devEgu
+OUTPUT *.EGU*
+
+DESC "Get motor resolution, in microsteps per EGU"
+GETVAL devMotorRes
+OUTPUT *.MRES*
+
+DESC "Get motion deadband"
+GETVAL devMotionDeadBand
+OUTPUT *.MDBD*
+
+DESC "Get upper target limit, max EGU target allowed"
+GETVAL devMaxPosition
+OUTPUT *.PHLM*
+
+DESC "Get lower target limit, min EGU target allowed"
+GETVAL devMinPosition
+OUTPUT *.PLLM*
+
+DESC "Get motion velocity"
+GETVAL devVelocity
+OUTPUT *.VELO*
+
+DESC "Get upper velocity limit, max EGU velocity allowed"
+GETVAL devMaxVelocity
+OUTPUT *.VHLM*
+
+DESC "Get lower velocity limit, min EGU velocity allowed"
+GETVAL devMinVelocity
+OUTPUT *.VLLM*
+
+DESC "Get motion startup velocity"
+GETVAL devBaseVelo
+OUTPUT *.VBAS*
+
+DESC "Get acceleration, VBAS to VELO in EGUs per second per second"
+GETVAL devAcceleration
+OUTPUT *.ACCL*
+
+DESC "Get the indexing algorithm number"
+GETVAL devIndexType
+OUTPUT *.IALG* 5*
+
+DESC "Using Power status?"
+GETVAL devUsePwrStatus
+#OUTPUT *.UPSB* YES*
+# Comment out check on UPSB until power status electronics problem fixed
+OUTPUT *.UPSB*
+
+DESC "Get the power status timeout"
+GETVAL devPwrStatusTimeout
+OUTPUT *.PTMO*
+
+DESC "Using Brake status?"
+GETVAL devUseBrkStatus
+OUTPUT *.UBSB* NO*
+
+DESC "Get the brake status timeout"
+GETVAL devBrkStatusTimeout
+OUTPUT *.BTMO* 0*
+
+DESC "Using AUX to enable drives?"
+GETVAL devUseAuxPwr
+OUTPUT *.UAPB* YES*
+
+DESC "Using Encoder?"
+GETVAL devUseEncoder
+OUTPUT *.UEIP* NO*
+
+DESC "Get encoder resolution in counts per EGU"
+GETVAL devEncoderRes
+OUTPUT *.ERES*
+
+DESC "Get encoder deadband"
+GETVAL devEncoderDeadBand
+OUTPUT *.EDBD*
+
+DESC "Get lookup table name"
+GETVAL devLutFile
+OUTPUT *.TFIL* mskRel.lut*
+
+DESC "Get lookup table directory name"
+GETVAL devLutDirectory
+OUTPUT *.TDIR*
+
+ENDTEST
+
+#
+# First try to initialize the device control record
+#
+
+TEST "Test device INIT mode"
+FATAL
+
+DESC "Initializing Release"
+
+PUTVAL devMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+ENDTEST
+
+#
+# Test release device TEST mode
+#
+
+TEST "Test release device TEST mode"
+FATAL
+
+DESC "Testing release device"
+
+PUTVAL devMode "5"
+OUTPUT *MODE*MODE*TEST*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+ENDTEST
+
+#
+# Test limit switch by indexing on 
+# lower soft limit switch
+#
+
+TEST "Testing lower limit switch"
+FATAL
+
+DESC "Testing lower limit switch"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devNamedTarget "i4"
+OUTPUT *.VALS*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Test limit switch by indexing on 
+# upper soft limit switch
+#
+
+TEST "Testing upper limit switch"
+FATAL
+
+DESC "Testing upper limit switch"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devNamedTarget "i5"
+OUTPUT *
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Then try to index the device
+#
+
+TEST "Test indexing release"
+FATAL
+
+DESC "Indexing release"
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+GETVAL devIndexed
+OUTPUT *HPVL* 1*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Check distance between positions
+#
+
+TEST "Attempting to move release beyond limit"
+FATAL
+
+DESC "Moving release"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devTarget "-60"
+OUTPUT *VAL*VAL* -60*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Failed*
+
+ENDTEST
+
+#
+# Verify error message and log current position
+#
+
+TEST "Verify error message and log current position"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* ERROR* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+GETVAL devMess
+OUTPUT *.MESS*Device hit a soft limit*
+
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Index the device to get back to normal
+#
+
+TEST "Indexing release"
+FATAL
+
+DESC "Indexing release"
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+GETVAL releasePosition
+OUTPUT *VALB* -1*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Try to do the release thing
+#
+
+TEST "Place release device in release position"
+FATAL
+
+DESC "Unlocking release mechanism" 
+
+PUTVAL devNamedTarget "release"
+OUTPUT *.VALS*
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Test feedback switches"
+FATAL
+
+DESC "Check switches"
+
+GETVAL releaseNotReleased
+OUTPUT *VAL*Released*
+
+GETVAL releaseNotLocked
+OUTPUT *VAL*Unknown*
+
+GETVAL releasePosition
+OUTPUT *VALB* 1*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Then the lock thing
+#
+
+TEST "Place release device in lock position"
+FATAL
+
+DESC "Locking release" 
+
+PUTVAL devNamedTarget "lock"
+OUTPUT *.VALS*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Testing feedback switches"
+DESC "Check switches"
+
+GETVAL releaseNotLocked
+OUTPUT *VAL*Locked*
+
+GETVAL releaseNotReleased
+OUTPUT *VAL*Unknown*
+
+GETVAL releasePosition
+OUTPUT *VALB* -1*
+
+ENDTEST                 
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Then get it between positions
+#
+
+TEST "Place release between release and lock positions"
+FATAL
+
+DESC "Moving Release" 
+
+PUTVAL devTarget "-15"
+OUTPUT *.VAL* -15*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify position with switches
+# 
+
+TEST "Testing feedback switches"
+DESC "Check switches"
+
+GETVAL releaseNotLocked
+OUTPUT *VAL*Unknown*
+
+GETVAL releaseNotReleased
+OUTPUT *VAL*Unknown*
+
+GETVAL releasePosition
+OUTPUT *VALB* 0*
+
+ENDTEST                 
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Index the device to get back to normal
+#
+
+TEST "Indexing release"
+FATAL
+
+DESC "Indexing release"
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+GETVAL releasePosition
+OUTPUT *VALB* -1*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Release is OK!
+#
+
+COMMENT "Release checks out OK"
+
+

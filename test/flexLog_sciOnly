@@ -1,0 +1,462 @@
+#!/usr/local/bin/tcsh -f
+#
+# flexLog
+#
+# Description:
+#
+#   A simple script to log images and data during the flexure tests
+#   - under user control
+#
+#   It is assumed this script is being run from the "test" directory.
+#   The detector controller must already have been initalised
+#   and set into the desired configuration, as must the OIWFS controller.
+#   The filter assembly must be initialised and indexed. Produce test
+#   images before running the script.
+#
+# Invocation:
+#   flexLog
+#
+# NOTE:
+#   This script is designed to be as simple as possible, so it does not do as much
+#   checking as a dhsTestCmdr script. It is designed to generate test data rather
+#   than to check out the correct operation of the instrument.
+#
+
+# Set some numbers - suitable filter barcode IDs
+
+#set filter1_pos1 = 38
+#set filter1_pos2 = 176
+#set filter1_pos3 = 175
+#set filter2_pos  = 35
+
+set filter1_pos1 = 20000038
+set filter1_pos2 = 20000006
+set filter1_pos3 = 20000005
+set filter2_pos  = 20000011
+
+#
+# Check for arguments
+#
+
+if ($#argv != 0) then
+    echo "Error - flexLog expects no arguments"
+    exit
+endif
+
+#
+# Get the current date
+#
+
+set day = `date +%h%d.%y | tolower`
+
+echo "Date is "${day}
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!($?GMOS_MK_ACCESS)) then
+    echo "GMOS MK safety check failed."
+    echo ""
+    echo "Before executing this script, which will move real MK hardware,"
+    echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+    echo ""
+    exit
+else
+    echo "GMOS MK safety check passed."
+    echo ""
+endif
+
+#echo "Simulation mode - no safety check required"
+
+#
+# Bail out if the scripts directory does not exist.
+#
+
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+#
+# Create the log directory if need be...
+#
+
+if (!(-e logfiles)) then
+    mkdir logfiles
+endif
+
+if (!(-e logfiles/${day})) then
+    mkdir logfiles/${day}
+    echo "Creating directory ./logfiles/"${day}
+    echo ""
+endif
+
+if (!(-e logfiles/${day}/sciLog_${day})) then
+    echo "Creating image log file ./logfile/"${day}"/sciLog_${day}"
+    echo "Day Month Date Time Year Iteration Filename filter1 filter2 roiXmin roiYmin roiXrange roiYrange temp4 temp5 tempDet userComment" | cat >> ./logfiles/${day}/sciLog_${day}
+endif
+
+if (!(-e logfiles/${day}/wfsLog_${day})) then
+    echo "Creating image log file ./logfile/"${day}"/wfsLog_${day}"
+    echo "Day Month Date Time Year Iteration Filename ProbeMaskX ProbeMaskY ProbeTheta centroidX1 centroidY1 centroidX2 centroidY2 centroidX3 centroidY3 centroidX4 centroidY4 centroidXmean centroidYmean userComment" | cat >> ./logfiles/${day}/wfsLog_${day}
+endif
+
+echo "Science image information will be stored in ./logfiles/"${day}"/sciLog_${day}"
+echo "Science image information will be stored in ./logfiles/"${day}"/wfsLog_${day}"
+echo ""
+
+echo "Press enter to proceed"
+set dummy = $<
+
+echo "Before proceeding - perform the following:"
+echo "1. Initialise and Index the filter assembly"
+echo "2. Configure GMOS (components controller) for the science images required"
+echo "3. Configure the OIWFS camera controller (including the file path) and take a test image"
+echo "4. Configure the Science camera controller and take a test image"
+echo "5. Note down the first filenames required for both cameras (gXXXXX and wXXXXX)"
+echo "6. Note down the two regions of interest (ROIs) required for science images"
+echo ""
+echo "Press enter to proceed"
+set dummy = $<
+
+echo "Please enter a file number for science images (the first filename will be gXXXXX)"
+set scienceFilenumber = $<
+
+@ scienceFilenumber -= 1
+@ scienceFilenumber += 1
+
+echo ""
+echo "Please enter the following parameters for the first science image ROI"
+echo "a) Xmin..."
+set roiAxmin = $<
+echo "b) Ymin..."
+set roiAymin = $<
+echo "c) Xrange..."
+set roiAxrange = $<
+echo "d) Yrange..."
+set roiAyrange = $<
+
+echo ""
+echo "Please enter the following parameters for the second science image ROI"
+echo "a) Xmin..."
+set roiBxmin = $<
+echo "b) Ymin..."
+set roiBymin = $<
+echo "c) Xrange..."
+set roiBxrange = $<
+echo "d) Yrange..."
+set roiByrange = $<
+
+#echo ""
+#echo "Please enter a file number for WFS images (the first filename will be wXXXXX)"
+#set wfsFilenumber = $<
+
+#@ wfsFilenumber -= 1
+#@ wfsFilenumber += 1
+
+#echo ""
+#echo "Please enter the number of WFS images to take per iteration"
+#set wfsNumImages = $<
+
+echo ""
+echo "Please enter the current iteration of this script"
+set scriptIterations = $<
+
+echo "" | cat >> ./logfiles/${day}/sciLog_${day}    
+echo "" | cat >> ./logfiles/${day}/wfsLog_${day}    
+
+while (1)
+
+echo ""
+echo "Awaiting input, please enter:"
+echo '"roia" to change the parameters for the first science ROI'
+echo '"roib" to change the parameters for the second science ROI'
+#echo '"wfs" to change the number of WFS images per iteration'
+echo '"summary" to print out the current script parameters'
+echo '"image" to take and log a set of science and WFS images'
+echo '"quit" to stop the script'
+echo ""
+set userInput = $<
+
+while ($userInput == "")
+    set userInput = $<
+end
+
+if ($userInput == "roia") then
+    echo ""
+    echo "Please enter the following parameters for the first science image ROI"
+    echo "a) Xmin..."
+    set roiAxmin = $<
+    echo "b) Ymin..."
+    set roiAymin = $<
+    echo "c) Xrange..."
+    set roiAxrange = $<
+    echo "d) Yrange..."
+    set roiAyrange = $<
+
+else if ($userInput == "roib") then
+    echo ""
+    echo "Please enter the following parameters for the second science image ROI"
+    echo "a) Xmin..."
+    set roiBxmin = $<
+    echo "b) Ymin..."
+    set roiBymin = $<
+    echo "c) Xrange..."
+    set roiBxrange = $<
+    echo "d) Yrange..."
+    set roiByrange = $<
+
+#else if ($userInput == "wfs") then
+#    echo ""
+#    echo "Please enter the number of WFS images to take per iteration"
+#    set wfsNumImages = $<
+
+else if ($userInput == "summary") then
+    echo ""
+    echo "Summary of current parameters:"
+    echo "ROI A: xmin "$roiAxmin", ymin "$roiAymin", xrange "$roiAxrange", yrange "$roiAyrange
+    echo "ROI B: xmin "$roiBxmin", ymin "$roiBymin", xrange "$roiBxrange", yrange "$roiByrange
+#    echo $wfsNumImages" WFS images being taken per iteration"
+    echo "Current iteration is "$scriptIterations
+    echo "Next filenames will be: Science g"$scienceFilenumber
+    echo "Data logging to: ./logfiles/"${day}"/sciLog_"${day}", ./logfiles/"${day}"/sciLog_"${day}
+
+else if ($userInput == "image") then
+
+# Begin test here !!!
+
+    echo ""
+    echo "Taking flexure test images"
+    echo ""
+    echo "Please enter a comment for this iteration:"
+    set userComment = $<
+
+    set observeTime = `date +"%a %b %d %T %Y"`
+    echo ""
+    echo "* The time now is ${observeTime} *"
+    echo ""
+
+    #
+    # Take the WFS images
+    #
+
+#   set wfsImagesTaken = 0
+
+#   while ($wfsImagesTaken < $wfsNumImages)
+
+	#
+	# Make a wfs observation
+	#
+    
+#	echo ""
+#	echo "WFS observation - saving data to w${wfsFilenumber}"
+	
+	# Set the file name to the current number.
+	
+#	set fileResponse = `setWfsFilename pwfs2: w${wfsFilenumber}`
+#	set fileStatus = `echo $fileResponse | grep 'Command Success'`
+#	if ( $#fileStatus != 2 ) then
+#	    echo "Setting WFS filename failed"
+#	    exit -1
+#	endif
+	
+	# Make an observation
+	
+#	echo "Observing..."
+#	set observeResponse = `wfsObserve pwfs2:`
+#	set observeStatus = `echo $observeResponse | grep 'Command Success'`
+#	if ( $#observeStatus != 2 ) then
+#	    echo "WFS observation failed"
+#	    exit -1
+#	endif
+
+#	echo "WFS observation complete"
+
+	#
+	# Log to the WFS image logfile.
+	#
+
+#	echo ""
+#	echo "Logging data to WFS log file"
+
+#	set wfsProbeMaskX = `caget "gm:wfs:probeCalcPosition.VALA" | sed 's|gm:wfs:probeCalcPosition.VALA||g'`
+#	echo "Probe X position (mask co-ords) is "$wfsProbeMaskX
+#	set wfsProbeMaskY = `caget "gm:wfs:probeCalcPosition.VALB" | sed 's|gm:wfs:probeCalcPosition.VALB||g'`
+#	echo "Probe Y position (mask co-ords) is "$wfsProbeMaskY
+#	set wfsProbeTheta = "NOT_SET"
+#	echo "Probe Angle (theta) is "$wfsProbeTheta
+#      	set centroidX1    = `caget "pwfs2:dc:fgDiag.VALA" | sed 's|pwfs2:dc:fgDiag.VALA||g'`
+#	echo "First centroid X is "$centroidX1
+#	set centroidY1    = `caget "pwfs2:dc:fgDiag.VALB" | sed 's|pwfs2:dc:fgDiag.VALB||g'`
+#	echo "First centroid Y is "$centroidY1
+#	set centroidX2    = `caget "pwfs2:dc:fgDiag.VALC" | sed 's|pwfs2:dc:fgDiag.VALC||g'`
+#	echo "Second centroid X is "$centroidX2
+#	set centroidY2    = `caget "pwfs2:dc:fgDiag.VALD" | sed 's|pwfs2:dc:fgDiag.VALD||g'`
+#	echo "Second centroid Y is "$centroidY2
+#	set centroidX3    = `caget "pwfs2:dc:fgDiag.VALE" | sed 's|pwfs2:dc:fgDiag.VALE||g'`
+#	echo "Third centroid X is "$centroidX3
+#	set centroidY3    = `caget "pwfs2:dc:fgDiag.VALF" | sed 's|pwfs2:dc:fgDiag.VALF||g'`
+#	echo "Third centroid Y is "$centroidY3
+#	set centroidX4    = `caget "pwfs2:dc:fgDiag.VALG" | sed 's|pwfs2:dc:fgDiag.VALG||g'`
+#	echo "Forth centroid X is "$centroidX4
+#	set centroidY4    = `caget "pwfs2:dc:fgDiag.VALH" | sed 's|pwfs2:dc:fgDiag.VALH||g'`
+#	echo "Forth centroid Y is "$centroidY4
+#	set centroidXmean = `caget "pwfs2:dc:fgDiag.VALI" | sed 's|pwfs2:dc:fgDiag.VALI||g'`
+#	echo "Mean centroid X is "$centroidXmean
+#	set centroidYmean = `caget "pwfs2:dc:fgDiag.VALJ" | sed 's|pwfs2:dc:fgDiag.VALJ||g'`
+#	echo "Mean centroid Y is "$centroidYmean
+
+#	echo ${observeTime} ${scriptIterations} w${wfsFilenumber} ${wfsProbeMaskX} ${wfsProbeMaskY} ${wfsProbeTheta} ${centroidX1} ${centroidY1} ${centroidX2} ${centroidY2} ${centroidX3} ${centroidY3} ${centroidX4} ${centroidY4} ${centroidXmean} ${centroidYmean} ${userComment} | cat >> ./logfiles/${day}/wfsLog_${day}
+
+#	@ wfsFilenumber += 1
+
+#	@ wfsImagesTaken += 1
+
+#    end
+
+    #
+    # Take the science images
+    #
+
+    set scienceImagesTaken = 0
+
+    while ($scienceImagesTaken < 3)
+
+	#
+	# Move to new filter wheel position.
+	#
+
+	echo ""	
+	if ($scienceImagesTaken == 0) then
+	    echo "Moving to first filter wheel position..."
+	    set filter1_pos = $filter1_pos1
+
+	else if ($scienceImagesTaken == 1) then
+	    echo "Moving to second filter wheel position..."
+	    set filter1_pos = $filter1_pos2
+
+	else if ($scienceImagesTaken == 2) then
+	    echo "Moving to third filter wheel position..."
+	    set filter1_pos = $filter1_pos3
+
+	else
+	    echo "Script error"
+	    exit
+
+	endif
+
+	set moveResponse = `moveAssembly gm:cc:fltAssembly $filter1_pos $filter2_pos`
+	set moveStatus = `echo $moveResponse | grep 'Command Success'`
+	if ( $#moveStatus != 2 ) then
+	    echo "Filter move failed"
+	    caget gm:cc:fltAssembly.MESS
+	    exit -1
+	endif
+	echo "Filter move succeeded"
+	
+	#
+	# Make a science observation
+	#
+	
+	echo ""
+	
+	# Set the region of interest on the science camera
+
+	if ($scienceImagesTaken == 0) then
+	    echo "Setting up ROI A on science camera"
+	    set roiXmin   = $roiAxmin
+	    set roiYmin   = $roiAymin
+	    set roiXrange = $roiAxrange
+	    set roiYrange = $roiAyrange
+
+	else
+	    echo "Setting up ROI B on science camera"
+	    set roiXmin   = $roiBxmin
+	    set roiYmin   = $roiBymin
+	    set roiXrange = $roiBxrange
+	    set roiYrange = $roiByrange
+
+	endif
+
+	set roiResponse = `setObserveROI gm: ${roiXmin} ${roiYmin} ${roiXrange} ${roiYrange}`
+	set roiStatus = `echo $roiResponse | grep 'Command Success'`
+	if ( $#roiStatus != 2 ) then
+	    echo "Setting science ROI failed"
+	    exit -1
+	endif
+
+	# Set the file name to the current number.
+	
+	echo "Science observation - saving data to g${scienceFilenumber}"
+
+	set fileResponse = `setObserveFilename gm: g${scienceFilenumber}`
+	set fileStatus = `echo $fileResponse | grep 'Command Success'`
+	if ( $#fileStatus != 2 ) then
+	    echo "Setting science filename failed"
+	    exit -1
+	endif
+	
+	# Make an observation
+	
+	echo "Observing..."
+	set observeResponse = `executeObserve gm:`
+	set observeStatus = `echo $observeResponse | grep 'Command Success'`
+	if ( $#observeStatus != 2 ) then
+	    echo "Science observation failed"
+	    exit -1
+	endif
+	
+	echo "Science observation complete"
+	
+	#
+	# Log to the science image logfile.
+	#
+	
+	echo ""
+	echo "Logging data to science log file"
+	
+	set temp4 = `caget "gm:cc:temp4.VAL" | sed 's|gm:cc:temp4.VAL||g'`
+	echo "temp4 is "$temp4
+	set temp5 = `caget "gm:cc:temp5.VAL" | sed 's|gm:cc:temp5.VAL||g'`
+	echo "temp5 is "$temp5
+	set detTemp = `caget "gm:sad:dc:detTemp.VAL" | sed 's|gm:sad:dc:detTemp.VAL||g'`
+	echo "detector temp is "$detTemp
+
+	echo ${observeTime} ${scriptIterations} g${scienceFilenumber} ${filter1_pos} ${filter2_pos} ${roiXmin} ${roiYmin} ${roiXrange} ${roiYrange} ${temp4} ${temp5} ${detTemp} ${userComment} | cat >> ./logfiles/${day}/sciLog_${day}
+	
+	@ scienceFilenumber += 1
+	
+	@ scienceImagesTaken += 1
+
+    end
+
+# Finish test here !!!
+
+else if ($userInput == "quit") then
+    echo ""
+    echo "Exiting - the logfiles were ./logfiles/${day}/sciLog_${day} and ./logfiles/${day}/wfsLog_${day}"
+    exit
+
+else
+    echo ""
+    echo "Unrecognised command, please select from the following list..." 
+    sleep 1
+
+endif
+
+end
+
+exit
+
+
+
+
+
+
+
+
+
+

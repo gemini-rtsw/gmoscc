@@ -1,0 +1,117 @@
+#
+# gmSeqTracking.pv
+#
+# Initialisation tracking parameters for the GMOS instrument sequencer.
+# This file may be edited whenever a new set of flexure control and
+# temperature control or AtmDC control parameters are measured.
+#
+# FLEXURE CONTROL PARAMETERS
+# ==========================
+#
+# Default detector controller starting position.
+# This should correspond to the centre of the field and
+# the best focus position.
+#
+group {
+   string $(top)dtaTrack.A = "MOVE" ;          # Default mode
+   double $(top)dtaTrack.B = 0.0 ;             # Default X offset (microns)
+   double $(top)dtaTrack.C = 0.0 ;             # Default Y offset (microns)
+   double $(top)dtaTrack.D = 0.0 ;             # Default Z offset (microns)
+   double $(top)dtaTrack.E = 100.0 ;           # X nominal centre position (microns)
+   double $(top)dtaTrack.F = 108.0 ;           # Y nominal centre position (microns)
+   double $(top)dtaTrack.G = 2324.0 ;          # Z nominal best focus position (microns)
+}
+long $(top)dtaTrack.DIR = 1;                   # CLEAR the dtaTrack CAD record
+group {
+   double $(top)dtaPos.A = 100.0 ;             # Default X position (microns)
+   double $(top)dtaPos.B = 108.0 ;             # Default Y position (microns)
+   double $(top)dtaPos.C = 2324.0 ;            # Default Z position (microns)
+}
+long $(top)dtaPos.DIR = 1;                     # CLEAR the dtaPos CAD record
+#
+# Detector Translation Model zero points
+#
+group {
+   double $(top)dtaTrack:flexCoeffs.A =   4.01823 ; # Zero point in X (microns)
+   double $(top)dtaTrack:flexCoeffs.B = -25.2356 ;  # Zero point in Y (microns)
+   double $(top)dtaTrack:flexCoeffs.C =   0.0 ;     # Zero point in Z (microns)
+}
+#
+# Detector translation model flexure coefficients, based on these equations:
+#
+# dx = Ax sin(thetaY + phiYX) * sin(thetaZ + phiZX)
+# dy = gY Ay sin(thetaY + phiYY) + gZ By sin(thetaZ + phiZY)
+# dz = Az sin(thetaY + phiYZ) + Bz sin(thetaZ + phiZZ)
+#
+# An additional grating anamorphic correction is applied to the Y flexure (above)
+# using these equations:
+#
+# A = cos(psi - (90 - grTilt))/cos(90 - grTilt)
+# gY = (1 - (1 - 1/A) * Hy)
+# gZ = (1 - (1 - 1/A) * Hz)
+#
+group {
+   double $(top)dtaTrack:flexCoeffs.D =  21.3159 ;  # X flexure coeff, Ax (microns)
+   double $(top)dtaTrack:flexCoeffs.E =  23.5300 ;  # Y flexure coeff, Ay (microns)
+   double $(top)dtaTrack:flexCoeffs.F =   0.0000 ;  # Z flexure coeff, Az (microns)
+   double $(top)dtaTrack:flexCoeffs.G =   0.0000 ;  # X flexure coeff, Bx (microns)
+   double $(top)dtaTrack:flexCoeffs.H =   5.50709 ; # Y flexure coeff, By (microns)
+   double $(top)dtaTrack:flexCoeffs.I =   0.0000 ;  # Z flexure coeff, Bz (microns)
+   double $(top)dtaTrack:flexCoeffs.J =   0.5 ;     # Grating anamorphic factor for thetaY, Hthetay
+   double $(top)dtaTrack:flexCoeffs.K =   1.0 ;     # Grating anamorphic factor for thetaZ, Hthetaz
+   double $(top)dtaTrack:flexCoeffs.L =  50.0 ;     # Grating reference angle, psi (degrees)
+   double $(top)dtaTrack:flexCoeffs.M =  74.3527 ;  # X coefficient thetaY phase angle, phiYX (degrees)
+   double $(top)dtaTrack:flexCoeffs.N = 105.2510 ;  # X coefficient thetaZ phase angle, phiZX (degrees)
+   double $(top)dtaTrack:flexCoeffs.O = 179.7010 ;  # Y coefficient thetaY phase angle, phiYY (degrees)
+   double $(top)dtaTrack:flexCoeffs.P = 165.7140 ;  # Y coefficient thetaZ phase angle, phiZY (degrees)
+   double $(top)dtaTrack:flexCoeffs.Q =   0.0000 ;  # Z coefficient thetaY phase angle, phiYZ (degrees)
+   double $(top)dtaTrack:flexCoeffs.R =   0.0000 ;  # Z coefficient thetaZ phase angle, phiZZ (degrees)
+}
+#
+# Detector translation temperature coefficients, based on these equations:
+#
+# tdiff = T - Tref
+# dx = Tx * tdiff + T2x * tdiff**2
+# dy = Ty * tdiff + T2y * tdiff**2
+# dz = Tx * tdiff + T2z * tdiff**2
+#
+# NOTE: A non-analytical temperature offset compensation is also carried out in the
+# detector translation assembly software.
+#
+group {
+   double $(top)dtaTrack:tempCoeffs.A  = 0.0000 ;   # Linear X temp. coeff, Tx (microns/deg C)
+   double $(top)dtaTrack:tempCoeffs.B  = 0.0000 ;   # Linear Y temp. coeff, Ty (microns/deg C)
+   double $(top)dtaTrack:tempCoeffs.C  = 0.0000 ;   # Linear Z temp. coeff, Tz (microns/deg C)
+   double $(top)dtaTrack:tempCoeffs.D  = 0.0000 ;   # Quadratic X temp. coeff, T2x (microns/deg C^2)
+   double $(top)dtaTrack:tempCoeffs.E  = 0.0000 ;   # Quadratic Y temp. coeff, T2y (microns/deg C^2)
+   double $(top)dtaTrack:tempCoeffs.F  = 0.0000 ;   # Quadratic Z temp. coeff, T2z (microns/deg C^2)
+   double $(top)dtaTrack:refTemp       = 0.00 ;     # Reference temp., Tref (deg C)
+}
+#
+# Flexure control update interval
+#
+long $(top)dtaTrack:updateInterval = 30 ;      # Update interval (secs)
+
+#
+# ATMOSPHERIC DISPERSION CONTROL PARAMETERS
+# =========================================
+#
+# Default AtmDC offsets and wavelengths.
+#
+group {
+   string $(top)atmTrack.A = "MOVE" ;        # Default mode
+   double $(top)atmTrack.B = 0.0 ;           # Default entrance prism offset (degrees)
+   double $(top)atmTrack.C = 0.0 ;           # Default exit prism offset (degrees)
+   double $(top)atmTrack.D = 400.0 ;         # Default lower wavelength (nm)
+   double $(top)atmTrack.E = 900.0 ;         # Default upper wavelength (nm)
+}
+long $(top)atmTrack.DIR = 1;                 # CLEAR the atmTrack CAD record
+group {
+   double $(top)atmPos.A = 0.0 ;             # Default entrance prism angle (degrees)
+   double $(top)atmPos.B = 0.0 ;             # Default exit prism angle (degrees)
+}
+long $(top)atmPos.DIR = 1;                   # CLEAR the atmPos CAD record
+#
+# AtmDC control update interval
+#
+long $(top)atmTrack:updateInterval = 30 ;      # Update interval (secs)

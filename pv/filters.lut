@@ -1,0 +1,59 @@
+#
+# File: filters.lut
+#
+# Database of available GMOS filters.
+#
+# This file contains a list of all the filters known to GMOS,
+# whether fitted or not. Each time a new filter is purchased
+# it should be assigned a barcode and added to this list.
+#
+# Surface curvature focus offsets come from measurements by Jeremy
+# Allington-Smith, Isobel Hook and Stephanie Juneau on 7 July 2000.
+# Effective wavelengths supplied by Isobel Hook on 24 January 2001.
+# Names suggested by Inger Jorgensen on 31 January 2001.
+#
+
+#                                 surface curvature
+# name            barcodeId       focusOffset (microns)   effWavelength (nm)
+
+# Empty filter cells - to be filled and barcodes reused
+open1-0           20000024          0.0                    0.0
+open1-5           20000017          0.0                    0.0
+open1-6           20000018          0.0                    0.0
+open1-7           20000019          0.0                    0.0
+open1-8           20000020          0.0                    0.0
+open1-9           20000021          0.0                    0.0
+open1-10          20000022          0.0                    0.0
+open1-11          20000023          0.0                    0.0
+open2-0           20000012          0.0                    0.0
+open2-5           20000005          0.0                    0.0
+open2-6           20000006          0.0                    0.0
+open2-7           20000007          0.0                    0.0
+open2-8           20000008          0.0                    0.0
+open2-9           20000009          0.0                    0.0
+open2-10          20000010          0.0                    0.0
+open2-11          20000011          0.0                    0.0
+
+# GMOS North Hartmann masks
+HartmannA_G0313   20000013          0.0                    0.0
+HartmannB_G0314   20000014          0.0                    0.0
+HartmannC_G0315   20000015          0.0                    0.0
+HartmannD_G0316   20000016          0.0                    0.0
+
+# GMOS North science filters
+g_G0301           20000001         93.0                  480.0
+i_G0302           20000002         14.1                  770.0
+r_G0303           20000003         10.6                  625.0
+z_G0304           20000004        -19.2                  910.0
+
+# GMOS South Hartmann masks
+HartmannA_G0337   20000037          0.0                    0.0
+HartmannB_G0338   20000038          0.0                    0.0
+HartmannC_G0339   20000039          0.0                    0.0
+HartmannD_G0340   20000040          0.0                    0.0
+
+# GMOS South science filters
+g_G0325           20000025          0.0                  480.0
+i_G0326           20000026          0.0                  770.0
+r_G0327           20000027          0.0                  625.0
+z_G0328           20000028          0.0                  910.0

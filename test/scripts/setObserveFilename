@@ -1,0 +1,37 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: setObserveFilename
+#
+# Purpose: 
+#	To set the file name for a GMOS observation
+#
+# Invocation:
+#       setObserveFilename gm: filename
+#
+# Assumptions:
+#       The executeCommand script is available in the current PATH
+#
+
+#
+# Write the desired filename. It is assumed the other detector setup parameters
+# have already been specified.
+#
+
+set caputResponse = `caput ${1}dc:dcSetup.F $2`
+
+#
+# Execute a detector setup
+#
+
+set cmdResponse = `executeCommand ${1}dc:dcSetup.DIR ${1}dc:dcSetup.VAL ${1}dc:dcSetupC.VAL`
+set okay = `echo $cmdResponse | grep 'Command Success'`
+
+if ( $#okay == 2 ) then
+    echo "Command Success"
+    exit
+else
+    echo "Command Failed"
+    exit -1
+endif
+
+exit

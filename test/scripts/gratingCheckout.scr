@@ -1,0 +1,1387 @@
+#
+# DHS Test Commander
+# Checkout script for:
+#
+#	Gmos Grating Assembly checkout
+#
+
+
+#
+# Define the variables used in this script, and the configuration files
+# which contain their translation into EPICS channel names.
+#
+#     Config file     Config file name          Named used here      Mystery number
+#     -----------     ---------------------     -----------------    --------------
+
+VAR   postFpIcd       gratingDirective           cmdDir               1
+VAR   postFpIcd       gratingMode                grMode               1
+
+VAR   postFpIcd       gratingSelectOnly          grSelectOnly         1
+VAR   postFpIcd       gratingId                  gratId               1
+VAR   postFpIcd       gratingTilt                gratTilt             1
+
+VAR   postFpIcd       gratingAcknowledge         cmdAck               1
+VAR   postFpIcd       gratingBusy                cmdAction            1
+VAR   postFpIcd       gratingMessage             cmdError             1
+VAR   postFpIcd       gratingState               cmdState             1
+
+VAR   postFpIcd       gratingCarMess             grCarMsg             1
+VAR   postFpIcd       gratingCarErr              grCarErr             1
+
+VAR   postFpIcd       sadGratingId               sadId                1
+VAR   postFpIcd       sadGratingTilt             sadTilt              1
+VAR   postFpIcd       sadGratingInBeam           sadInBeam            1
+
+VAR   postFpIcd       sadGratingInitialized      sadInit              1
+VAR   postFpIcd       sadGratingIndexed          sadIndex             1
+VAR   postFpIcd       sadGratingParked           sadPark              1
+VAR   postFpIcd       sadGratingHealth           sadHealth            1
+
+VAR   postFpIcd       sadGratingState            sadState             1
+
+VAR   postFpIcd       sadGratingDebug            sadDebug             1
+VAR   postFpIcd       sadGratingSimulate         sadSimm              1
+
+VAR   gratingAssembly  assemblyTranslationFile   grLutFile            1
+VAR   gratingAssembly  assemblyTranslationDir    grLutDir             1
+
+#VAR   gratingADevice   devPosition               grAPos               1
+#VAR   gratingADevice   devDir                    grADir               1
+#VAR   gratingADevice   devMode                   grAMode              1
+#VAR   gratingADevice   devTarget                 grATarget            1
+#VAR   gratingADevice   devNamedTarget            grANamedTarget       1
+#VAR   gratingADevice   devVelocity               grAVelocity          1
+#VAR   gratingADevice   devAck                    grAAck               1
+#VAR   gratingADevice   devBusy                   grABusy              1 
+#VAR   gratingADevice   devState                  grAState             1
+#VAR   gratingADevice   devMess                   grAMess              1
+
+#VAR   gratingBDevice   devPosition               grBPos               1
+#VAR   gratingBDevice   devDir                    grBDir               1
+#VAR   gratingBDevice   devMode                   grBMode              1
+#VAR   gratingBDevice   devTarget                 grBTarget            1
+#VAR   gratingBDevice   devNamedTarget            grBNamedTarget       1
+#VAR   gratingBDevice   devVelocity               grBVelocity          1
+#VAR   gratingBDevice   devAck                    grBAck               1
+#VAR   gratingBDevice   devBusy                   grBBusy              1
+#VAR   gratingBDevice   devState                  grBState             1
+#VAR   gratingBDevice   devMess                   grBMess              1
+
+#VAR   gratingCDevice   devPosition               grCPos               1
+#VAR   gratingCDevice   devDir                    grCDir               1
+#VAR   gratingCDevice   devMode                   grCMode              1
+#VAR   gratingCDevice   devTarget                 grCTarget            1
+#VAR   gratingCDevice   devNamedTarget            grCNamedTarget       1
+#VAR   gratingCDevice   devVelocity               grCVelocity          1
+#VAR   gratingCDevice   devAck                    grCAck               1
+#VAR   gratingCDevice   devBusy                   grCBusy              1
+#VAR   gratingCDevice   devState                  grCState             1
+#VAR   gratingCDevice   devMess                   grCMess              1
+
+#VAR   gratingDDevice   devPosition               grDPos               1
+#VAR   gratingDDevice   devDir                    grDDir               1
+#VAR   gratingDDevice   devMode                   grDMode              1
+#VAR   gratingDDevice   devTarget                 grDTarget            1
+#VAR   gratingDDevice   devNamedTarget            grDNamedTarget       1
+#VAR   gratingDDevice   devVelocity               grDVelocity          1
+#VAR   gratingDDevice   devAck                    grDAck               1
+#VAR   gratingDDevice   devBusy                   grDBusy              1
+#VAR   gratingDDevice   devState                  grDState             1
+#VAR   gratingDDevice   devMess                   grDMess              1
+
+VAR   gratingTurretDevice   devPosition          grtPos               1
+#VAR   gratingTurretDevice   devDir               grtDir               1
+#VAR   gratingTurretDevice   devMode              grtMode              1
+#VAR   gratingTurretDevice   devTarget            grtTarget            1
+#VAR   gratingTurretDevice   devNamedTarget       grtNamedTarget       1
+#VAR   gratingTurretDevice   devVelocity          grtVelocity          1
+#VAR   gratingTurretDevice   devAck               grtAck               1
+#VAR   gratingTurretDevice   devBusy              grtBusy              1
+#VAR   gratingTurretDevice   devState             grtState             1
+#VAR   gratingTurretDevice   devMess              grtMess              1
+
+VAR   lifterDevice    lifterDownValve            lifterDownValve      1
+VAR   lifterDevice    lifterUpValve              lifterUpValve        1
+VAR   lifterDevice    lifterCommand              lifterCommand        1
+VAR   lifterDevice    lifterProcess              lifterProcess        1
+VAR   lifterDevice    lifterAck                  lifterAck            1
+VAR   lifterDevice    lifterInterlock            lifterInterlock      1
+VAR   lifterDevice    lifterState                lifterState          1
+VAR   lifterDevice    lifterMess                 lifterMess           1
+
+VAR   gratingStatus   gratingInPosition          grInpos              1
+VAR   gratingStatus   gratingLifterUp            lifterUp             1
+VAR   gratingStatus   gratingLifterDown          lifterDown           1
+VAR   gratingStatus   upstreamOk                 upstreamOk           1
+VAR   gratingStatus   downstreamOk               downstreamOk         1
+
+#
+# check starting point, should be freshly rebooted and not indexed....
+#
+# (NOTE: It is possible to test this script without rebooting by poking the
+# grating assembly's INIT, INDX and HLTH fields to the correct values).
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly not indexed?"
+GETVAL sadIndex
+OUTPUT *VAL* 0*
+
+DESC "Grating assembly initialization state"
+GETVAL sadInit
+OUTPUT *
+
+DESC "Grating assembly not parked?"
+GETVAL sadPark
+OUTPUT *VAL* 0*
+
+DESC "Grating assembly health"
+GETVAL sadHealth
+OUTPUT *
+
+DESC "Upstream air pressure ok?"
+GETVAL upstreamOk
+OUTPUT *VAL* OK*
+
+DESC "Downstream air pressure ok?"
+GETVAL downstreamOk
+OUTPUT *VAL* OK*
+
+DESC "Ensure you're using the right LUT filename"
+GETVAL grLutFile
+OUTPUT *TFIL * gr.lut*
+
+DESC "Log the LUT directory"
+GETVAL grLutDir
+OUTPUT *TDIR *
+
+ENDTEST
+
+#
+# Start by testing the grating assembly initialisation function
+#
+
+TEST "Test Initialization function"
+FATAL
+
+DESC "Initializing grating assembly"
+
+PUTVAL grMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the grating assembly 
+# initialisation flag has been set, the grating assembly and grating CAR records have
+# both gone idle, and the health has changed to GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Test index function
+#
+
+TEST "Test Index Function"
+FATAL
+
+DESC "Indexing Grating Assembly"
+
+PUTVAL grMode "3"
+OUTPUT *MODE*INIT*MODE*INDEX*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the grating assembly 
+# indexed flag has been set, the initialised flag is still set, the grating assembly
+# and grating CAR records have both gone idle, and the health is still GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "No grating in the beam?"
+
+GETVAL sadId
+OUTPUT *VAL* -1*
+
+GETVAL sadInBeam
+OUTPUT *VAL* 0*
+
+GETVAL sadTilt
+OUTPUT *VAL* -0*
+
+ENDTEST
+
+#
+# A visual check is recommended at this point to verify that the lifter can
+# be lowered after indexing the grating assembly, which should have left the
+# turret at position B. The check can be skipped if it is already known that
+# the turret is operating reliably.
+#
+
+TEST "The turret position can be checked visually before proceeding"
+FATAL
+
+DESC "Examine the turret position before lowering lifter"
+
+GETVAL grtPos
+OUTPUT *MPOS* 13.13*
+
+PROMPT "Please check the turret visually. Is it safe to lower?"
+
+ENDTEST
+
+#
+# If the answer was "yes" confirm that the lifter can be lowered
+#
+
+TEST "Lowering the turret - please watch carefully"
+FATAL
+
+DESC "Lowering grating lifter"
+
+PUTVAL lifterCommand "1"
+OUTPUT *A*A*1*
+
+PUTVAL lifterProcess "1"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for ten seconds and then check the lifter has successfully lowered.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Lifter acknowledgement OK?"
+
+CMD "sleep 10"
+OUTPUT *
+GETVAL lifterAck
+OUTPUT *VAL* 0*
+
+DESC "Lifter state IDLE?"
+
+GETVAL lifterState
+OUTPUT *VAL* ENGAGED*
+
+GETVAL lifterMess
+OUTPUT *VALF* IDLE*
+
+DESC "Lifter lowered?"
+
+GETVAL lifterUp
+OUTPUT *VAL* NOTUP*
+
+GETVAL lifterDown
+OUTPUT *VAL* DOWN*
+
+ENDTEST
+
+#
+# Select a combination of grating and angle - grating 1 and angle 31.2 degrees
+#
+
+TEST "Select a grating and angle (1 and 31.2)"
+FATAL
+
+DESC "Moving Grating Assembly"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 1"
+OUTPUT *Success*
+
+PUTVAL gratTilt "31.2"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*INDEX*MODE*MOVE*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Grating assembly in position?"
+
+GETVAL grInpos
+OUTPUT *VAL*0001*
+
+DESC "Correct grating and tilt in SAD?"
+
+CMD "compareField sadId gratId
+OUTPUT *Equal*
+
+GETVAL sadInBeam
+OUTPUT *VAL* 1*
+
+GETVAL sadTilt
+OUTPUT *VAL* 31.2*
+
+ENDTEST
+
+#
+# Select another combination of grating and angle - grating 2 and angle 10.1 degrees
+#
+
+TEST "Select another grating and angle (2 and 10.1)"
+FATAL
+
+DESC "Moving Grating Assembly"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 2"
+OUTPUT *Success*
+
+PUTVAL gratTilt "10.1"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Grating assembly in position?"
+
+GETVAL grInpos
+OUTPUT *VAL*0010*
+
+DESC "Correct grating and tilt in SAD?"
+
+CMD "compareField sadId gratId
+OUTPUT *Equal*
+
+GETVAL sadInBeam
+OUTPUT *VAL* 1*
+
+GETVAL sadTilt
+OUTPUT *VAL* 10.1*
+
+ENDTEST
+
+#
+# Go back to grating 1 - select only this time.
+#
+
+TEST "Go back to first grating (1) - select only"
+FATAL
+
+DESC "Moving Grating Assembly"
+
+PUTVAL grSelectOnly "1"
+OUTPUT *
+
+CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 1"
+OUTPUT *Success*
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and SAD. The original angle tilt requested for grating 1 should be restored
+# in the SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Grating assembly in position?"
+
+GETVAL grInpos
+OUTPUT *VAL*0001*
+
+DESC "Correct grating and tilt in SAD?"
+
+CMD "compareField sadId gratId
+OUTPUT *Equal*
+
+GETVAL sadInBeam
+OUTPUT *VAL* 1*
+
+GETVAL sadTilt
+OUTPUT *VAL* 31.2*
+
+ENDTEST
+
+#
+# Test the other two grating positions - grating 3 and angle 65.0 degrees
+#
+
+TEST "Select another grating and angle (3 and 65.0)"
+FATAL
+
+DESC "Moving Grating Assembly"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 3"
+OUTPUT *Success*
+
+PUTVAL gratTilt "65.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Grating assembly in position?"
+
+GETVAL grInpos
+OUTPUT *VAL*0100*
+
+DESC "Correct grating and tilt in SAD?"
+
+CMD "compareField sadId gratId
+OUTPUT *Equal*
+
+GETVAL sadInBeam
+OUTPUT *VAL* 1*
+
+GETVAL sadTilt
+OUTPUT *VAL* 65*
+
+ENDTEST
+
+
+#
+# Test the final grating position - grating 4 and angle 81.4 degrees
+#
+
+TEST "Select another grating and angle (4 and 81.4) to test the final grating position"
+FATAL
+
+DESC "Moving Grating Assembly"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 4"
+OUTPUT *Success*
+
+PUTVAL gratTilt "81.4"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Grating assembly in position?"
+
+GETVAL grInpos
+OUTPUT *VAL*1000*
+
+DESC "Correct grating and tilt in SAD?"
+
+CMD "compareField sadId gratId
+OUTPUT *Equal*
+
+GETVAL sadInBeam
+OUTPUT *VAL* 1*
+
+GETVAL sadTilt
+OUTPUT *VAL* 81.4*
+
+ENDTEST
+
+
+#
+# Select exactly the same combination - grating 4 and angle 81.4 degrees
+# to check if the grating has any problems with a NULL move.
+#
+
+TEST "Select the same grating and angle (4 and 81.4) to test that null movements are ok"
+FATAL
+
+DESC "Moving Grating Assembly"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 4"
+OUTPUT *Success*
+
+PUTVAL gratTilt "81.4"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Grating assembly in position?"
+
+GETVAL grInpos
+OUTPUT *VAL*1000*
+
+DESC "Correct grating and tilt in SAD?"
+
+CMD "compareField sadId gratId
+OUTPUT *Equal*
+
+GETVAL sadInBeam
+OUTPUT *VAL* 1*
+
+GETVAL sadTilt
+OUTPUT *VAL* 81.4*
+
+ENDTEST
+
+#
+# Select the same grating but change the tilt angle to 41.8 degrees
+# to check if the grating has any problems with a NULL move.
+#
+
+TEST "Keep the same grating but change the tilt to 41.8"
+FATAL
+
+DESC "Moving Grating Assembly"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratTilt "41.8"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and SAD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Grating assembly in position?"
+
+GETVAL grInpos
+OUTPUT *VAL*1000*
+
+DESC "Correct grating and tilt in SAD?"
+
+CMD "compareField sadId gratId
+OUTPUT *Equal*
+
+GETVAL sadInBeam
+OUTPUT *VAL* 1*
+
+GETVAL sadTilt
+OUTPUT *VAL* 41.8*
+
+ENDTEST
+
+#
+# Select a non-existent grating and check this fails.
+#
+
+TEST "Select a non-existent grating"
+FATAL
+
+DESC "Select a non-existent grating"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "39999999"
+OUTPUT *
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Requested grating not installed'"
+GETVAL cmdError
+OUTPUT *Requested grating not installed*
+
+ENDTEST
+
+#
+# Select an out of (high) range grating angle and check this fails.
+#
+
+TEST "Select an out of (high) range grating angle"
+FATAL
+
+DESC "Select an out of (high) range grating angle"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 4"
+OUTPUT *Success*
+
+PUTVAL gratTilt "99.9"
+OUTPUT *
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Grating tilt angle out of range'"
+GETVAL cmdError
+OUTPUT *Grating tilt angle out of range*
+
+ENDTEST
+
+#
+# Select an out of (low) range grating angle and check this fails.
+#
+
+TEST "Select an out of (low) range grating angle"
+FATAL
+
+DESC "Select an out of (low) range grating angle"
+
+PUTVAL gratTilt "-10.1"
+OUTPUT *
+
+DESC "Verify command is rejected by a PRESET"
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Grating tilt angle out of range'"
+GETVAL cmdError
+OUTPUT *Grating tilt angle out of range*
+
+ENDTEST
+
+#
+# Reindex the grating assembly
+#
+
+TEST "Repeat Index Function"
+FATAL
+
+DESC "Restoring the grating tilt"
+
+PUTVAL gratTilt "0.0"
+OUTPUT *
+
+DESC "Reindexing Grating Assembly"
+
+PUTVAL grMode "3"
+OUTPUT *MODE*MOVE*MODE*INDEX*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the grating assembly 
+# indexed flag has been set, the initialised flag is still set, the grating assembly
+# and grating CAR records have both gone idle, and the health is still GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "No grating in the beam?"
+
+GETVAL sadId
+OUTPUT *VAL* -1*
+
+GETVAL sadInBeam
+OUTPUT *VAL* 0*
+
+GETVAL sadTilt
+OUTPUT *VAL* -0*
+
+ENDTEST
+
+#
+# Test for failure of the grating assembly initialisation function
+# when it is given a garbage file.
+#
+
+TEST "Test initialization function with garbage LUT file"
+FATAL
+
+DESC "Initializing grating assembly with garbage LUT file"
+
+PUTVAL grLutFile "garbage.lut"
+OUTPUT *TFIL *TFIL * garbage.lut*
+
+PUTVAL grMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Command Failed*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Incorrect barcode file type'"
+GETVAL cmdError
+OUTPUT *Incorrect barcode file type*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the grating assembly 
+# initialisation flag is still unset and the health is WARNING.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 0*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health WARNING?"
+
+GETVAL sadHealth
+OUTPUT *VAL*WARNING*
+
+ENDTEST
+
+
+#
+# Change lookup table name back as it was
+#
+
+TEST "Change lookup table name back as it was"
+FATAL
+
+DESC "Reset the LUT filename"
+PUTVAL grLutFile "gr.lut"
+OUTPUT *TFIL *TFIL * gr.lut*
+
+ENDTEST
+
+
+#
+# Restore the grating assembly by reinitialising
+#
+
+TEST "Initialize properly to restore grating assembly"
+FATAL
+
+DESC "Initializing grating assembly properly"
+
+PUTVAL grMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the grating assembly 
+# initialisation flag has been set, the grating assembly and grating CAR records have
+# both gone idle, and the health has changed to GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Update the grating assembly
+#
+
+TEST "Test update function"
+FATAL
+
+DESC "Updating Grating Assembly"
+
+PUTVAL grMode "6"
+OUTPUT *MODE*INIT*MODE*UPDATE*
+
+DESC "Start time"
+CMD "date"
+OUTPUT *
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Finish time"
+CMD "date"
+OUTPUT *
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the grating assembly 
+# indexed flag is still set, the initialised flag is still set, the grating assembly
+# and grating CAR records have both gone idle, and the health is still GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+CMD "cat /gemini/data/gr.lut"
+OUTPUT *
+
+ENDTEST
+
+#
+# Finally, park the Assembly
+#
+
+TEST "Test parking function"
+FATAL
+
+DESC "Parking assembly"
+
+PUTVAL grMode "4"
+OUTPUT *MODE*UPDATE*MODE*PARK*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+
+CMD "sleep 1"
+OUTPUT *
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly parked?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadPark
+OUTPUT *VAL* 1*
+ 
+DESC "Grating assembly indexed?"
+
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Grating tilt in SAD zero?"
+
+GETVAL sadTilt
+OUTPUT *VAL* -0*
+
+ENDTEST
+
+
+#
+#  Grating Assembly functions are OK
+#
+
+COMMENT "Grating assembly OK"
+
+
+

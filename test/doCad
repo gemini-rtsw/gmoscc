@@ -1,0 +1,37 @@
+#! /bin/csh -f
+#
+alias caput "caput -ts"
+if ($1 == "") then
+  echo "Usage : doCad cadname <p1 p2 p3 p4 p5 p6>"
+  echo '   (Assumes environment variable $GMOS_PREFIX defined)'
+  exit 1
+endif
+if ($GMOS_PREFIX == "") then
+  exit 1
+endif
+caput ${GMOS_PREFIX}apply.DIR CLEAR
+sleep 1
+caput ${GMOS_PREFIX}$1.DIR MARK 
+if ($2 != "") then
+  caput ${GMOS_PREFIX}$1.A $2
+endif
+if ($3 != "") then
+  caput ${GMOS_PREFIX}$1.B $3
+endif
+if ($4 != "") then
+  caput ${GMOS_PREFIX}$1.C $4
+endif
+if ($5 != "") then 
+  caput ${GMOS_PREFIX}$1.D $5
+endif
+if ($6 != "") then 
+  caput ${GMOS_PREFIX}$1.E $6
+endif
+if ($7 != "") then 
+  caput ${GMOS_PREFIX}$1.F $7
+endif
+echo "Issuing START for CAD $1"
+caput ${GMOS_PREFIX}apply.DIR START
+checkVal
+set retval = $status
+exit $retval

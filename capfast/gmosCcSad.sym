@@ -1,0 +1,69 @@
+[symbol2]
+bbox -96 -32 416 320
+uniq 90
+[tools]
+[attributes]
+p -96 -96 100 0 -1 seta:top gm:
+p -96 -128 100 0 -1 setb:sadtop gm:sad:
+p -96 -160 100 0 -1 setc:c1 cc:
+p 192 -160 100 0 -1 setd:c2 cc:
+p -96 -192 100 0 -1 sete:atmdc atm
+p -96 -224 100 0 -1 setf:oiwfs probe
+p -96 -256 100 0 -1 setg:mask msk
+p 192 -192 100 0 -1 seth:filter flt
+p 192 -224 100 0 -1 seti:grating gr
+p 192 -256 100 0 -1 setj:translation dta
+p 192 -96 100 0 -1 setk:gm gm:
+[layers]
+<symbol>
+a 0 32 80 32 64 360
+l 100 0 0 16 240 Status Alarm Database
+l 100 0 0 16 272 GMOS Components Controller
+r 0 256 64 320 96
+r 0 256 128 320 160
+r 0 128 64 192 96
+r 0 128 128 192 160
+r 0 0 64 64 96
+r 0 0 128 64 160
+r 0 -96 -32 416 320
+v 0 -32 0
+352 0
+_
+v 0 -32 192
+352 192
+_
+v 0 0 128
+64 160
+_
+v 0 144 144
+144 128
+_
+v 0 160 160
+160 144
+_
+v 0 176 144
+176 128
+_
+v 0 272 144
+304 144
+_
+v 0 288 160
+288 128
+_
+v 0 128 80
+160 96
+176 80
+144 64
+128 80
+_
+v 0 272 96
+272 64
+288 64
+288 96
+304 96
+304 64
+_
+v 0 320 80
+256 80
+_
+[comments]

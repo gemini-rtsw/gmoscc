@@ -1,0 +1,14 @@
+[symbol2]
+bbox 32 32 288 256
+uniq 26
+[tools]
+[attributes]
+p 64 0 100 0 -1 seta:top gm:
+p 64 -32 100 0 -1 setb:dev misc
+[layers]
+<symbol>
+l 100 2 0 272 48 gmMiscWdg
+l 100 7 0 160 240 GMOS Watchdog
+r 0 32 32 288 224
+r 0 32 224 288 256
+[comments]

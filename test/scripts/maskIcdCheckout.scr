@@ -1,0 +1,1710 @@
+#
+# DHS Test Commander
+# Checkout script for:
+#     ICD 1.9.d.4/1.9.d.5
+# "Gmos Components Controller to GMOS Sequencer"
+#
+#    Mask Assembly ICD compliance checkout
+#
+
+
+#
+# First get all those funky variables sorted out
+#
+
+VAR   preFpIcd     maskDirective           cmdDir               1
+
+VAR   preFpIcd     maskMode                mskMode              1
+VAR   preFpIcd     maskTarget              mskSelect            1
+VAR   preFpIcd     maskLocation            mskLocation          1
+VAR   preFpIcd     maskPark                mskParkingSpot       1
+
+VAR   preFpIcd     maskAcknowledge         cmdAck               1
+VAR   preFpIcd     maskBusy                cmdAction            1
+VAR   preFpIcd     maskMessage             cmdError             1
+VAR   preFpIcd     maskState               cmdState             1
+
+VAR   preFpIcd     maskCarMess             mskCarMsg            1
+VAR   preFpIcd     maskCarErr              mskCarErr            1
+
+VAR   preFpIcd     sadMaskLoadId           sadSelect            1
+VAR   preFpIcd     sadMaskLocation         sadLocation          1
+
+VAR   preFpIcd     sadMaskInitialized      sadInit              1
+VAR   preFpIcd     sadMaskIndexed          sadIndex             1
+VAR   preFpIcd     sadMaskParked           sadPark              1
+VAR   preFpIcd     sadMaskHealth           sadHealth            1
+VAR   preFpIcd     sadMaskFP               sadInFp              1
+
+VAR   preFpIcd     sadMaskState            sadState             1
+
+VAR   preFpIcd     sadMaskGripper          sadGripper           1
+VAR   preFpIcd     sadMaskRelease          sadRelease           1
+
+VAR   preFpIcd     sadMaskDebug            sadDebug             1
+VAR   preFpIcd     sadMaskSimulate         sadSimm              1
+
+VAR   gripDevice   devDir                  gripDir              1
+VAR   gripDevice   devMode                 gripMode             1
+VAR   gripDevice   devTarget               gripTarget           1
+VAR   gripDevice   devNamedTarget          gripNamedTarget      1
+VAR   gripDevice   devAck                  gripAck              1
+VAR   gripDevice   devBusy                 gripBusy             1 
+VAR   gripDevice   devMess                 gripMess             1
+
+VAR   extractorDevice   devPosition        extractorPosition    1
+
+#
+# Rock and roll
+#
+
+
+
+#
+# Start with mask assembly setup functions
+#
+
+TEST "Test Initialization function"
+FATAL
+
+DESC "Initializing mask assembly"
+
+PUTVAL mskMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Test index function
+#
+
+TEST "Test Index Function"
+FATAL
+
+DESC "Indexing Mask Assembly"
+
+PUTVAL mskMode "3"
+OUTPUT *MODE*INIT*MODE*INDEX*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+
+CMD "checkState cmdState INDEXING"
+OUTPUT *Success*
+
+GETVAL cmdAction
+OUTPUT *VAL*BUSY*
+
+CMD "sleep 1"
+OUTPUT *
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper released?"
+
+GETVAL sadGripper
+OUTPUT *VAL* 1*
+
+DESC "Release locked?"
+
+GETVAL sadRelease
+OUTPUT *VAL* -1*
+
+DESC "Focal plane empty?"
+
+GETVAL sadInFp
+OUTPUT *VAL* 0*
+
+ENDTEST
+
+#
+# Testing the Assembly
+#
+
+TEST "Execute the Test Function"
+FATAL
+
+DESC "Testing assembly"
+
+PUTVAL mskMode "5"
+OUTPUT *MODE*MODE*TEST*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Check resulting status fields...
+#
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Try entering invalid mask ID attribute
+#
+
+TEST "Try entering invalid mask ID attribute"
+FATAL
+
+DESC "Initialize mask assembly"
+
+PUTVAL mskMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Set mask mode to MOVE"
+PUTVAL mskMode "1"
+OUTPUT *MODE*INIT*MODE*MOVE*
+
+DESC "Ensure mask location is IN otherwise ID is ignored"
+PUTVAL mskLocation "0"
+OUTPUT *Assembly.B*Assembly.B*0*
+
+DESC "Load mask ID attribute with -1"
+PUTVAL mskSelect "-1"
+OUTPUT *Assembly.A*Assembly.A*-1*
+
+DESC "Check command with PRESET directive"
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Requested Mask cannot be found'"
+GETVAL cmdError
+OUTPUT *Requested Mask cannot be found*
+
+ENDTEST
+
+#
+# Restore with valid mask ID attribute
+#
+
+TEST "Restore with valid mask ID attribute"
+# FATAL
+
+DESC "Restore mask ID attribute to 78"
+PUTVAL mskSelect "78"
+OUTPUT *Assembly.A*Assembly.A* 78*
+
+DESC "Check command with PRESET directive"
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *accept*
+
+ENDTEST
+
+#
+# Try entering another invalid mask ID attribute
+#
+
+TEST "Try entering another invalid mask ID attribute"
+FATAL
+
+DESC "Load mask ID attribute with 999999"
+PUTVAL mskSelect "999999"
+OUTPUT *Assembly.A*Assembly.A*999999*
+
+DESC "Check command with PRESET directive"
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Requested Mask cannot be found'"
+GETVAL cmdError
+OUTPUT *Requested Mask cannot be found*
+
+ENDTEST
+
+#
+# Enter a valid mask ID attribute to restore
+#
+
+TEST "Enter a valid mask ID attribute to restore"
+# FATAL
+
+DESC "Restore mask ID attribute to 78"
+PUTVAL mskSelect "78"
+OUTPUT *Assembly.A*Assembly.A* 78*
+
+DESC "Check command with PRESET directive"
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *accept*
+
+ENDTEST
+
+#
+# Try entering an invalid mask location attribute
+#
+
+TEST "Try entering an invalid mask location attribute"
+FATAL
+
+DESC "Initialize mask assembly"
+
+PUTVAL mskMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Set mask mode to MOVE"
+PUTVAL mskMode "1"
+OUTPUT *MODE*INIT*MODE*MOVE*
+
+DESC "Load mask location attribute with -1"
+PUTVAL mskLocation "-1"
+OUTPUT *Assembly.B*Assembly.B*-1*
+
+DESC "Check command with PRESET directive"
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Invalid mask location'"
+GETVAL cmdError
+OUTPUT *Invalid mask location \[0 \| 1\]*
+
+ENDTEST
+
+#
+# Enter a valid mask location attribute to restore
+#
+
+TEST "Enter a valid mask location attribute to restore"
+# FATAL
+
+DESC "Restore mask location attribute to 0"
+PUTVAL mskLocation "0"
+OUTPUT *Assembly.B*Assembly.B*0*
+
+DESC "Check command with PRESET directive"
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *accept*
+
+ENDTEST
+
+#
+# Try entering another invalid mask location attribute
+#
+
+TEST "Try entering another invalid mask location attribute"
+FATAL
+
+DESC "Load mask location attribute with 2"
+PUTVAL mskLocation "2"
+OUTPUT *Assembly.B*Assembly.B* 2*
+
+DESC "Check command with PRESET directive"
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Invalid mask location'"
+GETVAL cmdError
+OUTPUT *Invalid mask location \[0 \| 1\]*
+
+ENDTEST
+
+#
+# Enter a valid mask location attribute to restore
+#
+
+TEST "Enter a valid mask location attribute to restore"
+# FATAL
+
+DESC "Restore mask location attribute to 0"
+PUTVAL mskLocation "0"
+OUTPUT *Assembly.B*Assembly.B* 0*
+
+DESC "Check command with PRESET directive"
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *accept*
+
+ENDTEST
+
+#
+# Try entering an invalid park location attribute
+#
+
+TEST "Try entering an invalid park location attribute"
+FATAL
+
+DESC "Initialize mask assembly"
+
+PUTVAL mskMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Set mask mode to PARK"
+PUTVAL mskMode "4"
+OUTPUT *MODE*INIT*MODE*PARK*
+
+DESC "Load park location attribute with -1"
+PUTVAL mskParkingSpot "-1"
+OUTPUT *Assembly.C*Assembly.C*-1*
+
+DESC "Check command with PRESET directive"
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Invalid park position'"
+GETVAL cmdError
+OUTPUT *Invalid park position*
+
+ENDTEST
+
+#
+# Enter a valid park location attribute to restore
+#
+
+TEST "Enter a valid park location attribute to restore"
+# FATAL
+
+DESC "Restore park location attribute to 1"
+PUTVAL mskParkingSpot "1"
+OUTPUT *Assembly.C*Assembly.C* 1*
+
+DESC "Check command with PRESET directive"
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *accept*
+
+ENDTEST
+
+#
+# Try entering another invalid park location attribute
+#
+
+TEST "Try entering another invalid park location attribute"
+FATAL
+
+DESC "Load park location attribute with 4"
+PUTVAL mskParkingSpot "4"
+OUTPUT *Assembly.C*Assembly.C* 4*
+
+DESC "Check command with PRESET directive"
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *reject*
+
+ENDTEST
+
+#
+# Verify Error message
+#
+
+TEST "Verify error message"
+FATAL
+
+DESC "Look for error message 'Invalid park position'"
+GETVAL cmdError
+OUTPUT *Invalid park position*
+
+ENDTEST
+
+#
+# Enter a valid park location attribute to restore
+#
+
+TEST "Enter a valid park location attribute to restore"
+# FATAL
+
+DESC "Restore park location attribute to 1"
+PUTVAL mskParkingSpot "1"
+OUTPUT *Assembly.C*Assembly.C* 1*
+
+DESC "Check command with PRESET directive"
+CMD "presetCommand cmdDir cmdAck"
+OUTPUT *accept*
+
+DESC "Initialize mask assembly"
+
+PUTVAL mskMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Do an update to get current info
+#
+
+# Now is the best time to test the stop-during-update thing
+
+TEST "Stopping UPDATE sequence in progress
+FATAL
+
+DESC "Test STOP during update sequence"
+
+PUTVAL mskMode "6"
+OUTPUT *MODE*MODE*UPDATE*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+CMD "sleep 1"
+OUTPUT *
+
+CMD "checkState cmdState UPDATING"
+OUTPUT *Success*
+
+GETVAL cmdAction
+OUTPUT *VAL*BUSY*
+
+CMD "sleep 1"
+OUTPUT *
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "stopCommand cmdDir cmdAck"
+OUTPUT *Stopping*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+#FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC " Mask location in-cassette?"
+
+GETVAL sadLocation
+OUTPUT *VAL*
+
+ENDTEST
+
+#
+# Do the UPDATE and don't stop it
+#
+
+TEST "Do an UPDATE and allow it to complete"
+FATAL
+
+DESC "Update sequence"
+
+PUTVAL mskMode "6"
+OUTPUT *MODE*UPDATE*MODE*UPDATE*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+CMD "sleep 1"
+OUTPUT *
+
+CMD "checkState cmdState UPDATING"
+OUTPUT *Success*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC " Mask location in-cassette?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+# Insert the first mask found (should be an IFU!)
+#
+
+TEST "Insert first mask from lookup table - an IFU"
+FATAL
+
+DESC "Loading first mask"
+
+CMD "getFirstMaskId mskSelect /gemini/data/msk.lut"
+OUTPUT *Success*
+
+PUTVAL mskMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL mskLocation "0"
+OUTPUT *B* 0*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+CMD "sleep 1"
+OUTPUT *
+
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "sleep 1"
+OUTPUT *
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper gripped?"
+
+GETVAL sadGripper
+OUTPUT *VAL* -1*
+
+DESC "Release released?"
+
+GETVAL sadRelease
+OUTPUT *VAL* 1*
+
+DESC "Focal plane occupied with IFU?"
+
+GETVAL sadInFp
+OUTPUT *VAL* -1*
+
+ENDTEST
+
+#
+# Verify mask in focal plane
+#
+
+TEST "Verify mask in focal plane"
+FATAL
+
+DESC "Correct mask in Focal Plane?"
+
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC " Mask location in-beam?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+ENDTEST
+
+#
+# Log extractor position to verify it is in IFU position 
+#
+
+TEST "Log extractor position to verify it is in IFU position"
+FATAL
+
+DESC "Log extractor position"
+
+GETVAL extractorPosition
+OUTPUT *.MPOS*
+
+ENDTEST
+
+#
+# Ask for the same mask again
+#
+
+TEST "Re-load the same mask"
+FATAL
+
+DESC "Ask for same mask again"
+
+PUTVAL mskLocation "0"
+OUTPUT *B*0*B* 0*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper gripped?"
+
+GETVAL sadGripper
+OUTPUT *VAL* -1*
+
+DESC "Release released?"
+
+GETVAL sadRelease
+OUTPUT *VAL* 1*
+
+DESC "Focal plane occupied?"
+
+GETVAL sadInFp
+OUTPUT *VAL* -1*
+
+ENDTEST
+
+#
+# Verify mask in focal plane
+#
+
+TEST "Verify mask in focal plane"
+FATAL
+
+DESC "Correct mask in Focal Plane?
+
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC " Mask location in-beam?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+ENDTEST
+
+#
+# Remove current mask
+#
+
+TEST "Removing current mask"
+FATAL
+
+DESC "Remove current mask"
+
+PUTVAL mskLocation "1"
+OUTPUT *B*0*B* 1*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+CMD "sleep 1"
+OUTPUT *
+
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "sleep 1"
+OUTPUT *
+
+DESC " Mask location unknown?"
+
+GETVAL sadLocation
+OUTPUT *VAL* -1*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper released?"
+
+GETVAL sadGripper
+OUTPUT *VAL* 1*
+
+DESC "Release locked?"
+
+GETVAL sadRelease
+OUTPUT *VAL* -1*
+
+DESC "Focal plane empty?"
+
+GETVAL sadInFp
+OUTPUT *VAL* 0*
+
+ENDTEST
+
+#
+# Verify no mask ID
+#
+
+TEST "Verify no mask in focal plane"
+FATAL
+
+DESC "No mask ID?
+
+CMD "compareField sadSelect mskSelect
+OUTPUT *Different*
+
+DESC " Mask location in-cassette?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+# Mess up a re-load by moving the gripper first
+#
+
+TEST "Mess up a re-load by moving the gripper first"
+FATAL
+
+DESC "Move gripper between grip and release positions"
+
+PUTVAL gripMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL gripTarget "-15.0"
+OUTPUT *VAL*
+
+CMD "deviceCommand gripDir gripAck gripBusy"
+OUTPUT *Success*
+CMD "sleep 1"
+OUTPUT *
+
+DESC "Verify grip position"
+GETVAL sadGripper
+OUTPUT *VAL* 0*
+
+ENDTEST
+
+#
+# Attempt to re-load the same mask again
+#
+
+TEST "Attempt to re-load the same mask"
+#FATAL
+
+DESC "Ask for same mask again"
+
+PUTVAL mskLocation "0"
+OUTPUT *B*1*B* 0*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Failed*
+
+ENDTEST
+
+#
+# Verify error message
+#
+
+TEST "Verify error message"
+FATAL
+
+GETVAL cmdError
+OUTPUT *.MESS * Mask gripper must be released first*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly lose index"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 0*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state ERR?"
+
+CMD "sleep 1"
+OUTPUT *
+
+GETVAL sadState
+OUTPUT *VAL*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Release locked?"
+
+GETVAL sadRelease
+OUTPUT *VAL* -1*
+
+DESC "Focal plane empty?"
+
+GETVAL sadInFp
+OUTPUT *VAL* 0*
+
+ENDTEST
+
+#
+# Verify no mask ID
+#
+
+TEST "Verify no mask in focal plane"
+FATAL
+
+DESC "No mask ID?
+
+CMD "compareField sadSelect mskSelect
+OUTPUT *Different*
+
+DESC " Mask location in-cassette?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+# Restore system by indexing
+#
+
+TEST "Restore system by indexing"
+#FATAL
+
+DESC "INDEX assembly"
+
+PUTVAL mskMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper released?"
+
+GETVAL sadGripper
+OUTPUT *VAL* 1*
+
+DESC "Release locked?"
+
+GETVAL sadRelease
+OUTPUT *VAL* -1*
+
+DESC "Focal plane empty?"
+
+GETVAL sadInFp
+OUTPUT *VAL* 0*
+
+ENDTEST
+
+#
+# Verify no mask ID
+#
+
+TEST "Verify no mask in focal plane"
+FATAL
+
+DESC "No mask ID?
+
+CMD "compareField sadSelect mskSelect
+OUTPUT *Different*
+
+DESC " Mask location in-cassette?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+
+#
+# Replace current mask
+#
+
+TEST "Reloading the current mask"
+FATAL
+
+DESC "Replace current mask"
+
+PUTVAL mskMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL mskLocation "0"
+OUTPUT *B*B* 0*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+
+CMD "sleep 1"
+OUTPUT *
+
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "sleep 1"
+OUTPUT *
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper gripped?"
+
+GETVAL sadGripper
+OUTPUT *VAL* -1*
+
+DESC "Release released?"
+
+GETVAL sadRelease
+OUTPUT *VAL* 1*
+
+DESC "Focal plane occupied?"
+
+GETVAL sadInFp
+OUTPUT *VAL* -1*
+
+ENDTEST
+
+#
+# Verify mask in focal plane
+#
+
+TEST "Verify mask in focal plane"
+FATAL
+
+DESC "Correct mask in Focal Plane?
+
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC " Mask location in-beam?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+ENDTEST
+
+
+
+#
+# Select the last mask found (should be a mask!)
+#
+
+TEST "Loading a mask (last entry in table)"
+FATAL
+
+DESC "Loading mask (last entry in table)"
+
+CMD "getLastMaskId mskSelect /gemini/data/msk.lut"
+OUTPUT *Success*
+
+PUTVAL mskLocation "0"
+OUTPUT *B*0*B* 0*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+CMD "sleep 1"
+OUTPUT *
+
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "sleep 1"
+OUTPUT *
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper gripped?"
+
+GETVAL sadGripper
+OUTPUT *VAL* -1*
+
+DESC "Release released?"
+
+GETVAL sadRelease
+OUTPUT *VAL* 1*
+
+DESC "Focal plane occupied?"
+
+GETVAL sadInFp
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+# Verify mask in focal plane
+#
+
+TEST "Verify mask in focal plane"
+FATAL
+
+DESC "Correct mask in Focal Plane?
+
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC " Mask location in-beam?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+ENDTEST
+
+#
+# Log extractor position to verify it is in mask position 
+#
+
+TEST "Log extractor position to verify it is in mask position"
+FATAL
+
+DESC "Log extractor position"
+
+GETVAL extractorPosition
+OUTPUT *.MPOS*
+
+ENDTEST
+
+#
+# Stopping a mask load
+#
+
+TEST "Start to load 1st mask then stop it"
+FATAL
+
+DESC "STOP issued during mask change"
+
+CMD "getFirstMaskId mskSelect /gemini/data/msk.lut"
+OUTPUT *Success*
+
+PUTVAL mskMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+PUTVAL mskLocation "0"
+OUTPUT *B* 0*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+CMD "sleep 1"
+OUTPUT *
+
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "sleep 1"
+OUTPUT *
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "stopCommand cmdDir cmdAck"
+OUTPUT *Stopping*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper released?"
+
+GETVAL sadGripper
+OUTPUT *VAL* 1*
+
+DESC "Release locked?"
+
+GETVAL sadRelease
+OUTPUT *VAL* -1*
+
+ENDTEST
+
+#
+# Verify mask in not in focal plane
+#
+
+TEST "Verify mask not in focal plane"
+FATAL
+
+DESC "Focal plane empty?"
+
+GETVAL sadInFp
+OUTPUT *VAL* 0*
+
+DESC "Mask not in Focal Plane?
+
+CMD "compareField sadSelect mskSelect
+OUTPUT *Different*
+
+DESC " Mask location in-cassette?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+
+
+#
+# Parking the Assembly
+#
+
+TEST "Parking function test"
+FATAL
+
+DESC "Parking assembly"
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MOVE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+CMD "sleep 1"
+OUTPUT *
+
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly parked?"
+CMD "sleep 1"
+OUTPUT *
+
+GETVAL sadPark
+OUTPUT *VAL* 1*
+ 
+DESC "Mask assembly indexed?"
+
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper gripped?"
+
+GETVAL sadGripper
+OUTPUT *VAL* 1*
+
+DESC "Release released?"
+
+GETVAL sadRelease
+OUTPUT *VAL* -1*
+
+DESC "Focal plane not occupied?"
+
+GETVAL sadInFp
+OUTPUT *VAL* 0*
+
+DESC " Mask location in-cassette?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+# Un-parking the Assembly
+#
+
+TEST "Now ask for current mask moved out to un-park assembly"
+FATAL
+
+DESC "Move mask out"
+
+PUTVAL mskMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL mskLocation "1"
+OUTPUT *B*B* 1*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly no longer parked?"
+CMD "sleep 1"
+OUTPUT *
+
+GETVAL sadPark
+OUTPUT *VAL* 0*
+ 
+DESC "Mask assembly indexed?"
+
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper gripped?"
+
+GETVAL sadGripper
+OUTPUT *VAL* 1*
+
+DESC "Release released?"
+
+GETVAL sadRelease
+OUTPUT *VAL* -1*
+
+DESC "Focal plane not occupied?"
+
+GETVAL sadInFp
+OUTPUT *VAL* 0*
+
+DESC " Mask location in-cassette?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+# All Mask ICD functions are OK
+#
+
+COMMENT "Mask ICD OK"

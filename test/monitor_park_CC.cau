@@ -1,0 +1,17 @@
+# monitor_park.cau
+#
+# cau macro which monitors CAD/CAR records associated with park.
+# Invoked using cau "source" command.
+#
+monitor g7:cc:park.DIR
+monitor g7:cc:park.VAL
+monitor g7:cc:park.OMSS
+
+monitor g7:cc:parkC.VAL
+monitor g7:cc:parkC.OMSS
+
+monitor g7:wfs:park.DIR
+monitor g7:wfs:park.VAL
+monitor g7:wfs:park.OMSS
+
+# Type dataOut cau_park.log

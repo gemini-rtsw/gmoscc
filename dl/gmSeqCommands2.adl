@@ -1,0 +1,3346 @@
+file {
+	name="gmSeqCommands2.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="2"
+	npc="34"
+	nstr="106"
+	ndynamic="37"
+	nplot="0"
+	nrd="2"
+	nes="0"
+	nkd="2"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="1016"
+		height="646"
+	}
+	clr="1"
+	bclr="13"
+	nwords_dspy="7424"
+	nwords_sta="3056"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="4478"
+	osta="1422"
+	odynamic="4590"
+	oplot="7080"
+	ord="7080"
+	oes="7400"
+	okd="7400"
+	opd="7424"
+	opo="7424"
+	opc="68"
+	ostr="506"
+	ocmap="1422"
+	ocrules="1422"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1152"
+	pixht="900"
+	mmwid="325"
+	mmht="254"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="25"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="264"
+		y="3"
+		width="533"
+		height="26"
+		groupid="0"
+	}
+	textix="GMOS Sequencer Mechanism Commands"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="25"
+		style="solid"
+		fill="outline"
+		width="3"
+	}
+}
+"line" {
+	object {
+		x="282"
+		y="29"
+		width="491"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="282"
+		y="29"
+	}
+	point[1] {
+		x="772"
+		y="29"
+	}
+	orgpoint[0] {
+		x="0"
+		y="-1"
+	}
+	orgpoint[1] {
+		x="999"
+		y="-1"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="12"
+		y="169"
+		width="235"
+		height="262"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="31"
+		y="172"
+		width="179"
+		height="16"
+		groupid="0"
+	}
+	textix="DTA Tracking Mode"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="25"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="37"
+		y="191"
+		width="167"
+		height="0"
+		groupid="0"
+	}
+	npoints="3"
+	point[0] {
+		x="37"
+		y="191"
+	}
+	point[1] {
+		x="203"
+		y="191"
+	}
+	point[2] {
+		x="198"
+		y="191"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="999"
+		y="500"
+	}
+	orgpoint[2] {
+		x="965"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="503"
+		y="176"
+		width="197"
+		height="19"
+		groupid="0"
+	}
+	textix="Filter Selection"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="25"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="515"
+		y="196"
+		width="175"
+		height="0"
+		groupid="0"
+	}
+	npoints="3"
+	point[0] {
+		x="515"
+		y="196"
+	}
+	point[1] {
+		x="689"
+		y="196"
+	}
+	point[2] {
+		x="683"
+		y="196"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="999"
+		y="500"
+	}
+	orgpoint[2] {
+		x="965"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="11"
+		y="436"
+		width="236"
+		height="199"
+		groupid="0"
+	}
+}
+"rectangle" {
+	object {
+		x="490"
+		y="169"
+		width="214"
+		height="267"
+		groupid="0"
+	}
+}
+"rectangle" {
+	object {
+		x="8"
+		y="38"
+		width="934"
+		height="122"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="32"
+		y="99"
+		width="121"
+		height="20"
+		groupid="0"
+	}
+	textix="Connection"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="306"
+		y="66"
+		width="79"
+		height="20"
+		groupid="0"
+	}
+	textix="Health"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="635"
+		y="64"
+		width="79"
+		height="20"
+		groupid="0"
+	}
+	textix="State"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="34"
+		y="132"
+		width="110"
+		height="20"
+		groupid="0"
+	}
+	textix="applyC"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="29"
+		y="226"
+		width="56"
+		height="17"
+		groupid="0"
+	}
+	textix="Mode"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="40"
+		y="293"
+		width="94"
+		height="15"
+		groupid="0"
+	}
+	textix="X offset"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="30"
+		y="445"
+		width="179"
+		height="16"
+		groupid="0"
+	}
+	textix="DTA Position"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="25"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="56"
+		y="462"
+		width="127"
+		height="0"
+		groupid="0"
+	}
+	npoints="3"
+	point[0] {
+		x="56"
+		y="462"
+	}
+	point[1] {
+		x="182"
+		y="462"
+	}
+	point[2] {
+		x="178"
+		y="462"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="999"
+		y="500"
+	}
+	orgpoint[2] {
+		x="965"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="290"
+		y="130"
+		width="183"
+		height="20"
+		groupid="0"
+	}
+	textix="applyC message"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="500"
+		y="250"
+		width="121"
+		height="16"
+		groupid="0"
+	}
+	textix="Filter A"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="306"
+		y="96"
+		width="192"
+		height="21"
+		groupid="0"
+	}
+	textix="apply Message"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="260"
+		y="382"
+		width="216"
+		height="253"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="273"
+		y="391"
+		width="191"
+		height="16"
+		groupid="0"
+	}
+	textix="dtaAssembly fields"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="25"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="276"
+		y="408"
+		width="186"
+		height="0"
+		groupid="0"
+	}
+	npoints="3"
+	point[0] {
+		x="276"
+		y="408"
+	}
+	point[1] {
+		x="461"
+		y="408"
+	}
+	point[2] {
+		x="455"
+		y="408"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="999"
+		y="500"
+	}
+	orgpoint[2] {
+		x="965"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="311"
+		y="424"
+		width="22"
+		height="27"
+		groupid="0"
+	}
+	textix="A"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="311"
+		y="460"
+		width="22"
+		height="27"
+		groupid="0"
+	}
+	textix="B"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"line" {
+	object {
+		x="470"
+		y="572"
+		width="0"
+		height="0"
+		groupid="0"
+	}
+	npoints="0"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="709"
+		y="169"
+		width="214"
+		height="267"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="723"
+		y="179"
+		width="191"
+		height="16"
+		groupid="0"
+	}
+	textix="fltAssembly fields"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="25"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="726"
+		y="196"
+		width="186"
+		height="0"
+		groupid="0"
+	}
+	npoints="3"
+	point[0] {
+		x="726"
+		y="196"
+	}
+	point[1] {
+		x="911"
+		y="196"
+	}
+	point[2] {
+		x="905"
+		y="196"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="999"
+		y="500"
+	}
+	orgpoint[2] {
+		x="965"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="754"
+		y="263"
+		width="22"
+		height="27"
+		groupid="0"
+	}
+	textix="B"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="765"
+		y="400"
+		width="50"
+		height="27"
+		groupid="0"
+	}
+	textix="DIR"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="753"
+		y="358"
+		width="62"
+		height="25"
+		groupid="0"
+	}
+	textix="MODE"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="501"
+		y="304"
+		width="121"
+		height="16"
+		groupid="0"
+	}
+	textix="Filter B "
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="751"
+		y="222"
+		width="22"
+		height="27"
+		groupid="0"
+	}
+	textix="A"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="489"
+		y="440"
+		width="216"
+		height="197"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="516"
+		y="452"
+		width="179"
+		height="16"
+		groupid="0"
+	}
+	textix="Mask Position"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="25"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="543"
+		y="473"
+		width="127"
+		height="0"
+		groupid="0"
+	}
+	npoints="3"
+	point[0] {
+		x="543"
+		y="473"
+	}
+	point[1] {
+		x="669"
+		y="473"
+	}
+	point[2] {
+		x="665"
+		y="473"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="999"
+		y="500"
+	}
+	orgpoint[2] {
+		x="965"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="543"
+		y="507"
+		width="81"
+		height="16"
+		groupid="0"
+	}
+	textix="Mask ID"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="40"
+		y="329"
+		width="94"
+		height="15"
+		groupid="0"
+	}
+	textix="Y offset"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="40"
+		y="366"
+		width="94"
+		height="15"
+		groupid="0"
+	}
+	textix="Z offset"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="45"
+		y="481"
+		width="94"
+		height="15"
+		groupid="0"
+	}
+	textix="X position"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="45"
+		y="518"
+		width="94"
+		height="15"
+		groupid="0"
+	}
+	textix="Y position"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="45"
+		y="559"
+		width="94"
+		height="15"
+		groupid="0"
+	}
+	textix="Z position"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="311"
+		y="498"
+		width="22"
+		height="27"
+		groupid="0"
+	}
+	textix="C"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="509"
+		y="546"
+		width="122"
+		height="14"
+		groupid="0"
+	}
+	textix="Mask location"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="708"
+		y="440"
+		width="216"
+		height="195"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="719"
+		y="450"
+		width="191"
+		height="16"
+		groupid="0"
+	}
+	textix="mskAssembly fields"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="25"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="722"
+		y="467"
+		width="186"
+		height="0"
+		groupid="0"
+	}
+	npoints="3"
+	point[0] {
+		x="722"
+		y="467"
+	}
+	point[1] {
+		x="907"
+		y="467"
+	}
+	point[2] {
+		x="901"
+		y="467"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="999"
+		y="500"
+	}
+	orgpoint[2] {
+		x="965"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="761"
+		y="480"
+		width="22"
+		height="27"
+		groupid="0"
+	}
+	textix="A"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="761"
+		y="516"
+		width="22"
+		height="27"
+		groupid="0"
+	}
+	textix="B"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"line" {
+	object {
+		x="941"
+		y="569"
+		width="0"
+		height="0"
+		groupid="0"
+	}
+	npoints="0"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="296"
+		y="587"
+		width="50"
+		height="27"
+		groupid="0"
+	}
+	textix="DIR"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="284"
+		y="545"
+		width="62"
+		height="25"
+		groupid="0"
+	}
+	textix="MODE"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="740"
+		y="602"
+		width="50"
+		height="27"
+		groupid="0"
+	}
+	textix="DIR"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="728"
+		y="560"
+		width="62"
+		height="25"
+		groupid="0"
+	}
+	textix="MODE"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="23"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="22"
+		y="52"
+		width="262"
+		height="20"
+		groupid="0"
+	}
+	textix="Components Controller"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="205"
+		y="294"
+		width="56"
+		height="17"
+		groupid="0"
+	}
+	textix="mm."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="205"
+		y="328"
+		width="56"
+		height="17"
+		groupid="0"
+	}
+	textix="mm."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="205"
+		y="364"
+		width="56"
+		height="17"
+		groupid="0"
+	}
+	textix="mm."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="213"
+		y="481"
+		width="56"
+		height="17"
+		groupid="0"
+	}
+	textix="mm."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="213"
+		y="517"
+		width="56"
+		height="17"
+		groupid="0"
+	}
+	textix="mm."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="213"
+		y="557"
+		width="56"
+		height="17"
+		groupid="0"
+	}
+	textix="mm."
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="260"
+		y="169"
+		width="216"
+		height="199"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="269"
+		y="177"
+		width="197"
+		height="19"
+		groupid="0"
+	}
+	textix="Translation model"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="25"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="281"
+		y="197"
+		width="175"
+		height="0"
+		groupid="0"
+	}
+	npoints="3"
+	point[0] {
+		x="281"
+		y="197"
+	}
+	point[1] {
+		x="455"
+		y="197"
+	}
+	point[2] {
+		x="449"
+		y="197"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="999"
+		y="500"
+	}
+	orgpoint[2] {
+		x="965"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="4"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if zero"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan="$(T)ccDisabled"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs=""
+		}
+	}
+}
+"oval" {
+	object {
+		x="165"
+		y="94"
+		width="28"
+		height="28"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="2"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if not zero"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan="$(T)ccDisabled"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs="C=$(T)cc:heartBeat"
+		}
+	}
+}
+"oval" {
+	object {
+		x="165"
+		y="94"
+		width="28"
+		height="28"
+		groupid="0"
+	}
+}
+"message button" {
+	object {
+		x="62"
+		y="394"
+		width="92"
+		height="29"
+		groupid="0"
+	}
+	control {
+		chan="$(T)apply.DIR"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="APPLY"
+	pressed_label="APPLY"
+	press_msg="START"
+	release_msg=""
+}
+"text entry" {
+	object {
+		x="133"
+		y="287"
+		width="63"
+		height="26"
+		groupid="0"
+	}
+	control {
+		chan="$(T)dtaTrack.B"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	format="decimal"
+}
+"text update" {
+	object {
+		x="142"
+		y="129"
+		width="84"
+		height="28"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(CC)applyC"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)$(CC)applyC.VAL"
+		rulechan[1] = "$(T)$(CC)applyC.VAL"
+		rulechan[2] = "$(T)$(CC)applyC.VAL"
+		rulechan[3] = "$(T)$(CC)applyC.VAL"
+		rulechan[4] = "$(T)$(CC)applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)$(CC)applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"message button" {
+	object {
+		x="73"
+		y="589"
+		width="92"
+		height="29"
+		groupid="0"
+	}
+	control {
+		chan="$(T)apply.DIR"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="APPLY"
+	pressed_label="APPLY"
+	press_msg="START"
+	release_msg=""
+}
+"text entry" {
+	object {
+		x="155"
+		y="221"
+		width="63"
+		height="26"
+		groupid="0"
+	}
+	control {
+		chan="$(T)dtaTrack.A"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	format="decimal"
+}
+"text entry" {
+	object {
+		x="133"
+		y="360"
+		width="63"
+		height="26"
+		groupid="0"
+	}
+	control {
+		chan="$(T)dtaTrack.D"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	format="decimal"
+}
+"text entry" {
+	object {
+		x="133"
+		y="323"
+		width="63"
+		height="26"
+		groupid="0"
+	}
+	control {
+		chan="$(T)dtaTrack.C"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	format="decimal"
+}
+"text entry" {
+	object {
+		x="146"
+		y="512"
+		width="63"
+		height="26"
+		groupid="0"
+	}
+	control {
+		chan="$(T)dtaPos.B"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	format="decimal"
+}
+"text entry" {
+	object {
+		x="146"
+		y="475"
+		width="63"
+		height="26"
+		groupid="0"
+	}
+	control {
+		chan="$(T)dtaPos.A"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	format="decimal"
+}
+"text entry" {
+	object {
+		x="628"
+		y="243"
+		width="63"
+		height="26"
+		groupid="0"
+	}
+	control {
+		chan="$(T)fltPos.A"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	format="decimal"
+}
+"text entry" {
+	object {
+		x="628"
+		y="297"
+		width="63"
+		height="26"
+		groupid="0"
+	}
+	control {
+		chan="$(T)fltPos.B"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	format="decimal"
+}
+"text update" {
+	object {
+		x="484"
+		y="98"
+		width="352"
+		height="22"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(CC)apply.MESS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="484"
+		y="131"
+		width="352"
+		height="22"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(CC)applyC.OMSS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="349"
+		y="425"
+		width="84"
+		height="28"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(C2)dtaAssembly.A"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)$(CC)applyC.VAL"
+		rulechan[1] = "$(T)$(CC)applyC.VAL"
+		rulechan[2] = "$(T)$(CC)applyC.VAL"
+		rulechan[3] = "$(T)$(CC)applyC.VAL"
+		rulechan[4] = "$(T)$(CC)applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)$(CC)applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="349"
+		y="460"
+		width="84"
+		height="28"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(C2)dtaAssembly.B"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)$(CC)applyC.VAL"
+		rulechan[1] = "$(T)$(CC)applyC.VAL"
+		rulechan[2] = "$(T)$(CC)applyC.VAL"
+		rulechan[3] = "$(T)$(CC)applyC.VAL"
+		rulechan[4] = "$(T)$(CC)applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)$(CC)applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="789"
+		y="265"
+		width="132"
+		height="26"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)c2:fltAssembly.B"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)cc:applyC.VAL"
+		rulechan[1] = "$(T)cc:applyC.VAL"
+		rulechan[2] = "$(T)cc:applyC.VAL"
+		rulechan[3] = "$(T)cc:applyC.VAL"
+		rulechan[4] = "$(T)cc:applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)cc:applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="825"
+		y="401"
+		width="84"
+		height="28"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)c2:fltAssembly.DIR"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)cc:applyC.VAL"
+		rulechan[1] = "$(T)cc:applyC.VAL"
+		rulechan[2] = "$(T)cc:applyC.VAL"
+		rulechan[3] = "$(T)cc:applyC.VAL"
+		rulechan[4] = "$(T)cc:applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)cc:applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="788"
+		y="225"
+		width="132"
+		height="26"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)c2:fltAssembly.A"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)cc:applyC.VAL"
+		rulechan[1] = "$(T)cc:applyC.VAL"
+		rulechan[2] = "$(T)cc:applyC.VAL"
+		rulechan[3] = "$(T)cc:applyC.VAL"
+		rulechan[4] = "$(T)cc:applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)cc:applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="825"
+		y="355"
+		width="84"
+		height="28"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)c2:fltAssembly.MODE"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)cc:applyC.VAL"
+		rulechan[1] = "$(T)cc:applyC.VAL"
+		rulechan[2] = "$(T)cc:applyC.VAL"
+		rulechan[3] = "$(T)cc:applyC.VAL"
+		rulechan[4] = "$(T)cc:applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)cc:applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"message button" {
+	object {
+		x="558"
+		y="371"
+		width="92"
+		height="29"
+		groupid="0"
+	}
+	control {
+		chan="$(T)apply.DIR"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="APPLY"
+	pressed_label="APPLY"
+	press_msg="START"
+	release_msg=""
+}
+"message button" {
+	object {
+		x="554"
+		y="581"
+		width="92"
+		height="29"
+		groupid="0"
+	}
+	control {
+		chan="$(T)apply.DIR"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="APPLY"
+	pressed_label="APPLY"
+	press_msg="START"
+	release_msg=""
+}
+"text entry" {
+	object {
+		x="633"
+		y="535"
+		width="63"
+		height="26"
+		groupid="0"
+	}
+	control {
+		chan="$(T)mskPos.B"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	format="decimal"
+}
+"text entry" {
+	object {
+		x="633"
+		y="498"
+		width="63"
+		height="26"
+		groupid="0"
+	}
+	control {
+		chan="$(T)mskPos.A"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	format="decimal"
+}
+"text entry" {
+	object {
+		x="146"
+		y="553"
+		width="63"
+		height="26"
+		groupid="0"
+	}
+	control {
+		chan="$(T)dtaPos.C"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="outward"
+		convertFunc=""
+		convertParams=""
+	}
+	format="decimal"
+}
+"text update" {
+	object {
+		x="349"
+		y="498"
+		width="84"
+		height="28"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(C2)dtaAssembly.C"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)$(CC)applyC.VAL"
+		rulechan[1] = "$(T)$(CC)applyC.VAL"
+		rulechan[2] = "$(T)$(CC)applyC.VAL"
+		rulechan[3] = "$(T)$(CC)applyC.VAL"
+		rulechan[4] = "$(T)$(CC)applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)$(CC)applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="799"
+		y="481"
+		width="84"
+		height="28"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(C1)mskAssembly.A"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)$(CC)applyC.VAL"
+		rulechan[1] = "$(T)$(CC)applyC.VAL"
+		rulechan[2] = "$(T)$(CC)applyC.VAL"
+		rulechan[3] = "$(T)$(CC)applyC.VAL"
+		rulechan[4] = "$(T)$(CC)applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)$(CC)applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="799"
+		y="516"
+		width="84"
+		height="28"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(C1)mskAssembly.B"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)$(CC)applyC.VAL"
+		rulechan[1] = "$(T)$(CC)applyC.VAL"
+		rulechan[2] = "$(T)$(CC)applyC.VAL"
+		rulechan[3] = "$(T)$(CC)applyC.VAL"
+		rulechan[4] = "$(T)$(CC)applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)$(CC)applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="356"
+		y="588"
+		width="84"
+		height="28"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(C2)dtaAssembly.DIR"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)$(CC)applyC.VAL"
+		rulechan[1] = "$(T)$(CC)applyC.VAL"
+		rulechan[2] = "$(T)$(CC)applyC.VAL"
+		rulechan[3] = "$(T)$(CC)applyC.VAL"
+		rulechan[4] = "$(T)$(CC)applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)$(CC)applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="356"
+		y="542"
+		width="84"
+		height="28"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(C2)dtaAssembly.MODE"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)$(CC)applyC.VAL"
+		rulechan[1] = "$(T)$(CC)applyC.VAL"
+		rulechan[2] = "$(T)$(CC)applyC.VAL"
+		rulechan[3] = "$(T)$(CC)applyC.VAL"
+		rulechan[4] = "$(T)$(CC)applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)$(CC)applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="800"
+		y="603"
+		width="84"
+		height="28"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(C1)mskAssembly.DIR"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)$(CC)applyC.VAL"
+		rulechan[1] = "$(T)$(CC)applyC.VAL"
+		rulechan[2] = "$(T)$(CC)applyC.VAL"
+		rulechan[3] = "$(T)$(CC)applyC.VAL"
+		rulechan[4] = "$(T)$(CC)applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)$(CC)applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="800"
+		y="557"
+		width="84"
+		height="28"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(C1)mskAssembly.MODE"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)$(CC)applyC.VAL"
+		rulechan[1] = "$(T)$(CC)applyC.VAL"
+		rulechan[2] = "$(T)$(CC)applyC.VAL"
+		rulechan[3] = "$(T)$(CC)applyC.VAL"
+		rulechan[4] = "$(T)$(CC)applyC.VAL"
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="flashifbusy"
+		clrargs="C=$(T)$(CC)applyC"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="393"
+		y="65"
+		width="211"
+		height="20"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(CC)health"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="717"
+		y="63"
+		width="211"
+		height="20"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(CC)state"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"message button" {
+	object {
+		x="70"
+		y="198"
+		width="70"
+		height="20"
+		groupid="0"
+	}
+	control {
+		chan="$(T)dtaTrack.A"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="MOVE"
+	pressed_label="MOVE"
+	press_msg="MOVE"
+	release_msg=""
+}
+"message button" {
+	object {
+		x="70"
+		y="218"
+		width="70"
+		height="20"
+		groupid="0"
+	}
+	control {
+		chan="$(T)dtaTrack.A"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="FOLLOW"
+	pressed_label="FOLLOW"
+	press_msg="FOLLOW"
+	release_msg=""
+}
+"message button" {
+	object {
+		x="70"
+		y="238"
+		width="70"
+		height="20"
+		groupid="0"
+	}
+	control {
+		chan="$(T)dtaTrack.A"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="STOP"
+	pressed_label="STOP"
+	press_msg="STOP"
+	release_msg=""
+}
+"message button" {
+	object {
+		x="70"
+		y="258"
+		width="70"
+		height="20"
+		groupid="0"
+	}
+	control {
+		chan="$(T)dtaTrack.A"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="FOLLOW-XY"
+	pressed_label="FOLLOW-XY"
+	press_msg="FOLLOW-XY"
+	release_msg=""
+}
+"related display" {
+	object {
+		x="267"
+		y="220"
+		width="200"
+		height="21"
+		groupid="0"
+	}
+	selfkill="off"
+	display[0] {
+		label="Model contributions"
+		name="gmSeqDtaModels.dl"
+		args="T=$(T), S=$(S), C1=$(C1), C2=$(C2), CC=$(CC)"
+	}
+	display[1] {
+		label=""
+		name=""
+		args=""
+	}
+	display[2] {
+		label=""
+		name=""
+		args=""
+	}
+	display[3] {
+		label=""
+		name=""
+		args=""
+	}
+	display[4] {
+		label=""
+		name=""
+		args=""
+	}
+	display[5] {
+		label=""
+		name=""
+		args=""
+	}
+	display[6] {
+		label=""
+		name=""
+		args=""
+	}
+	display[7] {
+		label=""
+		name=""
+		args=""
+	}
+	display[8] {
+		label=""
+		name=""
+		args=""
+	}
+	display[9] {
+		label=""
+		name=""
+		args=""
+	}
+	display[10] {
+		label=""
+		name=""
+		args=""
+	}
+	display[11] {
+		label=""
+		name=""
+		args=""
+	}
+	display[12] {
+		label=""
+		name=""
+		args=""
+	}
+	display[13] {
+		label=""
+		name=""
+		args=""
+	}
+	display[14] {
+		label=""
+		name=""
+		args=""
+	}
+	display[15] {
+		label=""
+		name=""
+		args=""
+	}
+	display[16] {
+		label=""
+		name=""
+		args=""
+	}
+	display[17] {
+		label=""
+		name=""
+		args=""
+	}
+	display[18] {
+		label=""
+		name=""
+		args=""
+	}
+	display[19] {
+		label=""
+		name=""
+		args=""
+	}
+	display[20] {
+		label=""
+		name=""
+		args=""
+	}
+	display[21] {
+		label=""
+		name=""
+		args=""
+	}
+	display[22] {
+		label=""
+		name=""
+		args=""
+	}
+	display[23] {
+		label=""
+		name=""
+		args=""
+	}
+	clr="0"
+	bclr="6"
+	menu_title=""
+	decorate="none"
+}
+"related display" {
+	object {
+		x="267"
+		y="251"
+		width="200"
+		height="21"
+		groupid="0"
+	}
+	selfkill="off"
+	display[0] {
+		label="Model coefficients"
+		name="gmSeqDtaCoeffs.dl"
+		args="T=$(T), S=$(S), C1=$(C1), C2=$(C2), CC=$(CC)"
+	}
+	display[1] {
+		label=""
+		name=""
+		args=""
+	}
+	display[2] {
+		label=""
+		name=""
+		args=""
+	}
+	display[3] {
+		label=""
+		name=""
+		args=""
+	}
+	display[4] {
+		label=""
+		name=""
+		args=""
+	}
+	display[5] {
+		label=""
+		name=""
+		args=""
+	}
+	display[6] {
+		label=""
+		name=""
+		args=""
+	}
+	display[7] {
+		label=""
+		name=""
+		args=""
+	}
+	display[8] {
+		label=""
+		name=""
+		args=""
+	}
+	display[9] {
+		label=""
+		name=""
+		args=""
+	}
+	display[10] {
+		label=""
+		name=""
+		args=""
+	}
+	display[11] {
+		label=""
+		name=""
+		args=""
+	}
+	display[12] {
+		label=""
+		name=""
+		args=""
+	}
+	display[13] {
+		label=""
+		name=""
+		args=""
+	}
+	display[14] {
+		label=""
+		name=""
+		args=""
+	}
+	display[15] {
+		label=""
+		name=""
+		args=""
+	}
+	display[16] {
+		label=""
+		name=""
+		args=""
+	}
+	display[17] {
+		label=""
+		name=""
+		args=""
+	}
+	display[18] {
+		label=""
+		name=""
+		args=""
+	}
+	display[19] {
+		label=""
+		name=""
+		args=""
+	}
+	display[20] {
+		label=""
+		name=""
+		args=""
+	}
+	display[21] {
+		label=""
+		name=""
+		args=""
+	}
+	display[22] {
+		label=""
+		name=""
+		args=""
+	}
+	display[23] {
+		label=""
+		name=""
+		args=""
+	}
+	clr="0"
+	bclr="6"
+	menu_title=""
+	decorate="none"
+}
+"kill display" {
+	object {
+		x="901"
+		y="707"
+		width="86"
+		height="36"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="none"
+}
+"kill display" {
+	object {
+		x="930"
+		y="607"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

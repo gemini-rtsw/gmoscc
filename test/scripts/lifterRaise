@@ -1,0 +1,39 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: lifterRaise
+#
+# Purpose: 
+#	To activate the lifter raise for a few seconds.
+#       This primitive may be used to guard against leaks
+#       in the grating lifter that might cause the lifter to
+#       drift downwards while running a checkout script.
+#
+# Invocation:
+#       lifterRaise gm:
+#
+# Assumptions:
+#       The switch requires 0 to activate and 1 to deactivate
+#
+
+#
+# This script would be dangerous to execute on the MK hardware by accident,
+# so add a safety check.
+#
+
+if ( ($1 == "gm:") && !($?GMOS_MK_ACCESS)) then
+    echo ""
+    echo "GMOS MK safety check failed."
+    echo ""
+    echo "Before executing this script, which will move real MK hardware,"
+    echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+    echo ""
+    exit
+endif
+
+set caResponse = `caput ${1}cc:grUpValve "0"`
+
+sleep 5
+
+set caResponse = `caput ${1}cc:grUpValve "1"`
+
+exit

@@ -1,0 +1,19 @@
+[symbol2]
+bbox -288 128 -128 320
+port -144 256 100 512 CNT symbol 2 -128 256 0
+port -272 160 100 0 SLNK symbol 1 -288 160 0
+port -144 160 100 512 FLNK symbol 2 -128 160 0
+port -272 256 100 0 DIR symbol 1 -288 256 0
+uniq 0
+[tools]
+[attributes]
+p -288 96 100 0 -1 seta:dev device
+p -288 64 100 0 -1 setb:DAR_DIR_START 3
+[layers]
+<symbol>
+l 100 4 0 -208 288 startCounter
+r 0 -288 128 -128 320
+v 0 -288 288
+-128 288
+_
+[comments]

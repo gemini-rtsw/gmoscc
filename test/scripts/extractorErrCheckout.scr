@@ -1,0 +1,528 @@
+#
+# DHS Test Commander
+# Extractor device error conditions test script
+#
+
+#
+# Do the variable substitution thing....
+#
+
+VAR     maskAssembly        assemblyDirective     maskDir              1
+VAR     maskAssembly        assemblyMode          maskMode             1
+VAR     maskAssembly        assemblyAAttribute    maskID               1
+VAR     maskAssembly        assemblyBAttribute    maskLoc              1
+VAR     maskAssembly        assemblyAcknowledge   maskAck              1
+VAR     maskAssembly        assemblyBusy          maskBusy             1
+VAR     maskAssembly        assemblyMessage       maskMess             1
+VAR     maskAssembly        assemblyIndexed       maskIndex            1
+VAR     maskAssembly        assemblyInitialized   maskInit             1
+
+VAR     maskStatus          cassetteMissing       cassetteDetected     1
+VAR     maskStatus          slotMisaligned        slotAligned          1
+VAR     maskStatus          slotEmpty             slotEmpty            1
+
+VAR     maskStatus          fpEmpty               fpOccupied           1
+VAR     maskStatus          maskNotDetected       maskInstalled        1
+VAR     maskStatus          ifuNotDetected        ifuInstalled         1
+
+VAR     maskStatus          gripNotGripped        maskGripped          1
+VAR     maskStatus          gripNotReleased       maskReleased         1
+VAR     maskStatus          lockNotEngaged        maskLocked           1
+VAR     maskStatus          lockNotReleased       maskUnlocked         1
+
+VAR     cassetteDevice      devDir                cassetteDir          1
+VAR     cassetteDevice      devMode               cassetteMode         1
+VAR     cassetteDevice      devNamedTarget        cassetteNamedTarget  1
+VAR     cassetteDevice      devTarget             cassetteTarget       1
+VAR     cassetteDevice      devMinPosition        cassetteMinPos       1
+VAR     cassetteDevice      devMaxPosition        cassetteMaxPos       1
+VAR     cassetteDevice      devMinVelocity        cassetteMinVel       1
+VAR     cassetteDevice      devMaxVelocity        cassetteMaxVel       1
+VAR     cassetteDevice      devVelocity           cassetteVelo         1
+VAR     cassetteDevice      devAck                cassetteAck          1
+VAR     cassetteDevice      devBusy               cassetteBusy         1
+VAR     cassetteDevice      devMess               cassetteMess         1
+VAR     cassetteDevice      devIndexed            cassetteIndex        1
+
+VAR     extractorDevice     devDir                extractorDir         1
+VAR     extractorDevice     devMode               extractorMode        1
+VAR     extractorDevice     devNamedTarget        extractorNamedTarget 1
+VAR     extractorDevice     devTarget             extractorTarget      1
+VAR     extractorDevice     devMinPosition        extractorMinPos      1
+VAR     extractorDevice     devMaxPosition        extractorMaxPos      1
+VAR     extractorDevice     devMinVelocity        extractorMinVel      1
+VAR     extractorDevice     devMaxVelocity        extractorMaxVel      1
+VAR     extractorDevice     devVelocity           extractorVelo        1
+VAR     extractorDevice     devAck                extractorAck         1
+VAR     extractorDevice     devBusy               extractorBusy        1
+VAR     extractorDevice     devMess               extractorMess        1
+VAR     extractorDevice     devIndexed            extractorIndex       1
+
+VAR     releaseDevice       devDir                releaseDir           1
+VAR     releaseDevice       devMode               releaseMode          1
+VAR     releaseDevice       devNamedTarget        releaseNamedTarget   1
+VAR     releaseDevice       devTarget             releaseTarget        1
+VAR     releaseDevice       devVelocity           releaseVelo          1
+VAR     releaseDevice       devAck                releaseAck           1
+VAR     releaseDevice       devBusy               releaseBusy          1
+VAR     releaseDevice       devMess               releaseMess          1
+VAR     releaseDevice       devIndexed            releaseIndex         1
+
+
+
+#
+# Is it safe to proceed?
+#
+
+PROMPT "Is it safe to move the mask assembly?"
+
+
+#
+# First try to initialize the mask assembly
+#
+
+TEST "Initialize the Mask Assembly"
+FATAL
+
+DESC "Initializing mask"
+
+PUTVAL maskMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "assemblyCommand maskDir maskAck maskBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+
+#
+# Index the mask assembly
+#
+
+TEST "Index the Mask assembly"
+FATAL
+
+DESC "Indexing mask"
+
+PUTVAL maskMode "3"
+OUTPUT *MODE*INIT*MODE*INDEX*
+
+CMD "assemblyCommand maskDir maskAck maskBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  check invalid extractor position strings
+#
+
+TEST "Try invalid position strings with the check directive"
+FATAL
+
+DESC "Reject invalid string"
+
+PUTVAL extractorMode "1"
+OUTPUT *MODE*
+
+PUTVAL extractorNamedTarget "cleared"
+OUTPUT *VALS*
+
+CMD "checkCommand extractorDir extractorAck"
+OUTPUT *reject*
+
+DESC "check for correct extractor error message"
+
+GETVAL extractorMess
+OUTPUT *MESS*Can not translate named position*
+
+PUTVAL extractorNamedTarget "id"
+OUTPUT *VALS*
+
+CMD "checkCommand extractorDir extractorAck"
+OUTPUT *accept*
+
+DESC "Reject valid string in Caps"
+
+PUTVAL extractorNamedTarget "CLEAR"
+OUTPUT *VALS*
+
+CMD "checkCommand extractorDir extractorAck"
+OUTPUT *reject*
+
+DESC "check for correct extractor error message"
+
+GETVAL extractorMess
+OUTPUT *MESS*Can not translate named position*
+
+PUTVAL extractorNamedTarget "clear"
+OUTPUT *VALS*
+
+CMD "checkCommand extractorDir extractorAck"
+OUTPUT *accept*
+
+ENDTEST
+
+#
+#  check out of bounds extractor positions
+#
+
+TEST "Try out of bounds positions with the check directive"
+FATAL
+
+DESC "Reject bottom limit position"
+
+PUTVAL extractorMode "1"
+OUTPUT *MODE*
+
+PUTVAL extractorTarget "-447.6"
+OUTPUT *VAL*
+
+CMD "checkCommand extractorDir extractorAck"
+OUTPUT *reject*
+
+GETVAL extractorMess
+OUTPUT *MESS*Target position out of range*
+
+CMD "setField extractorTarget extractorMinPos"
+OUTPUT *Success*
+
+CMD "checkCommand extractorDir extractorAck"
+OUTPUT *accept*
+
+DESC "Reject top limit position"
+
+PUTVAL extractorMode "1"
+OUTPUT *MODE*
+
+PUTVAL extractorTarget "4.1"
+OUTPUT *VAL*
+
+CMD "checkCommand extractorDir extractorAck"
+OUTPUT *reject*
+
+GETVAL extractorMess
+OUTPUT *MESS*Target position out of range*
+
+CMD "setField extractorTarget extractorMaxPos"
+OUTPUT *Success*
+
+CMD "checkCommand extractorDir extractorAck"
+OUTPUT *accept*
+
+ENDTEST
+
+#
+#  check invalid extractor velocities
+#
+
+TEST "Try invalid velocities with the check directive"
+FATAL
+
+DESC "Reject velocities below low limit"
+
+PUTVAL extractorMode "1"
+OUTPUT *MODE*
+
+PUTVAL extractorVelo "4.9"
+OUTPUT *VELO*
+
+CMD "checkCommand extractorDir extractorAck"
+OUTPUT *reject*
+
+GETVAL extractorMess
+OUTPUT *MESS*Velocity out of range*
+
+CMD "setField extractorVelo extractorMinVel"
+OUTPUT *Success*
+
+CMD "checkCommand extractorDir extractorAck"
+OUTPUT *accept*
+
+DESC "Reject velocities above high limit"
+
+PUTVAL extractorMode "1"
+OUTPUT *MODE*
+
+PUTVAL extractorVelo "40.1"
+OUTPUT *VELO*
+
+CMD "checkCommand extractorDir extractorAck"
+OUTPUT *reject*
+
+GETVAL extractorMess
+OUTPUT *MESS*Velocity out of range*
+
+PUTVAL extractorVelo "35"
+OUTPUT *VELO*
+
+CMD "checkCommand extractorDir extractorAck"
+OUTPUT *accept*
+
+ENDTEST
+
+
+
+#
+#  Ensure position limits from gmMask.pv are reachable
+#
+
+TEST "Ensure upper & lower position limits are reachable"
+FATAL
+
+DESC "move to lower position limit"
+
+CMD "setField extractorTarget extractorMinPos"
+OUTPUT *Success*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Success*
+
+DESC "move to upper position limit"
+
+CMD "setField extractorTarget extractorMaxPos"
+OUTPUT *Success*
+
+PUTVAL extractorMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+#  Drive into upper limit and check response
+#
+
+TEST "Drive into upper limit and check response"
+FATAL
+
+DESC "index on upper limit switch"
+
+PUTVAL extractorMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL extractorNamedTarget "i5"
+OUTPUT *VALS*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Success*
+
+GETVAL extractorIndex
+OUTPUT *HPVL* 1*
+
+DESC "move negative 10 steps"
+
+PUTVAL extractorMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL extractorTarget "-10"
+OUTPUT *VAL*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Success*
+
+DESC "attempt move positive 3 steps into limit"
+
+PUTVAL extractorTarget "3"
+OUTPUT *VAL*10*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Failed*
+
+DESC "check for message 'Device hit a soft limit' "
+
+GETVAL extractorMess
+OUTPUT *MESS*Device hit a soft limit*
+
+GETVAL extractorIndex
+OUTPUT *HPVL* 0*
+
+ENDTEST
+
+#
+#  Attempt to move without first indexing
+#
+
+TEST "Attempt to move without first indexing"
+FATAL
+
+DESC "attempt another move positive 3 steps"
+
+PUTVAL extractorTarget "3"
+OUTPUT *VAL*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *rejected*
+
+DESC "check for message 'Must re-index device before moving' "
+
+GETVAL extractorMess
+OUTPUT *MESS*Must re-index device before moving*
+
+
+ENDTEST
+
+#
+#  Attempt to move further into upper limit
+#
+
+TEST "Attempt to move further into upper limit"
+FATAL
+
+DESC "index on upper limit switch"
+
+PUTVAL extractorNamedTarget "i5"
+OUTPUT *VALS*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Success*
+
+DESC "attempt another move positive 3 steps"
+
+PUTVAL extractorMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL extractorTarget "3"
+OUTPUT *VAL*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Failed*
+
+DESC "check for message 'Can not move into a soft limit' "
+
+GETVAL extractorMess
+OUTPUT *MESS*Can not move into a soft limit*
+
+
+ENDTEST
+
+#
+#  Drive into lower limit and check response
+#
+
+TEST "Drive into lower limit and check response"
+FATAL
+
+DESC "index on lower limit switch"
+
+PUTVAL extractorVelo "15"
+OUTPUT *VELO*
+
+PUTVAL extractorNamedTarget "i4"
+OUTPUT *VALS*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Success*
+
+PUTVAL extractorVelo "35"
+OUTPUT *VELO*
+
+GETVAL extractorIndex
+OUTPUT *HPVL* 1*
+
+DESC "move positive 3 steps"
+
+PUTVAL extractorMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL extractorTarget "3"
+OUTPUT *VAL*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Success*
+
+DESC "attempt move negative 10 steps into limit"
+
+PUTVAL extractorTarget "-10"
+OUTPUT *VAL*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Failed*
+
+GETVAL extractorIndex
+OUTPUT *HPVL* 0*
+
+DESC "check for message 'Device hit a soft limit' "
+
+GETVAL extractorMess
+OUTPUT *MESS*Device hit a soft limit*
+
+ENDTEST
+
+#
+#  Attempt to move without first indexing
+#
+
+TEST "Attempt to move without first indexing"
+FATAL
+
+DESC "attempt move again"
+
+PUTVAL extractorTarget "-10"
+OUTPUT *VAL*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *rejected*
+
+DESC "check for message 'Must re-index device before moving' "
+
+GETVAL extractorMess
+OUTPUT *MESS*Must re-index device before moving*
+
+
+ENDTEST
+
+#
+#  Attempt to move further into lower limit
+#
+
+TEST "Attempt to move further into lower limit"
+FATAL
+
+DESC "index on lower limit switch"
+
+PUTVAL extractorVelo "15"
+OUTPUT *VELO*
+
+PUTVAL extractorNamedTarget "i4"
+OUTPUT *VALS*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Success*
+
+PUTVAL extractorVelo "35"
+OUTPUT *VELO*
+
+DESC "attempt to move negative 10 steps"
+
+PUTVAL extractorMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL extractorTarget "-10"
+OUTPUT *VAL*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Failed*
+
+DESC "check for message 'Can not move into a soft limit' "
+
+GETVAL extractorMess
+OUTPUT *MESS*Can not move into a soft limit*
+
+DESC "Index extractor"
+
+PUTVAL extractorMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand extractorDir extractorAck extractorBusy"
+OUTPUT *Success*
+
+GETVAL extractorIndex
+OUTPUT *HPVL* 1*
+
+ENDTEST
+
+COMMENT "Extractor error check is OK"
+
+ 

@@ -1,0 +1,16 @@
+[symbol2]
+bbox -256 -16 48 160
+port -80 64 100 0 DISV symbol 2 48 80 0
+uniq 0
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 -208 80 Subsystem
+l 100 0 0 -208 48 Present
+l 100 0 0 -192 112 GMOS
+r 0 -256 -16 -32 160
+v 0 -32 80
+48 80
+_
+[comments]

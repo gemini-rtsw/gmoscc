@@ -1,0 +1,1318 @@
+#
+# DHS Test Commander
+# Extractor device functionality test script
+#
+
+#
+# Do the variable substitution thing....
+#
+
+# Device INPUTS
+VAR     extractorDevice   devDir                  devDir               1
+VAR     extractorDevice   devMode                 devMode              1
+VAR     extractorDevice   devTarget               devTarget            1
+VAR     extractorDevice   devNamedTarget          devNamedTarget       1
+VAR     extractorDevice   devIndexType            devIndexType         1
+VAR     extractorDevice   devDbug                 devDbug              1
+VAR     extractorDevice   devSimm                 devSimm              1
+VAR     extractorDevice   devMinPosition          devMinPosition       1
+VAR     extractorDevice   devMaxPosition          devMaxPosition       1
+VAR     extractorDevice   devVelocity             devVelocity          1
+VAR     extractorDevice   devMinVelocity          devMinVelocity       1
+VAR     extractorDevice   devMaxVelocity          devMaxVelocity       1
+VAR     extractorDevice   devAcceleration         devAcceleration      1
+VAR     extractorDevice   devLutFile              devLutFile           1
+VAR     extractorDevice   devLutDirectory         devLutDirectory      1
+VAR     extractorDevice   devDevType              devDevType           1
+VAR     extractorDevice   devEgu                  devEgu               1
+VAR     extractorDevice   devMotorRes             devMotorRes          1
+VAR     extractorDevice   devMotionDeadBand       devMotionDeadBand    1
+VAR     extractorDevice   devBaseVelo             devBaseVelo          1
+VAR     extractorDevice   devUsePwrStatus         devUsePwrStatus      1
+VAR     extractorDevice   devPwrStatusTimeout     devPwrStatusTimeout  1
+VAR     extractorDevice   devPower                devPower             1
+VAR     extractorDevice   devUseBrkStatus         devUseBrkStatus      1
+VAR     extractorDevice   devBrkStatusTimeout     devBrkStatusTimeout  1
+VAR     extractorDevice   devBrake                devBrake             1
+VAR     extractorDevice   devUseAuxPwr            devUseAuxPwr         1
+VAR     extractorDevice   devUseEncoder           devUseEncoder        1
+VAR     extractorDevice   devEncoderRes           devEncoderRes        1
+VAR     extractorDevice   devEncoderDeadBand      devEncoderDeadBand   1
+
+# Device OUPUTS
+VAR     extractorDevice   devPosition             devPosition          1
+VAR     extractorDevice   devRawPosition          devRawPosition       1
+VAR     extractorDevice   devAck                  devAck               1
+VAR     extractorDevice   devBusy                 devBusy              1
+VAR     extractorDevice   devState                devState             1
+VAR     extractorDevice   devMess                 devMess              1
+VAR     extractorDevice   devIndexed              devIndexed           1
+VAR     extractorDevice   devLimited              devLimited           1
+
+# other outputs
+VAR     maskStatus        lvdtZone                lvdtZone             1
+VAR     maskStatus        lvdtVal                 lvdtVal              1
+VAR     maskStatus        lvdtLo                  lvdtLo               1
+VAR     maskStatus        lvdtGrpLo               lvdtGrpLo            1
+VAR     maskStatus        lvdtGrpHi               lvdtGrpHi            1
+VAR     maskStatus        lvdtRelLo               lvdtRelLo            1
+VAR     maskStatus        lvdtRelHi               lvdtRelHi            1
+
+#
+# Is it safe to proceed?
+#
+
+PROMPT "Read the assumptions.  Is it safe to move the extractor?"
+
+#
+# Verify startup state
+#
+
+TEST "Verify startup state"
+FATAL
+
+DESC "Verify startup state"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Log the current device record configuration
+#
+TEST "Log the current device record configuration"
+FATAL
+
+DESC "Get deviceControl record device layer type"
+GETVAL devDevType
+OUTPUT *.DTYP*DEV CTL OMS 8/44*
+
+DESC "Get simulation level"
+GETVAL devSimm
+OUTPUT *.SIMM*NONE*
+
+DESC "Get debug level"
+GETVAL devDbug
+OUTPUT *.DBUG*
+
+DESC "Get enginering units"
+GETVAL devEgu
+OUTPUT *.EGU*mm*
+
+DESC "Get motor resolution, in microsteps per EGU"
+GETVAL devMotorRes
+OUTPUT *.MRES*
+
+DESC "Get motion deadband"
+GETVAL devMotionDeadBand
+OUTPUT *.MDBD*
+
+DESC "Get upper target limit, max EGU target allowed"
+GETVAL devMaxPosition
+OUTPUT *.PHLM*
+
+DESC "Get lower target limit, min EGU target allowed"
+GETVAL devMinPosition
+OUTPUT *.PLLM*
+
+DESC "Get motion velocity"
+GETVAL devVelocity
+OUTPUT *.VELO*
+
+DESC "Get upper velocity limit, max EGU velocity allowed"
+GETVAL devMaxVelocity
+OUTPUT *.VHLM*
+
+DESC "Get lower velocity limit, min EGU velocity allowed"
+GETVAL devMinVelocity
+OUTPUT *.VLLM*
+
+DESC "Get motion startup velocity"
+GETVAL devBaseVelo
+OUTPUT *.VBAS*
+
+DESC "Get acceleration, VBAS to VELO in EGUs per second per second"
+GETVAL devAcceleration
+OUTPUT *.ACCL*
+
+DESC "Get the indexing algorithm number"
+GETVAL devIndexType
+OUTPUT *.IALG* 2*
+
+DESC "Using Power status?"
+GETVAL devUsePwrStatus
+#OUTPUT *.UPSB* YES*
+# Comment out check on UPSB until power status electronics problem fixed
+OUTPUT *.UPSB*
+
+DESC "Get the power status timeout"
+GETVAL devPwrStatusTimeout
+OUTPUT *.PTMO*
+
+DESC "Using Brake status?"
+GETVAL devUseBrkStatus
+OUTPUT *.UBSB* NO*
+
+DESC "Get the brake status timeout"
+GETVAL devBrkStatusTimeout
+OUTPUT *.BTMO*
+
+DESC "Using AUX to enable drives?"
+GETVAL devUseAuxPwr
+OUTPUT *.UAPB* YES*
+
+DESC "Using Encoder?"
+GETVAL devUseEncoder
+OUTPUT *.UEIP* NO*
+
+DESC "Get encoder resolution in counts per EGU"
+GETVAL devEncoderRes
+OUTPUT *.ERES*
+
+DESC "Get encoder deadband"
+GETVAL devEncoderDeadBand
+OUTPUT *.EDBD*
+
+DESC "Get lookup table name"
+GETVAL devLutFile
+OUTPUT *.TFIL* mskExt.lut*
+
+DESC "Get lookup table directory name"
+GETVAL devLutDirectory
+OUTPUT *.TDIR*
+
+ENDTEST
+
+#
+# First try to initialize the device control record
+#
+
+TEST "Test extractor device INIT mode"
+FATAL
+
+DESC "Initializing extractor"
+
+PUTVAL devMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+ENDTEST
+
+#
+# Test extractor device TEST mode
+#
+
+TEST "Test extractor device TEST mode"
+FATAL
+
+DESC "Testing extractor"
+
+PUTVAL devMode "5"
+OUTPUT *MODE*MODE*TEST*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+ENDTEST
+
+#
+# Get all the LVDT stuff
+#
+TEST "Get all the LVDT stuff"
+
+DESC "Get the LVDT zone word"
+GETVAL lvdtZone
+OUTPUT *VALA*
+
+DESC "Get the actual LVDT value"
+GETVAL lvdtVal
+OUTPUT *VAL*
+
+DESC "Get the LVDT value representing the lower LVDT limit"
+GETVAL lvdtLo
+OUTPUT *VAL*
+
+DESC "Get the LVDT value representing the lower grip position limit"
+GETVAL lvdtGrpLo
+OUTPUT *VAL*
+
+DESC "Get the LVDT value representing the upper grip position limit"
+GETVAL lvdtGrpHi
+OUTPUT *VAL*
+
+DESC "Get the LVDT value representing the lower release position limit"
+GETVAL lvdtRelLo
+OUTPUT *VAL*
+
+DESC "Get the LVDT value representing the upper release position limit"
+GETVAL lvdtRelHi
+OUTPUT *VAL*
+
+ENDTEST
+
+#
+# Set to reduced velocity for moves into limits
+#
+
+TEST "Setting to reduced velocity for moves into limits"
+FATAL
+
+DESC "Setting to reduced velocity for moves into limits"
+
+PUTVAL devVelocity "15"
+OUTPUT *.VELO*
+
+ENDTEST
+
+#
+# Test limit switch by indexing on 
+# upper soft limit switch
+#
+
+TEST "Testing upper limit switch"
+FATAL
+
+DESC "Testing upper limit switch"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devNamedTarget "i5"
+OUTPUT *
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Test limit switch by indexing on 
+# lower soft limit switch
+#
+
+TEST "Testing lower limit switch"
+FATAL
+
+DESC "Testing lower limit switch"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devNamedTarget "i4"
+OUTPUT *.VALS*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Then try to index the device
+#
+
+TEST "Test indexing extractor"
+FATAL
+
+DESC "Indexing extractor"
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Set to full velocity for moves within limits
+#
+
+TEST "Setting to full velocity for moves within limits"
+FATAL
+
+DESC "Setting to full velocity for moves within limits"
+
+PUTVAL devVelocity "35"
+OUTPUT *.VELO*
+
+ENDTEST
+
+#
+# Move to ifu position
+#
+
+TEST "Moving to ifu position"
+FATAL
+
+DESC "Moving to ifu position"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devNamedTarget "ifu"
+OUTPUT *VALS* ifu*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Verifying ifu position
+#
+
+TEST "Verifying move to ifu position"
+FATAL
+
+DESC "Verifying ifu position"
+
+GETVAL lvdtZone
+OUTPUT *VALA* 32*
+
+GETVAL devTarget
+OUTPUT *.VAL* 
+
+CMD "compareField devTarget devPosition
+OUTPUT *Equal* 
+
+ENDTEST
+
+#
+# Move to mask position
+#
+
+TEST "Moving to mask position"
+FATAL
+
+DESC "Moving to mask position"
+
+PUTVAL devNamedTarget "mask"
+OUTPUT *VALS* mask*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Verifying mask position
+#
+
+TEST "Verifying move to mask position"
+FATAL
+
+DESC "Verifying mask position"
+
+GETVAL lvdtZone
+OUTPUT *VALA* 32*
+
+GETVAL devTarget
+OUTPUT *.VAL* 
+
+CMD "compareField devTarget devPosition
+OUTPUT *Equal* 
+
+ENDTEST
+
+#
+# Move to clear position
+#
+
+TEST "Moving to clear position"
+FATAL
+
+DESC "Moving to clear position"
+
+PUTVAL devNamedTarget "clear"
+OUTPUT *VALS* clear*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Verifying clear position
+#
+
+TEST "Verifying move to clear position"
+FATAL
+
+DESC "Verifying clear position"
+
+GETVAL lvdtZone
+OUTPUT *VALA* 32*
+
+GETVAL devTarget
+OUTPUT *.VAL* 
+
+CMD "compareField devTarget devPosition
+OUTPUT *Equal* 
+
+ENDTEST
+
+#
+# Move to id position
+#
+
+TEST "Moving to id position"
+FATAL
+
+DESC "Moving to id position"
+
+PUTVAL devNamedTarget "id"
+OUTPUT *VALS* id*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Verifying id position
+#
+
+TEST "Verifying move to id position"
+FATAL
+
+DESC "Verifying id position"
+
+GETVAL lvdtZone
+OUTPUT *VALA* 32*
+
+GETVAL devTarget
+OUTPUT *.VAL* 
+
+CMD "compareField devTarget devPosition
+OUTPUT *Equal* 
+
+ENDTEST
+
+#
+# Move to grip position
+#
+
+TEST "Moving to grip position"
+FATAL
+
+DESC "Moving to grip position"
+
+PUTVAL devNamedTarget "grip"
+OUTPUT *VALS* grip*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Verifying grip position
+#
+
+TEST "Verifying move to grip position"
+FATAL
+
+DESC "Verifying grip position"
+
+GETVAL lvdtZone
+OUTPUT *VALA* 10*
+
+GETVAL devTarget
+OUTPUT *.VAL* 
+
+CMD "compareField devTarget devPosition
+OUTPUT *Equal* 
+
+ENDTEST
+
+#
+# Move to release position
+#
+
+TEST "Moving to release position"
+FATAL
+
+DESC "Moving to release position"
+
+PUTVAL devNamedTarget "release"
+OUTPUT *VALS* release*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Verifying release position
+#
+
+TEST "Verifying move to release position"
+FATAL
+
+DESC "Verifying release position"
+
+GETVAL lvdtZone
+OUTPUT *VALA* 25*
+
+GETVAL devTarget
+OUTPUT *.VAL* 
+
+CMD "compareField devTarget devPosition
+OUTPUT *Equal* 
+
+ENDTEST
+
+#
+# Reduce velocity and move into low limit index
+#
+
+TEST "Reduce velocity and move into low limit index"
+FATAL
+
+DESC "Indexing on lower soft limit at the reduced velocity"
+
+PUTVAL devVelocity "15"
+OUTPUT *.VELO*
+
+PUTVAL devNamedTarget "i4"
+OUTPUT *VALS* i4*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+GETVAL devIndexed
+OUTPUT *HPVL* 1*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Verifying i4 position
+#
+
+TEST "Verifying move to i4 position"
+FATAL
+
+DESC "Verifying i4 position"
+
+GETVAL lvdtZone
+OUTPUT *VALA* 24*
+
+GETVAL devTarget
+OUTPUT *.VAL* 
+
+CMD "compareField devTarget devPosition
+OUTPUT *Equal* 
+
+ENDTEST
+
+#
+# Move to i4gripper position
+#
+
+TEST "Moving to i4gripper position"
+FATAL
+
+DESC "Moving i4gripper position"
+
+PUTVAL devNamedTarget "i4gripper"
+OUTPUT *VALS* i4gripper*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Verifying i4gripper position
+#
+
+TEST "Verifying move to i4gripper position"
+FATAL
+
+DESC "Verifying i4gripper position"
+
+GETVAL lvdtZone
+OUTPUT *VALA* 10*
+
+GETVAL devTarget
+OUTPUT *.VAL* 
+
+CMD "compareField devTarget devPosition
+OUTPUT *Equal* 
+
+ENDTEST
+
+#
+# Move to i4release position
+#
+
+TEST "Moving to i4release position"
+FATAL
+
+DESC "Moving to i4release position"
+
+PUTVAL devNamedTarget "i4release"
+OUTPUT *VALS* i4release*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Verifying i4release position
+#
+
+TEST "Verifying move to i4release position"
+FATAL
+
+DESC "Verifying i4release position"
+
+GETVAL lvdtZone
+OUTPUT *VALA* 25*
+
+GETVAL devTarget
+OUTPUT *.VAL* 
+
+CMD "compareField devTarget devPosition
+OUTPUT *Equal* 
+
+ENDTEST
+
+#
+# Then re-index the device and return to slow velocity
+#
+
+TEST "Re-index on home switch"
+FATAL
+
+DESC "Indexing extractor"
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+GETVAL devIndexed
+OUTPUT *HPVL* 1*
+
+PUTVAL devVelocity "15"
+OUTPUT *.VELO*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Adjust upper and lower target limits to allow moves beyond limits
+#
+
+TEST "Adjust upper and lower target limits"
+FATAL
+
+DESC "Adjust upper and lower target limits"
+
+PUTVAL devMinPosition "-501"
+OUTPUT *.PLLM*
+
+PUTVAL devMaxPosition "51"
+OUTPUT *.PHLM*
+
+ENDTEST
+
+#
+# Check distance from home to upper limit position
+#
+
+TEST "Attempting to move extractor past upper limit"
+FATAL
+
+DESC "Moving extractor"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devTarget "50"
+OUTPUT *VAL*VAL* 50*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Failed*
+
+ENDTEST
+
+#
+# Verify error message and log current position
+#
+
+TEST "Verify error message and log current position"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* ERROR* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+GETVAL devMess
+OUTPUT *.MESS*Device hit a soft limit*
+
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Index the device to get back to normal
+#
+
+TEST "Indexing extractor"
+FATAL
+
+DESC "Indexing extractor"
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Check distance from home to lower limit position
+#
+
+TEST "Attempting to move extractor past lower limit"
+FATAL
+
+DESC "Moving extractor"
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devTarget "-500"
+OUTPUT *VAL*VAL* -500*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Failed*
+
+ENDTEST
+
+#
+# Verify error message and log current position
+#
+
+TEST "Verify error message and log current position"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* ERROR* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 0* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 1* 
+
+GETVAL devMess
+OUTPUT *.MESS*Device hit a soft limit*
+
+GETVAL devPosition
+OUTPUT *.MPOS*
+
+GETVAL devRawPosition
+OUTPUT *.RRBV*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Then re-index the device and return to normal velocity
+#
+
+TEST "Re-index on home switch"
+FATAL
+
+DESC "Indexing extractor"
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+GETVAL devIndexed
+OUTPUT *HPVL* 1*
+
+PUTVAL devVelocity "35"
+OUTPUT *.VELO*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Now park it
+#
+
+TEST "Testing park position"
+FATAL
+
+DESC "Move to the PARK position" 
+
+PUTVAL devMode "1"
+OUTPUT *MODE*MODE*MOVE*
+
+PUTVAL devNamedTarget "park"
+OUTPUT *VALS*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+GETVAL devLimited
+OUTPUT *.LSWA* 0* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# Verify current position
+#
+
+TEST "Verify current position"
+FATAL
+
+DESC "Verify current position"
+
+GETVAL devTarget
+OUTPUT *.VAL* 
+
+CMD "compareField devTarget devPosition
+OUTPUT *Equal* 
+
+ENDTEST
+
+#
+#  All Extractor functions check out OK!
+#
+
+COMMENT "Extractor checks out OK - remember to load configuration file!"
+ 

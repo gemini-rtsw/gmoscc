@@ -1,0 +1,156 @@
+! deviceControl.ascii 
+!
+! Original Author: William Rambold
+! Date: 98-10-22
+! Modified by:        
+! Date:          
+!
+! Experimental Physics and Industrial Control System (EPICS)
+!
+! Copyright 1991, the Regents of the University of California,
+! and the University of Chicago Board of Governors.
+!
+! This software was produced under U.S. Government contracts:
+! (W-7405-ENG-36) at the Los Alamos National Laboratory,
+! and (W-31-109-ENG-38) at Argonne National Laboratory.
+!
+! Initial epics development by
+! The Controls and Automation Group (AT-8)
+! Ground Test Accelerator
+! Accelerator Technology Division
+! Los Alamos National Laboratory
+!
+! deviceControl record developed by 
+! The Instrumentation Software Group
+! Dominion Astrophysical Observatory
+! Hertzberg Institute of Astrophysics
+! National Research Council of Canada
+!
+! Modification Log:
+! -----------------
+! .01    98-10-22     wnr Initial development
+! .02    99-02-26     jsd Continued development
+!
+#include <dbDefs.h>
+#include <dbRecDes.h>
+#include <dbFldTypes.h>
+#include <special.h>
+#include <choiceGbl.h>
+#include <choiceDeviceControl.h>
+#define INCdbRecDesh
+!
+RECTYP "deviceControl"
+! special is one of {NULL, SPC_NOMOD, SPC_DBADDR, SPC_SCAN, SPC_MOD, SPC_RESET, SPC_LINCONV, SPC_CALC}
+! DBF_int    means any of {DBF_UCHAR, DBF_SHORT, DBF_LONG, DBF_ULONG}
+! DBF_float    means any of {DBF_FLOAT, DBF_DOUBLE}
+! DBF_link    means any of {DBF_INLINK, DBF_OUTLINK, DBF_FWDLINK}
+!
+! Prompt                   name    special     access  DBF_STRING      pp  int siz                         pmt
+! Prompt                   name    special     access  DBF_int         pp  int ini                         pmt range1       range2     cvt_type
+! Prompt                   name    special     access  DBF_float       pp  int ini                         pmt range1       range2
+! Prompt                   name    special     access  DBF_ENUM        pp  int ini                         pmt range1       range2
+! Prompt                   name    special     access  DBF_GBLCHOICE   pp  int ini choice_set              pmt
+! Prompt                   name    special     access  DBF_RECCHOICE   pp  int ini choice_set              pmt
+! Prompt                   name    special     access  DBF_CVTCHOICE   pp  int ini                         pmt
+! Prompt                   name    special     access  DBF_link        pp  ine                             pmt range1       range2     conversion
+! Prompt                   name    spec        access  DBF_NOACCESS    pp  int siz code                          
+!                                                                                  
+! MAIN CONTROL FIELDS
+"Directive"                DIR     NULL        ASL1    DBF_RECCHOICE   YES 1   0   DDR_DEVCONTROL_DIR      0
+"Operating Mode"           MODE    NULL        ASL1    DBF_RECCHOICE   NO  1   0   DDR_DEVCONTROL_MODE     1
+"User Position Value"      VAL     NULL        ASL1    DBF_DOUBLE      NO  0   0                           0   CON 0       CON 0
+"User Position String"     VALS    NULL        ASL1    DBF_STRING      NO  1   40                          0           
+!
+! MOTION CONTROL FIELDS
+"Velocity (EGU/s)"         VELO    NULL        ASL1    DBF_FLOAT       NO  0   0                           1   CON 0       CON 0 
+"Base Velocity (EGU/s)"    VBAS    NULL        ASL1    DBF_FLOAT       NO  0   0                           1   CON 0       CON 0 
+"Final Index Vel (EGU/s)"  FIVL    NULL        ASL1    DBF_FLOAT       NO  0   0                           1   CON 0       CON 0
+"Acceleration (EGU/Sec)"   ACCL    NULL        ASL1    DBF_FLOAT       NO  1   0                           1   CON 0       CON 0 
+"Motor Resolution"         MRES    NULL        ASL1    DBF_FLOAT       NO  1   0                           1   CON 0       CON 0 
+"Encoder Resolution"       ERES    NULL        ASL1    DBF_FLOAT       NO  1   0                           1   CON 0       CON 0 
+"Index Algorithm"          IALG    NULL        ASL1    DBF_LONG        NO  1   0                           1   CON 0       CON 0       CT_DECIMAL
+"Backlash Correct (EGU)"   BLCO    NULL        ASL1    DBF_FLOAT       NO  0   0                           1   CON 0       CON 0
+!
+! HARDWARE CONTROL FIELDS
+"Power Control"            PWR     NULL        ASL1    DBF_LONG        NO  1   0                           0   CON 0       CON 0       CT_DECIMAL
+"Brake Control"            BRK     NULL        ASL1    DBF_LONG        NO  1   0                           0   CON 0       CON 0       CT_DECIMAL
+"Power Feedback State"     PSTA    NULL        ASL1    DBF_LONG        NO  0   0                           0   CON 0       CON 0       CT_DECIMAL
+"Brake Feedback State"     BSTA    NULL        ASL1    DBF_LONG        NO  0   0                           0   CON 0       CON 0       CT_DECIMAL
+"Fault"                    FLT     SPC_MOD     ASL1    DBF_LONG        NO  0   0                           0   CON 0       CON 0       CT_DECIMAL
+!                                                                                                                      
+! OPERATING MODE FIELDS
+"Use Auxiliary Power Bit"  UAPB    NULL        ASL1    DBF_RECCHOICE   NO  1   0   DDR_DEVCONTROL_YN       1   CON 0       CON 1       CT_DECIMAL    
+"Use Encoder if Present"   UEIP    NULL        ASL1    DBF_RECCHOICE   NO  1   0   DDR_DEVCONTROL_YN       1   CON 0       CON 1       CT_DECIMAL    
+"Use Power Status Bit"     UPSB    NULL        ASL1    DBF_RECCHOICE   NO  1   0   DDR_DEVCONTROL_YN       1   CON 0       CON 1       CT_DECIMAL    
+"Use Brake Status Bit"     UBSB    NULL        ASL1    DBF_RECCHOICE   NO  1   0   DDR_DEVCONTROL_YN       1   CON 0       CON 1       CT_DECIMAL    
+"Motion Deadband (EGU)"    MDBD    NULL        ASL1    DBF_FLOAT       NO  1   0                           1   CON 0       CON 0
+"Encoder Deadband"         EDBD    NULL        ASL1    DBF_LONG        NO  1   0                           1   CON 0       CON 0       CT_DECIMAL
+"Position rounding val"    MRND    NULL        ASL1    DBF_LONG        NO  1   0                           1   CON 0       CON 0       CT_DECIMAL
+"Output Mode Select"       OMSL    NULL        ASL1    DBF_GBLCHOICE   NO  1   0   GBL_OMSL                1
+"Simulation Mode"          SIMM    NULL        ASL1    DBF_RECCHOICE   NO  1   0   DDR_DEVCONTROL_SIM      1
+"Debug Mode"               DBUG    NULL        ASL1    DBF_RECCHOICE   NO  1   0   DDR_DEVCONTROL_DBUG     1
+"Translation Directory"    TDIR    NULL        ASL1    DBF_STRING      NO  1   40                          1
+"Translation File"         TFIL    NULL        ASL1    DBF_STRING      NO  1   40                          1
+!
+! LINK SUPPORT
+"Output Specification"     OUT     SPC_NOMOD   ASL1    DBF_OUTLINK     NO  1                               1
+"Desired Output Loc"       DOL     SPC_NOMOD   ASL1    DBF_INLINK      NO  1                               1
+"Busy Link"                BSYL    SPC_NOMOD   ASL1    DBF_OUTLINK     NO  1                               1
+"Error Message Link"       MSGL    SPC_NOMOD   ASL1    DBF_OUTLINK     NO  1                               1
+"Power Control Link"       PWRL    SPC_NOMOD   ASL1    DBF_OUTLINK     NO  1                               1
+"Brake Control Link"       BRKL    SPC_NOMOD   ASL1    DBF_OUTLINK     NO  1                               1
+"Simulation Mode Link"     SIML    SPC_NOMOD   ASL1    DBF_INLINK      NO  1                               1
+"Debug Mode Link"          DBGL    SPC_NOMOD   ASL1    DBF_INLINK      NO  1                               1
+!
+! COMMAND STATUS INFORMATION
+"Command Status"           ACK     NULL        ASL1    DBF_LONG        NO  0   0                           0   CON 0       CON 0       CT_DECIMAL
+"Device Action State"      BUSY    NULL        ASL1    DBF_RECCHOICE   NO  0   0    DDR_DEVCONTROL_BUSY    0   CON 0       CON 0       CT_DECIMAL
+"Error Message"            MESS    NULL        ASL1    DBF_STRING      NO  0   40                          0
+!
+! MOTION STATUS INFORMATION
+"Motor Position"           MPOS    NULL        ASL1    DBF_DOUBLE      NO  0   0                           0   CON 0       CON 0
+"Motion In Progress"       MIP     NULL        ASL1    DBF_RECCHOICE   NO  1   0   DDR_DEVCONTROL_MIP      0   CON 0       CON 0       CT_DECIMAL
+"Motor Status"             MSTA    NULL        ASL1    DBF_LONG        NO  1   0                           0   CON 0       CON 0       CT_DECIMAL
+"Home Position Valid"      HPVL    NULL        ASL1    DBF_SHORT       NO  1   0                           0   CON 0       CON 0       CT_DECIMAL
+"Home Switch Active"       HSWA    NULL        ASL1    DBF_SHORT       NO  0   0                           0   CON 0       CON 0       CT_DECIMAL
+"Limit Switch Active"      LSWA    NULL        ASL1    DBF_SHORT       NO  0   0                           0   CON 0       CON 0       CT_DECIMAL
+"Raw motor position"       RPOS    NULL        ASL1    DBF_LONG        NO  1   0                           0   CON 0       CON 0       CT_DECIMAL
+"Raw motor velocity"       RVEL    NULL        ASL1    DBF_LONG        NO  1   0                           0   CON 0       CON 0       CT_DECIMAL
+"Raw position readback"    RRBV    NULL        ASL1    DBF_LONG        NO  1   0                           0   CON 0       CON 0       CT_DECIMAL
+"Raw encoder readback"     RENC    NULL        ASL1    DBF_LONG        NO  1   0                           0   CON 0       CON 0       CT_DECIMAL
+!
+! LIMITS
+"Position High Limit"      PHLM    NULL        ASL1    DBF_FLOAT       NO  1   0                           1   CON 0       CON 0
+"Position Low Limit"       PLLM    NULL        ASL1    DBF_FLOAT       NO  1   0                           1   CON 0       CON 0
+"Velocity High Limit"      VHLM    NULL        ASL1    DBF_FLOAT       NO  1   0                           1   CON 0       CON 0
+"Velocity Low Limit"       VLLM    NULL        ASL1    DBF_FLOAT       NO  1   0                           1   CON 0       CON 0
+"Limit Violation"          LVIO    NULL        ASL1    DBF_SHORT       NO  1   0                           1   CON 0       CON 0       CT_DECIMAL
+"Brake Timeout"            BTMO    NULL        ASL1    DBF_SHORT       NO  1   0                           1   CON 0       CON 0       CT_DECIMAL
+"Power Timeout"            PTMO    NULL        ASL1    DBF_SHORT       NO  1   0                           1   CON 0       CON 0       CT_DECIMAL
+!                                                                                                                                     
+! INTERNAL STATUS INFORMATION
+"Display Precision"        PREC    NULL        ASL1    DBF_SHORT       NO  1   0                           1   CON 0       CON 0       CT_DECIMAL
+"Engineering Units"        EGU     NULL        ASL1    DBF_STRING      NO  1   16                          1
+"Code Version"             VERS    NULL        ASL1    DBF_FLOAT       NO  1   1.0                         0
+"Last Value Archived"      ALST    SPC_NOMOD   ASL1    DBF_DOUBLE      NO  3   0                           0   CON 0       CON 0
+"Last Value Monitored"     MLST    SPC_NOMOD   ASL1    DBF_DOUBLE      NO  3   0                           0   CON 0       CON 0
+"Post process command"     PP      NULL        ASL1    DBF_SHORT       NO  2   0                           0   CON 0       CON 0       CT_DECIMAL
+"Operating State"          OSTA    NULL        ASL1    DBF_SHORT       NO  2   0                           0   CON 0       CON 0       CT_DECIMAL
+"Lookup Table Head Ptr"    LTHP    SPC_NOMOD   ASL1    DBF_NOACCESS    NO  1   4   void *lthp;
+"Monitor Mask"             MMAP    NULL        ASL1    DBF_ULONG       NO  3   0                           0   CON 0       CON 0       CT_DECIMAL
+"Link Trigger Mask"        LMAP    NULL        ASL1    DBF_ULONG       NO  3   0                           0   CON 0       CON 0       CT_DECIMAL
+!
+! INTERNAL DEADBAND DEFINITIONS
+"Monitor Deadband"         MDEL    NULL        ASL1    DBF_FLOAT       NO  3   0                           1   CON 0       CON 0 
+"Archive Deadband"         ADEL    NULL        ASL1    DBF_FLOAT       NO  3   0                           1   CON 0       CON 0 
+!                                                                    
+! ALARM STUFF
+"Hihi Alarm Limit"         HIHI    NULL        ASL1    DBF_FLOAT       YES 2   0                           1   VAR HIGH    CON 1e30 
+"Lolo Alarm Limit"         LOLO    NULL        ASL1    DBF_FLOAT       YES 2   0                           1   CON -1e30   VAR LOW
+"High Alarm Limit"         HIGH    NULL        ASL1    DBF_FLOAT       YES 2   0                           1   VAR LOW     VAR HIHI
+"Low Alarm Limit"          LOW     NULL        ASL1    DBF_FLOAT       YES 2   0                           1   VAR LOLO    VAR HIGH
+"Hihi Severity"            HHSV    NULL        ASL1    DBF_GBLCHOICE   YES 2   0    GBL_ALARM_SEV          1   VAR HSV     CON 4
+"Lolo Severity"            LLSV    NULL        ASL1    DBF_GBLCHOICE   YES 2   0    GBL_ALARM_SEV          1   VAR LSV     CON 4
+"High Severity"            HSV     NULL        ASL1    DBF_GBLCHOICE   YES 2   0    GBL_ALARM_SEV          1   CON 0       VAR HHSV
+"Low Severity"             LSV     NULL        ASL1    DBF_GBLCHOICE   YES 2   0    GBL_ALARM_SEV          1   CON 0       VAR LLSV
+"HW Limit Violation Svr"   HLSV    NULL        ASL1    DBF_GBLCHOICE   YES 2   0    GBL_ALARM_SEV          1   CON 0       CON 4

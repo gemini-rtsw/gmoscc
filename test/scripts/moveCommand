@@ -1,0 +1,138 @@
+#!/bin/tcsh -f
+#
+# Name: moveCommand
+#
+# Purpose: 
+#	To request a move of a Device record. It will check the
+#	acknowledgement of the command and wait until the BUSY
+#	line goes to IDLE or ERR.  It will then check the
+#	MPOS matches the requested position and that the
+#	current motor is STOPPED.  It will also check that
+#	the home position is valid.
+#	If a last argument is given, then this is a move to
+#	a named position.
+#
+# Assumptions:
+#       DDR_MODE_MOVE = 1
+#       DDR_DIR_GO = 2
+#       device record success status = 0
+#
+
+if ( $#argv < 2 ) then
+    echo "ERROR, Usage: moveCommand  <recordName> <position> [VALS]"
+    exit 255
+endif
+
+set vals
+if ( $#argv == 3 ) then
+    set vals 1
+endif
+
+set recordName = $1
+set position = $2
+
+#
+#  Write the position 
+#
+if ( $vals ) then
+    set posResponse = `caput $recordName".VALS" "$position"`
+else
+    set posResponse = `caput $recordName".VAL" "$position"`
+endif
+set a = `echo $posResponse | grep "timed out"`
+if ( $#a != 0 ) then
+    echo "ERROR: Writing VAL timed out"
+    exit 255
+endif
+
+
+#
+#  Only check the val. if writing to VAL, vals you
+#  have not idea.
+#
+
+if ( $vals == 0 ) then
+    set posResponse = `caget $recordName".VAL"`
+    set a = `echo $posResponse | grep $position`
+    if ( $#a != 2 ) then
+	echo "ERROR: VAL ($position) did not write:$a"
+	exit 255
+    endif
+endif
+
+#
+#
+# Write the directive GO, and check the ack
+#
+set dirResponse = `caput $recordName".DIR" "2"`
+set a = `echo $dirResponse | grep "timed out"`
+if ( $#a != 0 ) then
+    echo "ERROR: Writing DIR timed out"
+    exit 255
+endif
+set ackResponse = `caget $recordName".ACK" | grep ACK | grep 0`
+if ( $#ackResponse != 2 ) then
+	set errMessage = `caget -t $recordName".MESS"`
+	echo "ERROR: Command Rejected ($errMessage)"
+	exit
+endif
+
+
+
+#
+#  Now keep checking the BUSY line till it changes to IDLE
+#
+while ( 1 )
+
+	sleep 1
+	set busyResponse = `caget $recordName".BUSY"`
+
+	set commandDone = `echo $busyResponse | grep BUSY | grep IDLE`
+	if ( $#commandDone == 2 ) then
+		echo "Command Success"
+		break;
+	endif
+
+	set commandFailed = `echo $busyResponse | grep BUSY | grep ERR`
+	if ( $#commandFailed == 2 ) then
+	    set errMessage = `caget -t $recordName".MESS"`
+	    echo "ERROR: Command Failed. ($errMessage)"
+	    exit 244
+	endif
+
+end
+
+#
+# Now check the current position equals the requested position. MPOS
+#
+
+if ( $vals == 0 ) then
+    set posResponse = `caget $recordName".MPOS"`
+    set a = `echo $posResponse | grep $position`
+    if ( $#a == 0 ) then
+	echo "ERROR: Did not move to position, instead:$posResponse"
+	exit 255
+    endif
+endif
+
+#
+# Now check currently stopped. MIP
+#
+set posResponse = `caget $recordName".MIP"`
+set a = `echo $posResponse | grep "STOPPED"`
+if ( $#a != 2 ) then
+    echo "ERROR: Not currently stopped: $posResponse"
+    exit 255
+endif
+
+#
+# Now check still indexed, Home position valid HPVL.
+#
+set posResponse = `caget $recordName".HPVL"`
+set a = `echo $posResponse | grep "1"`
+if ( $#a != 2 ) then
+    echo "ERROR: Not currently indexed: $posResponse"
+    exit 255
+endif
+
+exit

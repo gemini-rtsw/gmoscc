@@ -1,0 +1,12 @@
+#! /bin/csh -f
+#
+# Name:
+#   cauSort
+#
+# Purpose:
+#   Sort the cau monitor output into chronological order
+#
+# Invocation:
+#   cauSort infile.txt outfile.txt
+#
+sort -k 2 $1 >$2

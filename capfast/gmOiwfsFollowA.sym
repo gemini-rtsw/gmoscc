@@ -1,0 +1,50 @@
+[symbol2]
+bbox -32 64 288 320
+port 40 152 100 0 tolerance symbol 1 -32 160 0
+port 240 128 100 768 y_m symbol 2 288 128 0
+port 240 256 100 768 dir symbol 2 288 256 0
+port 240 224 100 768 mode symbol 2 288 224 0
+port 112 240 100 1280 follow symbol 1 -32 256 0
+port 80 184 100 1280 y_t symbol 1 -32 192 0
+port 80 216 100 1280 x_t symbol 1 -32 224 0
+port 240 160 100 768 x_m symbol 2 288 160 0
+port 40 128 100 0 cur_pos symbol 1 -32 128 0
+uniq 219
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 4 0 128 288 followA
+l 100 5 0 208 64 gmOiwfsFollowA
+r 0 32 96 224 320
+v 0 -32 160
+32 160
+_
+v 0 224 128
+288 128
+_
+v 0 224 160
+288 160
+_
+v 0 224 224
+288 224
+_
+v 0 224 256
+288 256
+_
+v 0 -32 192
+32 192
+_
+v 0 -32 224
+32 224
+_
+v 0 -32 256
+32 256
+_
+v 0 32 288
+224 288
+_
+v 0 -32 128
+32 128
+_
+[comments]

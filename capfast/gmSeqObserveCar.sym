@@ -1,0 +1,15 @@
+[symbol2]
+bbox -128 -128 112 128
+port 48 -64 100 0 CERR symbol 2 112 -48 0
+port 48 32 100 0 CVAL symbol 2 112 48 0
+port 48 -16 100 0 CMESS symbol 2 112 0 0
+port 48 -96 100 0 CFLK symbol 2 112 -96 0
+uniq 0
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 -48 64 Value
+l 100 0 0 -80 96 ObserveC CAR
+r 0 -128 -128 112 128
+[comments]

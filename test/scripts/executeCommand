@@ -1,0 +1,49 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: executeCommand
+#
+# Purpose: 
+#	To start a CAD/CAR record command
+#
+# Assumptions:
+#       CAD_MARK  = 0
+#       CAD_START = 3
+#       CAD record success status = 0
+#
+
+set dirResponse = `caput $1 "0"`
+set dirResponse = `caput $1 "3"`
+
+set ackResponse = `caget $2 | grep $2 | grep 0`
+
+if ( $#ackResponse != 2 ) then
+        set cadname = `basename $1 .DIR`
+        set errmsg = `caget -t ${cadname}.MESS`
+	echo "Command rejected - $errmsg"
+	exit
+endif
+
+
+while ( 1 )
+
+	sleep 1
+
+	set busyResponse = `caget $3`
+
+	set commandDone = `echo $busyResponse | grep $3 | grep IDLE`
+	if ( $#commandDone == 2 ) then
+		echo "Command Success"
+		exit
+	endif
+
+	set commandFailed = `echo $busyResponse | grep $3 | grep ERR`
+	if ( $#commandFailed == 2 ) then
+                set carname = `basename $3 .VAL`
+                set errmsg = `caget -t ${carname}.OMSS`
+		echo "Command Failed - $errmsg"
+		exit
+	endif
+
+end
+
+exit

@@ -1,0 +1,32 @@
+[symbol2]
+bbox 32 32 352 304
+uniq 90
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 80 208 Status Alarm Database
+l 100 0 0 80 256 detector translation
+r 0 144 80 208 144
+r 0 32 32 352 304
+v 0 144 128
+208 128
+208 112
+144 112
+144 96
+208 96
+_
+v 0 160 144
+160 80
+176 80
+176 144
+192 144
+192 80
+_
+v 0 64 64
+320 64
+_
+v 0 64 160
+320 160
+_
+[comments]

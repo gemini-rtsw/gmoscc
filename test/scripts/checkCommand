@@ -1,0 +1,27 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: checkCommand
+#
+# Purpose: 
+#	To check a Device record command and monitor for
+#	acceptance or rejection.
+#
+# Assumptions:
+#       DDR_DIR_CHECK = 1
+#       device record success status = 0
+#
+
+set dirResponse = `caput $1 "1"`
+
+set ackResponse = `caget $2 | grep $2 | grep 0`
+
+if ( $#ackResponse != 2 ) then
+        set devname = `basename $1 .DIR`
+        set errmsg = `caget -t ${devname}.MESS`
+	echo "Command rejected - $errmsg"
+	exit
+endif
+
+echo "Command accepted"
+
+exit

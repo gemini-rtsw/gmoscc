@@ -1,0 +1,57 @@
+[symbol2]
+bbox 352 -16 672 336
+port 656 16 100 512 CFLK symbol 2 672 16 0
+port 656 48 100 512 OERR symbol 2 672 48 0
+port 656 80 100 512 OMSS symbol 2 672 80 0
+port 656 112 100 512 CAR symbol 2 672 112 0
+port 656 176 100 512 FLNK symbol 2 672 176 0
+port 656 208 100 512 HLTH symbol 2 672 208 0
+port 656 240 100 512 MESS symbol 2 672 240 0
+port 656 272 100 512 VAL symbol 2 672 272 0
+port 368 16 100 0 DBUG symbol 1 352 16 0
+port 368 48 100 0 SIMM symbol 1 352 48 0
+port 368 144 100 0 PARK symbol 1 352 144 0
+port 368 176 100 0 LOC symbol 1 352 176 0
+port 368 208 100 0 ID symbol 1 352 208 0
+port 368 240 100 0 MODE symbol 1 352 240 0
+port 368 272 100 0 DIR symbol 1 352 272 0
+uniq 96
+[tools]
+[attributes]
+p 352 -48 100 0 -1 seta:top gm:cc:
+p 352 -80 100 0 -1 setc:dev msk
+p 352 -112 100 0 -1 setd:dtyp Mask
+p 352 -144 100 0 -1 sete:simm NONE
+[layers]
+<symbol>
+l 100 7 0 512 320 mask assembly
+r 0 352 -16 672 336
+r 0 432 32 576 160
+v 0 352 304
+672 304
+_
+v 0 480 128
+480 96
+_
+v 0 496 112
+496 80
+_
+v 0 528 128
+528 112
+_
+v 0 544 80
+544 64
+_
+v 0 464 64
+464 48
+_
+v 0 448 144
+448 128
+_
+v 0 544 144
+544 128
+_
+v 0 560 112
+560 96
+_
+[comments]

@@ -1,0 +1,114 @@
+[schematic2]
+uniq 401
+[tools]
+[detail]
+w -486 523 100 0 n#388 gmosDcSimSeqComm3.gmosDcSimSeqComm3#395.FLNK -960 512 48 512 48 1376 128 1376 junction
+w -1150 235 100 0 n#400 eapply.apply.INMD -1152 1584 -1312 1584 -1312 224 -928 224 -928 544 -960 544 gmosDcSimSeqComm3.gmosDcSimSeqComm3#395.MESS
+w -1150 203 100 0 n#399 eapply.apply.INPD -1152 1616 -1328 1616 -1328 192 -912 192 -912 576 -960 576 gmosDcSimSeqComm3.gmosDcSimSeqComm3#395.VAL
+w -990 1275 100 0 n#398 eapply.apply.OCLD -768 1584 -672 1584 -672 1264 -1248 1264 -1248 496 -1184 496 gmosDcSimSeqComm3.gmosDcSimSeqComm3#395.ICID
+w -974 1259 100 0 n#397 eapply.apply.OUTD -768 1616 -656 1616 -656 1248 -1232 1248 -1232 576 -1184 576 gmosDcSimSeqComm3.gmosDcSimSeqComm3#395.DIR
+w -590 427 100 0 n#396 egenSubD.dcApplyCombine.INPG 224 1952 -160 1952 -160 416 -960 416 gmosDcSimSeqComm3.gmosDcSimSeqComm3#395.CAR
+w 626 315 100 0 n#377 eaos.obsPaused.OUT 512 304 800 304 800 864 junction
+w 642 571 100 0 n#377 eaos.obsIdle.OUT 512 560 832 560 832 864 junction
+w 650 875 100 0 n#377 eaos.obsBusy.OUT 512 864 848 864 848 880 1024 880 ecars.observeC.IVAL
+w -78 347 100 0 PAUSED gmosDcSimSeqComm2.gmosDcSimSeqComm2#280.PAUSESTLK -480 888 -352 888 -352 336 256 336 eaos.obsPaused.SLNK
+w 34 603 100 0 n#393 gmosDcSimSeqComm2.gmosDcSimSeqComm2#280.STOPSTLK -480 856 -128 856 -128 592 256 592 eaos.obsIdle.SLNK
+w -318 795 100 0 n#393 gmosDcSimSeqComm2.gmosDcSimSeqComm2#280.ENDSTLK -480 792 -448 792 -448 784 -128 784 junction
+w -318 843 100 0 n#393 gmosDcSimSeqComm2.gmosDcSimSeqComm2#280.ABORTSTLK -480 824 -448 824 -448 832 -128 832 junction
+w 232 370 100 0 n#390 eaos.obsPaused.DOL 256 368 256 368 hwin.hwin#392.in
+w 730 1659 100 0 n#389 egenSubD.dcApplyCombine.FLNK 512 1408 672 1408 672 1648 848 1648 ecars.applyC.SLNK
+w -454 1195 100 0 n#388 gmosDcSimSeqComm1.gmosDcSimSeqComm1#279.FLNK -960 912 -880 912 -880 1184 32 1184 32 1424 128 1424 junction
+w 786 1179 100 0 n#388 ecars.observeC.FLNK 1344 656 1504 656 1504 1168 128 1168 128 1440 224 1440 egenSubD.dcApplyCombine.SLNK
+w 746 1083 100 0 n#387 ecars.observeC.VAL 1344 880 1472 880 1472 1072 80 1072 80 2048 224 2048 egenSubD.dcApplyCombine.INPD
+w 626 2123 100 0 n#386 egenSubD.dcApplyCombine.OUTA 512 2112 800 2112 800 1840 848 1840 ecars.applyC.IVAL
+w -470 1227 100 0 n#384 gmosDcSimSeqComm1.gmosDcSimSeqComm1#279.CAR -960 816 -896 816 -896 1216 16 1216 16 2144 224 2144 egenSubD.dcApplyCombine.INPA
+w -286 939 100 0 n#375 gmosDcSimSeqComm2.gmosDcSimSeqComm2#280.CONTSTLK -480 920 -448 920 -448 928 -64 928 junction
+w -302 963 100 0 n#375 gmosDcSimSeqComm2.gmosDcSimSeqComm2#280.OBSSTLK -480 952 -64 952 -64 896 256 896 eaos.obsBusy.SLNK
+w 232 626 100 0 n#374 eaos.obsIdle.DOL 256 624 256 624 hwin.hwin#373.in
+w 232 930 100 0 n#369 hwin.hwin#370.in 256 928 256 928 eaos.obsBusy.DOL
+w -1318 1867 100 0 ICID inhier.ICID.P -1360 1856 -1216 1856 -1216 1872 -1152 1872 eapply.apply.CLID
+w -1318 1947 100 0 DIR inhier.DIR.P -1360 1936 -1216 1936 -1216 1904 -1152 1904 eapply.apply.DIR
+w -926 1163 100 0 n#249 eapply.apply.OCLC -768 1648 -576 1648 -576 1152 -1216 1152 -1216 912 -1184 912 -1184 896 gmosDcSimSeqComm1.gmosDcSimSeqComm1#279.ICID
+w -734 1131 100 0 n#248 eapply.apply.OCLB -768 1712 -624 1712 -624 1120 -784 1120 -784 896 -704 896 gmosDcSimSeqComm2.gmosDcSimSeqComm2#280.ICID
+w -1348 907 100 0 n#188 gmosDcSimSeqComm1.gmosDcSimSeqComm1#279.MESS -960 944 -832 944 -832 176 -1344 176 -1344 1648 -1152 1648 eapply.apply.INMC
+w -1380 907 100 0 n#148 gmosDcSimSeqComm1.gmosDcSimSeqComm1#279.VAL -960 976 -800 976 -800 144 -1376 144 -1376 1680 -1152 1680 eapply.apply.INPC
+w -894 123 100 0 n#186 gmosDcSimSeqComm2.gmosDcSimSeqComm2#280.MESS -480 1016 -320 1016 -320 112 -1408 112 -1408 1712 -1152 1712 eapply.apply.INMB
+w -894 91 100 0 n#146 gmosDcSimSeqComm2.gmosDcSimSeqComm2#280.VAL -480 1048 -288 1048 -288 80 -1440 80 -1440 1744 -1152 1744 eapply.apply.INPB
+w -934 1147 100 0 n#197 eapply.apply.OUTC -768 1680 -608 1680 -608 1136 -1200 1136 -1200 976 -1184 976 gmosDcSimSeqComm1.gmosDcSimSeqComm1#279.DIR
+w -734 1755 100 0 n#200 eapply.apply.OUTB -768 1744 -640 1744 -640 1104 -768 1104 -768 976 -704 976 gmosDcSimSeqComm2.gmosDcSimSeqComm2#280.DIR
+w -696 1875 100 0 MESS eapply.apply.MESS -768 1872 -576 1872 -576 2064 -448 2064 outhier.MESS.p
+w -612 2043 100 0 VAL eapply.apply.VAL -768 1904 -608 1904 -608 2192 -448 2192 outhier.VAL.p
+s 80 416 100 0 PAUSED
+s 80 672 100 0 IDLE
+s 80 976 100 0 BUSY
+[cell use]
+use gmosDcSimSeqComm3 -1184 263 100 0 gmosDcSimSeqComm3#395
+xform 0 -1072 464
+use hwin 88 328 100 0 hwin#392
+xform 0 160 368
+p 32 368 100 0 -1 val(in):$(CAR_PAUSED)
+use hwin 88 584 100 0 hwin#373
+xform 0 160 624
+p 67 616 100 0 -1 val(in):$(CAR_IDLE)
+use hwin 88 888 100 0 hwin#370
+xform 0 160 928
+p 67 920 100 0 -1 val(in):$(CAR_BUSY)
+use eaos 280 248 100 0 obsPaused
+xform 0 384 336
+p 0 318 100 0 0 OMSL:closed_loop
+p 224 368 75 1280 -1 pproc(DOL):NPP
+p 512 304 75 768 -1 pproc(OUT):PP
+use eaos 280 504 100 0 obsIdle
+xform 0 384 592
+p 0 574 100 0 0 OMSL:closed_loop
+p 224 624 75 1280 -1 pproc(DOL):NPP
+p 512 560 75 768 -1 pproc(OUT):PP
+use eaos 280 808 100 0 obsBusy
+xform 0 384 896
+p 0 878 100 0 0 OMSL:closed_loop
+p 512 864 75 768 -1 pproc(OUT):PP
+use ecars 1024 599 100 0 observeC
+xform 0 1184 768
+use ecars 848 1559 100 0 applyC
+xform 0 1008 1728
+use oslBorderC -1664 -201 100 0 oslBorderC#354
+xform 0 16 1104
+use eapply -1152 1271 100 0 apply
+xform 0 -960 1632
+use gmosDcSimSeqComm2 -704 663 100 0 gmosDcSimSeqComm2#280
+xform 0 -592 864
+use gmosDcSimSeqComm1 -1184 663 100 0 gmosDcSimSeqComm1#279
+xform 0 -1072 864
+use inhier -1376 1815 100 0 ICID
+xform 0 -1360 1856
+use inhier -1376 1895 100 0 DIR
+xform 0 -1360 1936
+use outhier -480 2151 100 0 VAL
+xform 0 -464 2192
+use outhier -480 2023 100 0 MESS
+xform 0 -464 2064
+use egenSubD 224 1351 100 0 dcApplyCombine
+xform 0 368 1776
+p 320 1184 100 0 0 DESC:Combine all applyC values
+p 65 101 100 0 0 FTA:LONG
+p 65 101 100 0 0 FTB:STRING
+p 65 69 100 0 0 FTC:LONG
+p 65 37 100 0 0 FTD:LONG
+p 65 5 100 0 0 FTE:STRING
+p 65 -59 100 0 0 FTF:LONG
+p 65 -59 100 0 0 FTG:LONG
+p 65 -91 100 0 0 FTH:STRING
+p 65 -123 100 0 0 FTI:LONG
+p 65 -155 100 0 0 FTJ:LONG
+p 65 101 100 0 0 FTK:STRING
+p 65 101 100 0 0 FTL:LONG
+p 65 69 100 0 0 FTM:LONG
+p 65 37 100 0 0 FTN:STRING
+p 65 5 100 0 0 FTO:LONG
+p 65 -59 100 0 0 FTP:STRING
+p 432 1120 100 0 0 FTVA:LONG
+p 432 1056 100 0 0 FTVB:STRING
+p 65 69 100 0 0 FTVC:LONG
+p 192 1312 100 0 1 SNAM:gmosCarCombineBusy
+p 576 1034 75 0 0 pproc(OUTB):NPP
+[comments]

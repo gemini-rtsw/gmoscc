@@ -1,0 +1,37 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: getGratingId
+#
+# Purpose: 
+#	To recover a grating ID from the lookup table and 
+#	load it into the assembly record
+#	Input args:
+#		$1 record name and field where the ID is to be written
+#		$2 lookup table filename and path
+#		$3 nth grating in lookup table for this wheel
+#	Writes grating barcode ID for nth grating in lookup table to record
+#       if they exist and returns with "Command Success". Otherwise
+#       returns with "Cannot set grating ID" if the caput fails or
+#       "Failed, not that many gratings" if you've requested a grating
+#       number greater than those that exist.
+#
+
+@ gratingNum = ($3 * 3 - 2)
+set updateLine = `head -50 $2 | grep -v "#" | grep -v "grating"`
+@ gratingTotal = ($#updateLine / 3)
+if ( $gratingTotal < $3 ) then
+	echo "Failed, not that many gratings"
+	exit
+endif
+
+set response = `caput $1 $updateLine[$gratingNum] | grep $1 | grep $updateLine[$gratingNum]`
+
+if ( $#response == 0 ) then
+	echo "Cannot set grating ID"
+	exit
+endif
+
+echo "Command Success"
+exit
+
+

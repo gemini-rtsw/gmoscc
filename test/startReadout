@@ -1,0 +1,56 @@
+#! /bin/csh -f
+#
+#     startReadout
+#
+#     Do exposure and wait for reading-out flag set
+#
+alias caput "caput -ts"
+if ($GMOS_PREFIX == "") then
+  echo 'Error: environment variable GMOS_PREFIX undefined'
+  exit 1
+endif
+set retval = 0
+#
+# First wait for applyC to be IDLE
+#
+set count = 0
+set carval = `caget -n ${GMOS_PREFIX}applyC.VAL`
+shift carval
+#
+# Loop until IDLE
+#
+while (($carval != 0) && ($count < 500)) 
+  set carval = `caget -n ${GMOS_PREFIX}applyC.VAL`
+  shift carval
+  @ count++
+end
+echo "applyC loop count: $count "
+# Check for timeout
+if ($count == 500) then
+  echo "startReadout timed out waiting for applyC IDLE"
+  set retval = 1
+endif
+#
+# Now issue observe command
+#
+doCad observe
+#
+set count = 0
+set rdoutval = `caget -n ${GMOS_PREFIX}sad:dc:rdout.VAL`
+shift rdoutval
+#
+# Loop until reading out
+#
+while (($rdoutval != 1) && ($count < 500)) 
+  set rdoutval = `caget -n ${GMOS_PREFIX}sad:dc:rdout.VAL`
+  shift rdoutval
+  @ count++
+end
+echo "rdout loop count: $count "
+# Check for timeout
+if ($count == 500) then
+  echo "startReadout timed out waiting for rdout = 1"
+  set retval = 1
+endif
+#
+exit $retval

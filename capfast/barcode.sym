@@ -1,0 +1,46 @@
+[symbol2]
+bbox -32 32 256 96
+port 32 64 100 1280 SLNK symbol 1 -32 64 0
+port 200 64 100 768 OUT symbol 2 256 64 0
+uniq 44
+[tools]
+[attributes]
+p 112 -32 100 256 1 setChan:cos_channel 1
+p 112 0 100 256 1 setPort:port_address /tyCo/1
+[layers]
+<symbol>
+l 100 4 0 88 48 barcode
+r 0 32 32 144 96
+r 0 176 40 192 88
+r 0 136 48 144 80
+v 0 -32 64
+32 64
+_
+v 0 192 64
+256 64
+_
+v 6 176 64
+192 64
+_
+v 6 176 56
+192 56
+_
+v 7 176 40
+192 40
+_
+v 7 176 80
+192 80
+_
+v 0 176 72
+192 72
+_
+v 0 176 48
+192 48
+_
+v 0 176 88
+144 72
+_
+v 0 176 40
+144 56
+_
+[comments]

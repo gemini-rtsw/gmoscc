@@ -1,0 +1,55 @@
+#!/bin/csh -f
+#+
+# Module name:
+#    widePrint
+#
+# Purpose:
+#    Print one or more files to a Postscript printer in wide mode
+#
+# Language:
+#    Unix C shell script
+#
+# Description :
+#    This C-shell script prints one or more files to a Postscript printer
+#    in wide format. The files are converted to Postscript using a2ps.
+#    Each file is printed in wide landscape mode with one page per sheet.
+#    This format is useful for very wide text documents and tables, as well
+#    as for very wide source source.
+#
+# Usage:
+#    wideprint *.txt     (for example)
+#
+# Prior requirements:
+#    Set the PRINTER environment variable to a printer which can understand
+#    Postscript.
+#
+# Status:
+#    $Id$
+#
+# History:
+#    $Log$
+#    Revision 1.1  2001/03/08 11:55:47  gmos
+#    Imported the scripts used to print GMOS source code.
+#
+#
+#-
+   set files = "$*"
+   if ( "$files" != "" ) then
+
+      if ( $PRINTER != "" ) then
+
+         foreach file ( $files )
+
+#           Print in wide (landscape) mode with one page to a side and no line
+#           numbering.
+
+            echo Printing $file on $PRINTER in wide mode
+            a2ps -w -nn $file | lp -d ${PRINTER}
+         end
+      else
+
+         echo No printer specified. Please define PRINTER environment variable.
+      endif
+   else
+      echo Usage - wideprint file1 file2, file3...
+   endif

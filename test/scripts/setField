@@ -1,0 +1,26 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: setField
+#
+# Purpose: 
+#	To load an epics record field with the value of
+#	another field.
+#
+
+set sourceValue = `caget $2 | grep $2`
+
+if ( $#sourceValue != 2 ) then
+	echo "Cannot read source value"
+	exit
+endif
+
+set targetValue = `caput $1 $sourceValue[2] | grep $1`
+
+if ( $#targetValue == 0 ) then
+	echo "Cannot set target Field"
+	exit
+endif
+
+echo "Success"
+exit
+

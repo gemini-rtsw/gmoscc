@@ -1,0 +1,150 @@
+# This is a file of tests for the GMOS sequencer in a suitable format to be read
+# by the tcsTests.tk procedure.
+# 
+# This particular test file is aimed at checking the input ranges to 
+# the GMOS 'atmPos' CAD command.
+#
+#
+# Comments are introduced by a # in the first column
+# Blank lines can be left if required.
+# The currently allowed keywords are (case is immaterial)
+#
+#  Test   <testId>
+#  Command <commandName>
+#  Field   <CAD field> <value>
+#  Response Accept | Reject
+#  Timeout <msecs>
+#  OnError Continue | Abort
+#  Log     <recordName>
+#  Directive Start | Preset
+
+# This first part before the first Test keyword can be used to setup 
+# global values for Response, TimeOut and OnError. These global values
+# can be over ridden within specific tests
+
+Response Reject
+TimeOut  30000
+OnError  Continue
+
+Help
+Help These tests checks the trapping of invalid input to the
+Help atmPos command.
+Help
+Help The first tests check for null input. If the commands in question have
+Help been run at any time after booting and prior to running these tests then
+Help there will already be input on the CAD fields and so these null tests
+Help will fail. To validate the trapping of null input you will have to
+Help reboot the GMOS sequencer and start these tests again.
+Help
+Help Press continue when ready
+Help
+
+# Tests start here. Each test must start with the Test keyword, end with
+# a Directive keyword and have at least one Command keyword. Any Field
+# keywords are assumed to apply to the last command
+
+Test UT03010
+Summary Check rejection of null input
+Help Check rejection of null input
+
+ Command atmPos 
+ Field  DIR MARK   
+ Response  Reject 
+ Directive Start
+
+Test UT03020
+Summary Check rejection of null input to Exit prism angle field
+Help Check rejection of null input to Exit prism angle field 
+
+ Command atmPos 
+ Field  A  40.0
+ Response  Reject 
+ Directive Start
+
+Test UT03030
+Summary Check rejection of invalid input to Entrance prism angle field
+Help Check rejection of invalid input to Entrance prism angle field
+
+ Command atmPos 
+ Field  A  XXXXX 
+ Field  B  40.0
+ Response  Reject 
+ Directive Start
+
+Test UT03040
+Summary Check rejection of invalid input to Exit prism angle field
+Help Check rejection of invalid input to Exit prism angle field
+
+ Command atmPos 
+ Field  A  40.0 
+ Field  B  XXXXX
+ Response  Reject 
+ Directive Start
+
+Test UT03050
+Summary Check rejection of out-of-range (positive) input to Entrance prism angle field
+Help Check rejection of out-of-range (positive) input to Entrance prism angle field
+
+ Command atmPos 
+ Field  A  9999.0
+ Field  B  40.0
+ Response  Reject 
+ Directive Start
+
+Test UT03060
+Summary Check rejection of out-of-range (negative) input to Entrance prism angle field
+Help Check rejection of out-of-range (negative) input to Entrance prism angle field
+
+ Command atmPos 
+ Field  A  -9999.0
+ Field  B  40.0
+ Response  Reject 
+ Directive Start
+
+Test UT03070
+Summary Check rejection of out-of-range (positive) input to Exit prism angle field
+Help Check rejection of out-of-range (positive) input to Exit prism angle field
+
+ Command atmPos 
+ Field  A  40.0
+ Field  B  9999.0
+ Response  Reject 
+ Directive Start
+
+Test UT03080
+Summary Check rejection of out-of-range (negative) input to Exit prism angle field
+Help Check rejection of out-of-range (negative) input to Exit prism angle field
+
+ Command atmPos 
+ Field  A  40.0
+ Field  B  -9999.0
+ Response  Reject 
+ Directive Start
+
+Test UT03090
+Summary Check rejection of out-of-range input to both fields
+Help Check rejection of out-of-range input to both fields
+
+ Command atmPos 
+ Field  A  9999.0
+ Field  B  -9999.0
+ Response  Reject 
+ Directive Start
+
+
+Test UT03100
+Summary Check acceptance of valid Entrance and Exit prism angle fields
+Help Check acceptance of valid Entrance and Exit prism angle fields
+
+  Aftertest Pause
+
+ Command atmPos 
+  Field  A  45.0
+  Field  B  45.0
+  Response  Accept
+  Directive Start
+
+# Test UT03110
+# Summary Check that rejection by Components Controller is reported correctly
+# NO TEST AVAILABLE
+#

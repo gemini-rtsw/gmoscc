@@ -1,0 +1,131 @@
+#
+# VxWorks startup script to load and execute system (iocCore) software.
+#
+# First, vxWorks startup issues:
+#
+# DESCRIPTION:  Loads the GMOS Instrument Sequencer database.
+#
+#  Adapted from gmoscc/startup/ccStartup2.vws   (26/1/00)
+#
+
+# Make delete key work for backspace
+tyBackspaceSet 0177
+
+# Set the shell prompt
+shellPromptSet "GMOS IS NODC >"
+
+# cd to application install directory (beware automounter problems)
+cd "$(install)"
+pwd
+
+# The local file contains site-specific information
+# such as the default router and the vxWorks password file.
+# (Commented out, since already done in startup_MINIMAL)
+#< $(install)/bin/$(arch)/local
+
+# Load EPICS core and record stuff
+ld < $(epics)/base/bin/$(arch)/iocCore
+ld < $(epics)/base/bin/$(arch)/drvSup
+ld < $(epics)/base/bin/$(arch)/recSup
+ld < $(epics)/base/bin/$(arch)/devSup
+
+# Add this for pvload
+ld < $(epics)/extensions/bin/$(arch)/pvload
+
+# If using state programs, load the sequencer
+ld < $(epics)/base/bin/$(arch)/seq
+
+# Load any application records, device support or drivers here,
+# or code for subroutine records. It is assumed
+# that Gemini libraries are available in the standard /gemini directory).
+
+ld < /gemini/slalib/bin/$(arch)/slalib
+ld < /gemini/timelib/bin/$(arch)/timelib
+ld < /gemini/astlib/bin/$(arch)/astlib
+
+ld < $(version)/../gmoscc/bin/$(arch)/drvOmsVme.o
+ld < $(version)/../gmoscc/bin/$(arch)/devDeviceControl.o
+ld < $(version)/../gmoscc/bin/$(arch)/devBarcode.o
+ld < $(version)/../gmoscc/bin/$(arch)/recAssControl.o
+ld < $(version)/../gmoscc/bin/$(arch)/recDeviceControl.o
+ld < $(version)/../gmoscc/bin/$(arch)/gmosGensubLib.o
+
+ld < $(version)/../gmoscc/bin/$(arch)/gmMaskGenSubs.o
+ld < $(version)/../gmoscc/bin/$(arch)/devMaskControl.o
+ld < $(version)/../gmoscc/bin/$(arch)/gmOiwfsCalc.o
+ld < $(version)/../gmoscc/bin/$(arch)/gmOiwfsGenSubs.o
+ld < $(version)/../gmoscc/bin/$(arch)/gmOiwfsCadSupport.o
+ld < $(version)/../gmoscc/bin/$(arch)/tcs_simulator.o
+ld < $(version)/../gmoscc/bin/$(arch)/devOiwfsControl.o
+ld < $(version)/../gmoscc/bin/$(arch)/devAtmdcControl.o
+ld < $(version)/../gmoscc/bin/$(arch)/devFilterAss.o
+ld < $(version)/../gmoscc/bin/$(arch)/gmosLutLib.o
+ld < $(version)/../gmoscc/bin/$(arch)/devGratingAss.o
+ld < $(version)/../gmoscc/bin/$(arch)/lifter.o
+ld < $(version)/../gmoscc/bin/$(arch)/devTranslationAss.o
+
+ld < $(version)/../gmoscc/bin/$(arch)/gmosCcCadLib.o
+
+ld < $(version)/bin/$(arch)/gmSeqAppl
+
+# Load sequences here
+ld < $(version)/../gmoscc/bin/$(arch)/assemblyCar.o
+ld < $(version)/../gmoscc/bin/$(arch)/systemCar.o
+ld < $(version)/../gmoscc/bin/$(arch)/commandCar.o
+ld < $(version)/../gmoscc/bin/$(arch)/lifterSim.o
+
+# Configure the Timestamp system, 1=Master IOC
+TSconfigure 1, 0, 0, 0, 0, 0
+
+# Put the barcode reading software into simulation mode
+devBarcodeSimulate = 3
+
+# Load one or more ASCII databases here
+dbLoad "$(version)/../gmoscc/data/default.dctsdr"
+dbLoadRecords "$(version)/../gmoscc/data/gmosCcTopMKSS.db"
+dbLoadRecords "$(version)/../gmoscc/data/gmosCcSadTopMKSS.db"
+dbLoadRecords "$(version)/data/gmSeqTop.db"
+dbLoadRecords "$(version)/data/gmSeqSadTop.db"
+#dbLoadRecords "$(version)/data/gmosDcSimTop.db"
+dbLoadRecords "$(version)/data/gmosCcSadSimTop.db"
+
+# This turns off logging
+# iocLogDisable=1
+
+iocInit "$(version)/../gmoscc/data/resource.def"
+
+# Ensure master enable is disabled while startup script executes
+dbpf "g7:cc:msEnableEnable","0"
+
+#Define the database name
+dbpf "g7:sad:cc:name.VAL","GMOS CC Mauna Kea (IS) - simulated"
+
+
+# Load initialization files
+pvload "$(version)/../gmoscc/data/gmInterlockSim.pv","top=g7:cc:"
+pvload "$(version)/../gmoscc/data/gmOiwfs.pv","top=g7:wfs:"
+pvload "$(version)/../gmoscc/data/gmMaskSim.pv","top=g7:cc:"
+pvload "$(version)/../gmoscc/data/gmGratingSim.pv","top=g7:cc:"
+pvload "$(version)/data/gmSeq.pv","top=g7:, sadtop=g7:"
+
+# Start sequences
+seq &assemblyCar, "top=g7:cc:, dev=msk, priority=75"
+seq &assemblyCar, "top=g7:, dev=wfs:probe, priority=75"
+seq &commandCar, "top=g7:, dev=wfs:, priority=75"
+seq &assemblyCar, "top=g7:cc:, dev=flt, priority=75"
+seq &assemblyCar, "top=g7:cc:, dev=gr, priority=75"
+seq &lifterSim,   "top=g7:cc:, dev=gr, priority=75"
+seq &assemblyCar, "top=g7:cc:, dev=dta, priority=75"
+seq &systemCar,   "top=g7:cc:, cad=init, priority=75"
+seq &systemCar,   "top=g7:cc:, cad=test, priority=75"
+seq &systemCar,   "top=g7:cc:, cad=datum, priority=75"
+seq &systemCar,   "top=g7:cc:, cad=update, priority=75"
+seq &systemCar,   "top=g7:cc:, cad=park, priority=75"
+
+# Trigger reading in the filter, grating and mask data
+dbpf "g7:getWheelNames.PROC","1"
+dbpf "g7:getGratingNames.PROC","1"
+dbpf "g7:getMaskNames.PROC","1"
+ 
+# Enable master enable on completion of startup script
+dbpf "g7:cc:msEnableEnable","1"

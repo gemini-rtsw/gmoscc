@@ -1,0 +1,23 @@
+[symbol2]
+bbox -256 64 -64 256
+port -80 224 100 512 DOORS symbol 2 -64 224 0
+uniq 1
+[tools]
+[attributes]
+p -256 32 100 0 1 seta:top gm:
+[layers]
+<symbol>
+a 0 -144 158 -141 153 360
+l 100 0 0 -206 80 switches
+l 100 0 0 -208 95 door
+r 0 -256 64 -64 256
+v 0 -190 209
+-126 209
+-109 145
+-176 145
+-190 209
+-190 128
+-127 128
+-127 145
+_
+[comments]

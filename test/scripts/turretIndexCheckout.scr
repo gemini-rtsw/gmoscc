@@ -1,0 +1,181 @@
+#
+# DHS Test Commander
+# Grating turret device indexing script
+#
+
+#
+# Define the variables used in this script, and the configuration files
+# which contain their translation into EPICS channel names.
+#
+#       Config file              Config file name        Named used here     Mystery number
+#       -----------              ---------------------   -----------------   --------------
+
+# Device INPUTS
+VAR     gratingTurretDevice      devDir                  devDir	             1
+VAR     gratingTurretDevice      devMode                 devMode             1
+VAR     gratingTurretDevice      devTarget               devTarget           1
+VAR     gratingTurretDevice      devNamedTarget          devNamedTarget      1
+VAR     gratingTurretDevice      devIndexType            devIndexType        1
+VAR     gratingTurretDevice      devDbug                 devDbug             1
+VAR     gratingTurretDevice      devSimm                 devSimm             1
+VAR     gratingTurretDevice      devMinPosition          devMinPosition      1
+VAR     gratingTurretDevice      devMaxPosition          devMaxPosition      1
+VAR     gratingTurretDevice      devBacklash             devBacklash         1
+VAR     gratingTurretDevice      devRounding             devRounding         1
+VAR     gratingTurretDevice      devVelocity             devVelocity         1
+VAR     gratingTurretDevice      devMinVelocity          devMinVelocity      1
+VAR     gratingTurretDevice      devMaxVelocity          devMaxVelocity      1
+VAR     gratingTurretDevice      devAcceleration         devAcceleration     1
+VAR     gratingTurretDevice      devLutFile              devLutFile          1
+VAR     gratingTurretDevice      devLutDirectory         devLutDirectory     1
+VAR     gratingTurretDevice      devDevType              devDevType          1
+VAR     gratingTurretDevice      devEgu                  devEgu              1
+VAR     gratingTurretDevice      devMotorRes             devMotorRes         1
+VAR     gratingTurretDevice      devMotionDeadBand       devMotionDeadBand   1
+VAR     gratingTurretDevice      devBaseVelo             devBaseVelo         1
+VAR     gratingTurretDevice      devFinalIndexVelo       devFinalIndexVelo   1
+VAR     gratingTurretDevice      devUsePwrStatus         devUsePwrStatus     1
+VAR     gratingTurretDevice      devPwrStatusTimeout     devPwrStatusTimeout 1
+VAR     gratingTurretDevice      devPower                devPower            1
+VAR     gratingTurretDevice      devUseBrkStatus         devUseBrkStatus     1
+VAR     gratingTurretDevice      devBrkStatusTimeout     devBrkStatusTimeout 1
+VAR     gratingTurretDevice      devBrake                devBrake            1
+VAR     gratingTurretDevice      devUseAuxPwr            devUseAuxPwr        1
+VAR     gratingTurretDevice      devUseEncoder           devUseEncoder       1
+VAR     gratingTurretDevice      devEncoderRes           devEncoderRes       1
+VAR     gratingTurretDevice      devEncoderDeadBand      devEncoderDeadBand  1
+VAR     gratingTurretDevice      devManualPower          devManualPower      1
+
+# Device OUTPUTS
+VAR     gratingTurretDevice      devPosition             devPosition         1
+VAR     gratingTurretDevice      devAck                  devAck              1
+VAR     gratingTurretDevice      devBusy                 devBusy             1
+VAR     gratingTurretDevice      devState                devState            1
+VAR     gratingTurretDevice      devMess                 devMess             1
+VAR     gratingTurretDevice      devIndexed              devIndexed          1
+VAR     gratingTurretDevice      devLimited              devLimited          1
+
+# other status
+VAR     gratingStatus            gratingInPosition       grInpos             1
+VAR     gratingStatus            gratingLifterUp         lifterUp            1
+VAR     gratingStatus            gratingLifterDown       lifterDown          1
+
+#
+# Is it safe to proceed?
+#
+
+PROMPT "Read the assumptions. Are the grating turret switches really broken?"
+
+#
+# Verify startup state. The device should be stopped and unpowered.
+# The lifter MUST be raised.
+#
+
+TEST "Check the lifter is raised"
+FATAL
+
+DESC "The lifter MUST be raised or the turret cannot be indexed"
+GETVAL lifterUp
+OUTPUT *VAL* UP*
+
+GETVAL lifterDown
+OUTPUT *VAL* NOTDOWN*
+
+ENDTEST
+
+TEST "Verify turret startup state"
+FATAL
+
+DESC "Verify turret startup state"
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+#
+# The turret device can be fooled into thinking it has been indexed and its
+# lower hard limit is position zero by moving it with the power switched
+# of and the power status bit also switched off
+#
+
+TEST "Switch off the turret power status checking"
+FATAL
+
+DESC "Set the use power status bit from YES to NO"
+PUTVAL devUsePwrStatus "0"
+OUTPUT *.UPSB* YES*.UPSB* NO*
+
+ENDTEST
+
+TEST "Index the turret at the lower hard limit with algorithm 0 and target 0"
+FATAL
+
+DESC "Indexing the turret - algorithm 0 target 0"
+PUTVAL devIndexType "0"
+OUTPUT *
+
+PUTVAL devTarget "0"
+OUTPUT *VAL*VAL* 0*
+
+PUTVAL devMode "3"
+OUTPUT *MODE*MODE*INDEX*
+
+CMD "deviceCommand devDir devAck devBusy"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Verify device state after command
+#
+
+TEST "Verify state after command"
+FATAL
+
+DESC "Verify state after command"
+
+GETVAL devState
+OUTPUT *.MIP* STOPPED* 
+
+GETVAL devIndexed
+OUTPUT *.HPVL* 1* 
+
+DESC "Check device power still off"
+GETVAL devPower
+OUTPUT *.PSTA* 0* 
+
+ENDTEST
+
+TEST "Switch on the turret power status checking"
+FATAL
+
+DESC "Set the use power status bit from NO to YES"
+PUTVAL devUsePwrStatus "1"
+OUTPUT *.UPSB* NO*.UPSB* YES*
+
+ENDTEST
+
+TEST "Manually switch on the turret power"
+FATAL
+
+PUTVAL devManualPower "1"
+OUTPUT *VAL*VAL* ON*
+
+DESC "Check device power status"
+GETVAL devPower
+OUTPUT *.PSTA* 1* 
+
+ENDTEST
+
+#
+#  The turret is indexed and ready to go.
+#
+
+COMMENT "Grating turret indexed and ready to go. Power left on."
+
+
+ 

@@ -1,0 +1,25 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: getFirstMaskId
+#
+# Purpose: 
+#	To recover the first mask ID from the lookup table and 
+#	load it into the assembly record
+#
+
+set updateLine = `head -1 $2`
+if ( $#updateLine != 3 ) then
+	echo "Update file parse error"
+	exit
+endif
+
+set response = `caput $1 $updateLine[3] | grep $1 | grep $updateLine[3]`
+
+if ( $#response == 0 ) then
+	echo "Cannot set mask ID"
+	exit
+endif
+
+echo "Command Success"
+exit
+

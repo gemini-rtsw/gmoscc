@@ -1,0 +1,17 @@
+[symbol2]
+bbox 224 32 384 208
+port 368 160 100 2048 IVAL symbol 2 384 160 0
+port 240 160 100 1536 STAT symbol 1 224 160 0
+port 240 96 100 1536 SLNK symbol 1 224 96 0
+port 368 96 100 2048 FLNK symbol 2 384 96 0
+uniq 4
+[tools]
+[attributes]
+p 224 0 100 0 1 set1:cad CADNAME
+p 224 -32 100 0 1 set2:delay 0.5e+00
+[layers]
+<symbol>
+l 50 0 0 272 192 Busy...Idle
+l 100 0 0 256 48 gmosCadCar
+r 0 224 32 384 208
+[comments]

@@ -1,0 +1,23 @@
+#
+# File: masks.lut
+#
+# Database of available GMOS masks.
+#
+# This file contains a list of all the NAMED masks known to GMOS.
+# It does not include science masks identified only by their barcodes.
+#
+
+# name                 barcodeId
+
+diffuser               69
+focus_array            62
+off_tel_calib          63
+long_slit              66
+test_sci_data         187
+oiwfs_calib           179
+Al_on_axis            180
+IFU_model              78
+0.5arcsec              65
+5.0arcsec              68
+focus_array_new        72
+focus_array_2nd        70

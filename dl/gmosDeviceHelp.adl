@@ -1,0 +1,561 @@
+file {
+	name="gmosDeviceHelp.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="0"
+	npc="1"
+	nstr="90"
+	ndynamic="0"
+	nplot="0"
+	nrd="0"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="592"
+		height="754"
+	}
+	clr="1"
+	bclr="28"
+	nwords_dspy="1762"
+	nwords_sta="636"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="1750"
+	osta="1114"
+	odynamic="1750"
+	oplot="1750"
+	ord="1750"
+	oes="1750"
+	okd="1750"
+	opd="1762"
+	opo="1762"
+	opc="68"
+	ostr="72"
+	ocmap="1114"
+	ocrules="1114"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1600"
+	pixht="1200"
+	mmwid="320"
+	mmht="240"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="23"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"rectangle" {
+	object {
+		x="123"
+		y="652"
+		width="103"
+		height="43"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="12"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="GMOS Device Help - Engineering Only"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="9"
+		y="613"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   STOP - A controlled stop"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="588"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   CHECK - Check if target acceptable"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="95"
+		y="34"
+		width="400"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="95"
+		y="34"
+	}
+	point[1] {
+		x="495"
+		y="34"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="9"
+		y="50"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="1) Select the mode of operation."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="238"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="2a) For MOVE or TRACK select target position."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="263"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   Use upper box for numerical positions."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="538"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="3) Select START directive to start."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="563"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   Other directives are"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="2"
+		y="662"
+		width="90"
+		height="20"
+		groupid="0"
+	}
+	textix="Press"
+	align="horiz. right"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="9"
+		y="76"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   INIT - Initialize and read LUT files"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="102"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   MOVE - Move to selected position"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="128"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   TRACK - MOVE don't power off"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="154"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   INDEX - Find index/home position"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="180"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   PARK - Adopt safe/load configuration"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="206"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   TEST - Test the device (without moving)"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="123"
+		y="652"
+		width="103"
+		height="43"
+		groupid="0"
+	}
+	textix="E-STOP"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="245"
+		y="663"
+		width="260"
+		height="20"
+		groupid="0"
+	}
+	textix="for emergency stop"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="23"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"3-D border" {
+	object {
+		x="122"
+		y="651"
+		width="103"
+		height="43"
+		groupid="0"
+	}
+	border_type="outward"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="9"
+		y="288"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   Use lower `S` box for named positions."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="325"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="2b) For INDEX select an index mode:"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="9"
+		y="350"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   0 - Go where I tell you (engineering)"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="375"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   1 - Use lower home switch"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="400"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   2 - Use upper home switch"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="426"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   3 - Use center home switch"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="451"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   4 - Use lower limit switch"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="476"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   5 - Use upper limit switch"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="9"
+		y="502"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   IF IN DOUBT LEAVE THE INDEX MODE AT DEFAULT"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="4"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"rectangle" {
+	object {
+		x="124"
+		y="707"
+		width="103"
+		height="30"
+		groupid="2"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="124"
+		y="707"
+		width="103"
+		height="30"
+		groupid="2"
+	}
+	textix="RESET"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="4"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"3-D border" {
+	object {
+		x="123"
+		y="707"
+		width="103"
+		height="30"
+		groupid="2"
+	}
+	border_type="outward"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="245"
+		y="713"
+		width="240"
+		height="20"
+		groupid="0"
+	}
+	textix="to reset interlock"
+	align="horiz. left"
+}
+"kill display" {
+	object {
+		x="499"
+		y="706"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

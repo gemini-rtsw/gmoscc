@@ -1,0 +1,40 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: setObserveROI
+#
+# Purpose: 
+#	To set the file name for a GMOS observation
+#
+# Invocation:
+#       setObserveROI gm: roiXmin roiYmin roiXrange roiYrange
+#
+# Assumptions:
+#       The executeCommand script is available in the current PATH
+#
+
+#
+# Write the desired filename. It is assumed the other detector setup parameters
+# have already been specified.
+#
+
+set caputResponse = `caput ${1}dc:roi.B $2`
+set caputResponse = `caput ${1}dc:roi.C $3`
+set caputResponse = `caput ${1}dc:roi.D $4`
+set caputResponse = `caput ${1}dc:roi.E $5`
+
+#
+# Execute a detector setup
+#
+
+set cmdResponse = `executeCommand ${1}dc:roi.DIR ${1}dc:roi.VAL ${1}dc:dcSetupC.VAL`
+set okay = `echo $cmdResponse | grep 'Command Success'`
+
+if ( $#okay == 2 ) then
+    echo "Command Success"
+    exit
+else
+    echo "Command Failed"
+    exit -1
+endif
+
+exit

@@ -1,0 +1,14 @@
+[symbol2]
+bbox -608 176 0 272
+uniq 0
+[tools]
+[attributes]
+p -464 144 100 0 1 seta:snlfile assemblyCar.stpp
+[layers]
+<symbol>
+l 100 0 0 -496 240 Invisible lock-set-breaking link
+l 100 0 0 -496 192 made through State notation language
+v 4 -608 224
+0 224
+_
+[comments]

@@ -1,0 +1,486 @@
+file {
+	name="gmosAtmdcHelp.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="0"
+	npc="1"
+	nstr="112"
+	ndynamic="0"
+	nplot="0"
+	nrd="1"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="632"
+		height="720"
+	}
+	clr="1"
+	bclr="13"
+	nwords_dspy="2328"
+	nwords_sta="460"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="2156"
+	osta="1696"
+	odynamic="2156"
+	oplot="2156"
+	ord="2156"
+	oes="2316"
+	okd="2316"
+	opd="2328"
+	opo="2328"
+	opc="68"
+	ostr="72"
+	ocmap="1696"
+	ocrules="1696"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1600"
+	pixht="1200"
+	mmwid="320"
+	mmht="240"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="1"
+		y="11"
+		width="630"
+		height="20"
+		groupid="0"
+	}
+	textix="GMOS Atmospheric Dispersion Compensator Assembly Help"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="16"
+		y="33"
+		width="600"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="16"
+		y="33"
+	}
+	point[1] {
+		x="616"
+		y="33"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="52"
+		width="510"
+		height="20"
+		groupid="0"
+	}
+	textix="Read the general assembly help screen for"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="10"
+		y="75"
+		width="510"
+		height="20"
+		groupid="0"
+	}
+	textix="information about modes and directives -->"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="8"
+		y="120"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="1) Ensure the assembly has been initialized"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="143"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   and indexed before proceeding."
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="8"
+		y="524"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Control - Direct control of AtmDC devices"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="586"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Set Debug/Sim - Set debug/simulation mode"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="609"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="                (engineering only)."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="464"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Config - Set assembly configuration parameters"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="487"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="         (engineering only)."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="653"
+		width="500"
+		height="20"
+		groupid="0"
+	}
+	textix="SAD - AtmDC assembly SAD."
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="8"
+		y="187"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="2) To position the AtmDC fill in the target"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="208"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   entrance and exit prism angles in degrees,"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="229"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   then select MOVE then START."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="269"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="3) To park the assembly select PARK then"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="291"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   START."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="347"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Any extra information TBD..."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="415"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="The four menus at the bottom are:"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="8"
+		y="545"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="         (engineering only)."
+	align="horiz. left"
+}
+"related display" {
+	object {
+		x="536"
+		y="70"
+		width="75"
+		height="25"
+		groupid="0"
+	}
+	selfkill="off"
+	display[0] {
+		label="Assembly modes"
+		name="gmosAssemblyHelp.dl"
+		args=""
+	}
+	display[1] {
+		label=""
+		name=""
+		args=""
+	}
+	display[2] {
+		label=""
+		name=""
+		args=""
+	}
+	display[3] {
+		label=""
+		name=""
+		args=""
+	}
+	display[4] {
+		label=""
+		name=""
+		args=""
+	}
+	display[5] {
+		label=""
+		name=""
+		args=""
+	}
+	display[6] {
+		label=""
+		name=""
+		args=""
+	}
+	display[7] {
+		label=""
+		name=""
+		args=""
+	}
+	display[8] {
+		label=""
+		name=""
+		args=""
+	}
+	display[9] {
+		label=""
+		name=""
+		args=""
+	}
+	display[10] {
+		label=""
+		name=""
+		args=""
+	}
+	display[11] {
+		label=""
+		name=""
+		args=""
+	}
+	display[12] {
+		label=""
+		name=""
+		args=""
+	}
+	display[13] {
+		label=""
+		name=""
+		args=""
+	}
+	display[14] {
+		label=""
+		name=""
+		args=""
+	}
+	display[15] {
+		label=""
+		name=""
+		args=""
+	}
+	display[16] {
+		label=""
+		name=""
+		args=""
+	}
+	display[17] {
+		label=""
+		name=""
+		args=""
+	}
+	display[18] {
+		label=""
+		name=""
+		args=""
+	}
+	display[19] {
+		label=""
+		name=""
+		args=""
+	}
+	display[20] {
+		label=""
+		name=""
+		args=""
+	}
+	display[21] {
+		label=""
+		name=""
+		args=""
+	}
+	display[22] {
+		label=""
+		name=""
+		args=""
+	}
+	display[23] {
+		label=""
+		name=""
+		args=""
+	}
+	clr="9"
+	bclr="1"
+	menu_title="Help"
+	decorate="none"
+}
+"kill display" {
+	object {
+		x="537"
+		y="660"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

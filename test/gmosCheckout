@@ -1,0 +1,317 @@
+#!/usr/local/bin/tcsh -f
+#
+# gmosCheckout
+#
+# Description:
+#
+#  Run various levels of checkout on the entire GMOS instrument.
+#
+#   It is assumed this script is being run from the "test" directory.
+#
+# Invocation:
+#   gmosCheckout level arg2 arg3 arg4
+#      level = 1 (simple), 2 (thorough), 3 (full engineering checkout)
+#      or 4 (maximum checkout).
+#      arg2, arg3 and arg4 can be used to pass "-auto" and "-simulate"
+#      arguments to the checkout scripts (except the engineering level scripts).
+#      If "-noifu" is specified the non-IFU version of the mask checkout
+#      script will be selected.
+#
+# Note:
+#   This script runs all the checkout scripts sequentially. Many of these
+#   scripts can, in fact, be run simultaneously. 
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!($?GMOS_MK_ACCESS)) then
+    echo ""
+    echo "GMOS MK safety check failed."
+    echo ""
+    echo "Before executing this script, which will move real MK hardware,"
+    echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+    echo ""
+    exit
+else
+    echo "GMOS MK safety check passed."
+endif
+
+#
+# Bail out if the scripts directory does not exist.
+#
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+#
+# Obtain the level required. Default to 1 if not specified.
+#
+
+set level = $1
+
+if ( $level == "" ) then
+
+   set level = 1
+
+else if ( $level < 0 || $level > 3 ) then
+
+   echo "Invalid test level - must be one of the following:"
+   echo "1 - simple test of each assembly"
+   echo "2 - more thorough test of each assembly"
+   echo "3 - engineering tests requiring interaction"
+   echo "4 - additional engineering tests"
+   exit
+endif
+
+echo " "
+echo "GMOS instrument checkout at level " $level
+
+#
+# Extract other arguments
+#
+
+if ( "$2" == "-noifu" || "$3" == "-noifu" || "$4" == "-noifu" ) then
+   echo "The mask assembly is assumed not to have an IFU."
+   set noifu = 1
+else
+   echo "The mask assembly is assumed to have an IFU."
+   set noifu = 0
+endif
+
+if ( "$2" == "-auto" || "$3" == "-auto" || "$4" == "-auto" ) then
+   echo "Non-interactive scripts will be run in -auto mode."
+   set auto = "-auto"
+else
+   set auto = ""
+endif
+
+if ( "$2" == "-simulate" || "$3" == "-simulate" || "$4" == "-simulate" ) then
+   echo "All scripts will be run in -simulate mode."
+   set simulate = "-simulate"
+else
+   set simulate = ""
+endif
+
+#
+# Ensure the device reset aliases are set up
+#
+
+source ./setResetAliases
+
+#
+# State the assumptions and wait for a carriage return.
+#
+if ( -e gmosCheckout.asm ) then
+
+   cat gmosCheckout.asm
+
+   echo " "
+   echo "(type <ret> when ready to proceed)"
+   set dummy = $<
+endif
+
+#
+# Start with all the interactive engineering level tests.
+#
+
+if ( $level > 2 ) then
+
+#
+# Engineering level tests of all the mask components
+#
+
+   echo " "
+   echo "Mask Assembly Engineering Tests"
+   echo " "
+   echo "Please remove all the cassettes from the mask assembly."
+   echo "(type <ret> when ready to proceed)"
+   set dummy = $<
+
+#
+# Reset the mask assembly
+#
+   maskReset
+
+#
+# If required, run an additional engineering check the ensure the mask opto-sensors
+# are working correctly.
+#
+   if ( $level > 3 ) then
+      checkout maskOptSensor $simulate
+      echo " "
+      echo "Please remove all the cassettes from the mask assembly."
+      echo "(type <ret> when ready to proceed)"
+      set dummy = $<
+   endif
+
+#
+# Normal engineering checks on the gripper, release, extractor and cassette.
+# These must all be done without any cassettes in place.
+#
+   gripReset
+   checkout grip $simulate
+
+   releaseReset
+   checkout release $simulate
+
+   extractorReset
+   checkout extractor $simulate
+
+   cassetteReset
+   checkout cassette $simulate
+
+   echo " "
+   echo "Please replace all the cassettes in the mask assembly."
+   echo "(type <ret> when ready to proceed)"
+   set dummy = $<
+#
+# If required, run an additional engineering check the ensure all the cassette
+# pins are working correctly. This check needs cassettes installed.
+#
+   if ( $level > 3 ) then
+      checkout cassettePin $simulate
+   endif
+
+#
+# Engineering level tests of the grating turret and lifter
+#
+
+   echo " "
+   echo "Grating Turret and Lifter Engineering Tests"
+   echo " "
+   echo "Please raise the grating lifter."
+   echo "(type <ret> when ready to proceed)"
+   set dummy = $<
+
+   turretReset
+   if ( $level > 3 ) then
+      checkout turretFull $simulate
+   else
+      checkout turret $simulate
+   endif
+
+   echo " "
+   echo "Please move the turret to position B and lower the lifter."
+   echo "(type <ret> when ready to proceed)"
+   set dummy = $<
+
+   checkout lifter $simulate
+
+   echo " "
+   echo "Interactive engineering tests finished."
+   echo "Carrying on with other tests in $auto $simulate mode."
+endif
+
+
+#
+# Check out the mask assembly, choosing the normal or NoIfu version of the
+# script as appropriate. For a thorough check try putting every mask
+# into the beam.
+#
+
+maskReset
+if ( $noifu > 0 ) then
+   checkout maskNoIfu $auto $simulate
+else
+   checkout mask $auto $simulate
+endif
+
+if ( $level > 1 ) then
+
+   maskReset
+   checkout maskUpdate $auto $simulate
+endif
+
+
+#
+# Check out the OIWFS assembly. For a thorough check run the ICD checkout
+# script as well.
+#
+
+checkout wfs $auto $simulate
+if ( $level > 1 ) then
+   checkout wfsIcd $auto $simulate
+endif
+
+
+#
+# Check out the filter assembly. For a thorough check exercise each
+# filter wheel.
+#
+
+if ( $level > 1 ) then
+
+   wheel1Reset
+   checkout wheel1 $auto $simulate
+
+   wheel2Reset
+   checkout wheel2 $auto $simulate
+endif
+
+filterReset
+checkout filter $auto $simulate
+
+
+#
+# Check out the grating assembly. For a thorough check exercise all
+# the grating tilts.
+#
+
+if ( $level > 1 ) then
+
+   tiltAReset
+   checkout tiltA $auto $simulate
+
+   tiltBReset
+   checkout tiltB $auto $simulate
+
+   tiltCReset
+   checkout tiltC $auto $simulate
+
+   tiltDReset
+   checkout tiltD $auto $simulate
+endif
+
+#
+# Check the grating assembly. Include a calibration check at the maximum
+# engineering level.
+#
+
+gratingReset
+checkout grating $auto $simulate
+
+if ( $level > 3 ) then
+
+   checkout gratingCalib $auto $simulate
+endif
+
+
+#
+# Check out the translation assembly. For a thorough check exercise all
+# the axes.
+#
+
+if ( $level > 1 ) then
+
+   xaxisReset
+   checkout xaxis $auto $simulate
+
+   yaxisReset
+   checkout yaxis $auto $simulate
+
+   zaxisReset
+   checkout zaxis $auto $simulate
+endif
+
+translationReset
+checkout translation $auto $simulate
+
+echo " "
+echo "+-------------------------------------------------------------------+"
+echo "| GMOS instrument checkout completed.  Please check the log files,  |"
+echo "| as some results may have scrolled off the screen.                 |"
+echo "+-------------------------------------------------------------------+"

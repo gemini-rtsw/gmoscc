@@ -1,0 +1,42 @@
+[symbol2]
+bbox -64 96 256 384
+port 192 256 100 2048 Z_CUR symbol 2 256 256 0
+port 192 320 100 2048 X_CUR symbol 2 256 320 0
+port 192 288 100 2048 Y_CUR symbol 2 256 288 0
+port 192 224 100 2048 PR_CUR symbol 2 256 224 0
+port 0 320 100 1536 BAS_POS symbol 1 -64 320 0
+port 0 288 100 1536 PKO_POS symbol 1 -64 288 0
+port 192 192 100 2048 CUR_POS symbol 2 256 192 0
+uniq 266
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 7 0 96 368 Calc Position
+l 100 8 0 176 112 gmOiwfsCalcPos
+r 0 0 96 192 384
+v 0 0 352
+192 352
+_
+v 0 192 192
+256 192
+_
+v 0 192 224
+256 224
+_
+v 0 192 256
+256 256
+_
+v 0 192 288
+256 288
+_
+v 0 192 320
+256 320
+_
+v 0 -64 288
+0 288
+_
+v 0 -64 320
+0 320
+_
+[comments]

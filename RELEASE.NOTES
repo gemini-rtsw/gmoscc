@@ -1,0 +1,151 @@
+V0-4 01 Mar 2000 SMB:
+---------------------
+gmos004 - Post focal-place version 4 software.  Used for testing the GMOS
+system during March 2000 (device layer only). Uses November 1999 version of the
+HIA records.  ARCHIVED.
+
+V0-5 10 Mar 2000 SMB:
+---------------------
+gmos005 - Post focal-plane version 5 software.  Newest version which uses the
+February 2000 version of the HIA records. This version has a much more reliable
+assembly layer.  ARCHIVED.
+
+V0-6 10 Apr 2000 SMB:
+---------------------
+The result of the first attempt to integrate the pre and post focal-plane
+software. This version uses unchanged device record but required several OMS
+scan tasks. Saved on 10 April 2000.  ARCHIVED.
+
+V0-7 15 Apr 2000 SMB:
+---------------------
+gmos007 - First fully integrated pre and post focal-plane software. This
+resulted from William Rambold's visit of April 2000.  The device control record
+has been modified to satisfy both pre and post focal-plane requirements. There
+are currently four versions available: A full version for the real hardware,
+databases with simulated post or pre focal-plane hardware, and a fully
+simulated database. Saved 15 April 2000.  ARCHIVED.
+
+
+V0-8 01 Jun 2000 SMB:
+---------------------
+gmos008 - Version containing commented code from William Rambold with serious
+memory corruption problems. Use of this version is not recommended. Saved in
+June 2000.  ARCHIVED.
+
+V0-9 12 Jul 2000 SMB:
+---------------------
+gmos009 - Version with the memory corruption problems contained in gmos008
+fixed. Saved 12 July 2000.  ARCHIVED.
+
+
+V1-0 31 Jul 2000 SMB:
+---------------------
+gmos010 - This is the first version of the software to use the new turret
+microswitches, rather than prompting the user to index the turret on the lower
+hard limit. Saved 31 July 2000. ARCHIVED.
+
+V1-1 16 Aug 2000 SMB:
+---------------------
+gmos011 - The first version of the software to make use of the Instrument
+Sequencer. This version of the software was used during the first GMOS cold
+tests from 18-31 August 2000.  This software automatically switches off the
+mask opto sensors, but requires that the sensors be switched on manually before
+operating the mask assembly. Saved 16 August 2000.  ARCHIVED.
+
+V1-2 29 Sep 2000 SMB:
+---------------------
+gmos012 - This version of the software fixes the mask assembly opto sensor
+problem and has the ability to park the filter assembly at various load
+positions. It also fixes some minor bugs noticed during and after the cold
+tests and fixes several bugs detected during the Instrument Sequencer tests.
+Used extensively for grating tilt repeatability tests.  Saved 29 September
+2000. ARCHIVED
+
+V1-3 13 Oct 2000 SMB:
+---------------------
+gmos013 - This version contains the changes to the device record which had to
+be made to support the new wavefront sensor. From this version of the software
+onwards, lookup tables are obtained from the /gemini/gmos directory. Saved 13
+October 2000. ARCHIVED.
+
+V1-4 01 Nov 2000 SMB:
+---------------------
+gmos014 - This version contains Bob Wooff's October 2000 release of the
+wavefront sensor software. It also contains some bug fixes to the filter and
+grating software. Saved 1 November 2000. ARCHIVED
+
+V1-5 17 Nov 2000 SMB:
+---------------------
+gmos015 - This version fixes problems found in the OIWFS to TCS interface and
+corrects bugs found in the flexure control part of the GMOS Instrument
+Sequencer. It also contains some bug fixes to the device and assembly records.
+This version was used for the first set of flexure tests. Saved 17 November
+2000. ARCHIVED
+
+V1-6 12 Dec 2000 SMB:
+---------------------
+gmos016 - This version fixes problems found during the first set of flexure
+tests. It also "jiggles" the grating tilt drives automatically and leaves them
+out of contact with the worm, to give better repeatability.  This version was
+used for the second set of flexure tests. This version includes a 7 second
+delay before lowering the turret. Saved 12 December 2000. ARCHIVED
+
+V1-7 01 Feb 2001 SMB:
+---------------------
+gmos017 - This version has better handling of barcode read failures by the mask
+and filter assemblies. It also has some major changes to the instrument
+sequencer, in which the focus offset of a filter is separated into its
+wavelength and surface curvature components, and a grating may have a surface
+curvature components. The effective wavelength of an observation is derived
+from the filter in imaging mode and from the grating settings in spectroscopy
+mode.  This change requires a change in format of the "filters.lut" and
+"gratings.lut" files.  Several improvements have also been made to the
+reliability and maintainability of the instrument sequencer code and
+readability of the dm screens. Saved 1 February 2001.
+
+V1-8 13 Feb 2001 SMB:
+---------------------
+gmos018 - This version includes all the changes Bob Wooff made to use the
+new interlock hardware. Older versions of the software will not work with
+the new hardware. Saved 13 February 2001.
+
+V1-9 20 Feb 2001 SMB:
+---------------------
+gmos019 - This version contains all the changes made to the flexure control
+software which converts TCS coordinates to GMOS coordinates and converts those
+GMOS coordinates into a flexure offset using a model based on actual GMOS
+flexure measurements. Saved 20 February 2001.
+
+V2-0 26 Feb 2001 SMB:
+---------------------
+gmos020 - This version allows masks to be selected by name as well as by
+barcode ID. It also extends the acceptable wavelength range to 1100nm, The mask
+and OIWFS assemblies are converted to use the same error reporting scheme as
+the post focal plane assemblies.  Saved 26 February 2001.
+
+V2-1 02 Mar 2000 SMB:
+---------------------
+gmos021 - This version fixes a problem selecting the same mask twice in the
+mask assembly and corrects a bug in the instrument sequencer debug command. A
+problem with the messages displayed by the new interlock software has been
+fixed.  The assembly and device record code also display error messages on the
+console by default. Some bad practise with "void *" pointers in the instrument
+sequencer code tidied up.  Used for GMOS science tests. Saved 2 March 2001.
+
+V2-2 08 Mar 2001 SMB:
+---------------------
+gmos022 - This version fixes a bug found in the OIWFS SAD and changes the way
+the system health is determined to more closely match Gemini requirements.
+There are minor changes to some of the "dm" screens. This frozen version will
+be used for GMOS acceptance tests and for post shipping evaluation. Saved 8
+March 2001.
+FIRST VERSION SAVED TO CVS REPOSITORY AT GEMINI HBF - gmoscc and gmosis merged.
+
+
+V2-3 ?? Apr 2001 SMB:
+---------------------
+gmos023 - This version is under development and may be modified to allow an
+INIT command to be executed while GMOS is interlocked. Any power status problem
+fix, plus fixes for significant problems seen during acceptance tests, will go
+into this version. It will be released under change control in consultation
+with the Gemini project.

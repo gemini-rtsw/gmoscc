@@ -1,0 +1,37 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: getMaskId
+#
+# Purpose: 
+#	To recover a mask ID from the lookup table and 
+#	load it into the assembly record
+#	Input args:
+#		$1 record name and field where the ID is to be written
+#		$2 lookup table filename and path
+#		$3 nth mask in lookup table
+#	Writes mask barcode ID for nth mask in lookup table to record
+#       if they exist and returns with "Command Success". Otherwise
+#       returns with "Cannot set mask ID" if the caput fails or
+#       "Failed, not that many masks" if you've requested a mask
+#       number greater than those that exist.
+#
+
+@ maskNum = ($3 * 3)
+set updateLine = `head -50 $2`
+@ maskTotal = ($#updateLine / 3)
+if ( $maskTotal < $3 ) then
+	echo "Failed, not that many masks"
+	exit
+endif
+
+set response = `caput $1 $updateLine[$maskNum] | grep $1 | grep $updateLine[$maskNum]`
+
+if ( $#response == 0 ) then
+	echo "Cannot set mask ID"
+	exit
+endif
+
+echo "Command Success"
+exit
+
+

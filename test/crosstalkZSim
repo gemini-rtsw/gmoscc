@@ -1,0 +1,79 @@
+#!/usr/local/bin/tcsh -f
+#
+# crosstalkZSim
+#
+# Description:
+#
+#   Wrap-around script to execute crosstalkZSim script and direct output to log file
+#
+#   It is assumed this script is being run from the "test" directory.
+#   The translation assembly and detector controller must already have been initalised
+#   and set into the desired configuration.
+#
+# Invocation:
+#   crosstalkZSim
+#
+
+#
+# Bail out if the scripts directory does not exist.
+#
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+#
+# State the assumptions and wait for a carriage return.
+#
+if ( -e crosstalkZ.asm ) then
+
+   cat crosstalkZ.asm
+
+   echo " "
+   echo "(type <ret> when ready to proceed)"
+   set dummy = $<
+endif
+
+#
+# File names are tagged with a running number.
+# Prompt for the starting value.
+#
+echo "Please enter a starting file number, XXXXX"
+echo "The first filename will be gXXXXX"
+set filenumber = $<
+
+@ filenumber -= 1
+@ filenumber += 1
+
+#
+# Save the current day
+#
+set day = `date +%d%h%y`
+
+#
+# Create the "logfiles" directory if it doesn't exist.
+#
+if ( !(-e logfiles) ) then
+
+   echo "Creating logfiles directory..." 
+   mkdir logfiles
+endif
+
+if (!(-e logfiles/$day)) then
+    mkdir logfiles/$day
+    echo "Creating directory ./logfiles/"$day" for today's log files"
+    sleep 1
+endif
+
+set logfile = `pwd`/logfiles/${day}/crosstalkZSim.log
+
+echo "Executing crosstalkZSim and appending a copy of the output to the log file"
+echo $logfile
+echo " "                                                                                >> $logfile
+echo "================================================================================" >> $logfile
+echo " "                                                                                >> $logfile
+
+./crosstalkZSimNolog $filenumber | tee -a $logfile
+
+exit

@@ -1,0 +1,33 @@
+[symbol2]
+bbox 32 32 352 416
+port 336 320 100 512 MESS symbol 2 352 320 0
+port 336 96 100 512 LMAX symbol 2 352 96 0
+port 336 128 100 512 LMIN symbol 2 352 128 0
+port 336 160 100 512 TRACK symbol 2 352 160 0
+port 336 352 100 512 VAL symbol 2 352 352 0
+port 48 352 100 0 DIR symbol 1 32 352 0
+port 336 288 100 512 FLNK symbol 2 352 288 0
+port 336 64 100 512 TLNK symbol 2 352 64 0
+port 48 320 100 0 ICID symbol 1 32 320 0
+uniq 105
+[tools]
+[attributes]
+p 32 -64 100 0 1 setc:dev flt
+p 32 -96 100 0 1 setd:dtyp filter
+p 32 -128 100 0 1 sete:simm NONE
+[layers]
+<symbol>
+l 100 7 0 176 400 atmDC
+l 100 0 0 128 352 Atmospheric
+l 100 0 0 128 320 Dispersion
+l 100 0 0 128 288 Corrector
+l 100 0 0 128 256 Control
+r 0 128 48 224 224
+r 0 32 32 352 416
+v 0 128 48
+224 224
+_
+v 0 32 384
+352 384
+_
+[comments]

@@ -1,0 +1,32 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: compareField
+#
+# Purpose: 
+#	To compare contents of an epics record field with the value of
+#	another field.
+#
+# NOTE:
+#       This script assumes the EPICS field contains a single word.
+#
+
+set value1 = `caget $1 | grep $1`
+if ( $#value1 != 2 ) then
+	echo "Cannot read first value"
+	exit
+endif
+
+set value2 = `caget $2 | grep $2`
+if ( $#value2 != 2 ) then
+	echo "Cannot read second value"
+	exit
+endif
+
+if ( $value1[2] == $value2[2] ) then
+	echo "Equal"
+	exit
+endif
+
+echo "Different"
+exit
+

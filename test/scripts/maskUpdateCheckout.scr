@@ -1,0 +1,810 @@
+#
+# DHS Test Commander
+# Checkout script for:
+#
+#	Gmos Mask Assembly checkout
+#		1. update mask assembly
+#		2. place first mask/ifu in focal plane 
+#		3. return to cassette box
+#		4. repeat steps 2/3 for each mask
+#
+
+
+#
+# First get all those funky variables sorted out
+#
+
+VAR   preFpIcd     maskDirective           cmdDir               1
+
+VAR   preFpIcd     maskMode                mskMode              1
+VAR   preFpIcd     maskTarget              mskSelect            1
+VAR   preFpIcd     maskLocation            mskLocation          1
+VAR   preFpIcd     maskPark                mskParkingSpot       1
+VAR   preFpIcd     maskExtFast             mskExtFast           1
+VAR   preFpIcd     maskExtSlow             mskExtSlow           1
+
+VAR   preFpIcd     maskAcknowledge         cmdAck               1
+VAR   preFpIcd     maskBusy                cmdAction            1
+VAR   preFpIcd     maskMessage             cmdError             1
+VAR   preFpIcd     maskState               cmdState             1
+
+VAR   preFpIcd     maskCarMess             mskCarMsg            1
+VAR   preFpIcd     maskCarErr              mskCarErr            1
+
+VAR   preFpIcd     sadMaskLoadId           sadSelect            1
+VAR   preFpIcd     sadMaskLocation         sadLocation          1
+
+VAR   preFpIcd     sadMaskInitialized      sadInit              1
+VAR   preFpIcd     sadMaskIndexed          sadIndex             1
+VAR   preFpIcd     sadMaskParked           sadPark              1
+VAR   preFpIcd     sadMaskHealth           sadHealth            1
+VAR   preFpIcd     sadMaskFP               sadInFp              1
+
+VAR   preFpIcd     sadMaskState            sadState             1
+
+VAR   preFpIcd     sadMaskGripper          sadGripper           1
+VAR   preFpIcd     sadMaskRelease          sadRelease           1
+
+VAR   preFpIcd     sadMaskDebug            sadDebug             1
+VAR   preFpIcd     sadMaskSimulate         sadSimm              1
+
+VAR   maskAssembly assemblyTranslationFile mskLutFile           1
+VAR   maskAssembly assemblyTranslationDir  mskLutDir            1
+
+VAR   gripDevice   devDir                  gripDir              1
+VAR   gripDevice   devMode                 gripMode             1
+VAR   gripDevice   devTarget               gripTarget           1
+VAR   gripDevice   devNamedTarget          gripNamedTarget      1
+VAR   gripDevice   devAck                  gripAck              1
+VAR   gripDevice   devBusy                 gripBusy             1 
+VAR   gripDevice   devMess                 gripMess             1
+
+VAR   extractorDevice   devPosition        extPosition          1
+VAR   extractorDevice   devDir             extDir               1
+VAR   extractorDevice   devMode            extMode              1
+VAR   extractorDevice   devTarget          extTarget            1
+VAR   extractorDevice   devNamedTarget     extNamedTarget       1
+VAR   extractorDevice   devVelocity        extVelocity          1
+VAR   extractorDevice   devAck             extAck               1
+VAR   extractorDevice   devBusy            extBusy              1
+VAR   extractorDevice   devState           extState             1
+VAR   extractorDevice   devMess            extMess              1
+
+VAR   maskStatus        lvdtVal            lvdtVal              1
+
+
+#
+# check starting point, should be freshly rebooted....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly not indexed?"
+GETVAL sadIndex
+OUTPUT *VAL* 0*
+
+DESC "Mask assembly initialization state"
+GETVAL sadInit
+OUTPUT *
+
+DESC "Mask assembly not parked?"
+GETVAL sadPark
+OUTPUT *VAL* 0*
+
+DESC "Mask assembly health"
+GETVAL sadHealth
+OUTPUT *
+
+ENDTEST
+
+
+#
+# Start with mask assembly setup functions
+#
+
+TEST "Test Initialization function"
+FATAL
+
+DESC "Initializing mask assembly"
+
+PUTVAL mskMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Test index function
+#
+
+TEST "Test Index Function"
+FATAL
+
+DESC "Indexing Mask Assembly"
+
+PUTVAL mskMode "3"
+OUTPUT *MODE*INIT*MODE*INDEX*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+# Test update function
+#
+
+TEST "Test Update Function"
+FATAL
+
+DESC "Updating Mask Assembly"
+
+PUTVAL mskMode "6"
+OUTPUT *MODE*INDEX*MODE*UPDATE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Testing Mask Assembly"
+
+PUTVAL mskMode "5"
+OUTPUT *MODE*UPDATE*MODE*TEST*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Load each ifu/mask listed in the lookup table
+#
+# NOTE: The script does not know in advance how many masks have been loaded.
+# It will attempt to load 20 masks in turn, and an error will be generated
+# when an attempt is made to load a non-existent mask. For this reason any
+# error detected during this part of the script is regarded as non-fatal,
+# and the script will jump to the next test.
+#
+
+TEST "Load each mask listed in the lookup table"
+ENDFATAL
+STOP
+
+DESC "Loading mask 1"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 1"
+OUTPUT *Success*
+PUTVAL mskMode "1"
+OUTPUT *MODE*MODE*MOVE*
+PUTVAL mskLocation "0"
+OUTPUT *B* 0*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with mask or IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 2"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 2"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 3"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 3"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 4"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 4"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 5"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 5"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 6"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 6"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 7"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 7"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 8"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 8"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 9"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 9"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 10"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 10"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 11"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 11"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 12"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 12"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 13"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 13"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 14"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 14"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 15"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 15"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 16"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 16"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 17"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 17"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 18"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 18"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 19"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 19"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+DESC "Loading mask 20"
+CMD "getMaskId mskSelect  /home/smb/gmos/lut/msk.lut 20"
+OUTPUT *Success*
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+DESC "Focal plane occupied with IFU?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInFp
+OUTPUT *VAL*1*
+
+DESC "Correct mask in Focal Plane?"
+CMD "compareField sadSelect mskSelect
+OUTPUT *Equal*
+
+DESC "Mask location in-beam?"
+GETVAL sadLocation
+OUTPUT *VAL* 0*
+
+
+
+
+ENDSTOP
+ENDTEST
+
+#
+# Check the status fields after loading all the masks
+#
+
+TEST "Verify status fields to catch any fatal errors during mask loading"
+FATAL
+
+DESC "Mask assembly still indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health still GOOD?"
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Parking the Assembly
+#
+
+TEST "Parking function test"
+FATAL
+
+DESC "Parking assembly"
+
+PUTVAL mskMode "4"
+OUTPUT *MODE*MOVE*MODE*PARK*
+
+PUTVAL mskParkingSpot "2"
+OUTPUT *C*C* 2*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+
+CMD "sleep 1"
+OUTPUT *
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Mask assembly parked?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadPark
+OUTPUT *VAL* 1*
+ 
+DESC "Mask assembly indexed?"
+
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Mask assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Mask assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Gripper gripped?"
+
+GETVAL sadGripper
+OUTPUT *VAL* 1*
+
+DESC "Release released?"
+
+GETVAL sadRelease
+OUTPUT *VAL* -1*
+
+DESC "Focal plane not occupied?"
+
+GETVAL sadInFp
+OUTPUT *VAL* 0*
+
+DESC " Mask location in-cassette?"
+
+GETVAL sadLocation
+OUTPUT *VAL* 1*
+
+ENDTEST
+
+#
+#  Mask Assembly Update functions are OK
+#
+
+COMMENT "Mask assembly update OK"

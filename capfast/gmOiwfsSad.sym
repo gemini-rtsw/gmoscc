@@ -1,0 +1,12 @@
+[symbol2]
+bbox 32 32 288 256
+uniq 26
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 2 0 272 48 gmOiwfsSad
+l 100 7 0 160 240 GMOS OIWFS SAD
+r 0 32 32 288 224
+r 0 32 224 288 256
+[comments]

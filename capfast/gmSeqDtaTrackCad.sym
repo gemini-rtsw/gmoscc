@@ -1,0 +1,29 @@
+[symbol2]
+bbox 32 32 352 416
+port 336 96 100 512 TRACK symbol 2 352 96 0
+port 48 64 100 0 TRACKZ symbol 1 32 64 0
+port 48 96 100 0 TRACKXY symbol 1 32 96 0
+port 336 128 100 512 TLNK symbol 2 352 128 0
+port 336 160 100 512 MODE symbol 2 352 160 0
+port 336 192 100 512 ZOFF symbol 2 352 192 0
+port 336 224 100 512 YOFF symbol 2 352 224 0
+port 336 256 100 512 XOFF symbol 2 352 256 0
+port 336 304 100 512 MESS symbol 2 352 304 0
+port 336 336 100 512 VAL symbol 2 352 336 0
+port 48 336 100 0 DIR symbol 1 32 336 0
+port 48 304 100 0 ICID symbol 1 32 304 0
+uniq 114
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 7 0 176 400 dtaTrack
+l 100 0 0 128 240 Translation
+l 100 0 0 128 208 and Focus
+l 100 0 0 128 176 Tracking
+l 100 0 0 128 144 Control
+r 0 32 32 352 416
+v 0 32 384
+352 384
+_
+[comments]

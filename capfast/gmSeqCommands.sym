@@ -1,0 +1,51 @@
+[symbol2]
+bbox 224 416 800 752
+port 704 576 100 1792 CAR symbol 2 800 576 0
+port 704 544 100 1792 OMSS symbol 2 800 544 0
+port 704 512 100 1792 OERR symbol 2 800 512 0
+port 704 480 100 1792 CFLK symbol 2 800 480 0
+port 320 480 100 0 RDOUT symbol 1 224 480 0
+port 320 720 100 0 ILOCK symbol 1 224 720 0
+port 704 672 100 1792 MESS symbol 2 800 672 0
+port 704 720 100 1792 VAL symbol 2 800 720 0
+port 336 544 100 1792 ICID symbol 1 224 544 0
+port 336 640 100 1792 DIR symbol 1 224 640 0
+uniq 5
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 496 608 GMOS
+l 100 0 0 480 560 Commands
+r 0 288 416 736 752
+v 0 736 576
+800 576
+_
+v 0 736 544
+800 544
+_
+v 0 736 512
+800 512
+_
+v 0 736 480
+800 480
+_
+v 0 224 480
+288 480
+_
+v 0 224 720
+288 720
+_
+v 0 736 672
+800 672
+_
+v 0 736 720
+800 720
+_
+v 0 224 544
+288 544
+_
+v 0 224 640
+288 640
+_
+[comments]

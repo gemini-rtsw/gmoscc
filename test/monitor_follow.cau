@@ -1,0 +1,33 @@
+# monitor_follow.cau
+#
+# cau macro which monitors CAD/CAR records
+# associated with OIWFS following mode.
+# Invoked using cau "source" command.
+#
+
+monitor g7:wfs:follow.DIR
+monitor g7:wfs:follow.VAL
+monitor g7:wfs:follow.OMSS
+
+monitor g7:wfs:stop.DIR
+monitor g7:wfs:stop.VAL
+monitor g7:wfs:stop.OMSS
+
+monitor g7:wfs:probeC.VAL
+monitor g7:wfs:probeC.OMSS
+
+monitor g7:wfs:activeC.VAL
+monitor g7:wfs:activeC.OMSS
+
+monitor g7:wfs:inPosition.VAL
+monitor g7:wfs:arrayS.VAL
+monitor g7:wfs:followS.VAL
+
+monitor g7:wfs:followA.H
+# Commented out - changes at 20Hz
+#monitor g7:wfs:followA.VALC
+monitor g7:wfs:followA.VAL
+
+monitor g7:wfs:probeOffset.VAL
+
+# Type dataOut cau_follow.log

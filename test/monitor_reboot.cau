@@ -1,0 +1,17 @@
+# monitor_reboot.cau
+#
+# cau macro which monitors CAD/CAR records associated with reboot.
+# Invoked using cau "source" command.
+#
+monitor g8:reboot.DIR
+monitor g8:reboot.VAL
+monitor g8:cc:reboot.DIR
+monitor g8:cc:reboot.VAL
+monitor g8:dc:reboot.DIR
+monitor g8:dc:reboot.VAL
+
+monitor g8:cc:rebootC.VAL
+monitor g8:dc:rebootC.VAL
+monitor g8:rebootC.VAL
+
+# Type dataOut cau_reboot.log

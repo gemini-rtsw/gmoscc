@@ -1,0 +1,457 @@
+#!/usr/local/bin/tcsh -f
+#
+# gratingJuggle
+#
+# Description:
+#
+#   A simple script to log images alternatively with two gratings, 
+#   it will take an image at the first position, wait the specified
+#   time and take an image using the 2nd grating.
+#
+#   It is assumed this script is being run from the "test" directory.
+#   The detector controller must already have been initalised
+#   and set into the desired configuration.
+#
+# Invocation:
+#   gratingJuggle interval iteration
+#
+# NOTE:
+#   This script is designed to be as simple as possible, so it does not do as much
+#   checking as a dhsTestCmdr script. It is designed to generate test data rather
+#   than to check out the correct operation of the instrument.
+#
+
+#
+# Check for arguments
+#
+
+if ($#argv != 2) then
+    echo "Please supply interval between observations (in minutes)"
+    echo "then the number of iterations to perform."
+    exit
+endif
+
+#
+# Get the current day and calculate interval
+#
+
+set day = `date +%d%h%y`
+
+set intervalSeconds = `mult $1 60`
+
+if ($intervalSeconds <= 0) then
+    echo "Interval must be greater than zero"
+    exit
+endif
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!($?GMOS_MK_ACCESS)) then
+    echo ""
+    echo "GMOS MK safety check failed."
+    echo ""
+    echo "Before executing this script, which will move real MK hardware,"
+    echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+    echo ""
+    exit
+else
+    echo ""
+    echo "GMOS MK safety check passed."
+    echo ""
+endif
+
+#
+# Bail out if the scripts directory does not exist.
+#
+
+if ( !(-e scripts) ) then
+
+   echo "Please cd to the 'test' directory before running this script." 
+   exit
+endif
+
+#
+# Create the log directory if need be...
+#
+
+if (!(-e logfiles/${day})) then
+    mkdir logfiles/${day}
+    echo "Creating directory ./logfiles/"${day}
+    sleep 1
+endif
+
+echo "Fitssaver files can be moved to ./logfiles/"${day}" if you wish"
+sleep 1
+
+if (!(-e logfiles/${day}/gratingJuggleLog)) then
+    echo "Creating image log file ./logfile/"${day}"/gratingJuggleLog"
+    echo "Day Month Date Time Year Filename temp0 temp1 temp2 temp3 temp4 temp5 temp6 temp7 temp8 detTemp Comment" | cat >> ./logfiles/${day}/gratingJuggleLog
+    sleep 1
+endif
+
+echo "Image file information will be stored in ./logfiles/"${day}"/gratingJuggleLog"
+sleep 1
+
+echo ""
+echo "It is assumed you have already configured the detector controller,"
+echo "and that the grating assembly is initialised, indexed and updated."
+echo ""
+echo "Type Ctrl-c when you want to finish the script."
+echo "(type <ret> when ready to proceed)"
+set dummy = $<
+
+echo ""
+date
+echo ""
+echo "Please log the following information:"
+echo ""
+echo "1. Date/Time"
+echo "2. Software/Model version"
+echo "3. CCD exposure time"
+echo "4. Mask Id"
+echo "5. Grating Id"
+echo "6. Grating angle"
+echo "7. Anything else you want to"
+echo ""
+echo "(type <ret> when ready to proceed)"
+set dummy = $<
+
+echo "Please enter a file number"
+echo "The first filename will be gXXXXX"
+set filenumber = $<
+
+@ filenumber -= 1
+@ filenumber += 1
+
+echo "" | cat >> ./logfiles/${day}/gratingJuggleLog    
+
+set gratingID = `caget "gm:cc:grAssembly.B" | sed 's|gm:cc:grAssembly.B||g'`
+echo "Current grating ID is "$gratingID
+
+echo ""
+echo "Please input the grating ID (barcode number) you wish to image with..."
+set imageGratingID = $<
+echo "Script will image using grating ID "$imageGratingID
+
+echo ""
+echo "Please input the second grating ID (barcode number) you wish to image with..."
+set image2GratingID = $<
+echo "Script will then image using grating ID "$image2GratingID" "
+
+echo ""
+set imagingAngle = `caget "gm:cc:grAssembly.C" | sed 's|gm:cc:grAssembly.C||g'`
+echo "Current grating angle is "$imagingAngle
+
+echo ""
+echo "Please input the second grating angle..."
+set imagingAngle2 = $<
+echo "Second imaging angle is "$imagingAngle2
+
+
+
+#
+# Start the observations.
+#
+
+    #
+    # Start position for the grating
+    #
+
+    echo "Moving to the start configuration for the grating assembly."
+    echo "Moving..."
+
+    set moveResponse = `moveAssembly gm:cc:grAssembly 0 ${imageGratingID} ${imagingAngle}`
+    set moveStatus = `echo $moveResponse | grep 'Command Success'`
+    if ( $#moveStatus != 2 ) then
+	echo "Grating assembly move 1 failed"
+	caget gm:cc:grAssembly.MESS
+	exit -1
+    endif
+    echo "Grating assembly move 1 succeeded"
+
+
+    set observeTime = `date +"%a %b %d %T %Y"`
+    echo ""
+    echo "*"
+    echo "* The time now is ${observeTime}"
+    echo "*"
+    echo ""
+
+    set observeTime = `date +"%a %b %d %T %Y"`
+
+    echo "Measuring temperatures at ${observeTime}"
+
+    set temp0 = `caget "gm:cc:temp0.VAL" | sed 's|gm:cc:temp0.VAL||g'`
+    echo "temp0 is "$temp0
+    set temp1 = `caget "gm:cc:temp1.VAL" | sed 's|gm:cc:temp1.VAL||g'`
+    echo "temp1 is "$temp1
+    set temp2 = `caget "gm:cc:temp2.VAL" | sed 's|gm:cc:temp2.VAL||g'`
+    echo "temp2 is "$temp2
+    set temp3 = `caget "gm:cc:temp3.VAL" | sed 's|gm:cc:temp3.VAL||g'`
+    echo "temp3 is "$temp3
+    set temp4 = `caget "gm:cc:temp4.VAL" | sed 's|gm:cc:temp4.VAL||g'`
+    echo "temp4 is "$temp4
+    set temp5 = `caget "gm:cc:temp5.VAL" | sed 's|gm:cc:temp5.VAL||g'`
+    echo "temp5 is "$temp5
+    set temp6 = `caget "gm:cc:temp6.VAL" | sed 's|gm:cc:temp6.VAL||g'`
+    echo "temp6 is "$temp6
+    set temp7 = `caget "gm:cc:temp7.VAL" | sed 's|gm:cc:temp7.VAL||g'`
+    echo "temp7 is "$temp7
+    set temp8 = `caget "gm:cc:temp8.VAL" | sed 's|gm:cc:temp8.VAL||g'`
+    echo "temp8 is "$temp8
+    set detTemp = `caget "gm:sad:dc:detTemp.VAL" | sed 's|gm:sad:dc:detTemp.VAL||g'`
+    echo "detector temp is "$detTemp
+
+    echo "Saving data to g${filenumber}"
+
+    #
+    # Set the file name to the current time.
+    #
+
+    set fileResponse = `setObserveFilename gm: g${filenumber}`
+    set fileStatus = `echo $fileResponse | grep 'Command Success'`
+    if ( $#fileStatus != 2 ) then
+	echo "Setting filename failed at "${observeTime}
+	exit -1
+    endif
+
+    #
+    # Make an observation
+    #
+
+    echo "Observing"
+    set observeResponse = `executeObserve gm:`
+    set observeStatus = `echo $observeResponse | grep 'Command Success'`
+    if ( $#observeStatus != 2 ) then
+	echo "Observation failed at "${observeTime}
+	exit -1
+    endif
+
+    #
+    # Log the filename, time, temps etc.
+    #
+
+    set comment = "Initial image using "$imageGratingID
+
+    echo ${observeTime} g${filenumber} $temp0 $temp1 $temp2 $temp3 $temp4 $temp5 $temp6 $temp7 $temp8 $detTemp $comment | cat >> ./logfiles/${day}/gratingJuggleLog    
+
+    @ filenumber += 1
+
+
+    set repetitions = $2
+    set repsDone    = 0
+
+    while ($repsDone < $repetitions)
+
+	@ repsDone += 1
+	echo ""
+	echo "Repetition "$repsDone
+
+	#
+	# Jiggle the grating
+	#
+
+# erased all the part relevant to the jiggle task....
+
+#	@ filenumber += 1
+
+	#
+	# Change the in-beam grating to put go to second imaging position
+	#
+
+	echo "Changing the in-beam grating."
+	echo "Moving to grating..."$image2GratingID
+
+	set moveResponse = `moveAssembly gm:cc:grAssembly 0 ${image2GratingID} ${imagingAngle2}`
+	set moveStatus = `echo $moveResponse | grep 'Command Success'`
+	if ( $#moveStatus != 2 ) then
+	    echo "Grating assembly move 1 failed"
+	    caget gm:cc:grAssembly.MESS
+	    exit -1
+	endif
+	echo "Grating assembly move succeeded"
+
+	set observeTime = `date +"%a %b %d %T %Y"`
+
+	echo "Measuring temperatures at ${observeTime}"
+
+	set temp0 = `caget "gm:cc:temp0.VAL" | sed 's|gm:cc:temp0.VAL||g'`
+	echo "temp0 is "$temp0
+	set temp1 = `caget "gm:cc:temp1.VAL" | sed 's|gm:cc:temp1.VAL||g'`
+	echo "temp1 is "$temp1
+	set temp2 = `caget "gm:cc:temp2.VAL" | sed 's|gm:cc:temp2.VAL||g'`
+	echo "temp2 is "$temp2
+	set temp3 = `caget "gm:cc:temp3.VAL" | sed 's|gm:cc:temp3.VAL||g'`
+	echo "temp3 is "$temp3
+	set temp4 = `caget "gm:cc:temp4.VAL" | sed 's|gm:cc:temp4.VAL||g'`
+	echo "temp4 is "$temp4
+	set temp5 = `caget "gm:cc:temp5.VAL" | sed 's|gm:cc:temp5.VAL||g'`
+	echo "temp5 is "$temp5
+	set temp6 = `caget "gm:cc:temp6.VAL" | sed 's|gm:cc:temp6.VAL||g'`
+	echo "temp6 is "$temp6
+	set temp7 = `caget "gm:cc:temp7.VAL" | sed 's|gm:cc:temp7.VAL||g'`
+	echo "temp7 is "$temp7
+	set temp8 = `caget "gm:cc:temp8.VAL" | sed 's|gm:cc:temp8.VAL||g'`
+	echo "temp8 is "$temp8
+	set detTemp = `caget "gm:sad:dc:detTemp.VAL" | sed 's|gm:sad:dc:detTemp.VAL||g'`
+	echo "detector temp is "$detTemp
+
+	echo "Saving data to g${filenumber}"
+
+	#
+	# Set the file name to the current time.
+	#
+
+	set fileResponse = `setObserveFilename gm: g${filenumber}`
+	set fileStatus = `echo $fileResponse | grep 'Command Success'`
+	if ( $#fileStatus != 2 ) then
+	    echo "Setting filename failed at "${observeTime}
+	    exit -1
+	endif
+
+	#
+	# Make an observation
+	#
+
+	echo "Observing"
+	set observeResponse = `executeObserve gm:`
+	set observeStatus = `echo $observeResponse | grep 'Command Success'`
+	if ( $#observeStatus != 2 ) then
+	    echo "Observation failed at "${observeTime}
+	    exit -1
+	endif
+
+	#
+	# Log the filename, time, temps etc.
+	#
+
+	set comment = "Image after turret move using "${image2GratingID}
+
+	echo ${observeTime} g${filenumber} $temp0 $temp1 $temp2 $temp3 $temp4 $temp5 $temp6 $temp7 $temp8 $detTemp $comment | cat >> ./logfiles/${day}/gratingJuggleLog
+
+	@ filenumber += 1
+
+	echo ""
+	echo "The time is now "`date +"%T"`
+
+
+# 
+#    Wait for the specified time interval before moving the turret back
+#    to the first imaging position.
+#
+
+    echo "Waiting for ${intervalSeconds} seconds before moving back first grating..."
+    echo "Type Ctrl-c to stop the script."
+    sleep $intervalSeconds
+
+
+#
+#  Move grating assembly back to the 1st imaging grating
+#
+
+
+	echo "Move to grating..."${imageGratingID}
+	set moveResponse = `moveAssembly gm:cc:grAssembly 0 ${imageGratingID} ${imagingAngle}`
+	set moveStatus = `echo $moveResponse | grep 'Command Success'`
+	if ( $#moveStatus != 2 ) then
+	    echo "Grating assembly move failed"
+	    caget gm:cc:grAssembly.MESS
+	    exit -1
+	endif
+	echo "Grating assembly move succeeded"
+
+	set observeTime = `date +"%a %b %d %T %Y"`
+
+	echo "Measuring temperatures at ${observeTime}"
+
+	set temp0 = `caget "gm:cc:temp0.VAL" | sed 's|gm:cc:temp0.VAL||g'`
+	echo "temp0 is "$temp0
+	set temp1 = `caget "gm:cc:temp1.VAL" | sed 's|gm:cc:temp1.VAL||g'`
+	echo "temp1 is "$temp1
+	set temp2 = `caget "gm:cc:temp2.VAL" | sed 's|gm:cc:temp2.VAL||g'`
+	echo "temp2 is "$temp2
+	set temp3 = `caget "gm:cc:temp3.VAL" | sed 's|gm:cc:temp3.VAL||g'`
+	echo "temp3 is "$temp3
+	set temp4 = `caget "gm:cc:temp4.VAL" | sed 's|gm:cc:temp4.VAL||g'`
+	echo "temp4 is "$temp4
+	set temp5 = `caget "gm:cc:temp5.VAL" | sed 's|gm:cc:temp5.VAL||g'`
+	echo "temp5 is "$temp5
+	set temp6 = `caget "gm:cc:temp6.VAL" | sed 's|gm:cc:temp6.VAL||g'`
+	echo "temp6 is "$temp6
+	set temp7 = `caget "gm:cc:temp7.VAL" | sed 's|gm:cc:temp7.VAL||g'`
+	echo "temp7 is "$temp7
+	set temp8 = `caget "gm:cc:temp8.VAL" | sed 's|gm:cc:temp8.VAL||g'`
+	echo "temp8 is "$temp8
+	set detTemp = `caget "gm:sad:dc:detTemp.VAL" | sed 's|gm:sad:dc:detTemp.VAL||g'`
+	echo "detector temp is "$detTemp
+
+	echo "Saving data to g${filenumber}"
+
+	#
+	# Set the file name to the current time.
+	#
+
+	set fileResponse = `setObserveFilename gm: g${filenumber}`
+	set fileStatus = `echo $fileResponse | grep 'Command Success'`
+	if ( $#fileStatus != 2 ) then
+	    echo "Setting filename failed at "${observeTime}
+	    exit -1
+	endif
+
+	#
+	# Make an observation
+	#
+
+	echo "Observing"
+	set observeResponse = `executeObserve gm:`
+	set observeStatus = `echo $observeResponse | grep 'Command Success'`
+	if ( $#observeStatus != 2 ) then
+	    echo "Observation failed at "${observeTime}
+	    exit -1
+	endif
+
+	#
+	# Log the filename, time, temps etc.
+	#
+
+	set comment = "Image after turret move using grating "$imageGratingID
+
+	echo ${observeTime} g${filenumber} $temp0 $temp1 $temp2 $temp3 $temp4 $temp5 $temp6 $temp7 $temp8 $detTemp $comment | cat >> ./logfiles/${day}/gratingJuggleLog
+
+	@ filenumber += 1
+
+	echo ""
+	echo "The time is now "`date +"%T"`
+
+	if ($repsDone < $repetitions) then
+	    echo "Type Ctrl-c to stop the script."
+	    echo "Waiting for ${intervalSeconds} seconds..."
+	    sleep $intervalSeconds
+	endif
+    end
+
+    #
+    # Restore  the grating
+    #
+
+    echo "Restoring the configuration for the grating assembly."
+    echo "Moving..."
+
+    set moveResponse = `moveAssembly gm:cc:grAssembly 0 ${imageGratingID} ${imagingAngle}`
+    set moveStatus = `echo $moveResponse | grep 'Command Success'`
+    if ( $#moveStatus != 2 ) then
+	echo "Grating assembly move 1 failed"
+	caget gm:cc:grAssembly.MESS
+	exit -1
+    endif
+    echo "Grating assembly move 1 succeeded"
+
+
+exit
+
+
+
+

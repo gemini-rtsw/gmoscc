@@ -1,0 +1,2813 @@
+#
+# DHS Test Commander
+# Checkout script for:
+#
+#	Gmos Grating Assembly calibration check
+#
+
+
+#
+# Define the variables used in this script, and the configuration files
+# which contain their translation into EPICS channel names.
+#
+#     Config file     Config file name          Named used here      Mystery number
+#     -----------     ---------------------     -----------------    --------------
+
+VAR   postFpIcd       gratingDirective           cmdDir               1
+VAR   postFpIcd       gratingMode                grMode               1
+
+VAR   postFpIcd       gratingSelectOnly          grSelectOnly         1
+VAR   postFpIcd       gratingId                  gratId               1
+VAR   postFpIcd       gratingTilt                gratTilt             1
+
+VAR   postFpIcd       gratingAcknowledge         cmdAck               1
+VAR   postFpIcd       gratingBusy                cmdAction            1
+VAR   postFpIcd       gratingMessage             cmdError             1
+VAR   postFpIcd       gratingState               cmdState             1
+
+VAR   postFpIcd       gratingCarMess             grCarMsg             1
+VAR   postFpIcd       gratingCarErr              grCarErr             1
+
+VAR   postFpIcd       sadGratingId               sadId                1
+VAR   postFpIcd       sadGratingTilt             sadTilt              1
+VAR   postFpIcd       sadGratingInBeam           sadInBeam            1
+
+VAR   postFpIcd       sadGratingInitialized      sadInit              1
+VAR   postFpIcd       sadGratingIndexed          sadIndex             1
+VAR   postFpIcd       sadGratingParked           sadPark              1
+VAR   postFpIcd       sadGratingHealth           sadHealth            1
+
+VAR   postFpIcd       sadGratingState            sadState             1
+
+VAR   postFpIcd       sadGratingDebug            sadDebug             1
+VAR   postFpIcd       sadGratingSimulate         sadSimm              1
+
+VAR   gratingAssembly  assemblyTranslationFile   grLutFile            1
+VAR   gratingAssembly  assemblyTranslationDir    grLutDir             1
+
+VAR   gratingADevice   devPosition               grAPos               1
+VAR   gratingADevice   devRawPosition            grARawPos            1
+#VAR   gratingADevice   devDir                    grADir               1
+#VAR   gratingADevice   devMode                   grAMode              1
+#VAR   gratingADevice   devTarget                 grATarget            1
+#VAR   gratingADevice   devNamedTarget            grANamedTarget       1
+#VAR   gratingADevice   devVelocity               grAVelocity          1
+#VAR   gratingADevice   devAck                    grAAck               1
+#VAR   gratingADevice   devBusy                   grABusy              1 
+#VAR   gratingADevice   devState                  grAState             1
+#VAR   gratingADevice   devMess                   grAMess              1
+
+VAR   gratingBDevice   devPosition               grBPos               1
+VAR   gratingBDevice   devRawPosition            grBRawPos            1
+#VAR   gratingBDevice   devDir                    grBDir               1
+#VAR   gratingBDevice   devMode                   grBMode              1
+#VAR   gratingBDevice   devTarget                 grBTarget            1
+#VAR   gratingBDevice   devNamedTarget            grBNamedTarget       1
+#VAR   gratingBDevice   devVelocity               grBVelocity          1
+#VAR   gratingBDevice   devAck                    grBAck               1
+#VAR   gratingBDevice   devBusy                   grBBusy              1
+#VAR   gratingBDevice   devState                  grBState             1
+#VAR   gratingBDevice   devMess                   grBMess              1
+
+VAR   gratingCDevice   devPosition               grCPos               1
+VAR   gratingCDevice   devRawPosition            grCRawPos            1
+#VAR   gratingCDevice   devDir                    grCDir               1
+#VAR   gratingCDevice   devMode                   grCMode              1
+#VAR   gratingCDevice   devTarget                 grCTarget            1
+#VAR   gratingCDevice   devNamedTarget            grCNamedTarget       1
+#VAR   gratingCDevice   devVelocity               grCVelocity          1
+#VAR   gratingCDevice   devAck                    grCAck               1
+#VAR   gratingCDevice   devBusy                   grCBusy              1
+#VAR   gratingCDevice   devState                  grCState             1
+#VAR   gratingCDevice   devMess                   grCMess              1
+
+VAR   gratingDDevice   devPosition               grDPos               1
+VAR   gratingDDevice   devRawPosition            grDRawPos            1
+#VAR   gratingDDevice   devDir                    grDDir               1
+#VAR   gratingDDevice   devMode                   grDMode              1
+#VAR   gratingDDevice   devTarget                 grDTarget            1
+#VAR   gratingDDevice   devNamedTarget            grDNamedTarget       1
+#VAR   gratingDDevice   devVelocity               grDVelocity          1
+#VAR   gratingDDevice   devAck                    grDAck               1
+#VAR   gratingDDevice   devBusy                   grDBusy              1
+#VAR   gratingDDevice   devState                  grDState             1
+#VAR   gratingDDevice   devMess                   grDMess              1
+
+VAR   gratingTurretDevice   devPosition          grtPos               1
+VAR   gratingTurretDevice   devRawPosition       grtRawPos            1
+#VAR   gratingTurretDevice   devDir               grtDir               1
+#VAR   gratingTurretDevice   devMode              grtMode              1
+#VAR   gratingTurretDevice   devTarget            grtTarget            1
+#VAR   gratingTurretDevice   devNamedTarget       grtNamedTarget       1
+#VAR   gratingTurretDevice   devVelocity          grtVelocity          1
+#VAR   gratingTurretDevice   devAck               grtAck               1
+#VAR   gratingTurretDevice   devBusy              grtBusy              1
+#VAR   gratingTurretDevice   devState             grtState             1
+#VAR   gratingTurretDevice   devMess              grtMess              1
+
+VAR   lifterDevice    lifterDownValve            lifterDownValve      1
+VAR   lifterDevice    lifterUpValve              lifterUpValve        1
+VAR   lifterDevice    lifterCommand              lifterCommand        1
+VAR   lifterDevice    lifterProcess              lifterProcess        1
+VAR   lifterDevice    lifterAck                  lifterAck            1
+VAR   lifterDevice    lifterInterlock            lifterInterlock      1
+VAR   lifterDevice    lifterState                lifterState          1
+VAR   lifterDevice    lifterMess                 lifterMess           1
+
+VAR   gratingStatus   gratingInPosition          grInpos              1
+VAR   gratingStatus   gratingLifterUp            lifterUp             1
+VAR   gratingStatus   gratingLifterDown          lifterDown           1
+VAR   gratingStatus   upstreamOk                 upstreamOk           1
+VAR   gratingStatus   downstreamOk               downstreamOk         1
+
+#
+# check starting point, should be initialised and indexed....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly GOOD health?"
+GETVAL sadHealth
+OUTPUT *VAL* GOOD*
+
+DESC "Upstream air pressure ok?"
+GETVAL upstreamOk
+OUTPUT *VAL* OK*
+
+DESC "Downstream air pressure ok?"
+GETVAL downstreamOk
+OUTPUT *VAL* OK*
+
+DESC "Ensure you're using the right LUT filename"
+GETVAL grLutFile
+OUTPUT *TFIL * gr.lut*
+
+DESC "Log the LUT directory"
+GETVAL grLutDir
+OUTPUT *TDIR *
+
+ENDTEST
+
+#
+# Start by testing the grating assembly initialisation function
+#
+
+TEST "Test Initialization function"
+FATAL
+
+DESC "Initializing grating assembly"
+
+PUTVAL grMode "0"
+OUTPUT *MODE*MODE*INIT*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the grating assembly 
+# initialisation flag has been set, the grating assembly and grating CAR records have
+# both gone idle, and the health has changed to GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly initialized?"
+
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+#
+# Test index function
+#
+
+TEST "Test Index Function"
+FATAL
+
+DESC "Indexing Grating Assembly"
+
+PUTVAL grMode "3"
+OUTPUT *MODE*INIT*MODE*INDEX*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check that the grating assembly 
+# indexed flag has been set, the initialised flag is still set, the grating assembly
+# and grating CAR records have both gone idle, and the health is still GOOD.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+ENDTEST
+
+# ---------------------------------------------------------------------------------------------------------
+#
+# Log the motor steps corresponding to various tilt angles for grating A,
+# whose barcode is assumed to be 30000015
+#
+
+#
+# Grating A 10 degrees
+#
+
+TEST "Select grating A, tilt angle 10 degrees"
+FATAL
+
+DESC "Grating A 10 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000015"
+OUTPUT *
+
+PUTVAL gratTilt "10.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*INDEX*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating A at 10 degrees tilt"
+
+GETVAL grAPos
+OUTPUT *MPOS*
+
+GETVAL grARawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating A 20 degrees
+#
+
+TEST "Select grating A, tilt angle 20 degrees"
+FATAL
+
+DESC "Grating A 20 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000015"
+OUTPUT *
+
+PUTVAL gratTilt "20.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating A at 20 degrees tilt"
+
+GETVAL grAPos
+OUTPUT *MPOS*
+
+GETVAL grARawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating A 30 degrees
+#
+
+TEST "Select grating A, tilt angle 30 degrees"
+FATAL
+
+DESC "Grating A 30 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000015"
+OUTPUT *
+
+PUTVAL gratTilt "30.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating A at 30 degrees tilt"
+
+GETVAL grAPos
+OUTPUT *MPOS*
+
+GETVAL grARawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating A 40 degrees
+#
+
+TEST "Select grating A, tilt angle 40 degrees"
+FATAL
+
+DESC "Grating A 40 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000015"
+OUTPUT *
+
+PUTVAL gratTilt "40.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating A at 40 degrees tilt"
+
+GETVAL grAPos
+OUTPUT *MPOS*
+
+GETVAL grARawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating A 50 degrees
+#
+
+TEST "Select grating A, tilt angle 50 degrees"
+FATAL
+
+DESC "Grating A 50 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000015"
+OUTPUT *
+
+PUTVAL gratTilt "50.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating A at 50 degrees tilt"
+
+GETVAL grAPos
+OUTPUT *MPOS*
+
+GETVAL grARawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating A 60 degrees
+#
+
+TEST "Select grating A, tilt angle 60 degrees"
+FATAL
+
+DESC "Grating A 60 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000015"
+OUTPUT *
+
+PUTVAL gratTilt "60.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating A at 60 degrees tilt"
+
+GETVAL grAPos
+OUTPUT *MPOS*
+
+GETVAL grARawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating A 65 degrees
+#
+
+TEST "Select grating A, tilt angle 65 degrees"
+FATAL
+
+DESC "Grating A 65 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000015"
+OUTPUT *
+
+PUTVAL gratTilt "65.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating A at 65 degrees tilt"
+
+GETVAL grAPos
+OUTPUT *MPOS*
+
+GETVAL grARawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating A 70 degrees
+#
+
+TEST "Select grating A, tilt angle 70 degrees"
+FATAL
+
+DESC "Grating A 70 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000015"
+OUTPUT *
+
+PUTVAL gratTilt "70.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating A at 70 degrees tilt"
+
+GETVAL grAPos
+OUTPUT *MPOS*
+
+GETVAL grARawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating A 80 degrees
+#
+
+TEST "Select grating A, tilt angle 80 degrees"
+FATAL
+
+DESC "Grating A 80 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000015"
+OUTPUT *
+
+PUTVAL gratTilt "80.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating A at 80 degrees tilt"
+
+GETVAL grAPos
+OUTPUT *MPOS*
+
+GETVAL grARawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+# ---------------------------------------------------------------------------------------------------------
+#
+# Log the motor steps corresponding to various tilt angles for grating B,
+# whose barcode is assumed to be 30000014
+#
+
+#
+# Grating B 10 degrees
+#
+
+TEST "Select grating B, tilt angle 10 degrees"
+FATAL
+
+DESC "Grating B 10 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000014"
+OUTPUT *
+
+PUTVAL gratTilt "10.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating B at 10 degrees tilt"
+
+GETVAL grBPos
+OUTPUT *MPOS*
+
+GETVAL grBRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating B 20 degrees
+#
+
+TEST "Select grating B, tilt angle 20 degrees"
+FATAL
+
+DESC "Grating B 20 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000014"
+OUTPUT *
+
+PUTVAL gratTilt "20.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating B at 20 degrees tilt"
+
+GETVAL grBPos
+OUTPUT *MPOS*
+
+GETVAL grBRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating B 30 degrees
+#
+
+TEST "Select grating B, tilt angle 30 degrees"
+FATAL
+
+DESC "Grating B 30 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000014"
+OUTPUT *
+
+PUTVAL gratTilt "30.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating B at 30 degrees tilt"
+
+GETVAL grBPos
+OUTPUT *MPOS*
+
+GETVAL grBRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating B 40 degrees
+#
+
+TEST "Select grating B, tilt angle 40 degrees"
+FATAL
+
+DESC "Grating B 40 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000014"
+OUTPUT *
+
+PUTVAL gratTilt "40.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating B at 40 degrees tilt"
+
+GETVAL grBPos
+OUTPUT *MPOS*
+
+GETVAL grBRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating B 50 degrees
+#
+
+TEST "Select grating B, tilt angle 50 degrees"
+FATAL
+
+DESC "Grating B 50 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000014"
+OUTPUT *
+
+PUTVAL gratTilt "50.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating B at 50 degrees tilt"
+
+GETVAL grBPos
+OUTPUT *MPOS*
+
+GETVAL grBRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating B 60 degrees
+#
+
+TEST "Select grating B, tilt angle 60 degrees"
+FATAL
+
+DESC "Grating B 60 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000014"
+OUTPUT *
+
+PUTVAL gratTilt "60.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating B at 60 degrees tilt"
+
+GETVAL grBPos
+OUTPUT *MPOS*
+
+GETVAL grBRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating B 65 degrees
+#
+
+TEST "Select grating B, tilt angle 65 degrees"
+FATAL
+
+DESC "Grating B 65 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000014"
+OUTPUT *
+
+PUTVAL gratTilt "65.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating B at 65 degrees tilt"
+
+GETVAL grBPos
+OUTPUT *MPOS*
+
+GETVAL grBRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating B 70 degrees
+#
+
+TEST "Select grating B, tilt angle 70 degrees"
+FATAL
+
+DESC "Grating B 70 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000014"
+OUTPUT *
+
+PUTVAL gratTilt "70.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating B at 70 degrees tilt"
+
+GETVAL grBPos
+OUTPUT *MPOS*
+
+GETVAL grBRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating B 80 degrees
+#
+
+TEST "Select grating B, tilt angle 80 degrees"
+FATAL
+
+DESC "Grating B 80 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000014"
+OUTPUT *
+
+PUTVAL gratTilt "80.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating B at 80 degrees tilt"
+
+GETVAL grBPos
+OUTPUT *MPOS*
+
+GETVAL grBRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+# ---------------------------------------------------------------------------------------------------------
+#
+# Log the motor steps corresponding to various tilt angles for grating C,
+# whose barcode is assumed to be 30000012
+#
+
+#
+# Grating C 10 degrees
+#
+
+TEST "Select grating C, tilt angle 10 degrees"
+FATAL
+
+DESC "Grating C 10 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000012"
+OUTPUT *
+
+PUTVAL gratTilt "10.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating C at 10 degrees tilt"
+
+GETVAL grCPos
+OUTPUT *MPOS*
+
+GETVAL grCRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating C 20 degrees
+#
+
+TEST "Select grating C, tilt angle 20 degrees"
+FATAL
+
+DESC "Grating C 20 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000012"
+OUTPUT *
+
+PUTVAL gratTilt "20.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating C at 20 degrees tilt"
+
+GETVAL grCPos
+OUTPUT *MPOS*
+
+GETVAL grCRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating C 30 degrees
+#
+
+TEST "Select grating C, tilt angle 30 degrees"
+FATAL
+
+DESC "Grating C 30 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000012"
+OUTPUT *
+
+PUTVAL gratTilt "30.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating C at 30 degrees tilt"
+
+GETVAL grCPos
+OUTPUT *MPOS*
+
+GETVAL grCRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating C 40 degrees
+#
+
+TEST "Select grating C, tilt angle 40 degrees"
+FATAL
+
+DESC "Grating C 40 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000012"
+OUTPUT *
+
+PUTVAL gratTilt "40.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating C at 40 degrees tilt"
+
+GETVAL grCPos
+OUTPUT *MPOS*
+
+GETVAL grCRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating C 50 degrees
+#
+
+TEST "Select grating C, tilt angle 50 degrees"
+FATAL
+
+DESC "Grating C 50 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000012"
+OUTPUT *
+
+PUTVAL gratTilt "50.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating C at 50 degrees tilt"
+
+GETVAL grCPos
+OUTPUT *MPOS*
+
+GETVAL grCRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating C 60 degrees
+#
+
+TEST "Select grating C, tilt angle 60 degrees"
+FATAL
+
+DESC "Grating C 60 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000012"
+OUTPUT *
+
+PUTVAL gratTilt "60.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating C at 60 degrees tilt"
+
+GETVAL grCPos
+OUTPUT *MPOS*
+
+GETVAL grCRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating C 65 degrees
+#
+
+TEST "Select grating C, tilt angle 65 degrees"
+FATAL
+
+DESC "Grating C 65 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000012"
+OUTPUT *
+
+PUTVAL gratTilt "65.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating C at 65 degrees tilt"
+
+GETVAL grCPos
+OUTPUT *MPOS*
+
+GETVAL grCRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating C 70 degrees
+#
+
+TEST "Select grating C, tilt angle 70 degrees"
+FATAL
+
+DESC "Grating C 70 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000012"
+OUTPUT *
+
+PUTVAL gratTilt "70.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating C at 70 degrees tilt"
+
+GETVAL grCPos
+OUTPUT *MPOS*
+
+GETVAL grCRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating C 80 degrees
+#
+
+TEST "Select grating C, tilt angle 80 degrees"
+FATAL
+
+DESC "Grating C 80 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000012"
+OUTPUT *
+
+PUTVAL gratTilt "80.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating C at 80 degrees tilt"
+
+GETVAL grCPos
+OUTPUT *MPOS*
+
+GETVAL grCRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+# ---------------------------------------------------------------------------------------------------------
+#
+# Log the motor steps corresponding to various tilt angles for grating D,
+# whose barcode is assumed to be 30000011
+#
+
+#
+# Grating D 10 degrees
+#
+
+TEST "Select grating D, tilt angle 10 degrees"
+FATAL
+
+DESC "Grating D 10 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000011"
+OUTPUT *
+
+PUTVAL gratTilt "10.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating D at 10 degrees tilt"
+
+GETVAL grDPos
+OUTPUT *MPOS*
+
+GETVAL grDRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating D 20 degrees
+#
+
+TEST "Select grating D, tilt angle 20 degrees"
+FATAL
+
+DESC "Grating D 20 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000011"
+OUTPUT *
+
+PUTVAL gratTilt "20.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating D at 20 degrees tilt"
+
+GETVAL grDPos
+OUTPUT *MPOS*
+
+GETVAL grDRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating D 30 degrees
+#
+
+TEST "Select grating D, tilt angle 30 degrees"
+FATAL
+
+DESC "Grating D 30 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000011"
+OUTPUT *
+
+PUTVAL gratTilt "30.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating D at 30 degrees tilt"
+
+GETVAL grDPos
+OUTPUT *MPOS*
+
+GETVAL grDRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating D 40 degrees
+#
+
+TEST "Select grating D, tilt angle 40 degrees"
+FATAL
+
+DESC "Grating D 40 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000011"
+OUTPUT *
+
+PUTVAL gratTilt "40.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating D at 40 degrees tilt"
+
+GETVAL grDPos
+OUTPUT *MPOS*
+
+GETVAL grDRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating D 50 degrees
+#
+
+TEST "Select grating D, tilt angle 50 degrees"
+FATAL
+
+DESC "Grating D 50 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000011"
+OUTPUT *
+
+PUTVAL gratTilt "50.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating D at 50 degrees tilt"
+
+GETVAL grDPos
+OUTPUT *MPOS*
+
+GETVAL grDRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating D 60 degrees
+#
+
+TEST "Select grating D, tilt angle 60 degrees"
+FATAL
+
+DESC "Grating D 60 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000011"
+OUTPUT *
+
+PUTVAL gratTilt "60.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating D at 60 degrees tilt"
+
+GETVAL grDPos
+OUTPUT *MPOS*
+
+GETVAL grDRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating D 65 degrees
+#
+
+TEST "Select grating D, tilt angle 65 degrees"
+FATAL
+
+DESC "Grating D 65 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000011"
+OUTPUT *
+
+PUTVAL gratTilt "65.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating D at 65 degrees tilt"
+
+GETVAL grDPos
+OUTPUT *MPOS*
+
+GETVAL grDRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating D 70 degrees
+#
+
+TEST "Select grating D, tilt angle 70 degrees"
+FATAL
+
+DESC "Grating D 70 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000011"
+OUTPUT *
+
+PUTVAL gratTilt "70.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating D at 70 degrees tilt"
+
+GETVAL grDPos
+OUTPUT *MPOS*
+
+GETVAL grDRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+#
+# Grating D 80 degrees
+#
+
+TEST "Select grating D, tilt angle 80 degrees"
+FATAL
+
+DESC "Grating D 80 degrees"
+
+PUTVAL grSelectOnly "0"
+OUTPUT *
+
+PUTVAL gratId "30000011"
+OUTPUT *
+
+PUTVAL gratTilt "80.0"
+OUTPUT *
+
+PUTVAL grMode "1"
+OUTPUT *MODE*MOVE*MODE*MOVE*
+
+CMD "executeCommand cmdDir cmdAck cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# Wait for one second after the command finishes, then check the grating assembly 
+# status and log the current position of the grating tilt.
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly indexed?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Log the position of grating D at 80 degrees tilt"
+
+GETVAL grDPos
+OUTPUT *MPOS*
+
+GETVAL grDRawPos
+OUTPUT *RRBV*
+
+ENDTEST
+
+# --------------------------------------------------------------------------------------------------
+
+#
+# Finally, park the Assembly
+#
+
+TEST "Test parking function"
+FATAL
+
+DESC "Parking assembly"
+
+PUTVAL grMode "4"
+OUTPUT *MODE*MOVE*MODE*PARK*
+
+CMD "startCommand cmdDir cmdAck cmdAction"
+OUTPUT *Started*
+
+CMD "sleep 1"
+OUTPUT *
+CMD "checkState cmdState MOVING"
+OUTPUT *Success*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+CMD "finishCommand cmdAction"
+OUTPUT *Success*
+
+ENDTEST
+
+#
+# check resulting status fields....
+#
+
+TEST "Verify status fields"
+FATAL
+
+DESC "Grating assembly parked?"
+CMD "sleep 1"
+OUTPUT *
+GETVAL sadPark
+OUTPUT *VAL* 1*
+ 
+DESC "Grating assembly indexed?"
+
+GETVAL sadIndex
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly initialized?"
+
+GETVAL sadInit
+OUTPUT *VAL* 1*
+
+DESC "Grating assembly state IDLE?"
+
+GETVAL sadState
+OUTPUT *VAL*IDLE*
+
+CMD "compareField sadState cmdState"
+OUTPUT *Equal*
+
+DESC "Grating assembly health GOOD?"
+
+GETVAL sadHealth
+OUTPUT *VAL*GOOD*
+
+DESC "Grating tilt in SAD zero?"
+
+GETVAL sadTilt
+OUTPUT *VAL* -0*
+
+ENDTEST
+
+
+#
+#  Grating Calibration check completed
+#
+
+COMMENT "Grating calibration check complete"
+
+
+

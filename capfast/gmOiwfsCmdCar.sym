@@ -1,0 +1,18 @@
+[symbol2]
+bbox 0 0 176 128
+port -16 96 80 0 SLNK symbol 1 0 80 0
+uniq 9
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 40 104 GoBusyIdle
+l 100 0 0 16 16 gmOiwfsCmdCar
+r 0 32 32 160 128
+v 0 32 96
+160 96
+_
+v 0 0 80
+32 80
+_
+[comments]

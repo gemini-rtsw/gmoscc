@@ -1,0 +1,47 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: deviceCommand
+#
+# Purpose: 
+#	To start a Device record command and monitor its
+#	progress.
+#
+# Assumptions:
+#       DDR_DIR_GO = 2
+#       device record success status = 0
+#
+
+set dirResponse = `caput $1 "2"`
+
+set ackResponse = `caget $2 | grep $2 | grep 0`
+
+if ( $#ackResponse != 2 ) then
+        set devname = `basename $1 .ACK`
+        set errmsg = `caget -t ${devname}.MESS`
+	echo "Command rejected - $errmsg"
+	exit
+endif
+
+
+while ( 1 )
+
+	sleep 1
+	set busyResponse = `caget $3`
+
+	set commandDone = `echo $busyResponse | grep $3 | grep IDLE`
+	if ( $#commandDone == 2 ) then
+		echo "Command Success"
+		exit
+	endif
+
+	set commandFailed = `echo $busyResponse | grep $3 | grep ERR`
+	if ( $#commandFailed == 2 ) then
+                set devname = `basename $3 .BUSY`
+                set errmsg = `caget -t ${devname}.MESS`
+		echo "Command Failed - $errmsg"
+		exit
+	endif
+
+end
+
+exit

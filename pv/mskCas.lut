@@ -1,0 +1,43 @@
+#
+# Named positions for the GMOS cassette stage.
+#
+# 31-MAY-99 bmw reversed direction (positive becomes negative & vice versa)
+# 02-JUN-99 bmw halved all values after changing casDevice.MPOS from 200 to 400
+# 04-JUN-99 bmw changed park position to be same as cl3
+#
+# name    target    index
+i4           0      4
+i5           0      5
+park       275      0
+index        0      1
+cl1         75      0
+cl2        175      0
+cl3        275      0
+c1s1        -5      0
+c1s2         5      0
+c1s3        15      0
+c1s4        25      0
+c1s5        35      0
+c1s6        45      0
+c1s7        55      0
+c1s8        65      0
+c1s9        75      0
+c2s1        95      0
+c2s2       105      0
+c2s3       115      0
+c2s4       125      0
+c2s5       135      0
+c2s6       145      0
+c2s7       155      0
+c2s8       165      0
+c2s9       175      0
+c3s1       195      0
+c3s2       205      0
+c3s3       215      0
+c3s4       225      0
+c3s5       235      0
+c3s6       245      0
+c3s7       255      0
+c3s8       265      0
+c3s9       275      0
+

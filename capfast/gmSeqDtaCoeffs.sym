@@ -1,0 +1,20 @@
+[symbol2]
+bbox -256 -384 128 160
+port 0 -320 100 0 FLNK symbol 2 128 -320 0
+port -176 -320 100 0 SLNK symbol 1 -256 -320 0
+uniq 5
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 -176 64 Ax, Bx, Ay, By, ...
+l 100 0 0 -160 -144 model coefficients
+l 100 0 0 -176 -96 Translation tracking
+r 0 -192 -384 64 160
+v 0 64 -320
+128 -320
+_
+v 0 -256 -320
+-192 -320
+_
+[comments]

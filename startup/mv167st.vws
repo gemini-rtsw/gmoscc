@@ -1,0 +1,10 @@
+< /usr/local/vxworks/vxUsers
+
+shellPromptSet "gmos -> "
+loginStringSet "MVME167 vxWorks (gmos)\n\nlogin: "
+
+# Make deleted key work for backspace
+tyBackspaceSet 0177
+
+routeAdd "0.0.0.0", "10.2.2.1"
+cd "/gemini/gmos/gmos/bin/mv167"

@@ -1,0 +1,110 @@
+!
+! choiceRec.ascii
+! Multiple choice field name definition file for 
+! custom records created for the GMOS system.
+!
+
+!
+! Field choices for the Device Control Record
+!
+
+#include <choiceDeviceControl.h>
+
+! Command directives
+"deviceControl" DDR_DEVCONTROL_DIR      "STOP"          ! (0)    
+"deviceControl" DDR_DEVCONTROL_DIR      "CHECK"         ! (1)
+"deviceControl" DDR_DEVCONTROL_DIR      "GO"            ! (2)
+
+! Command modes
+"deviceControl" DDR_DEVCONTROL_MODE     "INIT"          ! (0)
+"deviceControl" DDR_DEVCONTROL_MODE     "MOVE"          ! (1)
+"deviceControl" DDR_DEVCONTROL_MODE     "TRACK"         ! (2)
+"deviceControl" DDR_DEVCONTROL_MODE     "INDEX"         ! (3)
+"deviceControl" DDR_DEVCONTROL_MODE     "PARK"          ! (4)
+"deviceControl" DDR_DEVCONTROL_MODE     "TEST"          ! (5)
+
+! Action states
+"deviceControl" DDR_DEVCONTROL_BUSY     "IDLE"          ! (0)
+"deviceControl" DDR_DEVCONTROL_BUSY     "BUSY"          ! (1)
+"deviceControl" DDR_DEVCONTROL_BUSY     "ERR"           ! (2)
+
+! Motion states
+"deviceControl" DDR_DEVCONTROL_MIP      "STOPPED"       ! (0)
+"deviceControl" DDR_DEVCONTROL_MIP      "STARTING"      ! (1)
+"deviceControl" DDR_DEVCONTROL_MIP      "MOVING"        ! (2)
+"deviceControl" DDR_DEVCONTROL_MIP      "HOLDING"       ! (3)
+"deviceControl" DDR_DEVCONTROL_MIP      "STOPPING"      ! (4)
+"deviceControl" DDR_DEVCONTROL_MIP      "ERROR"         ! (5)
+
+! Simulation modes
+"deviceControl" DDR_DEVCONTROL_SIM      "NONE"          ! (0)
+"deviceControl" DDR_DEVCONTROL_SIM      "VSM"           ! (1)
+"deviceControl" DDR_DEVCONTROL_SIM      "FAST"          ! (2)
+"deviceControl" DDR_DEVCONTROL_SIM      "FULL"          ! (3)
+
+! Debugging modes
+"deviceControl" DDR_DEVCONTROL_DBUG     "QUIET"         ! (0)
+"deviceControl" DDR_DEVCONTROL_DBUG     "NONE"          ! (1)
+"deviceControl" DDR_DEVCONTROL_DBUG     "MIN"           ! (2)
+"deviceControl" DDR_DEVCONTROL_DBUG     "FULL"          ! (3)
+"deviceControl" DDR_DEVCONTROL_DBUG     "MAX"           ! (4)
+
+! Generic truth values
+"deviceControl" DDR_DEVCONTROL_YN       "NO"            ! (0)
+"deviceControl" DDR_DEVCONTROL_YN       "YES"           ! (1)
+
+!
+! Field choices for the Assembly Control Record
+!
+
+#include <choiceAssemblyControl.h> 
+
+! Command directives
+"assemblyControl" DAR_ASSCONTROL_DIR    "MARK"          ! (0)    
+"assemblyControl" DAR_ASSCONTROL_DIR    "CLEAR"         ! (1)
+"assemblyControl" DAR_ASSCONTROL_DIR    "PRESET"        ! (2)
+"assemblyControl" DAR_ASSCONTROL_DIR    "START"         ! (3)
+"assemblyControl" DAR_ASSCONTROL_DIR    "STOP"          ! (4)
+
+! Command modes
+"assemblyControl" DAR_ASSCONTROL_MODE   "INIT"          ! (0)
+"assemblyControl" DAR_ASSCONTROL_MODE   "MOVE"          ! (1)
+"assemblyControl" DAR_ASSCONTROL_MODE   "TRACK"         ! (2)
+"assemblyControl" DAR_ASSCONTROL_MODE   "INDEX"         ! (3)
+"assemblyControl" DAR_ASSCONTROL_MODE   "PARK"          ! (4)
+"assemblyControl" DAR_ASSCONTROL_MODE   "TEST"          ! (5)
+"assemblyControl" DAR_ASSCONTROL_MODE   "UPDATE"        ! (6)
+
+! Action states
+"assemblyControl" DAR_ASSCONTROL_BUSY   "IDLE"          ! (0)
+"assemblyControl" DAR_ASSCONTROL_BUSY   "PAUSED"        ! (2)
+"assemblyControl" DAR_ASSCONTROL_BUSY   "BUSY"          ! (2)
+"assemblyControl" DAR_ASSCONTROL_BUSY   "ERR"           ! (3)
+
+! Motion states
+"assemblyControl" DAR_ASSCONTROL_STATE  "IDLE"          ! (0)
+"assemblyControl" DAR_ASSCONTROL_STATE  "INITIALIZING"  ! (1)
+"assemblyControl" DAR_ASSCONTROL_STATE  "MOVING"        ! (2)
+"assemblyControl" DAR_ASSCONTROL_STATE  "TRACKING"      ! (3)
+"assemblyControl" DAR_ASSCONTROL_STATE  "TESTING"       ! (4)
+"assemblyControl" DAR_ASSCONTROL_STATE  "INDEXING"      ! (5)
+"assemblyControl" DAR_ASSCONTROL_STATE  "UPDATING"      ! (6)
+"assemblyControl" DAR_ASSCONTROL_STATE  "STARTING"      ! (7)
+
+! Simulation modes
+"assemblyControl" DAR_ASSCONTROL_SIM    "NONE"          ! (0)
+"assemblyControl" DAR_ASSCONTROL_SIM    "VSM"           ! (1)
+"assemblyControl" DAR_ASSCONTROL_SIM    "FAST"          ! (2)
+"assemblyControl" DAR_ASSCONTROL_SIM    "FULL"          ! (3)
+
+! Debugging modes
+"assemblyControl" DAR_ASSCONTROL_DBUG   "QUIET"         ! (0)
+"assemblyControl" DAR_ASSCONTROL_DBUG   "NONE"          ! (1)
+"assemblyControl" DAR_ASSCONTROL_DBUG   "MIN"           ! (2)
+"assemblyControl" DAR_ASSCONTROL_DBUG   "FULL"          ! (3)
+"assemblyControl" DAR_ASSCONTROL_DBUG   "MAX"           ! (4)
+
+! Health states
+"assemblyControl" DAR_ASSCONTROL_HLTH   "GOOD"          ! (0)
+"assemblyControl" DAR_ASSCONTROL_HLTH   "WARNING"       ! (1)
+"assemblyControl" DAR_ASSCONTROL_HLTH   "BAD"           ! (2)

@@ -1,0 +1,28 @@
+[symbol2]
+bbox -96 -32 416 320
+port 400 160 100 512 SIMM symbol 2 416 160 0
+port 400 128 100 512 DBUG symbol 2 416 128 0
+port 400 256 100 512 VAL symbol 2 416 256 0
+port 400 224 100 512 MESS symbol 2 416 224 0
+port 400 192 100 512 FLNK symbol 2 416 192 0
+port 400 0 100 512 CFLK symbol 2 416 0 0
+port 400 32 100 512 OERR symbol 2 416 32 0
+port 400 64 100 512 OMSS symbol 2 416 64 0
+port 400 96 100 512 CAR symbol 2 416 96 0
+port -80 256 100 0 DIR symbol 1 -96 256 0
+uniq 112
+[tools]
+[attributes]
+[layers]
+<symbol>
+l 100 0 0 64 272 GMOS CC System
+r 0 -32 192 64 224
+r 0 -32 128 64 160
+r 0 -32 64 64 96
+r 0 -32 0 64 32
+r 0 160 192 256 224
+r 0 160 128 256 160
+r 0 160 64 256 96
+r 0 160 0 256 32
+r 0 -96 -32 416 320
+[comments]

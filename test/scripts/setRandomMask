@@ -1,0 +1,82 @@
+#!/usr/local/bin/tcsh -f
+#
+# Name: setRandomMask
+#
+# Purpose: 
+#	To select a random mask in the instrument sequencer
+#	Input args:
+#		$1 record name and field where mask 1 may be selected
+#		$2 record name and field where mask 2 may be selected
+#		$3 record name and field where mask 3 may be selected
+#		$4 record name and field where current mask selection can be read
+#		$5 lookup table filename and path
+#
+
+# what's in the beam just now?
+
+set currentMask = `caget $4`
+
+# what's in the cassettes?
+
+set maskRange1 = `egrep '1.+[0-9]+.+[0-9]+' $5 | wc -l`
+set maskRange2 = `egrep '2.+[0-9]+.+[0-9]+' $5 | wc -l`
+set maskRange3 = `egrep '3.+[0-9]+.+[0-9]+' $5 | wc -l`
+
+set ranges =  ($maskRange1 $maskRange2 $maskRange3)
+
+if ($ranges[1] == 0 && $ranges[2] == 0 && $ranges[3] == 0) then
+    echo "Command Failed - no entries in LUT"
+    exit
+endif
+
+set newMask = `echo $currentMask`
+
+while (`echo $newMask` == `echo $currentMask`)
+
+    # Select a random (non-empty) cassette...
+
+    set seed = `date +"%S%M%H"`
+    set found = 0
+    
+    while ($found == 0)
+	@ seed += 123
+	set cassetteNum = `echo $seed 3 | rand`
+	@ cassetteNum += 1
+	if ($ranges[$cassetteNum] != 0) then
+	    set found = 1
+	endif
+    end
+    
+    set seed = `date +"%S%H%M"`
+    set maskNum = `echo $seed $ranges[$cassetteNum] | rand`
+    
+    if ($cassetteNum == 1) then
+	set response = `caput -ts $1 $maskNum | grep "CA.Client"`
+	
+    else if ($cassetteNum == 2) then
+	set response = `caput -ts $2 $maskNum | grep "CA.Client"`
+	
+    else if ($cassetteNum == 3) then
+	set response = `caput -ts $3 $maskNum | grep "CA.Client"`
+	
+    else
+	echo "Command Failed - script error"
+	exit
+	
+    endif
+
+    if ($#response != 0) then
+	    echo "Command Failed"
+	    exit
+    endif
+
+    # what's the new mask now?
+
+    set newMask = `caget $4`
+end
+
+echo "Setting cassette number $cassetteNum"
+echo "Setting mask number $maskNum"
+    
+echo "Command Success"
+exit

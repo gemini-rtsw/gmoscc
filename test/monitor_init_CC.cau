@@ -1,0 +1,18 @@
+# monitor_init.cau
+#
+# cau macro which monitors CAD/CAR records associated with init.
+# Invoked using cau "source" command.
+#
+monitor g7:cc:init.DIR
+monitor g7:cc:init.VAL
+monitor g7:cc:init.OMSS
+
+monitor g7:cc:initC.VAL
+monitor g7:cc:initC.OMSS
+
+monitor g7:wfs:init.DIR
+monitor g7:wfs:init.VAL
+monitor g7:wfs:init.OMSS
+
+
+# Type dataOut cau_init.log

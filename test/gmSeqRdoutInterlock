@@ -1,0 +1,96 @@
+#! /bin/csh -f
+#
+# Shell script: gmSeqRdoutInterlock
+#
+#   Test for GMOS Sequencer CAD commands 
+#   accept/reject when readout in progress
+#
+#     P.B Taylor 17/2/00
+#
+#    16/6/00 PBT     Amended after command interloack
+#                     table finalised
+#
+#    20/9/00 PBT     Amended with real DC commands etc.
+#
+
+# Set the expected error string
+setenv GMOS_ERRSTRING "GMOS detector currently reading out"
+
+# Check whether observing/configuring; exit if doing so
+#
+if ($GMOS_PREFIX == "") then
+  echo 'Error: environment variable GMOS_PREFIX undefined'
+  exit 1
+endif
+set v = `caget -n ${GMOS_PREFIX}dc:observeC.VAL`
+shift v
+if ($v != 0) then
+  echo "Error - observeC not IDLE"
+  exit 1
+endif
+set v = `caget -n ${GMOS_PREFIX}applyC.VAL`
+shift v
+if ($v != 0) then
+  echo "Error - applyC not IDLE"
+  exit 1
+endif
+# Set DC to short (1 sec.) exposure
+doCadWait dc:dcSetup 200 1 OPEN 1 FAST ALL ##
+#
+# First, those that are expected to be rejected 
+#
+startReadout; doCad atmPos 45 45 && goto failTest
+startReadout; doCad atmTrack MOVE 45 45 && goto failTest
+startReadout; doCad dtaTrack MOVE 1 1 1 && goto failTest
+startReadout; doCad datum && goto failTest
+startReadout; doCad dtaPos 1 1 1  && goto failTest
+startReadout; doCad fltPos Hartmann_A Z1 && goto failTest
+startReadout; doCad grSelect SEL 600+ && goto failTest
+startReadout; doCad init && goto failTest
+startReadout; doCad mskPos 78 IN-BEAM && goto failTest
+startReadout; doCad park && goto failTest
+startReadout; doCad test && goto failTest
+startReadout; doCad update && goto failTest
+startReadout; doCad endObserve && goto failTest
+startReadout; doCad observe && goto failTest
+#
+# These should be accepted
+# Wait a bit after each to allow reconfiguration 
+# to complete
+#
+
+startReadout; doCad pause || goto failTest
+waitApply
+startReadout; doCad continue || goto failTest
+waitApply
+startReadout; doCad endGuide || goto failTest
+waitApply
+startReadout; doCad endVerify || goto failTest
+waitApply
+startReadout; doCad guide || goto failTest
+waitApply
+startReadout; doCad verify || goto failTest
+waitApply
+startReadout; doCad abort || goto failTest
+waitApply
+startReadout; doCad stop || goto failTest
+set status = 0
+echo "************************************************"
+echo "* Test script $0 completed OK *"
+echo "************************************************"
+goto rdoutClear
+#
+failTest:
+  echo "Test failed: response not as expected"
+  set status = 1
+  goto rdoutClear
+#
+failObserve:
+  echo "Error trying to restart observing"
+  set status = 1
+  goto rdoutClear
+#
+# So clear reading out flag TRUE
+rdoutClear:
+  caput ${GMOS_PREFIX}sad:dc:rdout 0
+  exit $status

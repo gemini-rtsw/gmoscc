@@ -1,0 +1,214 @@
+# This is a file of tests for the GMOS sequencer in a suitable format to be read
+# by the tcsTests.tk procedure.
+# 
+# This particular file is aimed at checking the input ranges to the commands
+# that control the tracking of the atmospheric dispersion corrector and
+# detector translation assembly. 
+#
+# Comments are introduced by a # in the first column
+# Blank lines can be left if required.
+# The currently allowed keywords are (case is immaterial)
+#
+#  Test   <testId>
+#  Command <commandName>
+#  Field   <CAD field> <value>
+#  Response Accept | Reject
+#  Timeout <msecs>
+#  OnError Continue | Abort
+#  Log     <recordName>
+#  Directive Start | Preset
+
+# This first part before the first Test keyword can be used to setup 
+# global values for Response, TimeOut and OnError. These global values
+# can be over ridden within specific tests
+
+Response Reject
+TimeOut  30000
+OnError  Continue
+
+Help
+Help This test file checks the trapping of invalid input to the atmTrack
+Help command.
+Help
+Help The first tests check for null input. If the commands in question have
+Help been run at any time after booting and prior to running these tests then
+Help there will already be input on the CAD fields and so these null tests
+Help will fail. To validate the trapping of null input you will have to
+Help reboot the GMOS sequencer and start these tests again.
+Help
+Help Press continue when ready
+Help
+
+# Tests start here. Each test must start with the Test keyword, end with
+# a Directive keyword and have at least one Command keyword. Any Field
+# keywords are assumed to apply to the last command
+
+Test UT00010
+Summary Check rejection of null input to tracking mode 
+
+ Command atmTrack 
+  Field  DIR MARK   
+ Response  Reject 
+ Directive Start
+
+Test UT00020
+Summary Check rejection of invalid input to tracking mode 
+
+ Command atmTrack 
+  Field  A  XXXXX   
+ Response  Reject 
+ Directive Start
+
+Test UT00030
+Summary Check rejection of null input to entrance prism angle in MOVE mode 
+
+ Command atmTrack 
+  Field  A  MOVE   
+ Response  Reject 
+ Directive Start
+
+Test UT00040
+Summary Check rejection of invalid input to entrance prism angle in MOVE mode 
+
+ Command atmTrack 
+  Field  A  MOVE   
+  Field  B  xxxxx
+ Response  Reject 
+ Directive Start
+
+Test UT00050
+Summary Check rejection of out of range input entrance prism angle in MOVE mode 
+
+ Command atmTrack 
+  Field  A  MOVE   
+  Field  B  -361.0 
+ Response  Reject 
+ Directive Start
+
+Test UT00060
+Summary Check rejection of out of range input entrance prism angle in MOVE mode 
+
+ Command atmTrack 
+  Field  A  MOVE   
+  Field  B  361.0 
+ Response  Reject 
+ Directive Start
+
+Test UT00070
+Summary Check rejection of invalid input to exit prism angle in MOVE mode 
+
+ Command atmTrack 
+  Field  A  MOVE   
+  Field  B  10.0 
+  Field  C  xxxxx
+ Response  Reject 
+ Directive Start
+
+Test UT00080
+Summary Check rejection of out of range input to exit prism angle in MOVE mode 
+
+ Command atmTrack 
+  Field  A  MOVE   
+  Field  B  10.0 
+  Field  C  -361.0 
+ Response  Reject 
+ Directive Start
+
+Test UT00090
+Summary Check rejection of out of range input to exit prism angle in MOVE mode 
+
+ Command atmTrack 
+  Field  A  MOVE   
+  Field  B  10.0 
+  Field  C  361.0 
+ Response  Reject 
+ Directive Start
+
+Test UT00100
+Summary Check rejection of null input to minimum wavelength in FOLLOW  mode 
+
+ Command atmTrack 
+  Field  A  FOLLOW   
+ Response  Reject 
+ Directive Start
+
+Test UT00110
+Summary Check rejection of invalid input to minimum wavelength in FOLLOW  mode 
+
+ Command atmTrack 
+  Field  A  FOLLOW   
+  Field  D  xxxxx
+ Response  Reject 
+ Directive Start
+
+Test UT00120
+Summary Check rejection of too small a minimum wavelength in FOLLOW  mode 
+
+ Command atmTrack 
+  Field  A  FOLLOW   
+  Field  D  1.0 
+ Response  Reject 
+ Directive Start
+
+Test UT00130
+Summary Check rejection of too large a minimum wavelength in FOLLOW  mode 
+
+ Command atmTrack 
+  Field  A  FOLLOW   
+  Field  D  3000.0
+ Response  Reject 
+ Directive Start
+
+Test UT00140
+Summary Check rejection of null input to maximum wavelength in FOLLOW  mode 
+
+ Command atmTrack 
+  Field  A  FOLLOW   
+  Field  D  500.0
+ Response  Reject 
+ Directive Start
+
+Test UT00150
+Summary Check rejection of invalid input to maximum wavelength in FOLLOW  mode 
+
+ Command atmTrack 
+  Field  A  FOLLOW   
+  Field  D  500.0
+  Field  E  xxxxx
+ Response  Reject 
+ Directive Start
+
+Test UT00160
+Summary Check rejection of too small a maximum wavelength in FOLLOW  mode 
+
+ Command atmTrack 
+  Field  A  FOLLOW   
+  Field  D  500.0
+  Field  E  1.0
+ Response  Reject 
+ Directive Start
+
+Test UT00170
+Summary Check rejection of too large a maximum wavelength in FOLLOW  mode 
+
+ Command atmTrack 
+  Field  A  FOLLOW   
+  Field  D  0.4 
+  Field  E  3000.0
+ Response  Reject 
+ Directive Start
+
+Test UT00180
+Summary Check rejection of maximum < minimum wavelength in FOLLOW  mode 
+
+ Command atmTrack 
+  Field  A  FOLLOW   
+  Field  D  500.0
+  Field  E  480.0
+ Response  Reject 
+ Directive Start
+
+# Test UT00190
+# Summary Check that rejection by Components Controller is reported correctly
+# NO TEST AVAILABLE
+#
