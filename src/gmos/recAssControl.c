@@ -76,6 +76,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:53  mbec
+ * *** empty log message ***
+ *
  * Revision 1.2  2001/04/23 18:24:43  smb
  * DEBUG macro changed from logMsg to printf so it can display floating point values (bug 196)
  *
@@ -2591,7 +2594,8 @@ static long initRecord
     pPriv->cmdResponse = TRUE;          /* set command was successful flag */
     pPriv->cmdTimedOut = FALSE;         /* clear command has timedout flag */
     pPriv->debug = DAR_DBUG_NONE;       /* start in no debug mode */
-    pPriv->fault = FALSE;               /* clear fault line detected flag */
+    /*pPriv->fault = FALSE;                clear fault line detected flag */
+    pPriv->fault = DAR_FAULT_CLEAR;     /* clear fault line detected flag -fix for Ilock problem-*/
     pPriv->keepIndex = FALSE;           /* enable status field updating */
     pPriv->lastCommand = DAR_STOP_CMD;  /* pretend last directive was STOP */
     pPriv->currCommand = DAR_STOP_CMD;  /* pretend this directive is STOP */
@@ -3152,29 +3156,44 @@ static long process
 
 
     /*
-     *  If the fault flag has been set then we have been called to do
-     *  fault processing.
+     *  If the fault flag has been set to NEW then we've been
+     *  called to do fault processing.
      */
 
     if( pPriv->fault == DAR_FAULT_NEW)
     {
-        /*
-         * A fault has been detected!  Call device support fault 
-         * handling function immediately.   The device support will know
-         * how to react to this condition.
-         */
+        /* An interlock change has been detected */
 
-        pPriv->fault = DAR_FAULT_CLEAR;
-        par->hlth = DAR_HLTH_BAD;
-        MONITOR(RECORD_HTH);
-        DEBUG(DAR_MSG_LOG, "<%ld> %s:process: fault occurred%c\n", ' ');
+        DEBUG(DAR_MSG_LOG, "<%ld> %s:process: interlock line change%c\n", ' ');
 
-        DEBUG(DAR_MSG_MAX, "<%ld> %s:calling processFault%c\n", ' ');
-        status = (*pdset->processFault) (par);
-        DEBUG(DAR_MSG_MAX, "<%ld> %s:processFault returns %ld\n", status);
-    }
+     	if (par->ilck == DAR_FAULT_WARNING)
+         {
+               DEBUG(DAR_MSG_LOG, "<%ld> %s:process: fault occurred%c\n", ' ');
+ 
+                /*
+                 * Call device support fault handling function.  The device
+                 * support will know how to react to this condition.
+                 */
+  
+               pPriv->fault = DAR_FAULT_WARNING;
+               par->hlth = DAR_HLTH_BAD;
+                MONITOR(RECORD_HTH);
+                DEBUG(DAR_MSG_MAX, "<%ld> %s:calling processFault%c\n", ' ');
+                status = (*pdset->processFault) (par);
+                DEBUG(DAR_MSG_MAX, "<%ld> %s:processFault returns %ld\n", status);
+            }
+	else
+            {
+                /*
+                 * Otherwise the change in ILCK means the interlock
+                 * has been cleared.
+                 */
+  
+               DEBUG(DAR_MSG_LOG, "<%ld> %s:process: fault cleared%c\n", ' ');
+                pPriv->fault = DAR_FAULT_CLEAR;
+            }
 
-
+     }
     /*
      *  If the timeout flag has been set then we have been called to do
      *  command timeout processing.
@@ -4457,16 +4476,18 @@ static long special
     
     if (paddr->pfield == (void *) &par->ilck)
     {  
+	DEBUG(DAR_MSG_FULL, "<%ld> %s:special: ilck:%d\n", par->ilck);
         /*
-         * Only generate a callback if the field has been set.
-         */
+  	 * Set the private fault flag to NEW and only generate a
+  	 * callback if the field has changed.
+   	 */
 
-        if ( par->ilck )
+        if ( par->ilck != pPriv->fault)
         {
-            DEBUG(DAR_MSG_LOG, "<%ld> %s:special: ilck occurred%c\n", ' ');
+	    DEBUG(DAR_MSG_MIN, "<%ld> %s:special: new ilck state:%d\n", par->ilck);
             MONITOR(RECORD_FLT);
-     
-            pPriv->fault = DAR_FAULT_WARNING;
+
+            pPriv->fault = DAR_FAULT_NEW;
             pCallback = (struct callback *)(pPriv->special);
             waitTime = (int) ( 2 );
 
@@ -4700,14 +4721,10 @@ static void specialCallback
         *  Indicate if this is a fault or busy change re-processing.
         */
 
-       if ((par->ilck) && (pPriv->fault == DAR_FAULT_WARNING))
+	if ( pPriv->fault != DAR_FAULT_NEW);
         {
-            pPriv->fault = DAR_FAULT_NEW;
+		pPriv->busChange = TRUE;
         }
-        else
-        {
-            pPriv->busChange = TRUE;
-        } 
 
         /*
          *  Then call the EPICS record processing function.
