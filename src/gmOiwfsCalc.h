@@ -83,34 +83,66 @@
 #define  GM_OIWFS_MIDPOINT_OK          1        /* Midpoint calc successful */
 #define  GM_OIWFS_MIDPOINT_EMERGENCY  -1        /* Midpoint set to midrange */
 
-#define  BASE_ARM_LENGTH         77.50  /* Length (mm) of base stage arm    */
-#define  BASE_ARM_HEIGHT         29.62  /* Height of base arm above mask    */
 
-#define  PICKOFF_ARM_LENGTH     213.03  /* Length of pickoff stage arm      */
-#define  PICKOFF_ARM_HEIGHT      64.03  /* Height of pickoff arm above mask */
+ /*
+  *  Offsets to base stage origin {B} from telescope origin {T} (in mm).
+  */
+#define  T_X                -265.30     /* Away from cassette in X          */
+#define  T_Y                 -17.58     /* Back in Y behind slit mask       */
+#define  T_Z                  63.20     /* Up in Z                          */
 
-#define  BASE_ORIGIN_X          265.30  /* Base cs X origin in probe cs     */
-#define  BASE_ORIGIN_Y           63.20  /* Base cs Y origin in probe cs     */
-#define  BASE_ORIGIN_Z          -17.58  /* Base cs Z origin in probe cs     */
+ /*
+  *  X & Y offsets to pickoff stage origin {P} from base stage 
+  *  origin {B} (in mm).  Z offset is zero.
+  */
+#define  BASE_ARM_LENGTH      77.50     /* Bx = Length of base stage arm    */
+#define  BASE_ARM_HEIGHT      29.62     /* By = Height of base stage arm    */
 
-#define  T_X  (-BASE_ORIGIN_X)          /* Telescope cs X origin in base cs */
-#define  T_Y  BASE_ORIGIN_Z             /* Telescope cs Y origin in base cs */
-#define  T_Z  BASE_ORIGIN_Y             /* Telescope cs Z origin in base cs */
+ /*
+  *  X & Y offsets to probe mirror origin {M} from pickoff stage 
+  *  origin {P} (in mm).  Z offset is zero.
+  */
+#define  PICKOFF_ARM_LENGTH  213.03     /* Px = Length of pickoff stage arm */
+#define  PICKOFF_ARM_HEIGHT   64.03     /* Py = Height of pickoff stage arm */
+
+
+ /*
+  *  Offsets to base stage origin {B} from slit mask coordinate system
+  *  origin {MC}.  The origin of {MC} is at the same point as the origin
+  *  of {T} but rotated 180 degrees about Y and 180 degrees about X. 
+  */
+#define  BASE_ORIGIN_X       (-T_X)  /* {MC} X goes in opposite direction   */
+#define  BASE_ORIGIN_Y         T_Z   /* {MC} Y is actually {T} Z            */
+#define  BASE_ORIGIN_Z         T_Y   /* {MC} Z is focus which is {T} Y      */
+
 
 
 typedef  double  GM_OIWFS_RAD;                  /* Radians are double words */             
 typedef  double  GM_OIWFS_MM;                   /* Millimeters are doubles  */
 
+typedef  struct
+{
+    double offset;
+    double xSlope;
+    double ySlope;
+    double tanZen2;
+    double xyQuad;
+    double xxQuad;
+    double yyQuad;
+    double xCos2zen;
+} GM_OIWFS_REG_COEF;
 
 extern int gmOiwfsSolutionId;                   /* select probe orientation */
 extern int gmOiwfsStageTiltCorrection;          /* Include tilt in calcs    */
 extern int gmOiwfsRefineSteps;                  /* Angle calc iterations    */
 
+extern int gmAtmdcInstalled;                    /* Is an ADC installed?     */
+
 void gmOiwfsSetOffsets(GM_OIWFS_RAD base, GM_OIWFS_RAD pickoff, 
-                       GM_OIWFS_MM x, GM_OIWFS_MM y);
+                       GM_OIWFS_MM x, GM_OIWFS_MM y, GM_OIWFS_MM z);
 
 int  gmOiwfsGetOffsets(GM_OIWFS_RAD * base, GM_OIWFS_RAD * pickoff, 
-                       GM_OIWFS_MM * x, GM_OIWFS_MM * y);
+                       GM_OIWFS_MM * x, GM_OIWFS_MM * y, GM_OIWFS_MM * z);
 
 int gmOiwfsCalculateProbePosition (GM_OIWFS_RAD baseAngle, 
                                    GM_OIWFS_RAD pickoffAngle,
