@@ -239,9 +239,9 @@ FATAL
 
 DESC "Moving Filter Assembly"
 
-CMD "getFilterId fltSelect1 /home/smb/gmos/lut/flt.lut 1 6"
+CMD "getFilterId fltSelect1 /gemini/gmos/lut/flt.lut 1 6"
 OUTPUT *Success*
-CMD "getFilterId fltSelect2 /home/smb/gmos/lut/flt.lut 2 11"
+CMD "getFilterId fltSelect2 /gemini/gmos/lut/flt.lut 2 11"
 OUTPUT *Success*
 
 PUTVAL fltMode "1"
@@ -322,9 +322,9 @@ FATAL
 
 DESC "Moving Filter Assembly"
 
-CMD "getFilterId fltSelect1 /home/smb/gmos/lut/flt.lut 2 1"
+CMD "getFilterId fltSelect1 /gemini/gmos/lut/flt.lut 2 1"
 OUTPUT *Success*
-CMD "getFilterId fltSelect2 /home/smb/gmos/lut/flt.lut 1 3"
+CMD "getFilterId fltSelect2 /gemini/gmos/lut/flt.lut 1 3"
 OUTPUT *Success*
 
 PUTVAL fltMode "1"
@@ -406,9 +406,9 @@ FATAL
 
 DESC "Moving Filter Assembly"
 
-CMD "getFilterId fltSelect1 /home/smb/gmos/lut/flt.lut 2 1"
+CMD "getFilterId fltSelect1 /gemini/gmos/lut/flt.lut 2 1"
 OUTPUT *Success*
-CMD "getFilterId fltSelect2 /home/smb/gmos/lut/flt.lut 1 3"
+CMD "getFilterId fltSelect2 /gemini/gmos/lut/flt.lut 1 3"
 OUTPUT *Success*
 
 PUTVAL fltMode "1"
@@ -480,9 +480,9 @@ FATAL
 
 DESC "Ask for two filters on same wheel"
 
-CMD "getFilterId fltSelect1 /home/smb/gmos/lut/flt.lut 1 3"
+CMD "getFilterId fltSelect1 /gemini/gmos/lut/flt.lut 1 3"
 OUTPUT *Success*
-CMD "getFilterId fltSelect2 /home/smb/gmos/lut/flt.lut 1 5"
+CMD "getFilterId fltSelect2 /gemini/gmos/lut/flt.lut 1 5"
 OUTPUT *Success*
 
 DESC "Verify command is rejected by a PRESET"
@@ -520,7 +520,7 @@ DESC "Select a non-existent filter A"
 PUTVAL fltSelect1 "29999999"
 OUTPUT *
 
-CMD "getFilterId fltSelect2 /home/smb/gmos/lut/flt.lut 1 5"
+CMD "getFilterId fltSelect2 /gemini/gmos/lut/flt.lut 1 5"
 OUTPUT *Success*
 
 DESC "Verify command is rejected by a PRESET"
@@ -555,7 +555,7 @@ FATAL
 
 DESC "Select a non-existent filter B"
 
-CMD "getFilterId fltSelect1 /home/smb/gmos/lut/flt.lut 1 3"
+CMD "getFilterId fltSelect1 /gemini/gmos/lut/flt.lut 1 3"
 OUTPUT *Success*
 
 PUTVAL fltSelect2 "29999999"
@@ -888,7 +888,7 @@ OUTPUT *VAL*GOOD*
 
 DESC "Display contents of LUT file just saved"
 
-CMD "cat /home/smb/gmos/lut/flt.lut"
+CMD "cat /gemini/gmos/lut/flt.lut"
 OUTPUT *
 
 ENDTEST
@@ -956,7 +956,7 @@ OUTPUT *VAL*GOOD*
 
 DESC "Display contents of LUT file just saved"
 
-CMD "cat /home/smb/gmos/lut/flt.lut"
+CMD "cat /gemini/gmos/lut/flt.lut"
 OUTPUT *
 
 ENDTEST

@@ -85,15 +85,15 @@ STOP
 DESC "Reconfigure instrument"
 
 DESC "Setup random mask config"
-CMD  "setRandomMask mskNameMenu1 mskNameMenu2 mskNameMenu3 mskSelectedMask /sw3/home/smb/gmos/lut/msk.lut"
+CMD  "setRandomMask mskNameMenu1 mskNameMenu2 mskNameMenu3 mskSelectedMask /sw3/gemini/gmos/lut/msk.lut"
 OUTPUT *Success*
 
 DESC "Setup random filter config"
-CMD  "setRandomFilters fltNameMenu1 fltNameMenu2 /sw3/home/smb/gmos/lut/flt.lut"
+CMD  "setRandomFilters fltNameMenu1 fltNameMenu2 /sw3/gemini/gmos/lut/flt.lut"
 OUTPUT *Success*
 
 DESC "Setup random grating config"
-CMD  "setRandomGrating grNameMenu grSelectWavelength grSelectOrder /sw3/home/smb/gmos/lut/gr.lut"
+CMD  "setRandomGrating grNameMenu grSelectWavelength grSelectOrder /sw3/gemini/gmos/lut/gr.lut"
 OUTPUT *Success*
 
 DESC "Setup random dta config"

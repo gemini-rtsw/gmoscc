@@ -358,7 +358,7 @@ DESC "Moving Grating Assembly"
 PUTVAL grSelectOnly "0"
 OUTPUT *
 
-CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 1"
+CMD "getGratingId gratId /gemini/gmos/lut/gr.lut 1"
 OUTPUT *Success*
 
 PUTVAL gratTilt "31.2"
@@ -442,7 +442,7 @@ DESC "Moving Grating Assembly"
 PUTVAL grSelectOnly "0"
 OUTPUT *
 
-CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 2"
+CMD "getGratingId gratId /gemini/gmos/lut/gr.lut 2"
 OUTPUT *Success*
 
 PUTVAL gratTilt "10.1"
@@ -526,7 +526,7 @@ DESC "Moving Grating Assembly"
 PUTVAL grSelectOnly "1"
 OUTPUT *
 
-CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 1"
+CMD "getGratingId gratId /gemini/gmos/lut/gr.lut 1"
 OUTPUT *Success*
 
 PUTVAL grMode "1"
@@ -608,7 +608,7 @@ DESC "Moving Grating Assembly"
 PUTVAL grSelectOnly "0"
 OUTPUT *
 
-CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 3"
+CMD "getGratingId gratId /gemini/gmos/lut/gr.lut 3"
 OUTPUT *Success*
 
 PUTVAL gratTilt "65.0"
@@ -693,7 +693,7 @@ DESC "Moving Grating Assembly"
 PUTVAL grSelectOnly "0"
 OUTPUT *
 
-CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 4"
+CMD "getGratingId gratId /gemini/gmos/lut/gr.lut 4"
 OUTPUT *Success*
 
 PUTVAL gratTilt "81.4"
@@ -779,7 +779,7 @@ DESC "Moving Grating Assembly"
 PUTVAL grSelectOnly "0"
 OUTPUT *
 
-CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 4"
+CMD "getGratingId gratId /gemini/gmos/lut/gr.lut 4"
 OUTPUT *Success*
 
 PUTVAL gratTilt "81.4"
@@ -975,7 +975,7 @@ DESC "Select an out of (high) range grating angle"
 PUTVAL grSelectOnly "0"
 OUTPUT *
 
-CMD "getGratingId gratId /home/smb/gmos/lut/gr.lut 4"
+CMD "getGratingId gratId /gemini/gmos/lut/gr.lut 4"
 OUTPUT *Success*
 
 PUTVAL gratTilt "99.9"

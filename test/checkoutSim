@@ -41,9 +41,9 @@ endif
 # Update the barcode files in the simulation directory from the ones
 # in the main directory.
 #
-\cp /home/smb/gmos/lut/msk.lut /home/smb/gmos/lut/sim
-\cp /home/smb/gmos/lut/flt.lut /home/smb/gmos/lut/sim
-\cp /home/smb/gmos/lut/gr.lut /home/smb/gmos/lut/sim
+\cp /gemini/gmos/lut/msk.lut /gemini/gmos/lut/sim
+\cp /gemini/gmos/lut/flt.lut /gemini/gmos/lut/sim
+\cp /gemini/gmos/lut/gr.lut /gemini/gmos/lut/sim
 
 #
 # Define the environment variable pointing to the config files

@@ -14,7 +14,7 @@ xform 0 3520 2864
 p 3392 2752 100 0 1 VAL:msk.lut
 use estringins 2960 3463 100 0 dirLUT
 xform 0 3088 3536
-p 2960 3424 100 0 1 VAL:/home/smb/gmos/lut
+p 2960 3424 100 0 1 VAL:/gemini/gmos/lut
 use estringins 2960 2567 100 0 lambdaFocusLUT
 xform 0 3088 2640
 p 2960 2528 100 0 1 VAL:lambdaFocus.lut

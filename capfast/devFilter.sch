@@ -115,7 +115,7 @@ p 640 -288 100 0 1 PREC:4
 p 1120 288 100 0 1 PTMO:30
 p 640 560 100 0 1 PV:$(top)$(dev)
 p 640 -320 100 0 1 SIMM:$(simm)
-p 640 -128 100 0 1 TDIR:/home/smb/gmos/lut
+p 640 -128 100 0 1 TDIR:/gemini/gmos/lut
 p 992 288 100 0 1 UAPB:YES
 p 656 256 100 0 1 UBSB:NO
 p 960 -288 100 0 1 UEIP:NO

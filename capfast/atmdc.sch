@@ -139,7 +139,7 @@ p -48 -896 70 0 1 PREC:4
 p -96 624 100 0 -1 PV:$(top)$(dev)
 p -48 -880 70 0 1 SCAN:Passive
 p -48 -912 70 0 1 SIMM:$(simm)
-p -48 -848 70 0 1 TDIR:/home/smb/gmos/lut
+p -48 -848 70 0 1 TDIR:/gemini/gmos/lut
 p -48 -864 70 0 1 TFIL:$(dev).lut
 p 224 -64 80 768 -1 pproc(ACK1):NPP
 p 224 -288 80 768 -1 pproc(ACK2):NPP

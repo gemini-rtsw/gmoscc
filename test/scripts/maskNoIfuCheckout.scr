@@ -188,7 +188,7 @@ TEST "Test index at both ends with mask in tow"
 FATAL
 
 DESC "Loading last mask"
-CMD "getLastMaskId mskSelect /home/smb/gmos/lut/msk.lut"
+CMD "getLastMaskId mskSelect /gemini/gmos/lut/msk.lut"
 OUTPUT *Success*
 PUTVAL mskMode "1"
 OUTPUT *MODE*MODE*MOVE*
@@ -304,7 +304,7 @@ FATAL
 
 DESC "Loading first mask"
 
-CMD "getFirstMaskId mskSelect /home/smb/gmos/lut/msk.lut"
+CMD "getFirstMaskId mskSelect /gemini/gmos/lut/msk.lut"
 OUTPUT *Success*
 
 PUTVAL mskMode "1"
@@ -408,7 +408,7 @@ FATAL
 
 DESC "Loading mask (last entry in table)"
 
-CMD "getLastMaskId mskSelect /home/smb/gmos/lut/msk.lut"
+CMD "getLastMaskId mskSelect /gemini/gmos/lut/msk.lut"
 OUTPUT *Success*
 
 PUTVAL mskLocation "0"

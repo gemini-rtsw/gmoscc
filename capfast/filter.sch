@@ -224,7 +224,7 @@ p 144 -960 70 0 -1 FTSJ:STRING
 p 144 -992 70 0 -1 FTSK:STRING
 p 128 272 100 0 -1 PV:$(top)$(dev)
 p 128 -1472 100 0 1 SIMM:$(simm)
-p 128 -1344 100 0 1 TDIR:/home/smb/gmos/lut
+p 128 -1344 100 0 1 TDIR:/gemini/gmos/lut
 p 128 -1376 100 0 1 TFIL:$(dev).lut
 p 448 -416 80 768 -1 pproc(ACK1):NPP
 p 448 -640 80 768 -1 pproc(ACK2):NPP

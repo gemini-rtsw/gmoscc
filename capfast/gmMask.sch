@@ -164,7 +164,7 @@ p 1520 1120 70 0 -1 FTSL:STRING
 p 1552 912 70 0 1 PREC:4
 p 1552 944 70 0 1 SCAN:Passive
 p 1552 880 70 0 1 SIMM:$(simm)
-p 1552 1008 70 0 1 TDIR:/home/smb/gmos/lut
+p 1552 1008 70 0 1 TDIR:/gemini/gmos/lut
 p 1552 976 70 0 1 TFIL:$(dev).lut
 p 1744 1216 75 768 1 def(SOR):$(top)optsensorEnable
 p 1824 1728 80 768 -1 pproc(ACK1):NPP

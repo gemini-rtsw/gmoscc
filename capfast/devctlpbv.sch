@@ -54,7 +54,7 @@ use outhier 1760 480 100 0 lswa
 xform 0 1712 480
 use edevctlm 832 912 100 0 Device
 xform 0 736 608
-p 640 224 100 0 1 TDIR:/home/smb/gmos/lut
+p 640 224 100 0 1 TDIR:/gemini/gmos/lut
 use gmosBorderC -1120 -825 100 0 gmosBorderC#40
 xform 0 560 480
 p 2132 -696 100 512 1 File:/data/nimpkish/1/daoinsw/dev/gmos/current/develop/gmDeviceControl/capfast/devctlpbv.sch

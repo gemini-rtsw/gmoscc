@@ -27,7 +27,7 @@ string $(top)grSelect.DIR = "CLEAR" ;
 # Simulation mode uses a different directory to avoid
 # clashes with the operational system.
 #
-string $(top)dirLUT.VAL          = "/home/smb/gmos/lut/sim" ;
+string $(top)dirLUT.VAL          = "/gemini/gmos/lut/sim" ;
 group {
    string $(top)mskNamesLUT.VAL  = "masks.lut" ;
    string $(top)mskLUT.VAL       = "msk.lut" ;
