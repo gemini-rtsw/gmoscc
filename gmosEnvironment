@@ -55,7 +55,7 @@ setenv GMOS_HOME    /home/smb/gmos
 
 # Current versions of GMOS software and detector controller software
 
-setenv GMOS_DC      ${GMOS_OP}/gmos_DC_010/control
+setenv GMOS_DC      ${GMOS_OP}/gmosdc/control
 setenv GMOS_VERSION gmos022
 
 # Add the most up to date version of the GMOS software to the PATH
