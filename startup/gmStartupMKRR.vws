@@ -9,8 +9,8 @@
 tyBackspaceSet 0177
 
 # Set the shell prompt
-shellPromptSet "GMOS MK > "
-loginStringSet "MVME167 vxWorks (GMOS MK)\n\nlogin: "
+shellPromptSet "GMOS-N > "
+loginStringSet "MVME167 vxWorks (GMOS-N)\n\nlogin: "
 
 # cd to application install directory (beware automounter problems)
 cd "$(iocpath)"
@@ -101,8 +101,8 @@ dbpf "gm:cc:msEnableEnable","0"
 dbpf "gm:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "gm:sad:name.VAL","GMOS Mauna Kea (V22)"
-dbpf "gm:sad:cc:name.VAL","GMOS Mauna Kea (V22)"
+dbpf "gm:sad:name.VAL","GMOS-N (V2-4)"
+dbpf "gm:sad:cc:name.VAL","GMOS-N (V2-4)"
 
 # Load initialization files
 pvload "$(iocpath)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"

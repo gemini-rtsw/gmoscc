@@ -9,8 +9,8 @@
 tyBackspaceSet 0177
 
 # Set the shell prompt
-shellPromptSet "GMOS MK - sim2 > "
-loginStringSet "MVME167 vxWorks (GMOS MK - sim2)\n\nlogin: "
+shellPromptSet "GMOS-N - sim2 > "
+loginStringSet "MVME167 vxWorks (GMOS-N - sim2)\n\nlogin: "
 
 # cd to application install directory (beware automounter problems)
 cd "$(iocpath)"
@@ -104,8 +104,8 @@ dbpf "g8:cc:msEnableEnable","0"
 dbpf "g8:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "g8:sad:name.VAL","GMOS MK (simulated) (V22)"
-dbpf "g8:sad:cc:name.VAL","GMOS Mauna Kea (V22) - simulated2"
+dbpf "g8:sad:name.VAL","GMOS-N (simulated) (V2-4)"
+dbpf "g8:sad:cc:name.VAL","GMOS-N (V2-4) - simulated2"
 
 # Load initialization files
 pvload "$(iocpath)/data/gmosCcSim.pv","top=g8:, sadtop=g8:sad:"

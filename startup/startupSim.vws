@@ -10,8 +10,8 @@
 tyBackspaceSet 0177
 
 # Set the shell prompt
-shellPromptSet "GMOS MK - sim > "
-loginStringSet "MVME167 vxWorks (GMOS MK - sim)\n\nlogin: "
+shellPromptSet "GMOS-N - sim > "
+loginStringSet "MVME167 vxWorks (GMOS-N - sim)\n\nlogin: "
 
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
