@@ -81,6 +81,7 @@ DATA += ../atmExp.lut
 DATA += ../atmEnp.lut
 DATA += ../atm.lut
 DATA += ../mskExt.lut
+DATA += ../aux_gr_allgratings.lut
 
 # Any extra targets can be placed in a TARGETS macro (the build target
 # builds only pre_build, LIBNAME, TARGETS and PROD, not SCRIPTS, INC etc)

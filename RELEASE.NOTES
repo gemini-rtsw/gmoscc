@@ -328,3 +328,7 @@ V3-4 April 27 2002 ajf/tpaz:
 V3-5 April 29 2002 ajf/tpaz:
 ----------------------------
 -  Change LIFTER CYCLE TIME from 6 to 9 seconds.
+
+V3-6 April 29 2002 ajf/tpaz:
+----------------------------
+-  Add "aux_gr_allgratings.lut" to the list of required LUTs.
