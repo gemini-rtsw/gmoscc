@@ -7,7 +7,7 @@ display {
 	mnrv="4"
 	ndyng="46"
 	npc="72"
-	nstr="125"
+	nstr="123"
 	ndynamic="46"
 	nplot="0"
 	nrd="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="8460"
+	nwords_dspy="8442"
 	nwords_sta="672"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="2676"
-	osta="2004"
-	odynamic="5412"
-	oplot="8448"
-	ord="8448"
-	oes="8448"
-	okd="8448"
-	opd="8460"
-	opo="8460"
+	odyng="2658"
+	osta="1986"
+	odynamic="5394"
+	oplot="8430"
+	ord="8430"
+	oes="8430"
+	okd="8430"
+	opd="8442"
+	opo="8442"
 	opc="68"
 	ostr="912"
-	ocmap="2004"
-	ocrules="2004"
+	ocmap="1986"
+	ocrules="1986"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -77,7 +77,7 @@ display {
 	object {
 		x="19"
 		y="424"
-		width="106"
+		width="120"
 		height="22"
 		groupid="0"
 	}
@@ -185,8 +185,8 @@ display {
 	object {
 		x="22"
 		y="287"
-		width="113"
-		height="22"
+		width="115"
+		height="20"
 		groupid="0"
 	}
 	textix="Filter 1:"
@@ -204,7 +204,7 @@ display {
 	object {
 		x="141"
 		y="265"
-		width="93"
+		width="120"
 		height="14"
 		groupid="0"
 	}
@@ -215,7 +215,7 @@ display {
 	object {
 		x="276"
 		y="265"
-		width="87"
+		width="120"
 		height="14"
 		groupid="0"
 	}
@@ -303,7 +303,7 @@ display {
 	object {
 		x="152"
 		y="101"
-		width="95"
+		width="110"
 		height="16"
 		groupid="0"
 	}
@@ -341,7 +341,7 @@ display {
 	object {
 		x="518"
 		y="87"
-		width="95"
+		width="110"
 		height="16"
 		groupid="0"
 	}
@@ -352,7 +352,7 @@ display {
 	object {
 		x="623"
 		y="88"
-		width="95"
+		width="110"
 		height="16"
 		groupid="0"
 	}
@@ -371,8 +371,8 @@ display {
 	object {
 		x="20"
 		y="561"
-		width="221"
-		height="14"
+		width="300"
+		height="20"
 		groupid="0"
 	}
 	textix="Detector Translation"
@@ -495,7 +495,7 @@ display {
 	object {
 		x="19"
 		y="191"
-		width="101"
+		width="120"
 		height="20"
 		groupid="0"
 	}
@@ -514,7 +514,7 @@ display {
 	object {
 		x="410"
 		y="265"
-		width="93"
+		width="120"
 		height="14"
 		groupid="0"
 	}
@@ -533,8 +533,8 @@ display {
 	object {
 		x="22"
 		y="323"
-		width="113"
-		height="22"
+		width="115"
+		height="20"
 		groupid="0"
 	}
 	textix="Filter 2:"
@@ -653,7 +653,7 @@ display {
 	object {
 		x="23"
 		y="53"
-		width="400"
+		width="490"
 		height="20"
 		groupid="0"
 	}
@@ -672,7 +672,7 @@ display {
 	object {
 		x="152"
 		y="84"
-		width="95"
+		width="110"
 		height="16"
 		groupid="0"
 	}
@@ -683,7 +683,7 @@ display {
 	object {
 		x="268"
 		y="98"
-		width="95"
+		width="110"
 		height="16"
 		groupid="0"
 	}
@@ -694,7 +694,7 @@ display {
 	object {
 		x="268"
 		y="81"
-		width="95"
+		width="110"
 		height="16"
 		groupid="0"
 	}
@@ -705,7 +705,7 @@ display {
 	object {
 		x="384"
 		y="98"
-		width="95"
+		width="110"
 		height="16"
 		groupid="0"
 	}
@@ -716,7 +716,7 @@ display {
 	object {
 		x="384"
 		y="81"
-		width="95"
+		width="110"
 		height="16"
 		groupid="0"
 	}
@@ -834,7 +834,7 @@ display {
 	object {
 		x="152"
 		y="197"
-		width="240"
+		width="256"
 		height="16"
 		groupid="0"
 	}
@@ -884,7 +884,7 @@ display {
 	object {
 		x="152"
 		y="196"
-		width="240"
+		width="256"
 		height="16"
 		groupid="0"
 	}
@@ -934,7 +934,7 @@ display {
 	object {
 		x="152"
 		y="196"
-		width="240"
+		width="256"
 		height="16"
 		groupid="0"
 	}
@@ -976,7 +976,7 @@ display {
 	object {
 		x="152"
 		y="224"
-		width="240"
+		width="256"
 		height="16"
 		groupid="0"
 	}
@@ -1026,7 +1026,7 @@ display {
 	object {
 		x="152"
 		y="224"
-		width="240"
+		width="256"
 		height="16"
 		groupid="0"
 	}
@@ -1076,7 +1076,7 @@ display {
 	object {
 		x="152"
 		y="224"
-		width="240"
+		width="256"
 		height="16"
 		groupid="0"
 	}

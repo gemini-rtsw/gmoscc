@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -104,7 +104,7 @@ display {
 		x="17"
 		y="316"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Position:"
@@ -115,7 +115,7 @@ display {
 		x="17"
 		y="274"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Motion:"
@@ -126,7 +126,7 @@ display {
 		x="17"
 		y="238"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="State:"
@@ -137,7 +137,7 @@ display {
 		x="17"
 		y="302"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Target "
@@ -170,7 +170,7 @@ display {
 		x="18"
 		y="53"
 		width="170"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Assembly state:"
@@ -181,7 +181,7 @@ display {
 		x="18"
 		y="87"
 		width="170"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="CAR record:"
@@ -192,7 +192,7 @@ display {
 		x="334"
 		y="87"
 		width="90"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Health:"
@@ -203,7 +203,7 @@ display {
 		x="17"
 		y="353"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Position:"
@@ -214,7 +214,7 @@ display {
 		x="17"
 		y="339"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Current "
@@ -236,7 +236,7 @@ display {
 		x="17"
 		y="407"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Message:"
@@ -247,7 +247,7 @@ display {
 		x="17"
 		y="439"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Flags:"
@@ -258,7 +258,7 @@ display {
 		x="17"
 		y="379"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Units:"
@@ -291,7 +291,7 @@ display {
 		x="17"
 		y="163"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Input:"
@@ -302,7 +302,7 @@ display {
 		x="17"
 		y="149"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Assembly "
@@ -313,7 +313,7 @@ display {
 		x="17"
 		y="199"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Applied:"
@@ -324,7 +324,7 @@ display {
 		x="17"
 		y="185"
 		width="165"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Correction "

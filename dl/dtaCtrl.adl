@@ -7,7 +7,7 @@ display {
 	mnrv="4"
 	ndyng="14"
 	npc="27"
-	nstr="138"
+	nstr="151"
 	ndynamic="19"
 	nplot="0"
 	nrd="4"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="10"
 	bclr="5"
-	nwords_dspy="5054"
+	nwords_dspy="5254"
 	nwords_sta="280"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="2112"
-	osta="1832"
-	odynamic="3136"
-	oplot="4402"
-	ord="4402"
-	oes="5042"
-	okd="5042"
-	opd="5054"
-	opo="5054"
+	odyng="2312"
+	osta="2032"
+	odynamic="3336"
+	oplot="4602"
+	ord="4602"
+	oes="5242"
+	okd="5242"
+	opd="5254"
+	opo="5254"
 	opc="68"
 	ostr="512"
-	ocmap="1832"
-	ocrules="1832"
+	ocmap="2032"
+	ocrules="2032"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -217,7 +217,7 @@ display {
 	object {
 		x="25"
 		y="331"
-		width="180"
+		width="199"
 		height="16"
 		groupid="0"
 	}
@@ -226,9 +226,9 @@ display {
 }
 "text" {
 	object {
-		x="213"
+		x="231"
 		y="331"
-		width="205"
+		width="224"
 		height="16"
 		groupid="0"
 	}
@@ -237,7 +237,7 @@ display {
 }
 "text" {
 	object {
-		x="213"
+		x="231"
 		y="277"
 		width="116"
 		height="16"
@@ -1615,7 +1615,7 @@ display {
 }
 "text update" {
 	object {
-		x="213"
+		x="231"
 		y="349"
 		width="205"
 		height="30"
@@ -1661,7 +1661,7 @@ display {
 }
 "text update" {
 	object {
-		x="213"
+		x="231"
 		y="295"
 		width="205"
 		height="30"

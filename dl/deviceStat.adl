@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -67,7 +67,7 @@ display {
 		x="11"
 		y="57"
 		width="115"
-		height="21"
+		height="20"
 		groupid="0"
 	}
 	textix="Directive:"
@@ -111,9 +111,9 @@ display {
 }
 "text" {
 	object {
-		x="358"
+		x="306"
 		y="135"
-		width="108"
+		width="160"
 		height="20"
 		groupid="0"
 	}
@@ -125,7 +125,7 @@ display {
 		x="11"
 		y="92"
 		width="115"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Mode:"
@@ -144,9 +144,9 @@ display {
 }
 "text" {
 	object {
-		x="306"
+		x="296"
 		y="198"
-		width="160"
+		width="170"
 		height="20"
 		groupid="0"
 	}
@@ -270,9 +270,9 @@ display {
 }
 "text" {
 	object {
-		x="298"
+		x="290"
 		y="87"
-		width="168"
+		width="176"
 		height="20"
 		groupid="0"
 	}
@@ -438,7 +438,7 @@ display {
 		x="306"
 		y="57"
 		width="160"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="Action State:"
@@ -479,9 +479,9 @@ display {
 }
 "text" {
 	object {
-		x="371"
+		x="305"
 		y="123"
-		width="95"
+		width="161"
 		height="20"
 		groupid="0"
 	}
@@ -613,7 +613,7 @@ display {
 		x="11"
 		y="217"
 		width="115"
-		height="21"
+		height="20"
 		groupid="0"
 	}
 	textix="Units:"

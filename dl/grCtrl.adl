@@ -7,7 +7,7 @@ display {
 	mnrv="4"
 	ndyng="18"
 	npc="25"
-	nstr="150"
+	nstr="163"
 	ndynamic="16"
 	nplot="0"
 	nrd="4"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="10"
 	bclr="5"
-	nwords_dspy="5192"
+	nwords_dspy="5392"
 	nwords_sta="224"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="2216"
-	osta="1992"
-	odynamic="3472"
-	oplot="4540"
-	ord="4540"
-	oes="5180"
-	okd="5180"
-	opd="5192"
-	opo="5192"
+	odyng="2416"
+	osta="2192"
+	odynamic="3672"
+	oplot="4740"
+	ord="4740"
+	oes="5380"
+	okd="5380"
+	opd="5392"
+	opo="5392"
 	opc="68"
 	ostr="476"
-	ocmap="1992"
-	ocrules="1992"
+	ocmap="2192"
+	ocrules="2192"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -129,7 +129,7 @@ display {
 "text" {
 	object {
 		x="26"
-		y="242"
+		y="243"
 		width="89"
 		height="12"
 		groupid="0"
@@ -141,7 +141,7 @@ display {
 	object {
 		x="18"
 		y="355"
-		width="185"
+		width="195"
 		height="16"
 		groupid="0"
 	}
@@ -150,9 +150,9 @@ display {
 }
 "text" {
 	object {
-		x="62"
+		x="57"
 		y="18"
-		width="470"
+		width="485"
 		height="23"
 		groupid="0"
 	}
@@ -204,7 +204,7 @@ display {
 }
 "text" {
 	object {
-		x="211"
+		x="221"
 		y="301"
 		width="116"
 		height="16"
@@ -215,7 +215,7 @@ display {
 }
 "text" {
 	object {
-		x="211"
+		x="221"
 		y="355"
 		width="220"
 		height="16"
@@ -1135,9 +1135,9 @@ display {
 }
 "text" {
 	object {
-		x="390"
+		x="387"
 		y="78"
-		width="100"
+		width="115"
 		height="16"
 		groupid="0"
 	}
@@ -1177,9 +1177,9 @@ display {
 }
 "text" {
 	object {
-		x="390"
+		x="387"
 		y="78"
-		width="80"
+		width="115"
 		height="16"
 		groupid="0"
 	}
@@ -1739,7 +1739,7 @@ display {
 }
 "text update" {
 	object {
-		x="211"
+		x="221"
 		y="319"
 		width="205"
 		height="30"
@@ -1785,7 +1785,7 @@ display {
 }
 "text update" {
 	object {
-		x="211"
+		x="221"
 		y="373"
 		width="205"
 		height="30"

@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -67,7 +67,7 @@ display {
 		x="5"
 		y="7"
 		width="570"
-		height="23"
+		height="20"
 		groupid="0"
 	}
 	textix="GMOS Atmospheric Dispersion Compensator Assembly"
@@ -172,9 +172,9 @@ display {
 }
 "text" {
 	object {
-		x="292"
+		x="220"
 		y="191"
-		width="78"
+		width="150"
 		height="17"
 		groupid="0"
 	}
@@ -183,9 +183,9 @@ display {
 }
 "text" {
 	object {
-		x="305"
+		x="220"
 		y="218"
-		width="65"
+		width="150"
 		height="17"
 		groupid="0"
 	}
@@ -194,9 +194,9 @@ display {
 }
 "text" {
 	object {
-		x="296"
+		x="220"
 		y="246"
-		width="74"
+		width="150"
 		height="17"
 		groupid="0"
 	}
@@ -205,9 +205,9 @@ display {
 }
 "text" {
 	object {
-		x="270"
+		x="220"
 		y="385"
-		width="100"
+		width="150"
 		height="17"
 		groupid="0"
 	}
@@ -216,9 +216,9 @@ display {
 }
 "text" {
 	object {
-		x="253"
+		x="220"
 		y="357"
-		width="117"
+		width="150"
 		height="17"
 		groupid="0"
 	}
@@ -227,9 +227,9 @@ display {
 }
 "text" {
 	object {
-		x="288"
+		x="220"
 		y="413"
-		width="82"
+		width="150"
 		height="17"
 		groupid="0"
 	}
@@ -238,9 +238,9 @@ display {
 }
 "text" {
 	object {
-		x="260"
+		x="220"
 		y="302"
-		width="110"
+		width="150"
 		height="17"
 		groupid="0"
 	}
@@ -249,9 +249,9 @@ display {
 }
 "text" {
 	object {
-		x="305"
+		x="220"
 		y="274"
-		width="65"
+		width="150"
 		height="17"
 		groupid="0"
 	}
@@ -260,9 +260,9 @@ display {
 }
 "text" {
 	object {
-		x="230"
+		x="220"
 		y="329"
-		width="140"
+		width="150"
 		height="17"
 		groupid="0"
 	}
@@ -282,9 +282,9 @@ display {
 }
 "text" {
 	object {
-		x="256"
+		x="219"
 		y="438"
-		width="113"
+		width="150"
 		height="17"
 		groupid="0"
 	}
@@ -534,7 +534,7 @@ display {
 	object {
 		x="375"
 		y="379"
-		width="94"
+		width="95"
 		height="26"
 		groupid="0"
 	}
@@ -576,7 +576,7 @@ display {
 	object {
 		x="375"
 		y="352"
-		width="94"
+		width="95"
 		height="26"
 		groupid="0"
 	}
@@ -618,7 +618,7 @@ display {
 	object {
 		x="375"
 		y="408"
-		width="66"
+		width="95"
 		height="26"
 		groupid="0"
 	}
@@ -668,7 +668,7 @@ display {
 	object {
 		x="375"
 		y="379"
-		width="94"
+		width="95"
 		height="26"
 		groupid="0"
 	}
@@ -710,7 +710,7 @@ display {
 	object {
 		x="375"
 		y="352"
-		width="94"
+		width="95"
 		height="26"
 		groupid="0"
 	}
@@ -752,7 +752,7 @@ display {
 	object {
 		x="375"
 		y="408"
-		width="61"
+		width="95"
 		height="26"
 		groupid="0"
 	}
@@ -852,7 +852,7 @@ display {
 	object {
 		x="374"
 		y="433"
-		width="66"
+		width="95"
 		height="26"
 		groupid="0"
 	}
@@ -902,7 +902,7 @@ display {
 	object {
 		x="374"
 		y="433"
-		width="61"
+		width="95"
 		height="26"
 		groupid="0"
 	}
