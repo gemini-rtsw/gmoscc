@@ -3,16 +3,16 @@
 # cau macro which monitors CAD/CAR records associated with debug.
 # Invoked using cau "source" command.
 #
-monitor g7:cc:debug.DIR
-monitor g7:cc:debug.VAL
-monitor g7:cc:debug.A
-monitor g7:cc:debug.OMSS
+monitor gm:cc:debug.DIR
+monitor gm:cc:debug.VAL
+monitor gm:cc:debug.A
+monitor gm:cc:debug.OMSS
 
-monitor g7:cc:debugC.VAL
+monitor gm:cc:debugC.VAL
 
-monitor g7:wfs:debug.DIR
-monitor g7:wfs:debug.VAL
-monitor g7:wfs:debug.A
-monitor g7:wfs:debug.OMSS
+monitor gm:wfs:debug.DIR
+monitor gm:wfs:debug.VAL
+monitor gm:wfs:debug.A
+monitor gm:wfs:debug.OMSS
 
 # Type dataOut cau_debug.log

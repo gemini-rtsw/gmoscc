@@ -3,8 +3,8 @@
 # cau macro which monitors the OIWFS activeC record.
 # Invoked using cau "source" command.
 #
-monitor g7:wfs:activeC.VAL
-monitor g7:wfs:activeC.CLID
-monitor g7:wfs:activeC.OMSS
+monitor gm:wfs:activeC.VAL
+monitor gm:wfs:activeC.CLID
+monitor gm:wfs:activeC.OMSS
 
 # Type dataOut cau_activeC.log

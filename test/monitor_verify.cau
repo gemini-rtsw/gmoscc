@@ -3,18 +3,18 @@
 # cau macro which monitors CAD/CAR records associated with verify/endVerify
 # Invoked using cau "source" command.
 #
-monitor g8:verify.DIR
-monitor g8:verify.VAL
-monitor g8:endVerify.DIR
-monitor g8:endVerify.VAL
-monitor g8:dc:verify.DIR
-monitor g8:dc:verify.VAL
-monitor g8:dc:endVerify.DIR
-monitor g8:dc:endVerify.VAL
+monitor gm:verify.DIR
+monitor gm:verify.VAL
+monitor gm:endVerify.DIR
+monitor gm:endVerify.VAL
+monitor gm:dc:verify.DIR
+monitor gm:dc:verify.VAL
+monitor gm:dc:endVerify.DIR
+monitor gm:dc:endVerify.VAL
 
-monitor g8:dc:verifyC.VAL
-monitor g8:dc:endVerifyC.VAL
-monitor g8:verifyC.VAL
-monitor g8:endVerifyC.VAL
+monitor gm:dc:verifyC.VAL
+monitor gm:dc:endVerifyC.VAL
+monitor gm:verifyC.VAL
+monitor gm:endVerifyC.VAL
 
 # Type dataOut cau_verify.log

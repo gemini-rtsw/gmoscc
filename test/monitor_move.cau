@@ -5,15 +5,15 @@
 # Invoked using cau "source" command.
 #
 
-monitor g7:wfs:move.DIR
-monitor g7:wfs:move.VAL
-monitor g7:wfs:move.A
-monitor g7:wfs:move.B
-monitor g7:wfs:move.OMSS
+monitor gm:wfs:move.DIR
+monitor gm:wfs:move.VAL
+monitor gm:wfs:move.A
+monitor gm:wfs:move.B
+monitor gm:wfs:move.OMSS
 
-monitor g7:wfs:probeC.VAL
-monitor g7:wfs:probeC.OMSS
+monitor gm:wfs:probeC.VAL
+monitor gm:wfs:probeC.OMSS
 
-monitor g7:wfs:inPosition.VAL
+monitor gm:wfs:inPosition.VAL
 
 # Type dataOut cau_move.log

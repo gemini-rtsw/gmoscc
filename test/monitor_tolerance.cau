@@ -4,10 +4,10 @@
 # Invoked using cau "source" command.
 #
 
-monitor g7:wfs:tolerance.DIR
-monitor g7:wfs:tolerance.VAL
-monitor g7:wfs:tolerance.A
-monitor g7:wfs:tolerance.B
-monitor g7:wfs:tolerance.OMSS
+monitor gm:wfs:tolerance.DIR
+monitor gm:wfs:tolerance.VAL
+monitor gm:wfs:tolerance.A
+monitor gm:wfs:tolerance.B
+monitor gm:wfs:tolerance.OMSS
 
 # Type dataOut cau_tolerance.log

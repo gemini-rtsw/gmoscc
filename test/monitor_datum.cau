@@ -3,15 +3,15 @@
 # cau macro which monitors CAD/CAR records associated with datum.
 # Invoked using cau "source" command.
 #
-monitor g8:datum.DIR
-monitor g8:datum.VAL
-monitor g8:cc:datum.DIR
-monitor g8:cc:datum.VAL
-monitor g8:dc:datum.DIR
-monitor g8:dc:datum.VAL
+monitor gm:datum.DIR
+monitor gm:datum.VAL
+monitor gm:cc:datum.DIR
+monitor gm:cc:datum.VAL
+monitor gm:dc:datum.DIR
+monitor gm:dc:datum.VAL
 
-monitor g8:cc:datumC.VAL
-monitor g8:dc:datumC.VAL
-monitor g8:datumC.VAL
+monitor gm:cc:datumC.VAL
+monitor gm:dc:datumC.VAL
+monitor gm:datumC.VAL
 
 # Type dataOut cau_datum.log

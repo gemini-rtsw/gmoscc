@@ -3,15 +3,15 @@
 # cau macro which monitors CAD/CAR records associated with test.
 # Invoked using cau "source" command.
 #
-monitor g7:cc:test.DIR
-monitor g7:cc:test.VAL
-monitor g7:cc:test.OMSS
+monitor gm:cc:test.DIR
+monitor gm:cc:test.VAL
+monitor gm:cc:test.OMSS
 
-monitor g7:cc:testC.VAL
-monitor g7:cc:testC.OMSS
+monitor gm:cc:testC.VAL
+monitor gm:cc:testC.OMSS
 
-monitor g7:wfs:test.DIR
-monitor g7:wfs:test.VAL
-monitor g7:wfs:test.OMSS
+monitor gm:wfs:test.DIR
+monitor gm:wfs:test.VAL
+monitor gm:wfs:test.OMSS
 
 # Type dataOut cau_test.log

@@ -3,10 +3,10 @@
 # cau macro which monitors SIR records associated with state and health.
 # Invoked using cau "source" command.
 #
-monitor g8:sad:cc:state.VAL
-monitor g8:sad:dc:state.DIR
-monitor g8:sad:state.VAL
+monitor gm:sad:cc:state.VAL
+monitor gm:sad:dc:state.DIR
+monitor gm:sad:state.VAL
 
-monitor g8:sad:cc:health.VAL
-monitor g8:sad:dc:health.VAL
-monitor g8:sad:health.VAL
+monitor gm:sad:cc:health.VAL
+monitor gm:sad:dc:health.VAL
+monitor gm:sad:health.VAL

@@ -3,18 +3,18 @@
 # cau macro which monitors CAD/CAR records associated with guide/endGuide.
 # Invoked using cau "source" command.
 #
-monitor g8:guide.DIR
-monitor g8:guide.VAL
-monitor g8:endGuide.DIR
-monitor g8:endGuide.VAL
-monitor g8:dc:guide.DIR
-monitor g8:dc:guide.VAL
-monitor g8:dc:endGuide.DIR
-monitor g8:dc:endGuide.VAL
+monitor gm:guide.DIR
+monitor gm:guide.VAL
+monitor gm:endGuide.DIR
+monitor gm:endGuide.VAL
+monitor gm:dc:guide.DIR
+monitor gm:dc:guide.VAL
+monitor gm:dc:endGuide.DIR
+monitor gm:dc:endGuide.VAL
 
-monitor g8:dc:guideC.VAL
-monitor g8:dc:endGuideC.VAL
-monitor g8:guideC.VAL
-monitor g8:endGuideC.VAL
+monitor gm:dc:guideC.VAL
+monitor gm:dc:endGuideC.VAL
+monitor gm:guideC.VAL
+monitor gm:endGuideC.VAL
 
 # Type dataOut cau_guide.log

@@ -3,31 +3,31 @@
 # cau macro which monitors all subsystem apply records.
 # Invoked using cau "source" command.
 #
-monitor g8:apply.DIR
-monitor g8:apply.VAL
-monitor g8:apply.CLID
-monitor g8:apply.OMSS
+monitor gm:apply.DIR
+monitor gm:apply.VAL
+monitor gm:apply.CLID
+monitor gm:apply.OMSS
 
-monitor g8:cc:apply.DIR
-monitor g8:cc:apply.VAL
-monitor g8:cc:apply.CLID
-monitor g8:cc:apply.OMSS
+monitor gm:cc:apply.DIR
+monitor gm:cc:apply.VAL
+monitor gm:cc:apply.CLID
+monitor gm:cc:apply.OMSS
 
-monitor g8:dc:apply.DIR
-monitor g8:dc:apply.VAL
-monitor g8:dc:apply.CLID
-monitor g8:dc:apply.OMSS
+monitor gm:dc:apply.DIR
+monitor gm:dc:apply.VAL
+monitor gm:dc:apply.CLID
+monitor gm:dc:apply.OMSS
 
-monitor g8:cc:applyC.VAL
-monitor g8:cc:applyC.CLID
-monitor g8:cc:applyC.OMSS
+monitor gm:cc:applyC.VAL
+monitor gm:cc:applyC.CLID
+monitor gm:cc:applyC.OMSS
 
-monitor g8:dc:applyC.VAL
-monitor g8:dc:applyC.CLID
-monitor g8:dc:applyC.OMSS
+monitor gm:dc:applyC.VAL
+monitor gm:dc:applyC.CLID
+monitor gm:dc:applyC.OMSS
 
-monitor g8:applyC.VAL
-monitor g8:applyC.CLID
-monitor g8:applyC.OMSS
+monitor gm:applyC.VAL
+monitor gm:applyC.CLID
+monitor gm:applyC.OMSS
 
 # Type dataOut cau_apply.log

@@ -3,37 +3,37 @@
 # cau macro which monitors CAD/CAR records associated with observe.
 # Invoked using cau "source" command.
 #
-monitor g8:observe.DIR
-monitor g8:observe.VAL
-monitor g8:observe.A
-monitor g8:pause.DIR
-monitor g8:pause.VAL
-monitor g8:continue.DIR
-monitor g8:continue.VAL
-monitor g8:stop.DIR
-monitor g8:stop.VAL
-monitor g8:abort.DIR
-monitor g8:abort.VAL
-monitor g8:endObserve.DIR
-monitor g8:endObserve.VAL
+monitor gm:observe.DIR
+monitor gm:observe.VAL
+monitor gm:observe.A
+monitor gm:pause.DIR
+monitor gm:pause.VAL
+monitor gm:continue.DIR
+monitor gm:continue.VAL
+monitor gm:stop.DIR
+monitor gm:stop.VAL
+monitor gm:abort.DIR
+monitor gm:abort.VAL
+monitor gm:endObserve.DIR
+monitor gm:endObserve.VAL
 
-monitor g8:dc:observe.DIR
-monitor g8:dc:observe.VAL
-monitor g8:dc:observe.A
-monitor g8:dc:pause.DIR
-monitor g8:dc:pause.VAL
-monitor g8:dc:continue.DIR
-monitor g8:dc:continue.VAL
-monitor g8:dc:stop.DIR
-monitor g8:dc:stop.VAL
-monitor g8:dc:abort.DIR
-monitor g8:dc:abort.VAL
-monitor g8:dc:endObserve.DIR
-monitor g8:dc:endObserve.VAL
+monitor gm:dc:observe.DIR
+monitor gm:dc:observe.VAL
+monitor gm:dc:observe.A
+monitor gm:dc:pause.DIR
+monitor gm:dc:pause.VAL
+monitor gm:dc:continue.DIR
+monitor gm:dc:continue.VAL
+monitor gm:dc:stop.DIR
+monitor gm:dc:stop.VAL
+monitor gm:dc:abort.DIR
+monitor gm:dc:abort.VAL
+monitor gm:dc:endObserve.DIR
+monitor gm:dc:endObserve.VAL
 
-monitor g8:dc:observeC.VAL
-monitor g8:dc:endObserveC.VAL
-monitor g8:observeC.VAL
-monitor g8:endObserveC.VAL
+monitor gm:dc:observeC.VAL
+monitor gm:dc:endObserveC.VAL
+monitor gm:observeC.VAL
+monitor gm:endObserveC.VAL
 
 # Type dataOut cau_observe.log

@@ -3,11 +3,11 @@
 # cau macro which monitors CAD/CAR records associated with reboot.
 # Invoked using cau "source" command.
 #
-monitor g7:cc:reboot.DIR
-monitor g7:cc:reboot.VAL
-monitor g7:cc:reboot.OMSS
+monitor gm:cc:reboot.DIR
+monitor gm:cc:reboot.VAL
+monitor gm:cc:reboot.OMSS
 
-monitor g7:cc:rebootC.VAL
-monitor g7:cc:rebootC.OMSS
+monitor gm:cc:rebootC.VAL
+monitor gm:cc:rebootC.OMSS
 
 # Type dataOut cau_reboot.log
