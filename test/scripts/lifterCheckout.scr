@@ -160,7 +160,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 7"
+CMD "sleep 14"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
@@ -315,7 +315,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 7"
+CMD "sleep 14"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
@@ -370,7 +370,7 @@ FATAL
 
 DESC "Lifter acknowledgement should indicate failure"
 
-CMD "sleep 7"
+CMD "sleep 14"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* -1*
@@ -417,7 +417,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 7"
+CMD "sleep 14"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
@@ -466,7 +466,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 7"
+CMD "sleep 14"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
@@ -621,7 +621,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 7"
+CMD "sleep 14"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
@@ -670,7 +670,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 7"
+CMD "sleep 14"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
@@ -887,7 +887,7 @@ FATAL
 
 DESC "Lifter acknowledgement OK?"
 
-CMD "sleep 7"
+CMD "sleep 14"
 OUTPUT *
 GETVAL lifterAck
 OUTPUT *VAL* 0*
