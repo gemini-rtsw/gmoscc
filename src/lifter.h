@@ -17,6 +17,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1.1.1  2001/04/13 01:37:34  smb
+ * Initial creation of the Gemini GMOS repository
+ *
  * Revision 1.5  2000/09/01 09:22:30  gmos
  * Random tabs removed from source code.
  *
@@ -56,7 +59,7 @@
 #define GR_VALVE_ACTIVE    0
 #define GR_PRESSURE_OK     0
 
-#define GR_LIFTER_CYCLE_TIME  5		/* Lifter cycle time in seconds			*/
+#define GR_LIFTER_CYCLE_TIME 10		/* Lifter cycle time in seconds			*/
 #define GR_LIFTER_SHORT_TIME  2		/* Lifter short reprocessing time in seconds	*/
 #define GR_LIFTER_MAX_CYCLES  2		/* Maximum number of lifter cycles		*/
 
