@@ -1,0 +1,44 @@
+#
+#+
+#  Name:
+#     gmosLogin
+#
+#  Purpose:
+#     Issue (optional) login messages for using the GMOS software.
+#
+#  Language:
+#     csh
+#
+#  Type of Module:
+#     Resource file.
+#
+#  Invocation:
+#     source gmosLogin
+#
+#  Arguments:
+#     None.
+#
+#  Description:
+#     This C shell script is executed from .login and provides the
+#     user with a small amount of information.
+#
+#
+#  Authors:
+#     SMB: Steven Beard      (smb@roe.ac.uk)
+#
+#  History:
+#     26-Apr-1901: (SMB):
+#        Original version.
+#-
+
+if ( -e /gemini/epics3.13.4/gmos ) then
+
+   echo ""
+   echo "Type 'gmosHelp' for information on the GMOS software or 'gmosTest'"
+   echo "to run GMOS engineering tests."
+else
+
+   echo ""
+   echo "WARNING: The /gemini/gmos directory is not accessible."
+   echo "Please try logging into a different workstation."
+endif
