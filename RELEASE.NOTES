@@ -220,6 +220,6 @@ THIS IS THE VERSION USED TO TEST THE TRANSLATION STAGE ON 02 MAY 2001.
 V2-5 ?? May 2001 SMB:
 ---------------------
 This version is the same as V2-4 with
-- mask assembly power status checking switched back on.
 - All references to HSWA field removed from checkout scripts,
-  since that field is unimportant and has proved to be unreliable.
+  since that field is not important and does not always accurately
+  reflect the state of the hardware (problem 218).
