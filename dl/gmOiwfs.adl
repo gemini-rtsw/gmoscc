@@ -1951,7 +1951,7 @@ display {
 	}
 	display[3] {
 		label="OIWFS Assembly"
-		name="assemCtrlDAO.dl"
+		name="assemCtrl.dl"
 		args="T=$(T),D=$(D)"
 	}
 	display[4] {

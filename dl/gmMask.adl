@@ -1941,7 +1941,7 @@ display {
 	}
 	display[4] {
 		label="Mask Assembly"
-		name="assemCtrlDAO.dl"
+		name="assemCtrl.dl"
 		args="T=$(T),D=$(D)"
 	}
 	display[5] {

@@ -1731,7 +1731,7 @@ display {
 	}
 	display[2] {
 		label="AtmDC Assembly"
-		name="assemCtrlDAO.dl"
+		name="assemCtrl.dl"
 		args="T=$(T),D=$(D)"
 	}
 	display[3] {
