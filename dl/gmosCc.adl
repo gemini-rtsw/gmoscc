@@ -23,23 +23,23 @@ display {
 	}
 	clr="10"
 	bclr="13"
-	nwords_dspy="9758"
+	nwords_dspy="9786"
 	nwords_sta="360"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="3534"
-	osta="3174"
-	odynamic="5710"
-	oplot="7516"
-	ord="7516"
-	oes="8956"
-	okd="9746"
-	opd="9758"
-	opo="9758"
+	odyng="3562"
+	osta="3202"
+	odynamic="5738"
+	oplot="7544"
+	ord="7544"
+	oes="8984"
+	okd="9774"
+	opd="9786"
+	opo="9786"
 	opc="68"
 	ostr="992"
-	ocmap="3174"
-	ocrules="3174"
+	ocmap="3202"
+	ocrules="3202"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -268,9 +268,9 @@ display {
 }
 "text" {
 	object {
-		x="568"
+		x="558"
 		y="332"
-		width="140"
+		width="150"
 		height="16"
 		groupid="0"
 	}
@@ -1367,20 +1367,20 @@ display {
 }
 "line" {
 	object {
-		x="46"
-		y="85"
+		x="32"
+		y="79"
 		width="104"
 		height="12"
 		groupid="0"
 	}
 	npoints="2"
 	point[0] {
-		x="46"
-		y="97"
+		x="32"
+		y="91"
 	}
 	point[1] {
-		x="150"
-		y="85"
+		x="136"
+		y="79"
 	}
 	orgpoint[0] {
 		x="0"
