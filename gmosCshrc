@@ -113,10 +113,10 @@ setenv GMOS_EDITOR textedit
 # Define the commands to make access to the GMOS MK and CP hardware explicit
 # rather than accidental.
 
-alias gmosMK   'setenv   GMOS_MK_ACCESS && set prompt = "`uname -n` (MK access) \! > " && echo "You are now set up for control of GMOS MK hardware"'
-alias gmosNoMK 'unsetenv GMOS_MK_ACCESS && set prompt = "`uname -n` \! > " && echo "You are no longer set up for control of GMOS MK hardware"'
-alias gmosCP   'setenv   GMOS_CP_ACCESS && set prompt = "`uname -n` (CP access) \! > " && echo "You are now set up for control of GMOS CP hardware"'
-alias gmosNoCP 'unsetenv GMOS_CP_ACCESS && set prompt = "`uname -n` \! > " && echo "You are no longer set up for control of GMOS CP hardware"'
+alias gmosMK   'setenv   GMOS_MK_ACCESS && set prompt = "`uname -n` (GMOS MK)% " && echo "You are now set up for control of GMOS MK hardware"'
+alias gmosNoMK 'unsetenv GMOS_MK_ACCESS && set prompt = "`uname -n`% " && echo "You are no longer set up for control of GMOS MK hardware"'
+alias gmosCP   'setenv   GMOS_CP_ACCESS && set prompt = "`uname -n` (GMOS CP)% " && echo "You are now set up for control of GMOS CP hardware"'
+alias gmosNoCP 'unsetenv GMOS_CP_ACCESS && set prompt = "`uname -n`% " && echo "You are no longer set up for control of GMOS CP hardware"'
 
 # Define aliases for setting the DISPLAY variable on various workstations
 
