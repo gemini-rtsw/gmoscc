@@ -5,9 +5,9 @@ display {
 	magic="305419896"
 	majv="2"
 	mnrv="4"
-	ndyng="20"
-	npc="38"
-	nstr="95"
+	ndyng="23"
+	npc="43"
+	nstr="99"
 	ndynamic="25"
 	nplot="0"
 	nrd="1"
@@ -18,28 +18,28 @@ display {
 	object {
 		x="0"
 		y="0"
-		width="573"
-		height="651"
+		width="590"
+		height="654"
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="4908"
+	nwords_dspy="5174"
 	nwords_sta="520"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1860"
-	osta="1340"
-	odynamic="3032"
-	oplot="4736"
-	ord="4736"
-	oes="4896"
-	okd="4896"
-	opd="4908"
-	opo="4908"
+	odyng="1970"
+	osta="1450"
+	odynamic="3298"
+	oplot="5002"
+	ord="5002"
+	oes="5162"
+	okd="5162"
+	opd="5174"
+	opo="5174"
 	opc="68"
-	ostr="546"
-	ocmap="1340"
-	ocrules="1340"
+	ostr="626"
+	ocmap="1450"
+	ocrules="1450"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -104,7 +104,7 @@ display {
 		x="27"
 		y="332"
 		width="188"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Target Tolerance:"
@@ -114,8 +114,8 @@ display {
 	object {
 		x="409"
 		y="534"
-		width="147"
-		height="21"
+		width="159"
+		height="20"
 		groupid="0"
 	}
 	textix="Action State:"
@@ -134,8 +134,8 @@ display {
 	object {
 		x="176"
 		y="534"
-		width="145"
-		height="21"
+		width="199"
+		height="20"
 		groupid="0"
 	}
 	textix="Follow State:"
@@ -154,8 +154,8 @@ display {
 	object {
 		x="21"
 		y="534"
-		width="122"
-		height="22"
+		width="125"
+		height="20"
 		groupid="0"
 	}
 	textix="Tolerance:"
@@ -166,7 +166,7 @@ display {
 		x="64"
 		y="304"
 		width="151"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Max Tolerance:"
@@ -177,7 +177,7 @@ display {
 		x="46"
 		y="360"
 		width="169"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Min Tolerance:"
@@ -228,7 +228,7 @@ display {
 		x="49"
 		y="160"
 		width="45"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="Min:"
@@ -239,7 +239,7 @@ display {
 		x="48"
 		y="99"
 		width="46"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Max:"
@@ -250,7 +250,7 @@ display {
 		x="20"
 		y="128"
 		width="73"
-		height="17"
+		height="15"
 		groupid="0"
 	}
 	textix="Target:"
@@ -260,7 +260,7 @@ display {
 	object {
 		x="404"
 		y="529"
-		width="150"
+		width="165"
 		height="80"
 		groupid="0"
 	}
@@ -312,7 +312,7 @@ display {
 		x="20"
 		y="233"
 		width="107"
-		height="16"
+		height="15"
 		groupid="0"
 	}
 	textix="Debug Level"
@@ -355,7 +355,7 @@ display {
 	object {
 		x="364"
 		y="42"
-		width="192"
+		width="205"
 		height="403"
 		groupid="0"
 	}
@@ -426,7 +426,7 @@ display {
 		x="470"
 		y="129"
 		width="74"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="REJECT"
@@ -476,7 +476,7 @@ display {
 		x="470"
 		y="129"
 		width="74"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="ACCEPT"
@@ -526,7 +526,7 @@ display {
 		x="470"
 		y="233"
 		width="73"
-		height="21"
+		height="20"
 		groupid="0"
 	}
 	textix="REJECT"
@@ -576,7 +576,7 @@ display {
 		x="470"
 		y="233"
 		width="73"
-		height="21"
+		height="20"
 		groupid="0"
 	}
 	textix="ACCEPT"
@@ -626,7 +626,7 @@ display {
 		x="470"
 		y="334"
 		width="74"
-		height="21"
+		height="20"
 		groupid="0"
 	}
 	textix="REJECT"
@@ -676,7 +676,7 @@ display {
 		x="470"
 		y="334"
 		width="74"
-		height="21"
+		height="20"
 		groupid="0"
 	}
 	textix="ACCEPT"
@@ -768,7 +768,7 @@ display {
 		x="470"
 		y="54"
 		width="74"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="REJECT"
@@ -818,7 +818,7 @@ display {
 		x="470"
 		y="92"
 		width="74"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="ACCEPT"
@@ -860,7 +860,7 @@ display {
 		x="470"
 		y="54"
 		width="74"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="ACCEPT"
@@ -910,7 +910,7 @@ display {
 		x="470"
 		y="181"
 		width="74"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="REJECT"
@@ -960,7 +960,7 @@ display {
 		x="470"
 		y="181"
 		width="74"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="ACCEPT"
@@ -1010,7 +1010,7 @@ display {
 		x="470"
 		y="280"
 		width="74"
-		height="21"
+		height="20"
 		groupid="0"
 	}
 	textix="REJECT"
@@ -1052,7 +1052,7 @@ display {
 		x="470"
 		y="374"
 		width="73"
-		height="21"
+		height="20"
 		groupid="0"
 	}
 	textix="REJECT"
@@ -1102,7 +1102,7 @@ display {
 		x="470"
 		y="280"
 		width="74"
-		height="21"
+		height="20"
 		groupid="0"
 	}
 	textix="ACCEPT"
@@ -1144,7 +1144,7 @@ display {
 		x="470"
 		y="374"
 		width="74"
-		height="21"
+		height="20"
 		groupid="0"
 	}
 	textix="ACCEPT"
@@ -1194,7 +1194,7 @@ display {
 		x="470"
 		y="408"
 		width="73"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="REJECT"
@@ -1244,7 +1244,7 @@ display {
 		x="470"
 		y="408"
 		width="73"
-		height="22"
+		height="20"
 		groupid="0"
 	}
 	textix="ACCEPT"
@@ -1335,6 +1335,126 @@ display {
 		y="617"
 		width="25"
 		height="24"
+		groupid="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if not zero"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan="$(T)$(D)probeAssembly.INIT"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs=""
+		}
+	}
+}
+"oval" {
+	object {
+		x="544"
+		y="54"
+		width="20"
+		height="20"
+		groupid="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if not zero"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan="$(T)$(D)probeAssembly.INDX"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs=""
+		}
+	}
+}
+"oval" {
+	object {
+		x="544"
+		y="94"
+		width="20"
+		height="20"
+		groupid="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if not zero"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan="$(T)$(D)probeAssembly.PARK"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs=""
+		}
+	}
+}
+"oval" {
+	object {
+		x="544"
+		y="372"
+		width="20"
+		height="20"
 		groupid="0"
 	}
 }
@@ -1891,7 +2011,7 @@ display {
 	object {
 		x="18"
 		y="463"
-		width="531"
+		width="549"
 		height="21"
 		groupid="0"
 	}
@@ -1937,7 +2057,7 @@ display {
 	object {
 		x="18"
 		y="502"
-		width="530"
+		width="549"
 		height="20"
 		groupid="0"
 	}
@@ -2638,7 +2758,7 @@ display {
 }
 "kill display" {
 	object {
-		x="459"
+		x="474"
 		y="614"
 		width="96"
 		height="32"
