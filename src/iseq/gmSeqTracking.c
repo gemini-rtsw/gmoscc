@@ -22,6 +22,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.1  2002/04/24 05:26:18  ajf
+ * Added for epics3.13.4GEM8.4.
+ *
  * Revision 1.4  2002/01/15 21:06:07  mbec
  * *** empty log message ***
  *
@@ -1029,7 +1032,9 @@ long gmSeqAtmDemands (struct genSubRecord *pgsub)
    rmaSim = *(double *)pgsub->g ;
 
    gmSeqIssPort = *(long *)pgsub->h ;
-
+   
+   /* work around for default port */
+   if (gmSeqIssPort == 0) gmSeqIssPort = 5;
 
    /*
     * Perform a sanity check on the wavelength data. It is possible that the
@@ -1156,12 +1161,10 @@ long gmSeqAtmDemands (struct genSubRecord *pgsub)
 
            if ( gmSeqTcsStatus != -2 )
            {
-
               /* Convert TCS coordinates to GMOS coordinates */
 
-              if ( gmSeqIssPort > 1 )
-              {
-
+              if (gmSeqIssPort > 1) 
+               {
                  rotGmosAngle = (DPIBY2 * (double) (gmSeqIssPort-1)) + gmSeqRotMechAng;
 
                  /* Side looking port - 2,3,4,5 (wraps for larger port numbers) */
