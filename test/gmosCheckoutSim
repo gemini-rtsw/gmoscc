@@ -85,7 +85,7 @@ endif
 # Ensure the device reset aliases are set up
 #
 
-source ./setResetAliases
+source ./gmosSetResetAliases
 
 #
 # State the assumptions and wait for a carriage return.

@@ -118,7 +118,7 @@ setDevicePrefixes
         Define environment variables containing the assembly and device
         prefixes used in the GMOS EPICS database.
 
-setResetAliases
+gmosSetResetAliases
         Define some useful aliases for executing the assemblyReset
         and deviceReset scripts with common combinations of
         arguments.
