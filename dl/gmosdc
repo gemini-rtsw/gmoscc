@@ -1,0 +1,60 @@
+#!/bin/csh -f
+#
+# Script to spawn an xterm to connect to the gmosdc simulation crate.
+#
+# A log file is written to the "${HOME}/consoleLogs" directory.
+# The log file output may be suppressed by specifying "nolog" as a first
+# argument.
+#
+
+#
+# Save the current day
+#
+
+set day = `date +%d%h%y`
+
+#
+# Create the "consoleLogs" directory if it doesn't exist.
+#
+
+if ( !(-e ${HOME}/gmos/consoleLogs) ) then
+
+    mkdir ${HOME}/gmos/consoleLogs
+endif
+
+if (!(-e ${HOME}/gmos/consoleLogs/$day)) then
+
+    mkdir ${HOME}/gmos/consoleLogs/$day
+endif
+
+if (!(-e ${HOME}/gmos/consoleLogs/$day/gmosdc)) then
+
+    mkdir ${HOME}/gmos/consoleLogs/$day/gmosdc
+endif
+
+#
+# Change directory to day's console log directory.
+#
+
+pushd ${HOME}/gmos/consoleLogs/$day/gmosdc
+
+#
+# Spawn an X terminal to act as the VxWorks console.
+#
+
+if ( $1 == "nolog" ) then
+
+   xterm -geometry 80x50-0+0 -sb -sl 128 -n gmosdc -T "GMOS MK VxWorks Console" -e gmosIocAnnex hbf-annx-instlab 7002 gmosdc &
+   echo "No log file will be created."
+else
+
+   xterm -l -geometry 80x50-0+0 -sb -sl 128 -n gmosdc -T "GMOS MK VxWorks Console" -e gmosIocAnnex hbf-annx-instlab 7002 gmosdc &
+   echo "A log file will be created in the `pwd`"
+   echo "directory. Check for files called XtermLog.*"
+endif
+
+#
+# Restore the original directory.
+#
+
+popd
