@@ -43,6 +43,9 @@
  *INDENT-OFF*
  *
  * $Log$
+ * Revision 1.1  2001/11/28 20:15:06  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1  2001/08/10 14:01:48  ptaylor
  * Restructured src directory with 4 sub-directories, including pv and lut which were previously in pv as well as deviceControl and gcal previously in src
  *
@@ -64,7 +67,7 @@
  * This file uses constants defined in recDeviceControl.h
  */
 
-#include        <recDeviceControl.h>
+#include <deviceControl.h>
 
 /*
  * Definitions for device control message types, and their

@@ -49,6 +49,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2002/01/15 21:06:06  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1  2001/11/28 20:08:46  mbec
  * *** empty log message ***
  *
@@ -139,9 +142,7 @@
 #include  <recSup.h>
 #include  <devSup.h>
 #include  <module_types.h>
-#define GEN_SIZE_OFFSET
 #include  <stringinRecord.h>
-#undef  GEN_SIZE_OFFSET
 
 /*
  *  Debug and simulation levels

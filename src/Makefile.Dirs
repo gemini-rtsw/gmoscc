@@ -1,2 +1,6 @@
-DIRS += gmos 
 DIRS += deviceControl
+DIRS += include
+DIRS += assemblyControl
+DIRS += gmos 
+DIRS += iseq
+DIRS += $(APPLIC_SITE)

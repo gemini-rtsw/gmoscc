@@ -50,6 +50,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 /* *INDENT-OFF* */
 /*
  * $Log$
+ * Revision 1.2  2002/03/25 19:44:50  mbec
+ * epics 3.13 debugging
+ *
  * Revision 1.1  2001/11/28 20:08:50  mbec
  * *** empty log message ***
  *
@@ -157,9 +160,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 
 #include <menuDirective.h>
 #include <menuCarstates.h>
-#include  "recAssControl.h"
+#include  "assemblyControl.h"
 
-#define VERBOSE      /* Define this for verbose messages */
+#undef VERBOSE      /* Define this for verbose messages */
 
 /* Pass and fail values returned by genSub functions. */
 
@@ -349,19 +352,18 @@ long gmosCarCombineBusy( struct genSubRecord *pgensub )
         {
             if ( curStates[i] == menuCarstatesBUSY )
             {
-                printf("menuCarstatesBUSY %d \n",i);
+/*                printf("menuCarstatesBUSY %d \n",i);
+*/
                 outVal = curStates[i];
                 outIndex = i;
             }
             else if ( (curStates[i] == menuCarstatesERROR) && (outVal != menuCarstatesBUSY) )
             {
-                printf("menuCarstatesERROR&&(menuCarstatesBUSY %d \n",i);
                 outVal = curStates[i];
                 outIndex = i;
             }
             else if ( (curStates[i] == menuCarstatesPAUSED) && (outVal != menuCarstatesBUSY) && (outVal != menuCarstatesERROR))
             {
-                printf("menuCarstatesPAUSED && menuCarstatesBUSY && menuCarstatesERROR %d \n",i);
                 outVal = curStates[i];
                 outIndex = i;
             }
@@ -371,43 +373,50 @@ long gmosCarCombineBusy( struct genSubRecord *pgensub )
         {
             case (0):
                 outErr = *(long *)pgensub->c;
-                printf("case0 \n");
+/*                printf("case0 \n");
+*/
                 strncpy ( outMess, (char *)pgensub->b, MAX_STRING_SIZE-1 );
                 break;
 
             case (1):
                 outErr = *(long *)pgensub->f;
-                printf("case1 \n");
+ /*               printf("case1 \n");
+*/
                 strncpy ( outMess, (char *)pgensub->e, MAX_STRING_SIZE-1 );
                 break;
 
             case (2):
                 outErr = *(long *)pgensub->i;
-                printf("case2 \n");
+ /*               printf("case2 \n");
+*/
                 strncpy ( outMess, (char *)pgensub->h, MAX_STRING_SIZE-1 );
                 break;
 
             case (3):
                 outErr = *(long *)pgensub->l;
-                printf("case3 \n");
+ /*               printf("case3 \n");
+*/
                 strncpy ( outMess, (char *)pgensub->k, MAX_STRING_SIZE-1 );
                 break;
 
             case (4):
                 outErr = *(long *)pgensub->o;
-                printf("case4 \n");
+ /*               printf("case4 \n");
+*/
                 strncpy ( outMess, (char *)pgensub->n, MAX_STRING_SIZE-1 );
                 break;
 
             case (5):
                 outErr = *(long *)pgensub->r;
-                printf("case5 \n");
+ /*               printf("case5 \n");
+*/
                 strncpy ( outMess, (char *)pgensub->q, MAX_STRING_SIZE-1 );
                 break;
 
             case (6):
                 outErr = *(long *)pgensub->u;
-                printf("case6 \n");
+ /*               printf("case6 \n");
+*/
                 strncpy ( outMess, (char *)pgensub->t, MAX_STRING_SIZE-1 );
                 break;
 

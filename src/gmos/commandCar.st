@@ -69,6 +69,9 @@
  *INDENT-OFF*
  *
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:45  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -148,7 +151,7 @@ option +r;
 %%#include <menuCarstates.h>
 
 
-%%#include <recAssControl.h>
+%%#include <assemblyControl.h>
 
 /* #define VERBOSE */    /* Enable this line for debugging */
 

@@ -74,6 +74,7 @@
  ************************************************************************
 */
 
+#ifndef vxWorks
 
 /*
  *  Includes
@@ -1744,3 +1745,4 @@ int main
         return ERR_NOT_CONVERGED;
     }
 }
+#endif

@@ -64,6 +64,9 @@
 /* *INDENT-OFF* */
 /*
  * $Log$
+ * Revision 1.2  2002/03/25 19:44:50  mbec
+ * epics 3.13 debugging
+ *
  * Revision 1.1  2001/11/28 20:08:53  mbec
  * *** empty log message ***
  *
@@ -109,7 +112,7 @@ option +r;
 %%#include <menuCarstates.h>
 
 
-#define VERBOSE         /* Define this for verbose output */
+#undef VERBOSE         /* Define this for verbose output */
 
 /*
  * The following declarations assign variables to fields in the EPICS database.

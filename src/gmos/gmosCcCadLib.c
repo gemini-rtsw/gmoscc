@@ -75,6 +75,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 /* *INDENT-OFF* */
 /*
  * $Log$
+ * Revision 1.2  2002/03/25 19:44:50  mbec
+ * epics 3.13 debugging
+ *
  * Revision 1.1  2001/11/28 20:08:49  mbec
  * *** empty log message ***
  *
@@ -123,13 +126,13 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 #include  <cad.h>
 #include  <carRecord.h>
 
-#include  "recAssControl.h"
+#include  "assemblyControl.h"
 
 #include  "gmosCcCadLib.h"
 #include <menuDirective.h>
 #include <menuCarstates.h>
 
-#define   VERBOSE               /* Define this for verbose messages */
+#undef   VERBOSE               /* Define this for verbose messages */
 
 /* Global veriables from external modules */
 

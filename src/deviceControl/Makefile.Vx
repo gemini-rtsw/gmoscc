@@ -23,15 +23,14 @@ MENUS +=
 RECTYPES = deviceControlRecord.h
 
 # Add dbd files to this variable for installation.
-DBDINSTALL = newdev.dbd
+DBDINSTALL  = deviceControlRecord.dbd
+DBDINSTALL += deviceControl.dbd
 
 # Add the source code files to this variable. The default has all .c files 
 SRCS.c	= $(wildcard ../*.c) 
 
 # Add the object files in one of these two variables. 
-LIBOBJS += drvOmsVme.o devDeviceControl.o recDeviceControl.o
-#LIBOBJS += devXxxSoft.o
-#LIBOBJS += sncExample.o
+LIBOBJS += $(strip $(patsubst ../%.c,    %.o, $(SRCS.c)))
 
 #OBJS	=  $(strip $(patsubst ../%.c,    %.o, $(SRCS.c))             \
 		   $(patsubst ../%.st,   %.o, $(wildcard ../*.st  )) \
@@ -44,10 +43,12 @@ PROD	= $(strip $(patsubst %.o, %, $(OBJS))                        \
 SCRIPTS	=
 
 # LIBNAME is installed in INSTALL_LIB
-LIBNAME	= libDeviceRecord
+LIBNAME	= deviceControlLib.a
 
 # INC is installed in INSTALL_INCLUDE
-INC	= recDeviceControl.h drvOmsVme.h
+INC  = deviceControl.h
+INC  = devDcOms844.h
+INC += drvOmsVme844.h
 
 # MAN1 is installed in INSTALL_MAN/man1
 MAN1	=

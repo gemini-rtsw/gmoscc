@@ -1,6 +1,9 @@
 /* *INDENT-OFF* */
 /*
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:45  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -23,7 +26,7 @@
 #include <dbStaticLib.h>
 
 
-extern struct dbBase *pdbBase;   /* Global pointer to base of current EPICS database */
+extern struct dbBase *pdbbase;   /* Global pointer to base of current EPICS database */
 
 /*+
  *   Function name:
@@ -53,7 +56,7 @@ extern struct dbBase *pdbBase;   /* Global pointer to base of current EPICS data
  *   "IOC Application Developer's Guide" for further details)
  *
  *   External variables:
- *     pdbBase              EPICS static database entry point (see dbStaticLib.h)
+ *     pdbbase              EPICS static database entry point (see dbStaticLib.h)
  *
  *-
  */
@@ -68,7 +71,7 @@ long dbMatchField(char *field, char *value)
   char recdes[MAX_STRING_SIZE];    /*  Record description */
 
  
-  dbInitEntry(pdbBase, pdbentry);         /* Allocate DBENTRY on the stack */
+  dbInitEntry(pdbbase, pdbentry);         /* Allocate DBENTRY on the stack */
   status = dbFirstRecdes(pdbentry);       /* Get first record description */
   if (status) {printf("No record descriptions\n"); return -1;}
   while (!status)  
@@ -128,7 +131,7 @@ long dbMatchField(char *field, char *value)
  *   "IOC Application Developer's Guide" for further details)
  *
  *   External variables:
- *     pdbBase              EPICS static database entry point (see dbStaticLib.h)
+ *     pdbbase              EPICS static database entry point (see dbStaticLib.h)
  *
  *-
  */
@@ -143,7 +146,7 @@ long dbNoMatchField(char *field, char *value)
   char recdes[MAX_STRING_SIZE];    /*  Record description */
 
  
-  dbInitEntry(pdbBase, pdbentry);         /* Allocate DBENTRY on the stack */
+  dbInitEntry(pdbbase, pdbentry);         /* Allocate DBENTRY on the stack */
   status = dbFirstRecdes(pdbentry);       /* Get first record description */
   if (status) {printf("No record descriptions\n"); return -1;}
   while (!status)  

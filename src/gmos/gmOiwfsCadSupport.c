@@ -45,6 +45,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2001/11/28 20:08:48  mbec
+ * *** empty log message ***
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -129,7 +132,7 @@
 #include <carRecord.h>
 
 #include <assemblyControlRecord.h>
-#include <recAssControl.h>
+#include <assemblyControl.h>
 
 
 /*
