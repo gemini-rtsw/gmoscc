@@ -135,10 +135,18 @@ else
 endif
 
 #
+# If desired, start the GMOS alarm handler screens. (This is commented
+# out because most people prefer to have these screens on a different
+# workstation).
+#
+#gmosAlarm
+
+#
 # Finally, start the dm screens `, assuming this command is in the PATH
 # (argument $sim is used for testing)
 #
 gmosStart $sim
+
 
 
 
