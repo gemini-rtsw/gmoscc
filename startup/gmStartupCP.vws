@@ -22,9 +22,9 @@ pwd
 < $(version)/bin/$(arch)/local
 
 # Load EPICS core, pvload and sequencer
-ld < /gemini/external/GEM8.4/base/bin/$(arch)/iocCore
-ld < /gemini/external/GEM8.4/extensions/bin/$(arch)/pvload
-ld < /gemini/external/GEM8.4/base/bin/$(arch)/seq
+ld < /gemini/external/GEM8.5/base/bin/$(arch)/iocCore
+ld < /gemini/external/GEM8.5/extensions/bin/$(arch)/pvload
+ld < /gemini/external/GEM8.5/base/bin/$(arch)/seq
 
 # Load any application records, device support or drivers here,
 # or code for subroutine records. It is assumed that Gemini
@@ -72,8 +72,8 @@ dbpf "gm:cc:msEnableEnable","0"
 dbpf "gm:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "gm:sad:name.VAL","GMOS-CP (V5-0)"
-dbpf "gm:sad:cc:name.VAL","GMOS-CP (V5-0)"
+dbpf "gm:sad:name.VAL","GMOS-CP (V5-1)"
+dbpf "gm:sad:cc:name.VAL","GMOS-CP (V5-1)"
 
 # Load initialization files
 pvload "$(version)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"
