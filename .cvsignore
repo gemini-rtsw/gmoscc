@@ -8,3 +8,4 @@ bin
 data
 include
 *.tar.gz
+gmosBuild.log
