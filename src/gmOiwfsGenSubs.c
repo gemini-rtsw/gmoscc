@@ -404,7 +404,8 @@ long oiAngles2Position
     gmOiwfsSetOffsets ( IN_B_OFFSET * D2R, 
                         IN_P_OFFSET * D2R, 
                         IN_X_OFFSET, 
-                        IN_Y_OFFSET );
+                        IN_Y_OFFSET,
+                        IN_Z_OFFSET );
 
     /*
      *  Reconstruct the current probe position from the base and pickoff
@@ -424,7 +425,7 @@ long oiAngles2Position
     {
         OUT_X_CURRENT = xPos;
         OUT_Y_CURRENT = yPos;
-        OUT_Z_CURRENT = zPos - IN_Z_OFFSET;
+        OUT_Z_CURRENT = zPos;
         OUT_R_CURRENT = angle;
 
         /*
@@ -434,7 +435,7 @@ long oiAngles2Position
 
         OUT_CURPOS[0] = xPos;
         OUT_CURPOS[1] = yPos;
-        OUT_CURPOS[2] = zPos - IN_Z_OFFSET;
+        OUT_CURPOS[2] = zPos;
         OUT_CURPOS[3] = angle;
     }
 
