@@ -54,7 +54,6 @@ VAR     filter1Device      devState                devState            1
 VAR     filter1Device      devMess                 devMess             1
 VAR     filter1Device      devIndexed              devIndexed          1
 VAR     filter1Device      devLimited              devLimited          1
-VAR     filter1Device      devAtHome               devAtHome           1
 
 # other status
 VAR     filterStatus       filter1InPosition      flt1InPosition       1
@@ -306,9 +305,6 @@ OUTPUT *.MIP* STOPPED*
 
 GETVAL devIndexed
 OUTPUT *.HPVL* 1* 
-
-#GETVAL devAtHome
-#OUTPUT *.HSWA* 1*
 
 DESC "Check device power status"
 GETVAL devPower
@@ -1869,9 +1865,6 @@ OUTPUT *.MIP* STOPPED*
 
 GETVAL devIndexed
 OUTPUT *.HPVL* 1* 
-
-#GETVAL devAtHome
-#OUTPUT *.HSWA* 1* 
 
 DESC "Check device power status"
 GETVAL devPower

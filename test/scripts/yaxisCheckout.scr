@@ -54,7 +54,6 @@ VAR     translationYDevice      devState                devState            1
 VAR     translationYDevice      devMess                 devMess             1
 VAR     translationYDevice      devIndexed              devIndexed          1
 VAR     translationYDevice      devLimited              devLimited          1
-VAR     translationYDevice      devAtHome               devAtHome           1
 
 #
 # Is it safe to proceed?
@@ -417,9 +416,6 @@ OUTPUT *.MIP* STOPPED*
 GETVAL devIndexed
 OUTPUT *.HPVL* 1* 
 
-GETVAL devAtHome
-OUTPUT *.HSWA* 1* 
-
 GETVAL devLimited
 OUTPUT *.LSWA* 0* 
 
@@ -488,9 +484,6 @@ OUTPUT *.MIP* ERROR*
 GETVAL devIndexed
 OUTPUT *.HPVL* 0* 
 
-GETVAL devAtHome
-OUTPUT *.HSWA* 1*
-
 GETVAL devLimited
 OUTPUT *.LSWA* 1* 
 
@@ -544,9 +537,6 @@ OUTPUT *.MIP* STOPPED*
 GETVAL devIndexed
 OUTPUT *.HPVL* 1* 
 
-GETVAL devAtHome
-OUTPUT *.HSWA* 1* 
-
 GETVAL devLimited
 OUTPUT *.LSWA* 0* 
 
@@ -591,9 +581,6 @@ OUTPUT *.MIP* ERROR*
 
 GETVAL devIndexed
 OUTPUT *.HPVL* 0* 
-
-GETVAL devAtHome
-OUTPUT *.HSWA* 0* 
 
 GETVAL devLimited
 OUTPUT *.LSWA* 1* 
@@ -647,9 +634,6 @@ OUTPUT *.MIP* STOPPED*
 
 GETVAL devIndexed
 OUTPUT *.HPVL* 1* 
-
-GETVAL devAtHome
-OUTPUT *.HSWA* 1* 
 
 GETVAL devLimited
 OUTPUT *.LSWA* 0* 
