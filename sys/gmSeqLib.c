@@ -30,6 +30,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.1.1.1  2001/04/13 01:37:34  smb
+ * Initial creation of the Gemini GMOS repository
+ *
  * Revision 1.16  2001/02/28 12:47:22  gmos
  * gmSeqDisplayCADTest function and additional debugging code added.
  *
@@ -62,8 +65,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 #include <alarm.h>
 #include <cadRecord.h>
 #include <cad.h>
-#include <car.h>
+#include <carRecord.h>
 #include <genSubRecord.h>
+
 
 #include "gmSeq.h"
 
@@ -270,7 +274,7 @@ long gmSeqSubsysCar (struct genSubRecord *pgsub)
 
 /* Set default output */
 
- actCVal = CAR_IDLE ;     /* IDLE by default when no other states set */
+ actCVal = menuCarstatesIDLE ;     /* IDLE by default when no other states set */
  strncpy (actCMess, " ", MAX_STRING_SIZE-1) ;
 
 /* Get whether the subsystem is disconnected, and its name
@@ -292,15 +296,15 @@ long gmSeqSubsysCar (struct genSubRecord *pgsub)
 *  IDLE.
 */
 
-   if (subsysActCVal == CAR_ERROR || subsysCommSentVal == CAR_ERROR ) {
-     actCVal = CAR_ERROR ;
-     if (subsysCommSentVal == CAR_ERROR) {
+   if (subsysActCVal == menuCarstatesERROR || subsysCommSentVal == menuCarstatesERROR ) {
+     actCVal = menuCarstatesERROR ;
+     if (subsysCommSentVal == menuCarstatesERROR) {
        if (gmSeqNotEmptyString(subsysCsMess)) {
          strncpy (actCMess, subsysCsMess, MAX_STRING_SIZE-1) ;
        } else  {
          sprintf (actCMess, "Error sending command to %.12s", subsysName) ;
        }
-     } else if (subsysActCVal == CAR_ERROR) {
+     } else if (subsysActCVal == menuCarstatesERROR) {
        if (gmSeqNotEmptyString(subsysMess)) {
          strncpy (actCMess, subsysMess, MAX_STRING_SIZE-1) ;
        } else  {
@@ -310,14 +314,14 @@ long gmSeqSubsysCar (struct genSubRecord *pgsub)
    }
    
 /* No errors: if either BUSY, then output BUSY */
-   else if (subsysActCVal == CAR_BUSY || subsysCommSentVal == CAR_BUSY ) {
-     actCVal = CAR_BUSY ;
+   else if (subsysActCVal == menuCarstatesBUSY || subsysCommSentVal == menuCarstatesBUSY ) {
+     actCVal = menuCarstatesBUSY ;
      strcpy(actCMess, " ") ;
    }
    
 /* No errors and not BUSY: if subsystem PAUSED, output PAUSED */
-   else if (subsysActCVal == CAR_PAUSED && subsysCommSentVal == CAR_IDLE ) {
-     actCVal = CAR_PAUSED ;
+   else if (subsysActCVal == menuCarstatesPAUSED && subsysCommSentVal == menuCarstatesIDLE ) {
+     actCVal = menuCarstatesPAUSED ;
      strcpy(actCMess, " ") ;
    }
    
@@ -325,7 +329,7 @@ long gmSeqSubsysCar (struct genSubRecord *pgsub)
  
  else   /* Subsystem is disconnected - set ERROR */
  {
-     actCVal = CAR_ERROR;
+     actCVal = menuCarstatesERROR;
      sprintf(actCMess, "GMOS %.12s is disconnected", subsysName);
  }
 

@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.2  2001/04/25 19:51:09  smb
+ * Fixed bug in which PAUSE/CONTINUE/STOP/ABORT commands could return a garbage status.
+ *
  * Revision 1.1.1.1  2001/04/13 01:37:34  smb
  * Initial creation of the Gemini GMOS repository
  *
@@ -141,8 +144,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 #include  <dbCommon.h>
 #include  <recSup.h>
 #include  <cad.h>
-#include  <car.h>
-#include  <subCadRecord.h>
+#include  <carRecord.h>
+/*#include  <subCadRecord.h>*/
+#include <cad.h>
 
 #include "gmSeq.h"
 #include "gmosLutLib.h"
@@ -279,9 +283,9 @@ long gmSeqFilterLUTread( char * lutfilename )
 
           lstAdd ((LIST *) gmSeqFiltLutPtr, (NODE *) p);
           strncpy (p->tag, tag, LUT_TAG_SZ-1);
-          if (fscanf(fp,"%d%lf%lf", &(p->barcodeId), &(p->focusOffset), &(p->effWavelength)) != 3 )
+          if (fscanf(fp,"%ld%lf%lf", &(p->barcodeId), &(p->focusOffset), &(p->effWavelength)) != 3 )
           {
-             printf("gmSeqFilterLUTread: Missing value(s) in %s line %d\n",
+             printf("gmSeqFilterLUTread: Missing value(s) in %s line %ld\n",
                     lutfilename, lcount);
              status = CAD_REJECT;
           }
@@ -394,7 +398,7 @@ long gmSeqCadFilter(struct cadRecord *pcad)
     switch (pcad->dir)
     {
 
-       case CAD_PRESET:
+       case menuDirectivePRESET:
 
           if (!filterInitOK) 
           {
@@ -422,7 +426,7 @@ long gmSeqCadFilter(struct cadRecord *pcad)
              {
                 if (strncmp (p->tag, fname1, LUT_TAG_SZ) == 0)
                 {
-                   sprintf(barcodeId1, "%10d%1c", p->barcodeId,'\0');
+                   sprintf(barcodeId1, "%10ld%1c", p->barcodeId,'\0');
                    focusOffset1 = p->focusOffset;
                    lambda1 = p->effWavelength;
                    status = CAD_ACCEPT;
@@ -455,7 +459,7 @@ long gmSeqCadFilter(struct cadRecord *pcad)
              {
                 if (strncmp (p->tag, fname2, LUT_TAG_SZ) == 0)
                 {
-                   sprintf(barcodeId2, "%10d%1c", p->barcodeId,'\0');
+                   sprintf(barcodeId2, "%10ld%1c", p->barcodeId,'\0');
                    focusOffset2 = p->focusOffset;
                    lambda2 = p->effWavelength;
                    status = CAD_ACCEPT;
@@ -517,7 +521,7 @@ long gmSeqCadFilter(struct cadRecord *pcad)
           strncpy((char *)pcad->valb, barcodeId2, MAX_STRING_SIZE-1);
           break ;
 
-       case CAD_START:
+       case menuDirectiveSTART:
 
 /* Filters are OK, so output focus offsets and original filter names */
 
@@ -541,18 +545,18 @@ long gmSeqCadFilter(struct cadRecord *pcad)
    
           break;
 
-       case CAD_MARK :
+       case menuDirectiveMARK :
 
           status = CAD_ACCEPT;
           break ;
 
-       case CAD_STOP :
+       case menuDirectiveSTOP :
 
           status = CAD_REJECT;
           strncpy(pcad->mess, "STOP directive not implemented", MAX_STRING_SIZE-1);
           break ;
 
-       case CAD_CLEAR :
+       case menuDirectiveCLEAR :
 
           status = CAD_ACCEPT;
           break ;
@@ -788,10 +792,10 @@ long gmSeqGratingLUTread( char * lutfilename )
 
           lstAdd ((LIST *) gmSeqGratLutPtr, (NODE *) p);
           strncpy (p->tag, tag, LUT_TAG_SZ-1);
-          if (fscanf(fp,"%d%d%d%lf", &(p->barcodeId), 
+          if (fscanf(fp,"%ld%ld%ld%lf", &(p->barcodeId), 
                      &(p->linesPerMm), &(p->blazeDir), &(p->focusOffset)) != 4 )
           {
-             printf("gmSeqGratingLUTread: Missing value(s) in %s line %d\n",
+             printf("gmSeqGratingLUTread: Missing value(s) in %s line %ld\n",
                          lutfilename, lcount);
              status = CAD_REJECT;
           }
@@ -937,7 +941,7 @@ long gmSeqCadGrating(struct cadRecord *pcad)
     switch (pcad->dir) 
     {
 
-       case CAD_PRESET:
+       case menuDirectivePRESET:
 
           if (!gratingInitOK) 
           {
@@ -985,7 +989,7 @@ long gmSeqCadGrating(struct cadRecord *pcad)
 
                 if (strncmp (p->tag, gratingName, LUT_TAG_SZ) == 0)
                 {
-                   sprintf(barcodeId, "%10d%1c", p->barcodeId,'\0');
+                   sprintf(barcodeId, "%10ld%1c", p->barcodeId,'\0');
                    linesPerMm = p->linesPerMm;
                    blazeDir = p->blazeDir;
                    focusOffset = p->focusOffset;
@@ -1236,7 +1240,7 @@ long gmSeqCadGrating(struct cadRecord *pcad)
           }
           break ;
 
-       case CAD_START:
+       case menuDirectiveSTART:
 
 /* Copy out the input parameters for storing in the SAD etc.*/
 
@@ -1265,16 +1269,16 @@ long gmSeqCadGrating(struct cadRecord *pcad)
           status = CAD_ACCEPT;
           break;
 
-       case CAD_MARK :
+       case menuDirectiveMARK :
           status = CAD_ACCEPT;
           break ;
 
-       case CAD_STOP :
+       case menuDirectiveSTOP :
           status = CAD_REJECT;
           strncpy(pcad->mess, "STOP directive not implemented", MAX_STRING_SIZE-1);
           break ;
 
-       case CAD_CLEAR :
+       case menuDirectiveCLEAR :
           status = CAD_ACCEPT;
           break ;
     }
@@ -1369,14 +1373,14 @@ long gmSeqCadInit (struct cadRecord *pcad)
      switch (pcad->dir) 
      {
 
-     case CAD_PRESET:   
+     case menuDirectivePRESET:   
 
           /* Set the appropriate global test conditions for this CAD */
 
           gmSeqSetCADTest(CONFIGURING+READING_OUT+OBSERVING);
           break;
     
-     case CAD_START:
+     case menuDirectiveSTART:
 
           /* Initialise from the Mask, Filter and Grating databases */
 
@@ -1449,16 +1453,16 @@ long gmSeqCadInit (struct cadRecord *pcad)
 
           break;
     
-     case CAD_MARK :
+     case menuDirectiveMARK :
           status = CAD_ACCEPT;
           break ;
 
-     case CAD_STOP :
+     case menuDirectiveSTOP :
           status = CAD_REJECT;
           strncpy(pcad->mess, "STOP directive not implemented", MAX_STRING_SIZE-1);
           break ;
 
-     case CAD_CLEAR :
+     case menuDirectiveCLEAR :
           status = CAD_ACCEPT;
           break ;
      }
@@ -1550,7 +1554,7 @@ long gmSeqCadDebug (struct cadRecord *pcad)
     switch (pcad->dir) 
     {
 
-          case CAD_PRESET:
+          case menuDirectivePRESET:
 
 /* Read in the debug mode, upper case, then check validity */
 
@@ -1628,7 +1632,7 @@ long gmSeqCadDebug (struct cadRecord *pcad)
           }
           break;
     
-       case CAD_START:
+       case menuDirectiveSTART:
 
 /* Set the debug level global variable */
 
@@ -1640,16 +1644,16 @@ long gmSeqCadDebug (struct cadRecord *pcad)
           isOnlyFlag = 0;
           break;
 
-       case CAD_MARK :
+       case menuDirectiveMARK :
           status = CAD_ACCEPT;
           break ;
 
-       case CAD_STOP :
+       case menuDirectiveSTOP :
           status = CAD_REJECT;
           strncpy(pcad->mess,"STOP directive not implemented", MAX_STRING_SIZE-1);
           break ;
 
-       case CAD_CLEAR :
+       case menuDirectiveCLEAR :
           status = CAD_ACCEPT;
           break ;
    }
@@ -1701,30 +1705,30 @@ long gmSeqNullInit (struct subRecord *psub)
  *
  *-
  */
-long gmSeqConfigBegin (struct subCadRecord *subcad)
+long gmSeqConfigBegin (struct cadRecord *cad)
 {
     char interlock[MAX_STRING_SIZE];
     
-    switch (subcad->dir) 
+    switch (cad->dir) 
     {
 
-       case CAD_CLEAR:
-       case CAD_PRESET:
+       case menuDirectiveCLEAR:
+       case menuDirectivePRESET:
 
 /* Clear the CAD condition test mask for PRESET and CLEAR */
 
           gmSeqClearCADTest();
     
 /* Directive START : check for interlock */
-       case CAD_START:
+       case menuDirectiveSTART:
 
-          strncpy(interlock, subcad->a, MAX_STRING_SIZE-1);
+          strncpy(interlock, cad->a, MAX_STRING_SIZE-1);
     
           DBGMSGSTRING(DBG_FULL,"ConfigBegin: interlock status = ", interlock);
     
           if (strncmp(interlock, "OK", 2))
           {
-             strncpy(subcad->mess, "GMOS is interlocked", MAX_STRING_SIZE-1);
+             strncpy(cad->mess, "GMOS is interlocked", MAX_STRING_SIZE-1);
              return CAD_REJECT;
           }
 
@@ -1777,7 +1781,7 @@ long gmSeqConfigBegin (struct subCadRecord *subcad)
  *
  *-
  */
-long gmSeqConfigEnd (struct subCadRecord *subcad)
+long gmSeqConfigEnd (struct cadRecord *cad)
 {
     long dir;
     char applyC_str[MAX_STRING_SIZE];
@@ -1801,31 +1805,31 @@ long gmSeqConfigEnd (struct subCadRecord *subcad)
 
 /* Read in the applyC values from the subsystems .
    Items at A and B are strings representing CAR state  */
-    strncpy(applyC_str, subcad->a, MAX_STRING_SIZE-1);
+    strncpy(applyC_str, cad->a, MAX_STRING_SIZE-1);
     DBGMSGSTRING(DBG_FULL, "A = ", applyC_str);
     
 /* Read the OBSERVING condition value */    
-    strncpy(observeC_str, subcad->b, MAX_STRING_SIZE-1);
+    strncpy(observeC_str, cad->b, MAX_STRING_SIZE-1);
     DBGMSGSTRING(DBG_FULL, "B = ", observeC_str);
      
 /* Read the DC DISCONNECTED condition value : an integer */    
-    strncpy(DCdisconnected_str, subcad->c, MAX_STRING_SIZE-1);
+    strncpy(DCdisconnected_str, cad->c, MAX_STRING_SIZE-1);
     DBGMSGSTRING(DBG_FULL, "C = ", DCdisconnected_str);
-    n = sscanf(DCdisconnected_str, "%ld", &DCdisconnected);
+    n = sscanf(DCdisconnected_str, "%d", &DCdisconnected);
     if (n != 1)  DCdisconnected = 0;    /* No valid integer found? */           
     DBGMSGINT(DBG_FULL," DCdisconnected = ", DCdisconnected);   
         
 /* Read in the READING OUT condition value; an integer */
-    strncpy(readout_str, subcad->d, MAX_STRING_SIZE-1);
+    strncpy(readout_str, cad->d, MAX_STRING_SIZE-1);
     DBGMSGSTRING(DBG_FULL, "D = ", readout_str);
     n = sscanf(readout_str, "%ld", &readout);
     if (n != 1) readout = 0;    /* No valid integer found? */    
     DBGMSGINT(DBG_FULL,"readout = ", readout);
 
 /* Read in the MASTER ENABLE condition value; an integer */
-    strncpy(menable_str, subcad->e, MAX_STRING_SIZE-1);
+    strncpy(menable_str, cad->e, MAX_STRING_SIZE-1);
     DBGMSGSTRING(DBG_FULL, "E = ", menable_str);
-    n = sscanf(menable_str, "%ld", &master_enable);
+    n = sscanf(menable_str, "%d", &master_enable);
     if (n != 1) master_enable = 0;    /* No valid integer found? */    
     DBGMSGINT(DBG_FULL,"master enable = ", master_enable);
 
@@ -1849,25 +1853,25 @@ long gmSeqConfigEnd (struct subCadRecord *subcad)
        DBGMSG(DBG_FULL,"GMOS is CONFIGURING");
     }
              
-    switch (subcad->dir) 
+    switch (cad->dir) 
     {
 
 /* PRESET only: Check whether configuring and  whether master enabled, if specified
    by CONFIGURING or MASTER_ENABLE in the test mask */
 
-       case CAD_PRESET:
+       case menuDirectivePRESET:
 
           if ( ((testMask & CONFIGURING) != 0) && (configuring == TRUE) ) 
           {
              DBGMSG(DBG_FULL,"GMOS PRESET fail: configuring interlock");
-             strncpy(subcad->mess, "GMOS currently reconfiguring", MAX_STRING_SIZE-1);
+             strncpy(cad->mess, "GMOS currently reconfiguring", MAX_STRING_SIZE-1);
              return CAD_REJECT;
           }
 
           if ( ((testMask & MASTER_ENABLE) != 0) && (master_enable == FALSE) ) 
           {
              DBGMSG(DBG_FULL,"GMOS PRESET fail: no master enable interlock");
-             strncpy(subcad->mess, "No GMOS master enable - still booting?", MAX_STRING_SIZE-1);
+             strncpy(cad->mess, "No GMOS master enable - still booting?", MAX_STRING_SIZE-1);
              return CAD_REJECT;
           }
 
@@ -1875,19 +1879,19 @@ long gmSeqConfigEnd (struct subCadRecord *subcad)
 /* START: Perform any other checks (reading out, observing)
    as specified in the test mask (Values READING_OUT and OBSERVING) */
 
-       case CAD_START: 
+       case menuDirectiveSTART: 
     
           if ( ((testMask & READING_OUT) != 0) && (reading_out == TRUE) )
           {
              DBGMSG(DBG_FULL,"GMOS START fail: readout interlock");
-             strncpy(subcad->mess, "GMOS detector currently reading out", MAX_STRING_SIZE-1);
+             strncpy(cad->mess, "GMOS detector currently reading out", MAX_STRING_SIZE-1);
              return CAD_REJECT;
           }
       
           if ( ((testMask & OBSERVING) != 0) && (observing == TRUE) )
           {
              DBGMSG(DBG_FULL,"GMOS START fail: observing interlock");
-             strncpy(subcad->mess, "GMOS currently observing", MAX_STRING_SIZE-1);
+             strncpy(cad->mess, "GMOS currently observing", MAX_STRING_SIZE-1);
              return CAD_REJECT;
           }    
      
@@ -1895,8 +1899,8 @@ long gmSeqConfigEnd (struct subCadRecord *subcad)
 
 /* Always copy out the directive to VALA */
 
-          dir = subcad->dir;
-          *(long *) subcad->vala = dir;
+          dir = cad->dir;
+          *(long *) cad->vala = dir;
     }
    
     return CAD_ACCEPT;
@@ -1919,7 +1923,7 @@ long gmSeqCadTrivial (struct cadRecord *pcad)
     switch (pcad->dir) 
     {
 
-       case CAD_STOP:
+       case menuDirectiveSTOP:
           strncpy(pcad->mess,"STOP directive not implemented", MAX_STRING_SIZE-1);
           return CAD_REJECT;
     
@@ -1972,7 +1976,7 @@ long gmSeqCadObserve(struct cadRecord *pcad)
     switch (pcad->dir) 
     {
 
-       case CAD_PRESET:
+       case menuDirectivePRESET:
 
 /* Reject the command if the detector controller is disabled */
 
@@ -2000,23 +2004,23 @@ long gmSeqCadObserve(struct cadRecord *pcad)
 
           break ;
 
-       case CAD_START:
+       case menuDirectiveSTART:
 
           DBGMSGSTRING(DBG_FULL,"A: ",(char *)pcad->vala);
 
           status = CAD_ACCEPT;
           break;
 
-       case CAD_MARK :
+       case menuDirectiveMARK :
           status = CAD_ACCEPT;
           break ;
 
-       case CAD_STOP :
+       case menuDirectiveSTOP :
           status = CAD_REJECT;
           strncpy(pcad->mess,"STOP directive not implemented", MAX_STRING_SIZE-1);
           break ;
 
-       case CAD_CLEAR :
+       case menuDirectiveCLEAR :
           status = CAD_ACCEPT;
           break ;
    }
@@ -2041,7 +2045,7 @@ long gmSeqCadStopObserve (struct cadRecord *pcad)
     switch (pcad->dir)
     {
 
-       case CAD_PRESET:
+       case menuDirectivePRESET:
 
 /*      Reject the command if the detector controller is disabled */
 
@@ -2076,7 +2080,7 @@ long gmSeqCadEndObserve (struct cadRecord *pcad)
 {
     switch (pcad->dir)
     {
-       case CAD_PRESET:
+       case menuDirectivePRESET:
 
 /*       Set the appropriate global test condition for this CAD */ 
           gmSeqSetCADTest(READING_OUT+OBSERVING);
@@ -2102,7 +2106,7 @@ long gmSeqCadContinue (struct cadRecord *pcad)
 
     switch (pcad->dir)
     {
-       case CAD_PRESET:
+       case menuDirectivePRESET:
 
 /*       Reject the command if the detector controller is disabled */
 
@@ -2235,9 +2239,9 @@ long gmSeqMaskLUTread( char * lutfilename )
 
           lstAdd ((LIST *) gmSeqMaskLutPtr, (NODE *) p);
           strncpy (p->tag, tag, LUT_TAG_SZ-1);
-          if (fscanf(fp,"%d", &(p->barcodeId)) != 1 )
+          if (fscanf(fp,"%ld", &(p->barcodeId)) != 1 )
           {
-             printf("gmSeqMaskLUTread: Missing value(s) in %s line %d\n",
+             printf("gmSeqMaskLUTread: Missing value(s) in %s line %ld\n",
                     lutfilename, lcount);
              status = CAD_REJECT;
           }
@@ -2310,7 +2314,7 @@ long gmSeqCadMask(struct cadRecord *pcad)
     switch (pcad->dir) 
     {
 
-       case CAD_PRESET:
+       case menuDirectivePRESET:
 
           if (!maskInitOK) 
           {
@@ -2367,7 +2371,7 @@ long gmSeqCadMask(struct cadRecord *pcad)
                 {
                    if (strncmp (p->tag, maskname, LUT_TAG_SZ) == 0)
                    {
-                      sprintf(barcodeIDIn, "%10d%1c", p->barcodeId,'\0');
+                      sprintf(barcodeIDIn, "%10ld%1c", p->barcodeId,'\0');
                       found = TRUE;
                       break;     /* Breaks out of "for" statement, not "case". */
                    }
@@ -2403,7 +2407,7 @@ long gmSeqCadMask(struct cadRecord *pcad)
           }
           break ;
 
-      case CAD_START:
+      case menuDirectiveSTART:
    
          DBGMSG(DBG_FULL,"CAD mskPos. Output values A..B: ");
          DBGMSGINT(DBG_FULL,"A: ", *(long *)pcad->vala);
@@ -2412,16 +2416,16 @@ long gmSeqCadMask(struct cadRecord *pcad)
          status = CAD_ACCEPT;
          break;
 
-      case CAD_MARK :
+      case menuDirectiveMARK :
          status = CAD_ACCEPT;
          break ;
 
-      case CAD_STOP :
+      case menuDirectiveSTOP :
          status = CAD_REJECT;
          strncpy(pcad->mess,"STOP directive not implemented", MAX_STRING_SIZE-1);
          break ;
 
-      case CAD_CLEAR :
+      case menuDirectiveCLEAR :
          status = CAD_ACCEPT;
          break ;
    }
@@ -2479,7 +2483,7 @@ long gmSeqCadAtmPos(struct cadRecord *pcad)
     switch (pcad->dir) 
     {
 
-       case CAD_PRESET:
+       case menuDirectivePRESET:
 
 /*       Set the appropriate global test conditions for this CAD */
           gmSeqSetCADTest(OBSERVING+MASTER_ENABLE);
@@ -2533,7 +2537,7 @@ long gmSeqCadAtmPos(struct cadRecord *pcad)
    
          break ;
 
-      case CAD_START:
+      case menuDirectiveSTART:
 
          DBGMSG(DBG_FULL,"CAD atmPos. Output values A..B: ");
          DBGMSGREAL(DBG_FULL,"A: ", *(double *) pcad->vala);
@@ -2542,16 +2546,16 @@ long gmSeqCadAtmPos(struct cadRecord *pcad)
          status = CAD_ACCEPT;
          break;
 
-      case CAD_MARK :
+      case menuDirectiveMARK :
          status = CAD_ACCEPT;
          break ;
 
-      case CAD_STOP :
+      case menuDirectiveSTOP :
          status = CAD_REJECT;
          strncpy(pcad->mess,"STOP directive not implemented", MAX_STRING_SIZE-1);
          break ;
 
-      case CAD_CLEAR :
+      case menuDirectiveCLEAR :
          status = CAD_ACCEPT;
          break ;
    }
@@ -2610,7 +2614,7 @@ long gmSeqCadDtaPos(struct cadRecord *pcad)
     switch (pcad->dir) 
     {
 
-       case CAD_PRESET:
+       case menuDirectivePRESET:
 
 /*       Set the appropriate global test conditions for this CAD */
           gmSeqSetCADTest(OBSERVING+MASTER_ENABLE);
@@ -2684,7 +2688,7 @@ long gmSeqCadDtaPos(struct cadRecord *pcad)
 
           break ;
 
-       case CAD_START:
+       case menuDirectiveSTART:
  
           DBGMSG(DBG_FULL,"CAD dtaPos. Output values A..C: ");
           DBGMSGREAL(DBG_FULL,"A: ", *(double *) pcad->vala);
@@ -2694,16 +2698,16 @@ long gmSeqCadDtaPos(struct cadRecord *pcad)
           status = CAD_ACCEPT;
           break;
 
-       case CAD_MARK :
+       case menuDirectiveMARK :
           status = CAD_ACCEPT;
           break ;
 
-       case CAD_STOP :
+       case menuDirectiveSTOP :
           status = CAD_REJECT;
           strncpy(pcad->mess,"STOP directive not implemented", MAX_STRING_SIZE-1);
           break ;
 
-       case CAD_CLEAR :
+       case menuDirectiveCLEAR :
           status = CAD_ACCEPT;
           break ;
    }

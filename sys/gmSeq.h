@@ -13,6 +13,9 @@
 */
 /*
  * $Log$
+ * Revision 1.1.1.1  2001/04/13 01:37:34  smb
+ * Initial creation of the Gemini GMOS repository
+ *
  * Revision 1.28  2001/02/28 12:46:39  gmos
  * gmSeqDisplayCADTest function added.
  *
@@ -126,7 +129,7 @@
  * bit mask.
  */
 
-extern int epicsPrintf(char *, ...);   /* printf function provided by EPICS logging */
+/*extern int epicsPrintf(char *, ...);*/   /* printf function provided by EPICS logging */
 
 #define DBGMSG( _dbgLevel, _dbgMsg) \
   do { \

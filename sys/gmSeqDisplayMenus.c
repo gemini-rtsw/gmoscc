@@ -56,6 +56,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.1.1.1  2001/04/13 01:37:34  smb
+ * Initial creation of the Gemini GMOS repository
+ *
  * Revision 1.22  2001/02/23 13:14:08  gmos
  * Added functions to translate mask names into barcode IDs, based on names read from masks.lut. Renamed global variables so they begin gmSeq. Made the filter and mask LUT reading functions more robust.
  *
@@ -276,9 +279,9 @@ long gmSeqAllFilterLUTread( char * lutfilename )
                 }
                 lstAdd ((LIST *) localFiltLutPtr, (NODE *) p);
                 strncpy (p->tag, tag, LUT_TAG_SZ-1);
-                if (fscanf(fp,"%d%lf%lf", &(p->barcodeId), &(p->focusOffset), &(p->effWavelength)) != 3 )
+                if (fscanf(fp,"%ld%lf%lf", &(p->barcodeId), &(p->focusOffset), &(p->effWavelength)) != 3 )
                   {
-                  printf("gmSeqAllFilterLUTread error: missing value(s) in %s line %d\n",
+                  printf("gmSeqAllFilterLUTread error: missing value(s) in %s line %ld\n",
                          lutfilename, lcount);
                   status = CAD_REJECT;
                   }
@@ -412,7 +415,7 @@ long gmSeqWheelFilterLUTread( char * lutfilename )
                   p->barcode = barcode;
                   if (fscanf(fp,"%ld%39s", &(p->wheelnum), p->position) != 2 )  /* Format size should be LUT_TAG_SZ */
                     {
-                    printf("gmSeqWheelFilterLUTread error: missing value(s) in %s line %d\n",
+                    printf("gmSeqWheelFilterLUTread error: missing value(s) in %s line %ld\n",
                            lutfilename, lcount);
                     status = CAD_REJECT;
                     }
@@ -500,7 +503,7 @@ long gmSeqFilterNameMatch(long wheelnum, char filtnames[][LUT_TAG_SZ], int *nfou
             nWheelFilt++;
             if ( nWheelFilt > FILTPERWHEEL )
             {
-               printf("WARNING: More than %d filters defined for wheel %d\n",
+               printf("WARNING: More than %d filters defined for wheel %ld\n",
                        FILTPERWHEEL, wheelnum);
                break;
             }
@@ -520,7 +523,7 @@ long gmSeqFilterNameMatch(long wheelnum, char filtnames[][LUT_TAG_SZ], int *nfou
               {
                 if (nfilt >= FILTPERWHEEL)
                 {
-                  printf("WARNING: More than %d filter names found for wheel %d\n",
+                  printf("WARNING: More than %d filter names found for wheel %ld\n",
                          FILTPERWHEEL, wheelnum);
                   break;
                 }
@@ -547,7 +550,7 @@ long gmSeqFilterNameMatch(long wheelnum, char filtnames[][LUT_TAG_SZ], int *nfou
 
               DBGMSGINT(DBG_MIN, "Check filters.lut. No name found for filter with barcode:",
                  barcode);
-              sprintf(filtnames[nfilt], "%d%c", barcode, '\0');
+              sprintf(filtnames[nfilt], "%ld%c", barcode, '\0');
               nfilt++;
               nfailed++;
             }
@@ -569,7 +572,7 @@ long gmSeqFilterNameMatch(long wheelnum, char filtnames[][LUT_TAG_SZ], int *nfou
 
         if ( nfailed > 0 )
         {
-           printf("WARNING: %d filter barcodes on wheel %d could not be translated into names\n",
+           printf("WARNING: %ld filter barcodes on wheel %ld could not be translated into names\n",
                   nfailed, wheelnum);
         }
 
@@ -778,7 +781,7 @@ long gmSeqMaskNames(struct genSubRecord *pgsub)
                 {
                   if ( (n = sscanf(line,"%s%s%s", cassette, slot, maskBarcode[nmask]) != 3 ))
                   {
-                    printf("gmSeqMaskNames error: missing value(s) in %s line %d\n",
+                    printf("gmSeqMaskNames error: missing value(s) in %s line %ld\n",
                            (char *) pgsub->c, lcount);
                     status = CAD_REJECT;
                   }
@@ -925,9 +928,9 @@ long gmSeqNamedMaskLUTread( char * lutfilename )
                 }
                 lstAdd ((LIST *) localMaskLutPtr, (NODE *) p);
                 strncpy (p->tag, tag, LUT_TAG_SZ-1);
-                if (fscanf(fp,"%d", &(p->barcodeId)) != 1 )
+                if (fscanf(fp,"%ld", &(p->barcodeId)) != 1 )
                   {
-                  printf("gmSeqNamedMaskLUTread error: missing value(s) in %s line %d\n",
+                  printf("gmSeqNamedMaskLUTread error: missing value(s) in %s line %ld\n",
                          lutfilename, lcount);
                   status = CAD_REJECT;
                   }
@@ -1062,7 +1065,7 @@ long gmSeqLoadedMaskLUTread( char * lutfilename )
                   p->cassette = cassette;
                   if (fscanf(fp,"%ld%ld", &(p->slot), &(p->barcode)) != 2 )
                     {
-                    printf("gmSeqLoadedMaskLUTread error: missing value(s) in %s line %d\n",
+                    printf("gmSeqLoadedMaskLUTread error: missing value(s) in %s line %ld\n",
                            lutfilename, lcount);
                     status = CAD_REJECT;
                     }
@@ -1151,7 +1154,7 @@ long gmSeqMaskNameMatch(long cassettenum, char masknames[][LUT_TAG_SZ], int *nfo
             masksInCassette++;
             if ( masksInCassette > MASKPERCASS )
             {
-               printf("WARNING: More than %d masks defined for cassette %d\n",
+               printf("WARNING: More than %d masks defined for cassette %ld\n",
                        MASKPERCASS, cassettenum);
                break;
             }
@@ -1171,7 +1174,7 @@ long gmSeqMaskNameMatch(long cassettenum, char masknames[][LUT_TAG_SZ], int *nfo
               {
                 if (nmasks >= MASKPERCASS)
                 {
-                  printf("WARNING: More than %d mask names found for cassette %d\n",
+                  printf("WARNING: More than %d mask names found for cassette %ld\n",
                           MASKPERCASS, cassettenum);
                   break;
                 }
@@ -1199,7 +1202,7 @@ long gmSeqMaskNameMatch(long cassettenum, char masknames[][LUT_TAG_SZ], int *nfo
                */
 
               DBGMSGINT(DBG_FULL, "NOTE: No name found for mask with barcode:", barcode);
-              sprintf(masknames[nmasks], "%d%c", barcode, '\0');
+              sprintf(masknames[nmasks], "%ld%c", barcode, '\0');
               nmasks++;
             }
           }
@@ -1208,7 +1211,7 @@ long gmSeqMaskNameMatch(long cassettenum, char masknames[][LUT_TAG_SZ], int *nfo
         if (masksInCassette == 0)
          {
            /* No mask barcodes found for this cassette. Missing cassettes are allowed. */
-           printf("NOTE: No masks listed for cassette %d\n", cassettenum);
+           printf("NOTE: No masks listed for cassette %ld\n", cassettenum);
            status = CAD_REJECT;
          }
                  
@@ -1447,7 +1450,7 @@ long gmSeqLoadedGratingRead( char * lutfilename )
                   p->barcode = barcode;
                   if (fscanf(fp,"%ld%lf", &(p->turretPos), &(p->tilt)) != 2 )
                     {
-                    printf("gmSeqLoadedGratingRead error: missing value(s) in %s line %d\n",
+                    printf("gmSeqLoadedGratingRead error: missing value(s) in %s line %ld\n",
                            lutfilename, lcount);
                     status = CAD_REJECT;
                     }
@@ -1599,7 +1602,7 @@ long gmSeqGratingNames(struct genSubRecord *pgsub)
                 else
 /* Lookup failed : use barcode instead of name as ID */
                 {
-                  sprintf(gratnames[ngrat], "%d%c", barcode, '\0');
+                  sprintf(gratnames[ngrat], "%ld%c", barcode, '\0');
                   DBGMSGINT(DBG_MIN, "Check gratings.lut. No name found for grating with barcode:", 
                           barcode);
                 }
@@ -1622,7 +1625,7 @@ long gmSeqGratingNames(struct genSubRecord *pgsub)
             }
             else if (nfailed > 0)
             {
-                printf("WARNING: %d of the grating barcodes could not be translated into names\n",
+                printf("WARNING: %ld of the grating barcodes could not be translated into names\n",
                        nfailed);
                 stat = CAD_ACCEPT;
             }

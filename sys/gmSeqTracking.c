@@ -22,6 +22,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.2  2001/08/08 01:06:12  gemvx
+ * Version after commissioning. See RELEASE.NOTES
+ *
  * Revision 1.4  2001/07/10 13:45:22  gmos
  * V2-6 imported from Gemini.
  *
@@ -127,7 +130,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 #include <alarm.h>
 #include <cadRecord.h>
 #include <cad.h>
-#include <car.h>
+#include <carRecord.h>
 #include <genSubRecord.h>
 
 #include <slamac.h>    /* Contains DD2R and DR2D */
@@ -256,7 +259,7 @@ long gmSeqCadAtmTrack (struct cadRecord *pcad)
   switch (pcad->dir) 
   {
 
-   case CAD_PRESET :
+   case menuDirectivePRESET :
 
     status = CAD_REJECT ;
     
@@ -374,7 +377,7 @@ long gmSeqCadAtmTrack (struct cadRecord *pcad)
     status = CAD_ACCEPT ;
    break ;
 
-   case CAD_START :
+   case menuDirectiveSTART :
 
 /* Place data on output links */
     strncpy ((char *)pcad->vala, (char *)pcad->a, MAX_STRING_SIZE-1) ;
@@ -385,13 +388,13 @@ long gmSeqCadAtmTrack (struct cadRecord *pcad)
     *(long *)pcad->valf = mode ;
    break ;
 
-   case CAD_MARK :
+   case menuDirectiveMARK :
    break ;
 
-   case CAD_STOP :
+   case menuDirectiveSTOP :
    break ;
 
-   case CAD_CLEAR :
+   case menuDirectiveCLEAR :
    break ;
 
   }
@@ -473,7 +476,7 @@ long gmSeqCadDtaTrack (struct cadRecord *pcad)
 
   switch (pcad->dir) 
   {
-     case CAD_PRESET :
+     case menuDirectivePRESET :
 
         status = CAD_REJECT ;
 
@@ -640,7 +643,7 @@ long gmSeqCadDtaTrack (struct cadRecord *pcad)
         status = CAD_ACCEPT ;
         break ;
 
-     case CAD_START :
+     case menuDirectiveSTART :
 
 /* Increment the mode index before passing it to EPICS */
 
@@ -655,10 +658,10 @@ long gmSeqCadDtaTrack (struct cadRecord *pcad)
        *(long *)pcad->vale   = mode ;
        break ;
 
-    case CAD_MARK :
+    case menuDirectiveMARK :
        break ;
 
-    case CAD_STOP :
+    case menuDirectiveSTOP :
 
 /* On receipt of a STOP directive, set the mode to STOP */
 
@@ -668,7 +671,7 @@ long gmSeqCadDtaTrack (struct cadRecord *pcad)
 
        break ;
 
-    case CAD_CLEAR :
+    case menuDirectiveCLEAR :
        break ;
 
   }
