@@ -2885,7 +2885,7 @@ display {
 	display[0] {
 		label="Control"
 		name="gmSeqDtaControl.dl"
-		args=""
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC),D=flt,S=$(T)sad:"
 	}
 	display[1] {
 		label=""
@@ -3019,7 +3019,7 @@ display {
 	display[0] {
 		label="Control"
 		name="gmSeqADCControl.dl"
-		args=""
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC),D=flt,S=$(T)sad:"
 	}
 	display[1] {
 		label=""
