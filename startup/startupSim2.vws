@@ -3,6 +3,7 @@
 # VxWorks startup script to load and execute system (iocCore) software.
 #
 # FULL STARTUP SCRIPT. This script starts the GMOS software automatically.
+# SIMULATION MODE - 2
 #
 
 # Make delete key work for backspace
@@ -12,14 +13,9 @@ tyBackspaceSet 0177
 shellPromptSet "GMOS MK - sim2 > "
 loginStringSet "MVME167 vxWorks (GMOS MK - sim2)\n\nlogin: "
 
-# cd to application install startup directory (beware automounter problems)
-cd "$(install)/bin/$(arch)"
-pwd
-
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
-< local
-cd "$(install)/bin/$(arch)"
+< $(iocpath)/bin/$(arch)/local
 
 # Execute the GMOS simulation mode startup script
-< gmStartupMKSS2
+< $(iocpath)/bin/$(arch)/gmStartupMKSS2

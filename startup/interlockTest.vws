@@ -7,17 +7,17 @@
 shellPromptSet "GMOS Interlock Test > "
 
 # cd to application install directory (beware automounter problems)
-cd "$(install)"
+cd "$(iocpath)"
 pwd
 
 # Load the OMS test routines.
-ld < $(install)/bin/$(arch)/testOms844.o
+ld < $(iocpath)/bin/$(arch)/testOms844.o
 
 # Disable all motors
 omsAllOff
 
 # Turn OFF all Solid State Relays
-pvload "$(version)/data/ssrOff.pv","top=gm:"
+pvload "$(iocpath)/data/ssrOff.pv","top=gm:"
 
 # Wait for 5 seconds
 taskDelay(300)
@@ -26,6 +26,6 @@ taskDelay(300)
 omsAllOnSlow
 
 # Turn ON all Solid State Relays
-pvload "$(version)/data/ssrOn.pv","top=gm:"
+pvload "$(iocpath)/data/ssrOn.pv","top=gm:"
 
 # Interlock test script finished. Now please reboot.

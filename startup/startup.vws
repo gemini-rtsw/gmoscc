@@ -12,14 +12,9 @@ tyBackspaceSet 0177
 shellPromptSet "GMOS MK > "
 loginStringSet "MVME167 vxWorks (GMOS MK)\n\nlogin: "
 
-# cd to application install startup directory (beware automounter problems)
-cd "$(install)/bin/$(arch)"
-pwd
-
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
-< local
-cd "$(install)/bin/$(arch)"
+< $(iocpath)/bin/$(arch)/local
 
 # Execute the GMOS startup script
-< gmStartupMKRR
+< $(iocpath)/bin/$(arch)/gmStartupMKRR

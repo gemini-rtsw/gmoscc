@@ -14,13 +14,13 @@ tyBackspaceSet 0177
 shellPromptSet "GMOS IS >"
 
 # cd to application install directory (beware automounter problems)
-cd "$(install)"
+cd "$(iocpath)"
 pwd
 
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
 # (Commented out, since already done in startup_MINIMAL)
-#< $(install)/bin/$(arch)/local
+#< $(iocpath)/bin/$(arch)/local
 
 # Load EPICS core and record stuff
 ld < $(epics)/base/bin/$(arch)/iocCore
@@ -43,64 +43,64 @@ ld < /data/cjm/gemini/slalib/gmoscc/bin/$(arch)/slalib
 ld < /data/cjm/gemini/timelib/gmoscc/bin/$(arch)/timelib
 ld < /data/cjm/gemini/astlib/gmoscc/bin/$(arch)/astlib
 
-ld < $(version)/../gmoscc/bin/$(arch)/recAssControl.o
-ld < $(version)/../gmoscc/bin/$(arch)/recDeviceControl.o
-ld < $(version)/../gmoscc/bin/$(arch)/drvOmsVme.o
-ld < $(version)/../gmoscc/bin/$(arch)/devDeviceControl.o
-ld < $(version)/../gmoscc/bin/$(arch)/devBarcode.o
-ld < $(version)/../gmoscc/bin/$(arch)/gmosGensubLib.o
-ld < $(version)/../gmoscc/bin/$(arch)/assemblyCar.o
-ld < $(version)/../gmoscc/bin/$(arch)/softCar.o
-ld < $(version)/../gmoscc/bin/$(arch)/systemCar.o
-ld < $(version)/../gmoscc/bin/$(arch)/devAssControl.o
-ld < $(version)/../gmoscc/bin/$(arch)/devSeqControl.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/recAssControl.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/recDeviceControl.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/drvOmsVme.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devDeviceControl.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devBarcode.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/gmosGensubLib.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/assemblyCar.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/softCar.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/systemCar.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devAssControl.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devSeqControl.o
 
-ld < $(version)/../gmoscc/bin/$(arch)/devMaskControl.o
-ld < $(version)/../gmoscc/bin/$(arch)/gmMskMisc.o
-ld < $(version)/../gmoscc/bin/$(arch)/devFilterAss.o
-ld < $(version)/../gmoscc/bin/$(arch)/devFilterWheel.o
-ld < $(version)/../gmoscc/bin/$(arch)/devGratingAss.o
-ld < $(version)/../gmoscc/bin/$(arch)/devGratingTilt.o
-ld < $(version)/../gmoscc/bin/$(arch)/devGratingTurret.o
-ld < $(version)/../gmoscc/bin/$(arch)/gmosLutLib.o
-ld < $(version)/../gmoscc/bin/$(arch)/gratingTilt.o
-ld < $(version)/../gmoscc/bin/$(arch)/lifter.o
-ld < $(version)/../gmoscc/bin/$(arch)/lifterSim.o
-ld < $(version)/../gmoscc/bin/$(arch)/devTranslationAss.o
-ld < $(version)/../gmoscc/bin/$(arch)/devTranslationStage.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devMaskControl.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/gmMskMisc.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devFilterAss.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devFilterWheel.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devGratingAss.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devGratingTilt.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devGratingTurret.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/gmosLutLib.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/gratingTilt.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/lifter.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/lifterSim.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devTranslationAss.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devTranslationStage.o
 
-ld < $(version)/../gmoscc/bin/$(arch)/gmosCcCadLib.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/gmosCcCadLib.o
 
-ld < $(version)/bin/$(arch)/gmSeqAppl
+ld < $(iocpath)/bin/$(arch)/gmSeqAppl
 
 # Load sequences here
-# ld < $(install)/bin/$(arch)/testseq.o
+# ld < $(iocpath)/bin/$(arch)/testseq.o
 
 # Configure the Timestamp system, 1=Master IOC
 TSconfigure 1, 0, 0, 0, 0, 0
 
 # Load one or more ASCII databases here
-dbLoad "$(install)/data/default.dctsdr"
-dbLoadRecords "$(install)/../rel/data/gmMiscSim.db"
-dbLoadRecords "$(version)/../gmoscc/data/gmosCcTop2.db"
-dbLoadRecords "$(version)/../gmoscc/data/gmosCcSadTop2.db"
-dbLoadRecords "$(version)/data/gmSeqTop.db"
-dbLoadRecords "$(version)/data/gmSeqSadTop.db"
-dbLoadRecords "$(version)/data/gmosDcSimTop.db"
-dbLoadRecords "$(version)/data/gmosCcSadSimTop.db"
+dbLoad "$(iocpath)/data/default.dctsdr"
+dbLoadRecords "$(iocpath)/../rel/data/gmMiscSim.db"
+dbLoadRecords "$(iocpath)/../gmoscc/data/gmosCcTop2.db"
+dbLoadRecords "$(iocpath)/../gmoscc/data/gmosCcSadTop2.db"
+dbLoadRecords "$(iocpath)/data/gmSeqTop.db"
+dbLoadRecords "$(iocpath)/data/gmSeqSadTop.db"
+dbLoadRecords "$(iocpath)/data/gmosDcSimTop.db"
+dbLoadRecords "$(iocpath)/data/gmosCcSadSimTop.db"
 
 # This turns off logging
 # iocLogDisable=1
 
-iocInit "$(install)/data/resource.def"
+iocInit "$(iocpath)/data/resource.def"
 
 # Disable master enable
 dbpf "g2:c2:masterEnable","0"
 
 # Load initialization files
-# pvload "$(version)/../gmoscc/data/gmMaskSim.pv","top=g2:c1:"
-pvload "$(version)/data/gmSeq.pv","top=g2:, sadtop=g2:"
-pvload "$(version)/data/gmSeqTracking.pv","top=g2:, sadtop=g2:"
+# pvload "$(iocpath)/../gmoscc/data/gmMaskSim.pv","top=g2:c1:"
+pvload "$(iocpath)/data/gmSeq.pv","top=g2:, sadtop=g2:"
+pvload "$(iocpath)/data/gmSeqTracking.pv","top=g2:, sadtop=g2:"
 
 # Initialise grating records
 

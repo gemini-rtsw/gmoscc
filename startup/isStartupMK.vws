@@ -15,13 +15,13 @@ tyBackspaceSet 0177
 shellPromptSet "GMOS IS MK >"
 
 # cd to application install directory (beware automounter problems)
-cd "$(install)"
+cd "$(iocpath)"
 pwd
 
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
 # (Commented out, since already done in startup_MINIMAL)
-#< $(install)/bin/$(arch)/local
+#< $(iocpath)/bin/$(arch)/local
 
 # Load EPICS core and record stuff
 ld < $(epics)/base/bin/$(arch)/iocCore
@@ -43,34 +43,34 @@ ld < /gemini/slalib/bin/$(arch)/slalib
 ld < /gemini/timelib/bin/$(arch)/timelib
 ld < /gemini/astlib/bin/$(arch)/astlib
 
-ld < $(version)/../gmoscc/bin/$(arch)/drvOmsVme.o
-ld < $(version)/../gmoscc/bin/$(arch)/devDeviceControl.o
-ld < $(version)/../gmoscc/bin/$(arch)/devBarcode.o
-ld < $(version)/../gmoscc/bin/$(arch)/recAssControl.o
-ld < $(version)/../gmoscc/bin/$(arch)/recDeviceControl.o
-ld < $(version)/../gmoscc/bin/$(arch)/gmosGensubLib.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/drvOmsVme.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devDeviceControl.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devBarcode.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/recAssControl.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/recDeviceControl.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/gmosGensubLib.o
 
-ld < $(version)/../gmoscc/bin/$(arch)/gmMaskGenSubs.o
-ld < $(version)/../gmoscc/bin/$(arch)/devMaskControl.o
-ld < $(version)/../gmoscc/bin/$(arch)/gmOiwfsCalc.o
-ld < $(version)/../gmoscc/bin/$(arch)/gmOiwfsGenSubs.o
-ld < $(version)/../gmoscc/bin/$(arch)/gmOiwfsCadSupport.o
-ld < $(version)/../gmoscc/bin/$(arch)/tcs_simulator.o
-ld < $(version)/../gmoscc/bin/$(arch)/devOiwfsControl.o
-ld < $(version)/../gmoscc/bin/$(arch)/devFilterAss.o
-ld < $(version)/../gmoscc/bin/$(arch)/gmosLutLib.o
-ld < $(version)/../gmoscc/bin/$(arch)/devGratingAss.o
-ld < $(version)/../gmoscc/bin/$(arch)/lifter.o
-ld < $(version)/../gmoscc/bin/$(arch)/devTranslationAss.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/gmMaskGenSubs.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devMaskControl.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/gmOiwfsCalc.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/gmOiwfsGenSubs.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/gmOiwfsCadSupport.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/tcs_simulator.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devOiwfsControl.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devFilterAss.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/gmosLutLib.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devGratingAss.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/lifter.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/devTranslationAss.o
 
-ld < $(version)/../gmoscc/bin/$(arch)/gmosCcCadLib.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/gmosCcCadLib.o
 
-ld < $(version)/bin/$(arch)/gmSeqAppl
+ld < $(iocpath)/bin/$(arch)/gmSeqAppl
 
 # Load sequences here
-ld < $(version)/../gmoscc/bin/$(arch)/assemblyCar.o
-ld < $(version)/../gmoscc/bin/$(arch)/systemCar.o
-ld < $(version)/../gmoscc/bin/$(arch)/commandCar.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/assemblyCar.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/systemCar.o
+ld < $(iocpath)/../gmoscc/bin/$(arch)/commandCar.o
 ld < /gemini/timelib/bin/mv167/timeSeq
 
 # Initialise the Gemini Time System (1=master, 1=simulate, intPerSecond, intPerTick, timeOffset)
@@ -80,16 +80,16 @@ timeClockInit 0, 1, 60, 1, 0
 TSconfigure 1, 0, 0, 0, 0, 0
 
 # Load one or more ASCII databases here
-dbLoad "$(version)/../gmoscc/data/default.dctsdr"
-dbLoadRecords "$(version)/../gmoscc/data/gmosCcTopMKRR.db"
-dbLoadRecords "$(version)/../gmoscc/data/gmosCcSadTopMKRR.db"
-dbLoadRecords "$(version)/data/gmSeqTopMK.db"
-dbLoadRecords "$(version)/data/gmSeqSadTopMK.db"
+dbLoad "$(iocpath)/../gmoscc/data/default.dctsdr"
+dbLoadRecords "$(iocpath)/../gmoscc/data/gmosCcTopMKRR.db"
+dbLoadRecords "$(iocpath)/../gmoscc/data/gmosCcSadTopMKRR.db"
+dbLoadRecords "$(iocpath)/data/gmSeqTopMK.db"
+dbLoadRecords "$(iocpath)/data/gmSeqSadTopMK.db"
 
 # This turns off logging
 # iocLogDisable=1
 
-iocInit "$(version)/../gmoscc/data/resource.def"
+iocInit "$(iocpath)/../gmoscc/data/resource.def"
 
 # Ensure master enable is disabled while startup script executes
 dbpf "gm:cc:msEnableEnable","0"
@@ -99,9 +99,9 @@ dbpf "gm:sad:cc:name.VAL","GMOS CC Mauna Kea (IS)"
 
 
 # Load initialization files
-pvload "$(version)/../gmoscc/data/gmOiwfs.pv","top=gm:wfs:"
-pvload "$(version)/../gmoscc/data/gmMask.pv","top=gm:cc:"
-pvload "$(version)/data/gmSeq.pv","top=gm:, sadtop=gm:"
+pvload "$(iocpath)/../gmoscc/data/gmOiwfs.pv","top=gm:wfs:"
+pvload "$(iocpath)/../gmoscc/data/gmMask.pv","top=gm:cc:"
+pvload "$(iocpath)/data/gmSeq.pv","top=gm:, sadtop=gm:"
 
 # Start sequences
 seq &assemblyCar, "top=gm:cc:, dev=msk, priority=75"
