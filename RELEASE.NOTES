@@ -223,3 +223,9 @@ This version is the same as V2-4 with
 - All references to HSWA field removed from checkout scripts,
   since that field is not important and does not always accurately
   reflect the state of the hardware (problem 218).
+- Some cosmetic improvements to the "dm" screens. (Many of the font
+  sizes were much larger on Hilo workstations, rendering some text
+  information unreadable). Interlock information on the top level
+  WFS screen corrected.
+- Any adjustments to the OIWFS probe control as a result of the
+  tests with the TCS and A&G simulators.
