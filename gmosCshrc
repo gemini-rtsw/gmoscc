@@ -66,7 +66,7 @@ setenv GMOS_DC      /gemini/gmosdc/gmosdc
 
 # Add the GMOS solaris binary directories to the PATH
 
-setenv PATH ${PATH}:${GMOS_OP}/bin/solaris:${GMOS_DC}/bin/solaris
+setenv PATH ${PATH}:.applTop/bin/solaris:${GMOS_OP}/bin/solaris:${GMOS_DC}/bin/solaris
 
 # Add the GMOS data directories to the search path for edd and dm.
 
