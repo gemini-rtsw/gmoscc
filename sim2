@@ -2,7 +2,7 @@
 #
 # Script to spawn an xterm to connect to the sim2 simulation crate.
 #
-# A log file is written to the "consoleLogs" directory.
+# A log file is written to the "${HOME}/consoleLogs" directory.
 # The log file output may be suppressed by specifying "nolog" as a first
 # argument.
 #
@@ -17,26 +17,26 @@ set day = `date +%d%h%y`
 # Create the "consoleLogs" directory if it doesn't exist.
 #
 
-if ( !(-e /home/smb/gmos/consoleLogs) ) then
+if ( !(-e ${HOME}/gmos/consoleLogs) ) then
 
-    mkdir /home/smb/gmos/consoleLogs
+    mkdir ${HOME}/gmos/consoleLogs
 endif
 
-if (!(-e /home/smb/gmos/consoleLogs/$day)) then
+if (!(-e ${HOME}/gmos/consoleLogs/$day)) then
 
-    mkdir /home/smb/gmos/consoleLogs/$day
+    mkdir ${HOME}/gmos/consoleLogs/$day
 endif
 
-if (!(-e /home/smb/gmos/consoleLogs/$day/sim2)) then
+if (!(-e ${HOME}/gmos/consoleLogs/$day/sim2)) then
 
-    mkdir /home/smb/gmos/consoleLogs/$day/sim2
+    mkdir ${HOME}/gmos/consoleLogs/$day/sim2
 endif
 
 #
 # Change directory to day's console log directory.
 #
 
-pushd /home/smb/gmos/consoleLogs/$day/sim2
+pushd ${HOME}/gmos/consoleLogs/$day/sim2
 
 #
 # Spawn an X terminal to act as the VxWorks console.

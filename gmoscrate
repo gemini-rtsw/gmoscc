@@ -34,26 +34,26 @@ set day = `date +%d%h%y`
 # Create the "consoleLogs" directory if it doesn't exist.
 #
 
-if ( !(-e /home/gmos/consoleLogs) ) then
+if ( !(-e ${HOME}/consoleLogs) ) then
 
-    mkdir /home/gmos/consoleLogs
+    mkdir ${HOME}/consoleLogs
 endif
 
-if (!(-e /home/gmos/consoleLogs/$day)) then
+if (!(-e ${HOME}/consoleLogs/$day)) then
 
-    mkdir /home/gmos/consoleLogs/$day
+    mkdir ${HOME}/consoleLogs/$day
 endif
 
-if (!(-e /home/gmos/consoleLogs/$day/gmoscrate)) then
+if (!(-e ${HOME}/consoleLogs/$day/gmoscrate)) then
 
-    mkdir /home/gmos/consoleLogs/$day/gmoscrate
+    mkdir ${HOME}/consoleLogs/$day/gmoscrate
 endif
 
 #
 # Change directory to day's console log directory.
 #
 
-pushd /home/gmos/consoleLogs/$day/gmoscrate
+pushd ${HOME}/consoleLogs/$day/gmoscrate
 
 #
 # Spawn an X terminal to act as the VxWorks console.
