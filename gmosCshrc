@@ -92,6 +92,12 @@ else
       setenv LD_LIBRARY_PATH /usr/local/lib
 endif
 
+# Define device initialisation command aliases
+
+if ( -e ${GMOS_OP}/bin/solaris/gmosSetResetAliases ) then
+   source ${GMOS_OP}/bin/solaris/gmosSetResetAliases
+endif
+
 #
 # ------------------------------------------------------------------------
 #      MISCELLANEOUS DEFINITIONS
@@ -123,16 +129,6 @@ alias gmosNoCP 'unsetenv GMOS_CP_ACCESS && set prompt = "`uname -n`% " && echo "
 #alias  ayla     'setenv DISPLAY ayla:0.0'
 #alias  manta    'setenv DISPLAY manta:0.0'
 #alias  pisces   'setenv DISPLAY pisces:0.0'
-
-#
-# ------------------------------------------------------------------------
-#      DEFINITIONS NEEDED BY THE dhsTestCmdr TEST SCRIPTS
-# ------------------------------------------------------------------------
-#
-
-# Define device initialisation command aliases
-
-source ${GMOS_OP}/bin/solaris/gmosSetResetAliases
 
 #
 # ------------------------------------------------------------------------
