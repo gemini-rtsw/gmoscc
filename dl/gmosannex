@@ -40,11 +40,11 @@ pushd ${HOME}/consoleLogs/$day
 
 if ( $1 == "nolog" ) then
 
-   xterm -geometry 80x50-0+0 -sb -sl 256 -n IOC -T "VxWorks Console" -e gmosIocAnnex 10.1.5.66 &
+   xterm -geometry 80x50-0+0 -sb -sl 256 -n IOC -T "VxWorks Console" -e gmosIocAnnex 10.1.2.182 &
    echo "No log file will be created."
 else
 
-   xterm -l -geometry 80x50-0+0 -sb -sl 256 -n IOC -T "VxWorks Console" -e gmosIocAnnex 10.1.5.66 &
+   xterm -l -geometry 80x50-0+0 -sb -sl 256 -n IOC -T "VxWorks Console" -e gmosIocAnnex 10.1.2.182 &
    echo "A log file will be created in the `pwd`"
    echo "directory. Check for files called XtermLog.*"
 endif
