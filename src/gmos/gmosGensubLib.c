@@ -50,6 +50,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 /* *INDENT-OFF* */
 /*
  * $Log$
+ * Revision 1.4  2002/04/24 05:14:05  ajf
+ * Changes for 3.13.4GEM8.4.
+ *
  * Revision 1.2  2002/03/25 19:44:50  mbec
  * epics 3.13 debugging
  *
@@ -3266,6 +3269,7 @@ long gmosMakeGratString (struct genSubRecord *pgensub)
      double tiltScale;                            /* The input tiltscale value          */
      double backlash;                             /* The input backlash value           */
      double forwardlash;                          /* The input forwardlash value        */
+     double zpc;                                  /* Zero point correction              */
      char   valString[MAX_STRING_SIZE];           /* Double value formatted as a string */
      char   tempString[SCRATCH_BUFF_SIZE];        /* Scratch space                      */
 
@@ -3274,27 +3278,32 @@ long gmosMakeGratString (struct genSubRecord *pgensub)
      tiltScale   = *(double *) pgensub->a;
      backlash    = *(double *) pgensub->b;
      forwardlash = *(double *) pgensub->c;
+     zpc         = *(double *) pgensub->d;
 
      /*
       * Make up a string looking something like this
       * 
-      *    TSCALE 106.867 BLASH 1.25 FLASH 0.037
+      *    TSCALE 106.867 BLASH 1.25 FLASH 0.037 ZPC 123.0
       *
       * in which the floating point values are written to
       * strings which are then truncated, to ensure the
       * whole thing can fit into MAX_STRING_SIZE-1 characters.
       */
 
-     strcpy (tempString, "TSCALE ");
+     strcpy (tempString, "TS ");
      sprintf (valString, "%7.3f", tiltScale);
      strncat (tempString, valString, 7);
 
-     strcat (tempString, " BLASH ");
+     strcat (tempString, " BL ");
      sprintf (valString, "%4.2f", backlash);
      strncat (tempString, valString, 4);
 
-     strcat (tempString, " FLASH ");
+     strcat (tempString, " FL ");
      sprintf (valString, "%5.3f", forwardlash);
+     strncat (tempString, valString, 5);
+ 
+     strcat (tempString, " ZPC ");
+     sprintf (valString, "%5.2f", zpc);
      strncat (tempString, valString, 5);
 
      /* Finally, copy the string to VALA, ensuring it is truncated to MAX_STRING_SIZE-1 */
