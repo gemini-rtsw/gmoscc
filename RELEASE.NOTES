@@ -249,6 +249,9 @@ This version is the same as V2-5 with
   record bug that crashes Channel Access.
 - Changed some of the messages reported by the checkout scripts to
   make them less confusing (as noticed during the training exercise).
+- Worked around mysterious bug which causes adl2dl2.4 to crash when
+  building the dm screens for the first time. The screens are built
+  twice.
 
 V?-? ?? ??? 2001 ???
 --------------------

@@ -39,7 +39,6 @@ cp ./local.vws ./startup
 
 #
 # Go to the dl directory and explicitly make the color templates.
-#
 
 cd ./dl; adl2dl2.4 gmColors.adl; adl2dl2.4 colors.adl; cd ..
 
@@ -48,5 +47,14 @@ cd ./dl; adl2dl2.4 gmColors.adl; adl2dl2.4 colors.adl; cd ..
 #
 
 gmake >> gmosBuild.log 2>&1
+
+#
+# Bug work around. Sometimes the adl2dl2.4 converter core dumps when
+# attempting to build some of the dm screens. Building them a second time
+# recovers the missing screens. This recovery needs to be done in a
+# C shell script so that "touch" works properly
+#
+
+./gmosInstallExtra >> gmosBuild.log 2>&1
 
 exit 0
