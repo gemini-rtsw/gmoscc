@@ -45,6 +45,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2002/04/24 05:18:13  ajf
+ * Changes for epics3.13.4GEM8.4.
+ *
  * Revision 1.3  2002/03/25 19:44:49  mbec
  * epics 3.13 debugging
  *
@@ -239,7 +242,7 @@
 #include    <boRecord.h>
 #include    <deviceControl.h>
 #include    <devDcOms844.h>
-#include    <drvOmsVme.h>
+#include    <drvOmsVme844.h>
 #include    <ddrMessageLevels.h>      /* Device record message level definitions. */
 
 /*

@@ -1,5 +1,5 @@
 DIRS += deviceControl
-DIRS += include
+DIRS += inc
 DIRS += assemblyControl
 DIRS += gmos 
 DIRS += iseq

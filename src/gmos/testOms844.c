@@ -64,7 +64,7 @@
 
 #include <devLib.h>
 
-#include <drvOmsVme.h>
+#include <drvOmsVme844.h>
 
 
 /*
