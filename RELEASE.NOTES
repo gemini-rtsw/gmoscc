@@ -1,23 +1,39 @@
-V5-1 Jun 2004 tpaz
+V6-1 Nov 2004 tpaz
+------------------
+Modifications to Oms driver to deal with
+RP errors.
+
+Changed database names
+
+V6-0 Oct 2004 tpaz
+------------------
+Ported to GEM8.6
+First version to try to deal with the OMS driver 
+and OIWFS problems on PPC.
+
+V4-6 Jun 2004 tpaz
+------------------
+
+Zero Point offsets added for gratings.
+Files changed:
+devGratingAss.c
+
+
+
+
+V4-5 Jun 2004 tpaz     Note: this version is tagged as V4-5-0
+                       in the cvs repository
 --------------------
 
 -Fixed file open/close bug for aux luts.
 Files modified: devGratingAss.c
-
--Modified number NOJ  to 45 in tcs context input.
-Files modified:  gmSeqAtmTrack.sch
 
 -Writing grstep to assembly VALC.
 Files changed: devGratingAss.c
 
 -E-OFFSETS ON label added to gmSeqMechCommands.adl
 
--gmOiwfs.pv: tolerance changed from 0.06 to 1.75
-
-V5-0 Apr 2004 tpaz
---------------------
--Ported to GEM8.5
-
+-gmOiwfs.pv: tolerance changed from 0.06 to 1.25
 
 V4-4 Dec 2003 tpaz
 -------------------
