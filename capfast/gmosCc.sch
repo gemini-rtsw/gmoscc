@@ -1,16 +1,21 @@
 [schematic2]
-uniq 136
+uniq 138
 [tools]
 [detail]
+w -134 2539 100 0 n#137 efanouts.StartOnly.LNK1 -144 2528 -64 2528 junction
+w -134 2507 100 0 n#137 efanouts.StartOnly.LNK2 -144 2496 -64 2496 junction
+w -134 2443 100 0 n#137 efanouts.StartOnly.LNK4 -144 2432 -64 2432 junction
+w -134 2411 100 0 n#137 efanouts.StartOnly.LNK5 -144 2400 -64 2400 junction
+w -134 2379 100 0 n#137 efanouts.StartOnly.LNK6 -144 2368 -64 2368 -64 2640 0 2640 eais.doNothing.SLNK
 w 98 1027 100 0 n#135 doors.doors#122.DOORS -128 896 -64 896 -64 1024 320 1024 320 896 384 896 gmIlckWatchdog.gmIlckWatchdog#124.DOORS
-w -38 2491 100 0 n#133 efanouts.StartOnly.LNK3 -144 2480 128 2480 gmosCadCar.gmosCadCar#132.SLNK
-w 472 1475 100 0 n#97 gmosCcSystem.gmosCcSystem#116.CFLK 64 1824 256 1824 256 1472 736 1472 egenSubD.applyCGensub.SLNK
+w -38 2475 100 0 n#133 efanouts.StartOnly.LNK3 -144 2464 128 2464 gmosCadCar.gmosCadCar#132.SLNK
+w 408 2475 100 0 n#97 gmosCadCar.gmosCadCar#132.FLNK 288 2464 576 2464 576 1472 junction
 w 252 1323 100 0 n#97 gmosAssemblies.gmosAssemblies#105.CFLK 64 1184 256 1184 256 1472 junction
-w 572 1971 100 0 n#97 gmosCadCar.gmosCadCar#132.FLNK 288 2480 576 2480 576 1472 junction
-w -742 2547 100 0 n#131 eapply.apply.DIR -1056 1984 -1088 1984 -1088 2544 -336 2544 efanouts.StartOnly.SELL
-w 604 2259 100 0 n#127 gmosCadCar.gmosCadCar#132.IVAL 288 2544 608 2544 608 1984 736 1984 egenSubD.applyCGensub.INPG
+w 472 1475 100 0 n#97 gmosCcSystem.gmosCcSystem#116.CFLK 64 1824 256 1824 256 1472 736 1472 egenSubD.applyCGensub.SLNK
+w -742 2539 100 0 n#131 eapply.apply.DIR -1056 1984 -1088 1984 -1088 2528 -336 2528 efanouts.StartOnly.SELL
+w 418 2539 100 0 n#127 gmosCadCar.gmosCadCar#132.IVAL 288 2528 608 2528 608 1984 736 1984 egenSubD.applyCGensub.INPG
 w 1112 2147 100 0 n#71 egenSubD.applyCGensub.OUTA 1024 2144 1248 2144 1248 2176 1440 2176 ecars.applyC.IVAL
-w -644 2235 100 0 n#126 eapply.apply.FLNK -672 2016 -640 2016 -640 2464 -384 2464 efanouts.StartOnly.SLNK
+w -542 2459 100 0 n#126 eapply.apply.FLNK -672 2016 -640 2016 -640 2448 -384 2448 efanouts.StartOnly.SLNK
 w -572 1979 100 0 n#118 eapply.apply.OUTA -672 1888 -576 1888 -576 2080 -448 2080 gmosCcSystem.gmosCcSystem#116.DIR
 w -572 1627 100 0 n#117 eapply.apply.OUTB -672 1824 -576 1824 -576 1440 -448 1440 gmosAssemblies.gmosAssemblies#105.DIR
 w -190 1547 100 0 n#115 gmosCcSystem.gmosCcSystem#116.SIMM 64 1984 160 1984 160 1536 -480 1536 -480 1216 -448 1216 gmosAssemblies.gmosAssemblies#105.SIMM
@@ -29,8 +34,13 @@ w 520 2179 100 0 n#94 gmosCcSystem.gmosCcSystem#116.CAR 64 1920 352 1920 352 217
 w 1144 2019 100 0 n#86 egenSubD.applyCGensub.OUTC 1024 2016 1312 2016 1312 2080 1440 2080 ecars.applyC.IERR
 w 1128 2091 100 0 n#85 egenSubD.applyCGensub.OUTB 1024 2080 1280 2080 1280 2112 1440 2112 ecars.applyC.IMSS
 w 1276 1707 100 0 n#76 egenSubD.applyCGensub.FLNK 1024 1440 1280 1440 1280 1984 1440 1984 ecars.applyC.SLNK
-s -48 2512 100 0 CAD_START = 3
+s 336 2592 100 0 (PPC FANOUT BUG CRASHES CHANNEL ACCESS)
+s 336 2624 100 0 <--- PROTECT AGAINST FUTURE PPC CONVERSION
+s -48 2496 100 0 CAD_START = 3
 [cell use]
+use eais 128 2704 100 0 doNothing
+xform 0 128 2640
+p -16 2704 100 0 -1 PV:$(top)$(cc)
 use gmosEng 1072 711 100 0 gmosEng#134
 xform 0 1328 912
 p 1072 704 100 0 1 seta:top $(top)
@@ -38,14 +48,14 @@ p 1072 672 100 0 1 setb:sadtop $(sadtop)
 p 1072 640 100 0 1 setc:c1 $(c1)
 p 1072 608 100 0 1 setd:c2 $(c2)
 p 1072 576 100 0 1 sete:cc $(cc)
-use gmosCadCar 128 2391 100 0 gmosCadCar#132
-xform 0 208 2504
-p 128 2384 100 0 1 set1:cad cc:start
-use efanouts -224 2624 100 0 StartOnly
-xform 0 -264 2480
-p -400 2624 100 0 1 PV:$(top)$(cc)
-p -416 2576 100 0 1 SELM:Specified
-p -624 2544 100 0 0 def(SDIS):0.0
+use gmosCadCar 128 2375 100 0 gmosCadCar#132
+xform 0 208 2488
+p 128 2368 100 0 1 set1:cad cc:start
+use efanouts -224 2608 100 0 StartOnly
+xform 0 -264 2464
+p -400 2608 100 0 1 PV:$(top)$(cc)
+p -416 2560 100 0 1 SELM:Specified
+p -624 2528 100 0 0 def(SDIS):0.0
 use gmIlckWatchdog 384 711 100 0 gmIlckWatchdog#124
 xform 0 480 832
 p 384 704 100 0 1 seta:top $(top)
