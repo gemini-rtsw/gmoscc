@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.3  2003/01/31 14:12:46  gemvx
+ * Merged gmos-south
+ *
  * Revision 1.2  2002/05/01 21:02:38  gemvx
  * Clear the 250 micron offset when IFU is out of beam
  *
@@ -2399,7 +2402,7 @@ long gmSeqCadMask(struct cadRecord *pcad)
 		/* Obtain a focus offset for this mask/IFU. */
 
                 focusOffset = p->focusOffset;
-		DBGMSGREAL(DBG_MAX,"Focus offset for mask from LUT is", focusOffset);
+		/*DBGMSGREAL(DBG_MAX,"Focus offset for mask from LUT is", focusOffset);*/
                 /*printf("DEBUG MESSAGE : Lut table read. Focus offset for mask is %ld\
 n", focusOffset);*/
              }

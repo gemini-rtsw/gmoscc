@@ -395,3 +395,19 @@ aux_gr_allgratings.lut
   Files changed:
   inc/lifter.h
 
+V4-2 July 2003 tpaz
+-------------------
+- Added "follow z" option.
+
+Files modified:
+
+	gmSeqTracking.c: 
+	gmSeqDtaTrackCad.sch : 
+	gmSeqDtaControl.adl
+
+
+- Cleaned up some debug messages from :
+  devGratingAss.c, gmSeqCadLib.c
+
+- Removed aux_gr.lut from /gmos/src/MK/lut/Makefile.Vx
+

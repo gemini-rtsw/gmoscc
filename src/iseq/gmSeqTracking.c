@@ -22,6 +22,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.2  2002/05/02 20:31:57  gemvx
+ * Workaround added for port 5
+ *
  * Revision 1.1  2002/04/24 05:26:18  ajf
  * Added for epics3.13.4GEM8.4.
  *
@@ -466,7 +469,7 @@ long gmSeqCadDtaTrack (struct cadRecord *pcad)
 {
 
   long status ;           /* Return status */
-  char *trackModes[] = {"STOP", "MOVE", "FOLLOW", "FOLLOW-XY", NULL} ;
+  char *trackModes[] = {"STOP", "MOVE", "FOLLOW", "FOLLOW-XY", "FOLLOW-Z", NULL} ;
   char trackModeIn[MAX_STRING_SIZE]; /* Input tracking mode, as a string */
   double dx ;                        /* X offset (microns) */
   double dy ;                        /* Y offset (microns) */

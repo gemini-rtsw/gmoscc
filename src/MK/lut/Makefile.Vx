@@ -76,7 +76,6 @@ DATA += ../dta3.lut
 DATA += ../dta2.lut
 DATA += ../dta1.lut
 DATA += ../dta.lut
-DATA += ../aux_gr.lut
 DATA += ../atmExp.lut
 DATA += ../atmEnp.lut
 DATA += ../atm.lut
