@@ -7,7 +7,7 @@ display {
 	mnrv="4"
 	ndyng="6"
 	npc="7"
-	nstr="71"
+	nstr="68"
 	ndynamic="5"
 	nplot="0"
 	nrd="0"
@@ -18,28 +18,28 @@ display {
 	object {
 		x="0"
 		y="0"
-		width="425"
-		height="352"
+		width="434"
+		height="327"
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="2492"
+	nwords_dspy="2460"
 	nwords_sta="292"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1046"
-	osta="754"
-	odynamic="2150"
-	oplot="2480"
-	ord="2480"
-	oes="2480"
-	okd="2480"
-	opd="2492"
-	opo="2492"
+	odyng="1014"
+	osta="722"
+	odynamic="2118"
+	oplot="2448"
+	ord="2448"
+	oes="2448"
+	okd="2448"
+	opd="2460"
+	opo="2460"
 	opc="68"
 	ostr="152"
-	ocmap="754"
-	ocrules="754"
+	ocmap="722"
+	ocrules="722"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -64,8 +64,8 @@ display {
 }
 "text" {
 	object {
-		x="19"
-		y="22"
+		x="13"
+		y="14"
 		width="387"
 		height="24"
 		groupid="0"
@@ -83,20 +83,20 @@ display {
 }
 "line" {
 	object {
-		x="21"
-		y="48"
+		x="15"
+		y="40"
 		width="374"
 		height="1"
 		groupid="0"
 	}
 	npoints="2"
 	point[0] {
-		x="21"
-		y="48"
+		x="15"
+		y="40"
 	}
 	point[1] {
-		x="395"
-		y="49"
+		x="389"
+		y="41"
 	}
 	orgpoint[0] {
 		x="0"
@@ -117,8 +117,8 @@ display {
 }
 "text" {
 	object {
-		x="31"
-		y="115"
+		x="25"
+		y="109"
 		width="234"
 		height="19"
 		groupid="0"
@@ -128,8 +128,8 @@ display {
 }
 "text" {
 	object {
-		x="28"
-		y="160"
+		x="22"
+		y="151"
 		width="237"
 		height="19"
 		groupid="0"
@@ -139,8 +139,8 @@ display {
 }
 "text" {
 	object {
-		x="28"
-		y="203"
+		x="22"
+		y="197"
 		width="237"
 		height="19"
 		groupid="0"
@@ -150,8 +150,8 @@ display {
 }
 "text" {
 	object {
-		x="25"
-		y="247"
+		x="19"
+		y="239"
 		width="240"
 		height="19"
 		groupid="0"
@@ -161,8 +161,8 @@ display {
 }
 "text" {
 	object {
-		x="29"
-		y="75"
+		x="23"
+		y="66"
 		width="236"
 		height="19"
 		groupid="0"
@@ -211,8 +211,8 @@ display {
 }
 "text" {
 	object {
-		x="8"
-		y="286"
+		x="2"
+		y="278"
 		width="300"
 		height="32"
 		groupid="0"
@@ -230,20 +230,20 @@ display {
 }
 "line" {
 	object {
-		x="267"
-		y="67"
-		width="140"
+		x="261"
+		y="59"
+		width="159"
 		height="32"
 		groupid="0"
 	}
 	npoints="2"
 	point[0] {
-		x="267"
-		y="99"
+		x="261"
+		y="91"
 	}
 	point[1] {
-		x="407"
-		y="67"
+		x="420"
+		y="59"
 	}
 	orgpoint[0] {
 		x="0"
@@ -256,20 +256,20 @@ display {
 }
 "line" {
 	object {
-		x="267"
-		y="110"
-		width="140"
+		x="261"
+		y="102"
+		width="159"
 		height="32"
 		groupid="0"
 	}
 	npoints="2"
 	point[0] {
-		x="267"
-		y="142"
+		x="261"
+		y="134"
 	}
 	point[1] {
-		x="407"
-		y="110"
+		x="420"
+		y="102"
 	}
 	orgpoint[0] {
 		x="0"
@@ -282,20 +282,20 @@ display {
 }
 "line" {
 	object {
-		x="267"
-		y="152"
-		width="140"
+		x="261"
+		y="144"
+		width="159"
 		height="32"
 		groupid="0"
 	}
 	npoints="2"
 	point[0] {
-		x="267"
-		y="184"
+		x="261"
+		y="176"
 	}
 	point[1] {
-		x="407"
-		y="152"
+		x="420"
+		y="144"
 	}
 	orgpoint[0] {
 		x="0"
@@ -308,20 +308,20 @@ display {
 }
 "line" {
 	object {
-		x="267"
-		y="198"
-		width="140"
+		x="261"
+		y="190"
+		width="159"
 		height="32"
 		groupid="0"
 	}
 	npoints="2"
 	point[0] {
-		x="267"
-		y="230"
+		x="261"
+		y="222"
 	}
 	point[1] {
-		x="407"
-		y="198"
+		x="420"
+		y="190"
 	}
 	orgpoint[0] {
 		x="0"
@@ -334,20 +334,20 @@ display {
 }
 "line" {
 	object {
-		x="267"
-		y="240"
-		width="140"
+		x="261"
+		y="232"
+		width="159"
 		height="32"
 		groupid="0"
 	}
 	npoints="2"
 	point[0] {
-		x="267"
-		y="272"
+		x="261"
+		y="264"
 	}
 	point[1] {
-		x="407"
-		y="240"
+		x="420"
+		y="232"
 	}
 	orgpoint[0] {
 		x="0"
@@ -360,10 +360,10 @@ display {
 }
 "text update" {
 	object {
-		x="280"
-		y="67"
-		width="112"
-		height="32"
+		x="274"
+		y="60"
+		width="131"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -394,22 +394,22 @@ display {
 		rulecolorfg="1"
 		hdl="0"
 		ldl="0"
-		prec="-1"
+		prec="4"
 		newunits=""
 		units="none"
 		decorate="none"
 		convertFunc=""
 		convertParams=""
 	}
-	align="horiz. left"
+	align="horiz. right"
 	format="decimal"
 }
 "text update" {
 	object {
-		x="280"
-		y="110"
-		width="112"
-		height="32"
+		x="274"
+		y="103"
+		width="131"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -440,22 +440,22 @@ display {
 		rulecolorfg="1"
 		hdl="0"
 		ldl="0"
-		prec="-1"
+		prec="4"
 		newunits=""
 		units="none"
 		decorate="none"
 		convertFunc=""
 		convertParams=""
 	}
-	align="horiz. left"
+	align="horiz. right"
 	format="decimal"
 }
 "text update" {
 	object {
-		x="280"
-		y="153"
-		width="112"
-		height="32"
+		x="274"
+		y="145"
+		width="131"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -486,22 +486,22 @@ display {
 		rulecolorfg="1"
 		hdl="0"
 		ldl="0"
-		prec="-1"
+		prec="4"
 		newunits=""
 		units="none"
 		decorate="none"
 		convertFunc=""
 		convertParams=""
 	}
-	align="horiz. left"
+	align="horiz. right"
 	format="decimal"
 }
 "text update" {
 	object {
-		x="280"
-		y="198"
-		width="112"
-		height="32"
+		x="274"
+		y="191"
+		width="131"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -532,22 +532,22 @@ display {
 		rulecolorfg="1"
 		hdl="0"
 		ldl="0"
-		prec="-1"
+		prec="4"
 		newunits=""
 		units="none"
 		decorate="none"
 		convertFunc=""
 		convertParams=""
 	}
-	align="horiz. left"
+	align="horiz. right"
 	format="decimal"
 }
 "text update" {
 	object {
-		x="280"
-		y="241"
-		width="112"
-		height="32"
+		x="274"
+		y="233"
+		width="131"
+		height="30"
 		groupid="0"
 	}
 	monitor {
@@ -578,20 +578,20 @@ display {
 		rulecolorfg="1"
 		hdl="0"
 		ldl="0"
-		prec="-1"
+		prec="4"
 		newunits=""
 		units="none"
 		decorate="none"
 		convertFunc=""
 		convertParams=""
 	}
-	align="horiz. left"
+	align="horiz. right"
 	format="decimal"
 }
 "kill display" {
 	object {
-		x="312"
-		y="309"
+		x="342"
+		y="280"
 		width="80"
 		height="35"
 		groupid="0"
