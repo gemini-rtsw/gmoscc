@@ -16,6 +16,8 @@ ifu           4.0       0
 mask          0.8       0
 clear      -350.0       0
 park          4.0       0
-id         -421.0       0
+id         -404.0       0
+idmask     -404.0       0
+idframe    -421.0       0
 grip       -446.0       0
 release    -447.5       0
