@@ -17,6 +17,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2002/04/24 05:25:35  ajf
+ * Added for port to epics3.13.4GEM8.4.
+ *
  * Revision 1.1  2001/11/28 20:08:50  mbec
  * *** empty log message ***
  *
@@ -68,7 +71,7 @@
 #define GR_VALVE_ACTIVE    0
 #define GR_PRESSURE_OK     0
 
-#define GR_LIFTER_CYCLE_TIME  6		/* Lifter cycle time in seconds			*/
+#define GR_LIFTER_CYCLE_TIME  9		/* Lifter cycle time in seconds			*/
 #define GR_LIFTER_SHORT_TIME  2		/* Lifter short reprocessing time in seconds	*/
 #define GR_LIFTER_MAX_CYCLES  1		/* Maximum number of lifter cycles		*/
 
