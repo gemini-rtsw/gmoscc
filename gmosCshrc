@@ -39,6 +39,17 @@
 #        GMOS commands may be executed from /gemini/gmos/gmos/bin/solaris.
 #-
 
+#
+# ------------------------------------------------------------------------
+#      SET UP FOR EPICS IF NOT ALREADY SET UP
+# ------------------------------------------------------------------------
+#
+
+if (!($?EPICS)) then
+
+   source /usr/local/epics/epics3.12.2GEM5/config/epics.csh
+   setenv EPICS_DISPLAY_PATH ".:.applTop/data"
+endif
 
 #
 # ------------------------------------------------------------------------
