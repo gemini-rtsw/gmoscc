@@ -23,45 +23,45 @@ s 2384 2496 150 0 gmSeqObsMean.sch
 use oslBorderC -464 55 100 0 oslBorderC#35
 xform 0 1216 1360
 p 2476 304 120 256 -1 Title:GMOS IS - compute mean values
-use inhier -80 679 100 0 END
-xform 0 -64 720
-use inhier -80 1095 100 0 CONTINUE
-xform 0 -64 1136
-use inhier -80 1655 100 0 PAUSE
-xform 0 -64 1696
 use inhier -80 2071 100 0 BEGIN
 xform 0 -64 2112
-use efanouts 240 583 100 0 fanObsEnd
-xform 0 360 736
-p 256 864 100 0 1 SELM:All
-use efanouts 496 999 100 0 fanObsContinue
-xform 0 616 1152
-p 512 1280 100 0 1 SELM:All
-use efanouts 560 1559 100 0 fanObsPause
-xform 0 680 1712
-p 576 1840 100 0 1 SELM:All
+use inhier -80 1655 100 0 PAUSE
+xform 0 -64 1696
+use inhier -80 1095 100 0 CONTINUE
+xform 0 -64 1136
+use inhier -80 679 100 0 END
+xform 0 -64 720
 use efanouts 320 1975 100 0 fanObsBegin
 xform 0 440 2128
 p 352 2256 100 0 1 SELM:All
-use gmSeqObsMeanCalc 2144 471 100 0 gmSeqObsMeanCalc#3
-xform 0 2304 736
-p 2352 800 100 0 -1 seta:top $(top)dtaZpos
-p 2372 780 100 0 -1 setb:value $(cc)dtaZ
-p 2392 760 100 0 -1 setc:meansad $(sad)dtaZMean
-p 2412 740 100 0 -1 setd:beginsad $(sad)dtaZStart
-p 2432 720 100 0 -1 sete:endsad $(sad)dtaZEnd
-use gmSeqObsMeanCalc 2144 1159 100 0 gmSeqObsMeanCalc#2
-xform 0 2304 1424
-p 2352 1424 100 0 -1 seta:top $(top)expAngle
-p 2372 1404 100 0 -1 setb:value $(cc)atmExpAngle
-p 2392 1384 100 0 -1 setc:meansad $(sad)atmExpMean
-p 2412 1364 100 0 -1 setd:beginsad $(sad)atmExpStart
-p 2432 1344 100 0 -1 sete:endsad $(sad)atmExpEnd
+use efanouts 560 1559 100 0 fanObsPause
+xform 0 680 1712
+p 576 1840 100 0 1 SELM:All
+use efanouts 496 999 100 0 fanObsContinue
+xform 0 616 1152
+p 512 1280 100 0 1 SELM:All
+use efanouts 240 583 100 0 fanObsEnd
+xform 0 360 736
+p 256 864 100 0 1 SELM:All
 use gmSeqObsMeanCalc 2160 1799 100 0 gmSeqObsMeanCalc#1
 xform 0 2320 2064
 p 2384 2080 100 0 -1 seta:top $(top)enpAngle
-p 2400 2048 100 0 -1 setb:value $(cc)atmEnpAngle
+p 2400 2048 100 0 -1 setb:value $(sad)cc:atmEnpAngle
 p 2352 2000 100 0 -1 setc:meansad $(sad)atmEnpMean
 p 2368 1968 100 0 -1 setd:beginsad $(sad)atmEnpStart
 p 2368 1936 100 0 -1 sete:endsad $(sad)atmEnpEnd
+use gmSeqObsMeanCalc 2144 1159 100 0 gmSeqObsMeanCalc#2
+xform 0 2304 1424
+p 2352 1424 100 0 -1 seta:top $(top)expAngle
+p 2372 1404 100 0 -1 setb:value $(sad)cc:atmExpAngle
+p 2392 1384 100 0 -1 setc:meansad $(sad)atmExpMean
+p 2412 1364 100 0 -1 setd:beginsad $(sad)atmExpStart
+p 2432 1344 100 0 -1 sete:endsad $(sad)atmExpEnd
+use gmSeqObsMeanCalc 2144 471 100 0 gmSeqObsMeanCalc#3
+xform 0 2304 736
+p 2352 800 100 0 -1 seta:top $(top)dtaZpos
+p 2372 780 100 0 -1 setb:value $(sad)cc:dtaZ
+p 2392 760 100 0 -1 setc:meansad $(sad)dtaZMean
+p 2412 740 100 0 -1 setd:beginsad $(sad)dtaZStart
+p 2432 720 100 0 -1 sete:endsad $(sad)dtaZEnd
 [comments]
