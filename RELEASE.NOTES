@@ -244,7 +244,10 @@ This version is the same as V2-5 with
   is not activated during a reboot.
 - gmOiwfsCalibrate.c function modified so it will build correctly.
 - Malcolm Smith's bug fix to CalcApproxProbePosition in gmOiwfsCalc.c.
+- A fix to future-proof the fanout connected to the top level apply
+  record in the components controller against a power PC fanout
+  record bug that crashes Channel Access.
 
-V2-7 ?? May 2001 ???
+V2-7 ?? ??? 2001 ???
 --------------------
 A future version will contain Malcolm Smith's ADC correction code.
