@@ -63,8 +63,44 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.26  2001/03/27 10:59:53  gmos
+ *
+ *
+ * Removed clearing of mmap & lmap in initState() to allow updates
+ * of LSWA, HSWA, RENC, RRBV, MPOS & MSTA fields that are detected
+ * in the callback section of process() prior to calling
+ * processState().  Fixes side-effect to previous fix
+ * (devDeviceControl.c v1.22) for bug 258 and possibly fixes
+ * bug 218 (maybe wishful thinking).
+ *
+ * Added check in movingState() to ensure target = position at
+ * the end of a move.  This checks for the case where the motor
+ * is stopped by the motor controller after an apparent limit
+ * but the omsScanTask did not read a limit.  Should fix bug 289
+ * but will be difficult to test.
+ *
+ * Changed the way MPOS, RENC & RRBV are updated in process().
+ * Combined with change to devDeviceControl.c.bmw20010322a,
+ * should fix side-effect to previous fix of bug 168.  Now
+ * updates MPOS when raw encoder changes (previously only
+ * updated when raw position changed, so missed anything that
+ * happened when idle).  Compares new encoder value to where
+ * encoder SHOULD be based on raw position (rather than previous
+ * encoder) to determine whether the change is within the deadband.
+ * The way it WAS, as long as each change was within the deadband
+ * it was okay (it didn't notice any large accumulation).  For
+ * example, if EDBD was 20, as long as each pass only saw a 19
+ * count change everything was okay.
+ *
+ * ALL THESE CHANGES NEED TO BE THOROUGHLY TESTED ON REAL HARDWARE.
+ *
+ * Revision 1.25  2001/03/20 13:40:31  gmos
+ * Modified DEBUG macro. All files now use printf() rather than logMsg(). 
+ * All also print the output from taskName(0).
+ *
  * Revision 1.24  2001/03/07 13:44:36  gmos
- * Changed the OMS scan task did not check limits message from DDR_MSG_ERROR to DDR_MSG_MIN. It's a debugging message.
+ * Changed the OMS scan task did not check limits message from DDR_MSG_ERROR to 
+ * DDR_MSG_MIN. It's a debugging message.
  *
  * Revision 1.23  2001/03/01 14:14:49  gmos
  * Switched to use device message levels defined in ddrMessageLevels.h.
@@ -76,7 +112,8 @@ static char rcsid[] = "$Id$";
  * Set the HPVL flag when indexing in VSM simulation mode.
  *
  * Revision 1.20  2000/12/01 18:24:00  gmos
- * Add an overhead time while indexing to allow for the additional short moves made when indexing on a home switch.
+ * Add an overhead time while indexing to allow for the additional short moves 
+ * made when indexing on a home switch.
  *
  * Revision 1.19  2000/11/17 00:32:26  gmos
  * Don't reject INIT, INDEX or TEST if device is HOLDING.
@@ -92,7 +129,7 @@ static char rcsid[] = "$Id$";
  * nor does it generate any error message directly.
  *
  * Revision 1.16  2000/10/23 17:25:39  gmos
- * Check for spontanious motion in idleState only when not simulating.
+ * Check for spontaneous motion in idleState only when not simulating.
  *
  * Revision 1.15  2000/10/16 22:57:49  gmos
  * Added debugging to remainder of calls to abortingState.
@@ -283,6 +320,7 @@ static char rcsid[] = "$Id$";
 #include    <logLib.h>
 #include    <tickLib.h>
 #include    <ellLib.h>
+#include    <taskLib.h>
 
 #include    <dbDefs.h>
 #include    <dbAccess.h>
@@ -511,10 +549,11 @@ typedef struct {
  */
 
 #define DEBUG(l,FMT,V) if (l <= pdr->dbug)                     \
-                            logMsg (FMT,                       \
-                                    (int) tickGet(),           \
-                                    (int) pdr->name,           \
-                                    (int) V, 0, 0, 0);
+                            printf  ("%s: "FMT,                \
+                                    taskName(0),               \
+                                    tickGet(),                 \
+                                    pdr->name,                 \
+                                    V);
 
 /*
  *  Define a macro to save the first (root) command failure error message 
@@ -1192,7 +1231,7 @@ static long checkVals
         if (*end == '\0')
         {
             DEBUG(DDR_MSG_MAX, 
-                  "<%d> %s:checkVals: decodes as %d\n",
+                  "<%d> %s:checkVals: decodes as %f\n",
                   *position );
             found = TRUE;
         }
@@ -1225,7 +1264,7 @@ static long checkVals
                     *index = pNode->index;
 
                     DEBUG(DDR_MSG_MAX,
-                          "<%d> %s:checkVals: translates to %d\n",
+                          "<%d> %s:checkVals: translates to %f\n",
                           *position );
                     DEBUG(DDR_MSG_MAX, 
                           "<%d> %s:checkVals: index mode %d\n",
@@ -3020,13 +3059,6 @@ static long initState
   
 
     /*
-     *  Re-initialize deviceControl record fields.
-     */
-
-    pdr->mmap = 0;
-    pdr->lmap = 0;
-
-    /*
      *  If we are controlling a motor brake (brake timeout is set)
      *  then apply the brake by setting the brake control bit and 
      *  requesting a write to the brake control output link.
@@ -3176,7 +3208,7 @@ static long initState
                            "<%d> %s:initState: LUT name: %s\n",
                            pNode->name);
                      DEBUG(DDR_MSG_FULL,
-                           "<%d> %s:initState: LUT target: %d\n",
+                           "<%d> %s:initState: LUT target: %f\n",
                            pNode->target);
                      DEBUG(DDR_MSG_FULL,
                            "<%d> %s:initState: LUT index: %ld\n",
@@ -3751,7 +3783,7 @@ static long movingState
         if (pPriv->index)
         {
             DEBUG(DDR_MSG_FULL, 
-                  "<%d> %s:movingState: calculate timeout for index\n", ' ');
+                  "<%d> %s:movingState: calculate timeout for index%c\n", ' ');
             timeout =  calculateTimeout (pdr->pllm, 
                                          pdr->phlm, 
                                          pdr->velo, 
@@ -3783,7 +3815,7 @@ static long movingState
             if (pPriv->backlashMotion)
             {
                 DEBUG(DDR_MSG_FULL, 
-                      "<%d> %s:movingState: calculate timeout for backlash move\n", ' ');
+                      "<%d> %s:movingState: calculate timeout for backlash move%c\n", ' ');
                 timeout =  calculateTimeout (pdr->mpos, 
                                              pdr->val, 
                                              pdr->fivl, 
@@ -3800,7 +3832,7 @@ static long movingState
             else if (pdr->blco && pdr->mode != DDR_MODE_INDEX)
             {
                 DEBUG(DDR_MSG_FULL, 
-                      "<%d> %s:movingState: calculate timeout for pre-backlash move\n", ' ');
+                      "<%d> %s:movingState: calculate timeout for pre-backlash move%c\n", ' ');
                 timeout =  calculateTimeout (pdr->mpos, 
                                              pdr->val + pdr->blco, 
                                              pdr->velo, 
@@ -3817,7 +3849,7 @@ static long movingState
             else
             {
                 DEBUG(DDR_MSG_FULL, 
-                      "<%d> %s:movingState: calculate timeout for normal move\n", ' ');
+                      "<%d> %s:movingState: calculate timeout for normal move%c\n", ' ');
                 timeout =  calculateTimeout (pdr->mpos, 
                                              pdr->val, 
                                              pdr->velo, 
@@ -3951,38 +3983,50 @@ static long movingState
 
 
             /* 
-             *  If this is not an index motion and we are using encoders
-             *  then check them to confirm that we got where we were supposed
-             *  to go.
+             *  If this is not an index motion and then confirm 
+             *  that we got where we were supposed to go. 
              */
 
-            if (pdr->ueip && (pPriv->mode != DDR_MODE_INDEX))
+            if (pPriv->mode != DDR_MODE_INDEX)
             {
-                DEBUG(DDR_MSG_FULL,
-                      "<%d> %s:movingState: encoder check, missed by:%d\n",
-                      abs((long)(((double)pdr->rrbv) * pdr->eres/pdr->mres) -
-                          pdr->renc));
-                DEBUG(DDR_MSG_MAX,
-                      "<%d> %s:movingState: encoder check...deadband:%d\n",
-                      pdr->edbd);
 
                 /*
-                 *  If the position returned by the encoders is out by more
-                 *  than the encoder deadband value then generate an error
-                 *  message and abort the motion immediately.
+                 *  Compare target and current position (this checks for the case
+                 *  where the motor is stopped by the motor controller after an 
+                 *  apparent limit but the omsScanTask did not read a limit).
                  */
 
-                if (abs((long)(((double) pdr->rrbv) * pdr->eres/pdr->mres) - 
-                         pdr->renc) > pdr->edbd)
+                if ( pPriv->target != pPriv->position )
                 {
-                    SET_ERR_MSG("Encoder doesn't agree with motor count");
-                    DEBUG(DDR_MSG_ERROR, 
-                          "<%d> %s:movingState:encoders report wrong posn%c\n",
-                          ' ');
+                    SET_ERR_MSG("Motor didn't reach target");
+                    DEBUG(DDR_MSG_ERROR, "<%d> %s:movingState:motor didn't reach target (limit switch bounce?)%c\n", ' ');
                     return abortingState(pdr);
                 }
-            }
 
+                /* 
+                 *  If we are using encoders then make sure the encoder count 
+                 *  agrees with the motor count.
+                 */
+
+                if (pdr->ueip)
+                {
+                    DEBUG(DDR_MSG_FULL, "<%d> %s:movingState: encoder check, missed by:%d count(s)\n", abs((long)(((double)pdr->rrbv) *  pdr->eres/pdr->mres) - pdr->renc));
+
+                    /*
+                     *  If the position returned by the encoders is out by more
+                     *  than the encoder deadband value then generate an error
+                     *  message and abort the motion immediately.
+                     */
+
+                    if (abs((long)(((double) pdr->rrbv) * pdr->eres/pdr->mres) - 
+                            pdr->renc) > pdr->edbd)
+                    {
+                        SET_ERR_MSG("Encoder doesn't agree with motor count");
+                        DEBUG(DDR_MSG_ERROR, "<%d> %s:movingState: encoder & position disagree by more than encoder deadband (EDBD=%d)\n", pdr->edbd);
+                        return abortingState(pdr);
+                    }
+                }
+            }
 
             /*
              *  If this is the end of the approach portion of a backlash
@@ -4017,7 +4061,7 @@ static long movingState
                         lockingState (pdr) );
             }
 
-        }   /* end of motion stoppen normally */
+        }   /* end of motion stopped normally */
 
     }   /* end of motor stopped moving */
 
@@ -4053,7 +4097,7 @@ static long movingState
         {
             SET_ERR_MSG( "Motor stalled");
             DEBUG(DDR_MSG_ERROR,
-                  "<%d> %s:movingState: motor stalled..., %c\n", ' ');
+                  "<%d> %s:movingState: motor stalled (encoder values not changing)%c\n", ' ');
             semTake (pPriv->mutexSem, WAIT_FOREVER);
             pPriv->stalled_times = 0;
             semGive (pPriv->mutexSem);
@@ -4115,7 +4159,7 @@ static long movingState
     {
         SET_ERR_MSG( "Motion timeout!!!");
         DEBUG(DDR_MSG_ERROR,
-              "<%d> %s:movingState: Motor did not get there, moving=%d \n",
+              "<%d> %s:movingState: Motor did not get there in time, moving=%d \n",
               pPriv->moving );
         return ( abortingState (pdr) );
     }
@@ -4675,14 +4719,14 @@ static long process
 
         if (pdr->lswa != (pPriv->lowLimit || pPriv->highLimit))
         {
-            DEBUG(DDR_MSG_FULL, 
-                  "<%d> %s:process:Setting lswa, was=%d\n", pdr->lswa );
-            DEBUG(DDR_MSG_FULL, 
-                  "<%d> %s:process:Setting lowLimit=%d\n", pPriv->lowLimit);
-            DEBUG(DDR_MSG_FULL, 
-                  "<%d> %s:process:Setting highLimit=%d\n", pPriv->highLimit);
-
             pdr->lswa = (pPriv->lowLimit || pPriv->highLimit);
+            DEBUG(DDR_MSG_FULL, 
+                  "<%d> %s:process:Limit switch change, LSWA=%d\n", pdr->lswa );
+            DEBUG(DDR_MSG_FULL, 
+                  "<%d> %s:process:lowLimit=%d\n", pPriv->lowLimit);
+            DEBUG(DDR_MSG_FULL, 
+                  "<%d> %s:process:highLimit=%d\n", pPriv->highLimit);
+
             MONITOR(RECORD_LSWA);
         }
 
@@ -4694,36 +4738,72 @@ static long process
 
         if (pdr->hswa != pPriv->homeSwitch)
         {
-            DEBUG(DDR_MSG_FULL, 
-                  "<%d> %s:process: Setting hswa, was=%d\n", pdr->hswa );
             pdr->hswa = pPriv->homeSwitch;
+            DEBUG(DDR_MSG_FULL, 
+                  "<%d> %s:process:Home switch change, HSWA=%d\n", pdr->hswa );
             MONITOR(RECORD_HSWA);
         }
 
 
         /*
-         *  If we are in simulation mode then fake the encoder value.
+         *  If raw motor position (motor counts) as returned by the device 
+         *  support has changed then update the raw readback value.
          */
 
-        if (pdr->ueip && pPriv->simulation)
+        if (pdr->rrbv != pPriv->position)
         {
-            pdr->renc = (long)((double)(pPriv->position) *
-                        pdr->eres / pdr->mres);
-            pPriv->encoder = pdr->renc;
-            MONITOR(RECORD_RENC);
+            DEBUG(DDR_MSG_MAX, 
+                  "<%d> %s:process: raw pos!=position%c\n", ' ');
+            pdr->rrbv = pPriv->position;
+            MONITOR(RECORD_RRBV);
+
+            /*
+             *  Not using encoder.  Update engineering motor position with 
+             *  motor count value returned by device support.
+             */
+
+            if (!pdr->ueip)
+            {
+                pdr->mpos = (double)(pPriv->position) / pdr->mres;
+                MONITOR(RECORD_MPOS);
+            }
+
+            /*
+             *  Simulating so encoder was previously set to 0.  Fake it 
+             *  by updating raw encoder and engineering motor position  
+             *  using motor count value returned by device support.
+             */
+
+            else if (pdr->ueip && pPriv->simulation)
+            {
+                pPriv->encoder = (long)((double)(pPriv->position) * 
+                                       pdr->eres / pdr->mres);
+                pdr->renc = pPriv->encoder;
+                MONITOR(RECORD_RENC);
+
+                pdr->mpos = (double)(pPriv->position) / pdr->mres;
+                MONITOR(RECORD_MPOS);
+            }
+
+            /*
+             *  Else must be using an encoder but not in simulation
+             *  so nothing else to do.
+             */
+
         }
 
-
         /*
-         *  If we are using the encoders and the raw encoder value has changed
-         *  then update the encoder value and motor position fields.   If the 
-         *  encoder has jumped by a large (bogus) number then it raise a 
-         *  warning.
+         *  Using encoder and its unsimulated value has changed.
          */
 
-        if (pdr->ueip && ( pdr->renc != pPriv->encoder) )
+        if (pdr->ueip && !pPriv->simulation  &&  pdr->renc != pPriv->encoder )
         {
             DEBUG(DDR_MSG_MAX, "<%d> %s:process: raw enc!=encoder=%c\n", ' ');
+
+            /*
+             *  If the encoder has jumped by a large (bogus) number then 
+             *  it raises a warning.
+             */
 
             if (abs(pPriv->encoder - pdr->renc) > 15000)
             {
@@ -4731,7 +4811,26 @@ static long process
                       "<%d> %s:process: encoder value jumped by %d\n",
                       abs(pPriv->encoder - pdr->renc));
             }
-       
+
+            /*
+             *  If the change in encoder value (from where the motor should 
+             *  be) is less than the encoder deadband then set the 
+             *  insideDeadband flag.   This will prevent the idle state
+             *  from generating a spontaneous motion error due to encoder
+             *  noise.
+             */
+
+            if (abs( pPriv->encoder - 
+                     (long)((double)(pPriv->position) * pdr->eres / pdr->mres) ) <
+                   pdr->edbd)
+            {
+                pPriv->insideDeadband = 1;
+            }
+            else
+            {
+                pPriv->insideDeadband = 0;
+            }
+
 
             /*
              *  If we are changing out of simulation mode do not raise
@@ -4748,50 +4847,19 @@ static long process
                 MONITOR(RECORD_RENC);
             }
 
-
             /*
-             *  If the change in encoder value is less than the encoder
-             *  deadband then set the inside deadband flag.   This will
-             *  prevent the idle state from generating a spontaneous motion
-             *  error.
+             *  Update motor position with actual encoder generated position.
              */
 
-            if (abs(pdr->renc - pPriv->encoder) < pdr->edbd)
-            {
-                pPriv->insideDeadband = 1;
-            }
-            else
-            {
-                pPriv->insideDeadband = 0;
-            }
+            pdr->mpos = (double)((long)(pPriv->encoder) / pdr->eres);
+            MONITOR(RECORD_MPOS);
 
-            /*  Now update RENC */
+            /*
+             *  Update raw encoder with encoder count value.
+             */
+
             pdr->renc = pPriv->encoder;
 
-        }
-
-
-        /*
-         *  If raw motor positon as returned by the device support has changed
-         *  then update both the raw and engineering unit motor positions.
-         */
-
-        if (pdr->rrbv != pPriv->position)
-        {
-            DEBUG(DDR_MSG_MAX, 
-                  "<%d> %s:process: raw pos!=position%c\n", ' ');
-            pdr->rrbv = pPriv->position;
-
-            if (pdr->ueip)
-            {
-                pdr->mpos = (double)((long)(pPriv->encoder) / pdr->eres);
-            }
-            else
-            {
-                pdr->mpos = (double)(pPriv->position) / pdr->mres;
-            }
-            MONITOR(RECORD_RRBV);
-            MONITOR(RECORD_MPOS);
         }
 
         semGive (pPriv->mutexSem);
@@ -5118,6 +5186,14 @@ static long processDirective
                  */
 
                 case DDR_MODE_INIT:
+
+                    /*
+                     * Change made by SMB on 20 April 2001 to prevent grating
+                     * turret stopping an INIT on startup when the air pressure
+                     * is not ok. Allow devices to INIT while interlocked.
+                     */
+
+                    /* COMMENTED OUT
                     if (pdr->flt)
                     {
                         SET_REJ_MSG("Cannot init while fault line is active");
@@ -5125,7 +5201,10 @@ static long processDirective
                               "<%d> %s:processDirective:init while interlocked%c\n",
                               ' ');
                     }
-                    else if (pdr->mip != DDR_MIP_STOPPED &&
+                    else ...
+                    */
+
+                    if (pdr->mip != DDR_MIP_STOPPED &&
                              pdr->mip != DDR_MIP_HOLDING &&
                              pdr->mip != DDR_MIP_ERROR)
                     {

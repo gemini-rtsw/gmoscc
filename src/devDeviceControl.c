@@ -46,11 +46,34 @@ static char rcsid[] = "$Id$";
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.25  2001/03/27 11:05:57  gmos
+ * In omsScanTask(), allow spontaneous motion notification and
+ * encoder updates even with no index or when in a limit switch.
+ *
+ * These changes allow MPOS to track any manual movements of
+ * stages with encoders and will not not suffer from later
+ * indexing timeouts.
+ *
+ * THESE CHANGES NEED TO BE THOROUGHLY TESTED ON REAL HARDWARE.
+ *
+ * Revision 1.24  2001/03/27 11:03:52  gmos
+ * devDeviceControl.c
+ * ... Committed by mistake with no log text again!
+ *
+ * Revision 1.23  2001/03/27 11:02:32  gmos
+ * devDeviceControl.c
+ * ... Committed by mistake with no log text.
+ *
+ * Revision 1.22  2001/03/20 14:50:33  gmos
+ * ... incorporating Bob Wooff's simulation mode INDEX fix.
+ *
  * Revision 1.20  2001/03/01 14:14:48  gmos
  * Switched to use device message levels defined in ddrMessageLevels.h.
  *
  * Revision 1.19  2000/12/04 11:05:47  gmos
- * Bob's new command string for centre home mode - add an extra movement to ensure the mode works regardless of whether the home switch is high or low when activated.
+ * Bob's new command string for centre home mode - add an extra movement to 
+ * ensure the mode works regardless of whether the home switch is high or low 
+ * when activated.
  *
  * Revision 1.18  2000/11/29 19:43:18  gmos
  * Added two more moves into indexing string for INDEX_UHSW (IALG=2).
@@ -192,6 +215,7 @@ static char rcsid[] = "$Id$";
 #include    <tickLib.h>
 #include    <logLib.h>
 #include    <link.h>
+#include    <taskLib.h>
 
 #include    <devSup.h>
 #include    <recSup.h>
@@ -329,11 +353,12 @@ static int scanTaskPeriod;                 /* system ticks between scans    */
  */
 
 #define DEBUG(l,FMT,V) if (l <= pDevice->debug)                    \
-                                   logMsg (FMT,                    \
-                                           (int)tickGet(),         \
+                                   printf ("%s: "FMT,              \
+                                           taskName(0),            \
+                                           tickGet(),              \
                                            pMotor->card,           \
                                            pMotor->axis,           \
-                                          (int)V, 0, 0);
+                                           V);
 
 
 /*
@@ -980,7 +1005,7 @@ static long controlMotion
             }
 
             DEBUG(DDR_MSG_MAX,
-                  "<%d> c:%d s:%d controlMotion: Done DDR_MOVE_GO\n", ' ');
+                  "<%d> c:%d s:%d controlMotion: Done DDR_MOVE_GO%c\n", ' ');
             break;
 
 
@@ -994,7 +1019,7 @@ static long controlMotion
                                           pMotor->axis,
                                           "ST ");
             DEBUG(DDR_MSG_MAX,
-                  "<%d> c:%d s:%d controlMotion: Done DDR_MOVE_STOP\n",
+                  "<%d> c:%d s:%d controlMotion: Done DDR_MOVE_STOP%c\n",
                                      ' ');
             break;
 
@@ -1013,7 +1038,7 @@ static long controlMotion
                                           pMotor->axis,
                                           "AC2000000 ST ");
             DEBUG(DDR_MSG_MAX,
-                  "<%d> c:%d s:%d controlMotion: Done DDR_MOVE_ABORT\n",
+                  "<%d> c:%d s:%d controlMotion: Done DDR_MOVE_ABORT%c\n",
                                      ' ');
             break;
         }
@@ -1839,18 +1864,42 @@ static int omsScanTask
             if (pDevice->simulation)
             {
                 /*
-                 *  Fake updating the limit switch states
+                 *  Motor status is always good and encoder is always 0.
                  */
 
-                lowLimit = highLimit = FALSE;
                 semTake (pMotor->mutexSem, WAIT_FOREVER);
                 pMotor->status = 0;
                 semGive (pMotor->mutexSem);
                 encoder = 0;
 
+                /*
+                 *  If the switch states haven't been cleared then it's
+                 *  the first pass while simulating so clear the local
+                 *  switch variables and set the updateState flag for later.
+                 */
+
+                if ( pDevice->lowLimit   != 0 || 
+                     pDevice->highLimit  != 0 || 
+                     pDevice->homeSwitch != 0   )
+                {
+                    DEBUG(DDR_MSG_MIN, "<%d> c:%d s:%d omsScanTask:updating limit and home switches for simulation mode: %c\n", ' ');
+
+                    lowLimit = 0;
+                    highLimit = 0;
+                    homeSwitch = 0;
+
+                    semTake (pMotor->mutexSem, WAIT_FOREVER);
+                    pMotor->updateState = TRUE;
+                    semGive (pMotor->mutexSem);
+                }
+
+                /*
+                 *  Reset the checkLimits flag.
+                 */
+
                 semTake (pDevice->mutexSem, WAIT_FOREVER);
                 pDevice->checkLimits = 0;
-                pDevice->homeSwitch = 0;
+                semGive (pDevice->mutexSem);
 
                 /*
                  *  Fake motion by running a virtual motor.  No acceleration
@@ -1886,10 +1935,7 @@ static int omsScanTask
                     pMotor->simVelocity)
                 {
                     position = pDevice->target;
-                }
-
-                semGive (pDevice->mutexSem);
-               
+                }               
             }   /* end of simulation mode */
 
 
@@ -1915,10 +1961,14 @@ static int omsScanTask
                  *  current values from the OMS card.
                  */
 
+                semTake (pMotor->mutexSem, WAIT_FOREVER);
+
                 pMotor->status = drvOmsVmeMotorPosition (pMotor->card,
                                                          pMotor->axis,
                                                          &position,
                                                          &encoder);
+                semGive (pMotor->mutexSem);
+
                 /*
                  * AWE ... sometimes, the oms44 card returns a position when
                  * asked for an encoder value.  This check detects invalid 
@@ -1936,6 +1986,11 @@ static int omsScanTask
                 {
                     if (pDevice->badRead)
                     {
+                        /*
+                         *  Second consecutive bad read - this is a problem
+                         *  if we're not messed up by a limit.
+                         */
+
                         if (pdr->hpvl && !(pdr->lswa) )
                         {
                             DEBUG(DDR_MSG_ERROR, 
@@ -1946,7 +2001,11 @@ static int omsScanTask
                     }
                     else
                     {
-                        DEBUG(DDR_MSG_ERROR,
+       	                /*
+                         *  First bad read - this can happen easily.
+                         */
+
+                        DEBUG(DDR_MSG_MIN,
                               "<%d> c:%d s:%d omsScanTask: bad encoder value%c\n",
                               ' ');
                         drvOmsVmeGetErrorMessage (pDevice->errorMessage);
@@ -2106,13 +2165,9 @@ static int omsScanTask
 
             if ( pdr->ueip && pDevice->encoder != encoder ) 
             { 
-                if ( !(pDevice->moving)    && 
-                     pdr->hpvl             && 
-                     !(pdr->lswa)          &&
-                     !(pDevice->simulation)   )
+                if ( !(pDevice->moving) && !(pDevice->simulation) )
                 {
-                    DEBUG(DDR_MSG_FULL,
-                         "<%d> c:%d s:%d omsScanTask:spontaneous encoder change:%d counts\n", (pDevice->encoder - encoder));
+                    DEBUG(DDR_MSG_FULL, "<%d> c:%d s:%d omsScanTask:spontaneous encoder change:%d counts\n", (pDevice->encoder - encoder));
                     rescan = TRUE;
                 }
                 pDevice->encoder = encoder;
