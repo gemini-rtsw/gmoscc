@@ -176,7 +176,6 @@ returns.
 
 V2-3 23 Apr 2001 SMB:
 ---------------------
-
 gmos023 - This version, which has been merged with V2-2-4, contains fixes to
 the following problems:
 - #168 spontaneous motion error: OIWFS devices will no longer time out
@@ -191,8 +190,34 @@ the following problems:
   is changed after the device has already executed an INIT has been fixed.
 THIS IS THE VERSION USED FOR THE SOFTWARE ACCEPTANCE TESTS ON 12 APRIL 2001.
 
-V2-4 ?? Apr 2001 SMB:
+V2-4 30 Apr 2001 SMB:
 ---------------------
-This version is the same as V2-3 with power status checking switched back
-on. It will also contain any fixes to bugs identified during the GMOS
-software acceptance tests.
+This version fixes problems seen during the software acceptance tests:
+- The filter and grating assemblies forward the TEST command to their
+  devices.
+- The instrument sequencer includes the dtaXoffset, dtaYoffset and dtaZoffset
+  records and keeps them up to date with the translation stage base
+  position.
+- The instrument sequencer updates the dtaZstart, dtaZend and dtaZmean
+  records each time an observation is made.
+- Translation assembly test script enhanced to include a check on the
+  actual position arriving to within a small tolerance of the target
+  position.
+In addition:
+- Mask extractor ID position adjusted to read barcodes on masks rather
+  than mask frames.
+- gmosHelp and gmosTest commands added, with online help.
+- The endObserve command clears the detector controller observe CAD
+  record, as an attempt to work around a channel access problem.
+- Test script log files are now written to a separate directory for
+  each date.
+- A gmSeqTopMKRRtc1 version of the EPICS database created to connect
+  to the TCS simulator, and a corresponding startupTc1 script created.
+- Startup scripts modified to generate labels using the standard instrument
+  name, which is GMOS-N.
+THIS IS THE VERSION USED TO TEST THE TRANSLATION STAGE ON ?? MAY 2001.
+
+V2-5 ?? May 2001 SMB:
+---------------------
+This version is the same as V2-5 with power status checking switched back
+on.
