@@ -1,0 +1,80 @@
+#!/bin/csh
+#
+# setResetAliases
+#
+# Description:
+#
+#   Define some useful aliases for executing the assemblyReset
+#   and deviceReset scripts with common combinations of
+#   arguments
+#
+# Invocation:
+#   source setResetAliases
+
+#
+# Assembly aliases - simulation mode
+#
+alias wfsResetSim         'assemblyReset g7:wfs: probe'
+alias maskResetSim        'assemblyReset g7:cc: msk'
+alias filterResetSim      'assemblyReset g7:cc: flt'
+alias gratingResetSim     'assemblyReset g7:cc: gr'
+alias translationResetSim 'assemblyReset g7:cc: dta'
+
+#
+# Device aliases - simulation mode
+#
+alias baseResetSim        'deviceReset g7:wfs: probeBas'
+alias pickoffResetSim     'deviceReset g7:wfs: probePko'
+
+alias extractorResetSim   'deviceReset g7:cc: mskExt'
+alias cassetteResetSim    'deviceReset g7:cc: mskCas'
+alias gripperResetSim     'deviceReset g7:cc: mskGrp'
+alias gripResetSim        'deviceReset g7:cc: mskGrp'
+alias releaseResetSim     'deviceReset g7:cc: mskRel'
+
+alias wheel1ResetSim      'deviceReset g7:cc: flt1'
+alias wheel2ResetSim      'deviceReset g7:cc: flt2'
+
+alias tiltAResetSim       'deviceReset g7:cc: grA'
+alias tiltBResetSim       'deviceReset g7:cc: grB'
+alias tiltCResetSim       'deviceReset g7:cc: grC'
+alias tiltDResetSim       'deviceReset g7:cc: grD'
+alias turretResetSim      'deviceReset g7:cc: grt'
+
+alias xaxisResetSim       'deviceReset g7:cc: dta1'
+alias yaxisResetSim       'deviceReset g7:cc: dta2'
+alias zaxisResetSim       'deviceReset g7:cc: dta3'
+
+#
+# Assembly aliases - Mauna Kea instrument
+#
+alias wfsReset            'assemblyReset gm:wfs: probe'
+alias maskReset           'assemblyReset gm:cc: msk'
+alias filterReset         'assemblyReset gm:cc: flt'
+alias gratingReset        'assemblyReset gm:cc: gr'
+alias translationReset    'assemblyReset gm:cc: dta'
+
+#
+# Device aliases - Mauna Kea instrument
+#
+alias baseReset           'deviceReset gm:wfs: probeBas'
+alias pickoffReset        'deviceReset gm:wfs: probePko'
+
+alias extractorReset      'deviceReset gm:cc: mskExt'
+alias cassetteReset       'deviceReset gm:cc: mskCas'
+alias gripReset           'deviceReset gm:cc: mskGrp'
+alias gripperReset        'deviceReset gm:cc: mskGrp'
+alias releaseReset        'deviceReset gm:cc: mskRel'
+
+alias wheel1Reset         'deviceReset gm:cc: flt1'
+alias wheel2Reset         'deviceReset gm:cc: flt2'
+
+alias tiltAReset          'deviceReset gm:cc: grA'
+alias tiltBReset          'deviceReset gm:cc: grB'
+alias tiltCReset          'deviceReset gm:cc: grC'
+alias tiltDReset          'deviceReset gm:cc: grD'
+alias turretReset         'deviceReset gm:cc: grt'
+
+alias xaxisReset          'deviceReset gm:cc: dta1'
+alias yaxisReset          'deviceReset gm:cc: dta2'
+alias zaxisReset          'deviceReset gm:cc: dta3'
