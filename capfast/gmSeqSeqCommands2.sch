@@ -2,14 +2,14 @@
 uniq 314
 [tools]
 [detail]
-w 1962 2203 100 0 n#309 gmSeqEndObserve.gmSeqEndObserve#310.CFLK 1072 784 1568 784 1568 2192 2416 2192 egenSubD.carCombine2.SLNK
 w 826 1227 100 0 n#309 gmSeqCadCarD.gmSeqCadCarD#313.CFLK 96 1376 144 1376 144 1216 1568 1216 junction
+w 1962 2203 100 0 n#309 gmSeqEndObserve.gmSeqEndObserve#310.CFLK 1072 784 1568 784 1568 2192 2416 2192 egenSubD.carCombine2.SLNK
 w 1162 987 100 0 c#296 gmSeqEndObserve.gmSeqEndObserve#310.FLNK 1072 976 1312 976 outhier.ENDSTLK.p
 w 618 987 100 0 c#297 gmSeqCadCarC.gmSeqCadCarC#290.FLNK 592 976 704 976 outhier.ABORTSTLK.p
 w 138 987 100 0 c#298 gmSeqCadCarC.gmSeqCadCarC#293.FLNK 112 976 224 976 outhier.STOPSTLK.p
 w -390 987 100 0 c#299 gmSeqCadCarC.gmSeqCadCarC#292.FLNK -432 976 -288 976 outhier.PAUSESTLK.p
 w -886 987 100 0 c#300 gmSeqCadCarC.gmSeqCadCarC#291.FLNK -912 976 -800 976 outhier.CONTSTLK.p
-w 754 1595 100 0 c#295 gmSeqCadObserve.gmSeqCadObserve#311.FLNK 704 1584 864 1584 864 1600 960 1600 outhier.OBSSTLK.p
+w 802 1595 100 0 c#295 gmSeqCadObserve.gmSeqCadObserve#311.FLNK 704 1584 960 1584 outhier.OBSSTLK.p
 w 754 1307 100 0 n#272 gmSeqCadCarD.gmSeqCadCarD#313.CAR 96 1472 240 1472 240 1296 1328 1296 1328 2800 2416 2800 egenSubD.carCombine2.INPD
 w 754 1275 100 0 n#271 gmSeqCadCarD.gmSeqCadCarD#313.OMSS 96 1440 208 1440 208 1264 1360 1264 1360 2768 2416 2768 egenSubD.carCombine2.INPE
 w 754 1243 100 0 n#270 gmSeqCadCarD.gmSeqCadCarD#313.OERR 96 1408 176 1408 176 1232 1392 1232 1392 2736 2416 2736 egenSubD.carCombine2.INPF
@@ -49,8 +49,8 @@ w 114 1203 100 0 n#198 eapply.apply2.OUTC -720 2000 -496 2000 -496 1200 784 1200
 w 3212 2619 100 0 CFLK ecars.compCar2.FLNK 3184 2672 3216 2672 3216 2576 3312 2576 outhier.CFLK.p
 w 3216 2736 100 0 OERR ecars.compCar2.OERR 3184 2800 3248 2800 3248 2704 3312 2704 outhier.OERR.p
 w 3224 2835 100 0 OMSS ecars.compCar2.OMSS 3184 2832 3312 2832 outhier.OMSS.p
-w 2782 2899 100 0 CAR egenSubD.carCombine2.OUTA 2704 2864 2736 2864 2736 2896 2864 2896 ecars.compCar2.IVAL
 w 3054 2963 100 0 CAR junction 2832 2896 2832 2960 3312 2960 outhier.CAR.p
+w 2782 2899 100 0 CAR egenSubD.carCombine2.OUTA 2704 2864 2736 2864 2736 2896 2864 2896 ecars.compCar2.IVAL
 w -616 2259 100 0 FLNK eapply.apply2.FLNK -720 2256 -464 2256 -464 2288 -400 2288 outhier.FLNK.p
 w -648 2195 100 0 MESS eapply.apply2.MESS -720 2192 -528 2192 -528 2384 -400 2384 outhier.MESS.p
 w -564 2363 100 0 VAL eapply.apply2.VAL -720 2224 -560 2224 -560 2512 -400 2512 outhier.VAL.p
@@ -72,55 +72,55 @@ p 868 700 100 0 1 seta:seqcommand endObserve
 p 888 680 100 0 1 setb:delay 1.0
 use eapply -1104 1591 100 0 apply2
 xform 0 -912 1952
-use outhier -896 928 100 0 CONTSTLK
-xform 0 -816 976
-use outhier -384 928 100 0 PAUSESTLK
-xform 0 -304 976
-use outhier 144 928 100 0 STOPSTLK
-xform 0 208 976
-use outhier 608 928 100 0 ABORTSTLK
-xform 0 688 976
-use outhier 1280 935 100 0 ENDSTLK
-xform 0 1296 976
-use outhier 928 1559 100 0 OBSSTLK
-xform 0 944 1600
-use outhier -432 2471 100 0 VAL
-xform 0 -416 2512
-use outhier -432 2343 100 0 MESS
-xform 0 -416 2384
-use outhier -432 2247 100 0 FLNK
-xform 0 -416 2288
-use outhier 3280 2919 100 0 CAR
-xform 0 3296 2960
-use outhier 3280 2791 100 0 OMSS
-xform 0 3296 2832
-use outhier 3280 2663 100 0 OERR
-xform 0 3296 2704
 use outhier 3280 2535 100 0 CFLK
 xform 0 3296 2576
-use gmSeqCadCarC 368 727 100 0 gmSeqCadCarC#290
-xform 0 480 928
-p 368 736 100 0 -1 seta:seqcommand abort
-p 368 832 100 0 -1 setb:snam gmSeqCadStopObserve
-use gmSeqCadCarC -1136 727 100 0 gmSeqCadCarC#291
-xform 0 -1024 928
-p -1136 720 100 0 -1 seta:seqcommand continue
-p -1136 832 100 0 -1 setb:snam gmSeqCadContinue
-use gmSeqCadCarC -656 727 100 0 gmSeqCadCarC#292
-xform 0 -544 928
-p -640 720 100 0 -1 seta:seqcommand pause
-p -640 832 100 0 -1 setb:snam gmSeqCadStopObserve
+use outhier 3280 2663 100 0 OERR
+xform 0 3296 2704
+use outhier 3280 2791 100 0 OMSS
+xform 0 3296 2832
+use outhier 3280 2919 100 0 CAR
+xform 0 3296 2960
+use outhier -432 2247 100 0 FLNK
+xform 0 -416 2288
+use outhier -432 2343 100 0 MESS
+xform 0 -416 2384
+use outhier -432 2471 100 0 VAL
+xform 0 -416 2512
+use outhier 928 1543 100 0 OBSSTLK
+xform 0 944 1584
+use outhier 1280 935 100 0 ENDSTLK
+xform 0 1296 976
+use outhier 608 928 100 0 ABORTSTLK
+xform 0 688 976
+use outhier 144 928 100 0 STOPSTLK
+xform 0 208 976
+use outhier -384 928 100 0 PAUSESTLK
+xform 0 -304 976
+use outhier -896 928 100 0 CONTSTLK
+xform 0 -816 976
 use gmSeqCadCarC -112 727 100 0 gmSeqCadCarC#293
 xform 0 0 928
 p -112 720 100 0 -1 seta:seqcommand stop
 p -96 832 100 0 -1 setb:snam gmSeqCadStopObserve
+use gmSeqCadCarC -656 727 100 0 gmSeqCadCarC#292
+xform 0 -544 928
+p -640 720 100 0 -1 seta:seqcommand pause
+p -640 832 100 0 -1 setb:snam gmSeqCadStopObserve
+use gmSeqCadCarC -1136 727 100 0 gmSeqCadCarC#291
+xform 0 -1024 928
+p -1136 720 100 0 -1 seta:seqcommand continue
+p -1136 832 100 0 -1 setb:snam gmSeqCadContinue
+use gmSeqCadCarC 368 727 100 0 gmSeqCadCarC#290
+xform 0 480 928
+p 368 736 100 0 -1 seta:seqcommand abort
+p 368 832 100 0 -1 setb:snam gmSeqCadStopObserve
 use oslBorderD -1712 -201 100 0 oslBorderD#276
 xform 0 928 1504
 p 3148 48 120 256 -1 Title:GMOS IS - sequencer commands - 2
-use inhier -1328 2135 100 0 ICID
-xform 0 -1312 2176
 use inhier -1328 2215 100 0 DIR
 xform 0 -1312 2256
+use inhier -1328 2135 100 0 ICID
+xform 0 -1312 2176
 use ecars 2864 2615 100 0 compCar2
 xform 0 3024 2784
 use egenSubD 2416 2103 100 0 carCombine2
