@@ -5,12 +5,12 @@ display {
 	magic="305419896"
 	majv="2"
 	mnrv="4"
-	ndyng="19"
+	ndyng="21"
 	npc="23"
-	nstr="80"
+	nstr="92"
 	ndynamic="3"
 	nplot="0"
-	nrd="1"
+	nrd="2"
 	nes="0"
 	nkd="1"
 	npd="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="3020"
+	nwords_dspy="3746"
 	nwords_sta="544"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1658"
-	osta="1114"
-	odynamic="2650"
-	oplot="2848"
-	ord="2848"
-	oes="3008"
-	okd="3008"
-	opd="3020"
-	opo="3020"
+	odyng="1760"
+	osta="1216"
+	odynamic="3216"
+	oplot="3414"
+	ord="3414"
+	oes="3734"
+	okd="3734"
+	opd="3746"
+	opo="3746"
 	opc="68"
 	ostr="384"
-	ocmap="1114"
-	ocrules="1114"
+	ocmap="1216"
+	ocrules="1216"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -51,8 +51,8 @@ display {
 	cmap="gmColors.dl"
 	pixwid="1280"
 	pixht="1024"
-	mmwid="320"
-	mmht="240"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -117,10 +117,10 @@ display {
 }
 "text" {
 	object {
-		x="357"
+		x="251"
 		y="132"
-		width="114"
-		height="19"
+		width="220"
+		height="20"
 		groupid="0"
 	}
 	textix="At Release"
@@ -128,10 +128,10 @@ display {
 }
 "text" {
 	object {
-		x="261"
+		x="251"
 		y="209"
-		width="210"
-		height="19"
+		width="220"
+		height="20"
 		groupid="0"
 	}
 	textix="At Grip position"
@@ -139,10 +139,10 @@ display {
 }
 "text" {
 	object {
-		x="282"
+		x="251"
 		y="180"
-		width="189"
-		height="19"
+		width="220"
+		height="20"
 		groupid="0"
 	}
 	textix="& Grip positions"
@@ -150,10 +150,10 @@ display {
 }
 "text" {
 	object {
-		x="275"
+		x="251"
 		y="111"
-		width="196"
-		height="19"
+		width="220"
+		height="20"
 		groupid="0"
 	}
 	textix="Position or past"
@@ -164,7 +164,7 @@ display {
 		x="249"
 		y="242"
 		width="222"
-		height="19"
+		height="20"
 		groupid="0"
 	}
 	textix="Before Grip position"
@@ -175,7 +175,7 @@ display {
 		x="311"
 		y="277"
 		width="160"
-		height="19"
+		height="20"
 		groupid="0"
 	}
 	textix="in LVDT area"
@@ -183,9 +183,9 @@ display {
 }
 "text" {
 	object {
-		x="266"
+		x="251"
 		y="166"
-		width="205"
+		width="220"
 		height="18"
 		groupid="0"
 	}
@@ -194,9 +194,9 @@ display {
 }
 "text" {
 	object {
-		x="316"
+		x="250"
 		y="99"
-		width="155"
+		width="221"
 		height="18"
 		groupid="0"
 	}
@@ -205,10 +205,10 @@ display {
 }
 "text" {
 	object {
-		x="24"
+		x="1"
 		y="104"
-		width="192"
-		height="19"
+		width="215"
+		height="20"
 		groupid="0"
 	}
 	textix="Release locked"
@@ -216,10 +216,10 @@ display {
 }
 "text" {
 	object {
-		x="14"
+		x="1"
 		y="141"
-		width="202"
-		height="19"
+		width="215"
+		height="20"
 		groupid="0"
 	}
 	textix="Release released"
@@ -227,10 +227,10 @@ display {
 }
 "text" {
 	object {
-		x="17"
+		x="1"
 		y="177"
-		width="199"
-		height="19"
+		width="215"
+		height="20"
 		groupid="0"
 	}
 	textix="Gripper released"
@@ -238,10 +238,10 @@ display {
 }
 "text" {
 	object {
-		x="49"
+		x="2"
 		y="215"
-		width="167"
-		height="19"
+		width="214"
+		height="20"
 		groupid="0"
 	}
 	textix="Gripper gripped"
@@ -249,10 +249,10 @@ display {
 }
 "text" {
 	object {
-		x="71"
+		x="2"
 		y="254"
-		width="145"
-		height="19"
+		width="214"
+		height="20"
 		groupid="0"
 	}
 	textix="Slot Aligned"
@@ -260,10 +260,10 @@ display {
 }
 "text" {
 	object {
-		x="71"
+		x="1"
 		y="292"
-		width="145"
-		height="19"
+		width="215"
+		height="20"
 		groupid="0"
 	}
 	textix="Mask in Slot"
@@ -271,10 +271,10 @@ display {
 }
 "text" {
 	object {
-		x="10"
+		x="1"
 		y="329"
-		width="206"
-		height="19"
+		width="215"
+		height="20"
 		groupid="0"
 	}
 	textix="Cassette Installed"
@@ -285,7 +285,7 @@ display {
 		x="0"
 		y="367"
 		width="216"
-		height="19"
+		height="20"
 		groupid="0"
 	}
 	textix="Mask in Focal Plane"
@@ -296,7 +296,7 @@ display {
 		x="0"
 		y="404"
 		width="216"
-		height="19"
+		height="20"
 		groupid="0"
 	}
 	textix="IFU in Focal Plane"
@@ -304,9 +304,9 @@ display {
 }
 "text" {
 	object {
-		x="43"
+		x="1"
 		y="436"
-		width="173"
+		width="215"
 		height="18"
 		groupid="0"
 	}
@@ -315,10 +315,10 @@ display {
 }
 "text" {
 	object {
-		x="266"
+		x="255"
 		y="425"
-		width="210"
-		height="19"
+		width="221"
+		height="20"
 		groupid="0"
 	}
 	textix="Master Enable"
@@ -326,10 +326,10 @@ display {
 }
 "text" {
 	object {
-		x="266"
+		x="256"
 		y="459"
-		width="210"
-		height="19"
+		width="220"
+		height="20"
 		groupid="0"
 	}
 	textix="Opt.Sensor Enable"
@@ -337,10 +337,10 @@ display {
 }
 "text" {
 	object {
-		x="266"
+		x="256"
 		y="490"
-		width="210"
-		height="19"
+		width="220"
+		height="20"
 		groupid="0"
 	}
 	textix="Sensor Enable"
@@ -348,9 +348,9 @@ display {
 }
 "text" {
 	object {
-		x="41"
+		x="1"
 		y="452"
-		width="175"
+		width="215"
 		height="18"
 		groupid="0"
 	}
@@ -360,9 +360,9 @@ display {
 "text" {
 	object {
 		x="256"
-		y="318"
+		y="321"
 		width="130"
-		height="19"
+		height="20"
 		groupid="0"
 	}
 	textix="LVDT Zones"
@@ -370,10 +370,10 @@ display {
 }
 "text" {
 	object {
-		x="2"
+		x="0"
 		y="483"
-		width="129"
-		height="19"
+		width="130"
+		height="20"
 		groupid="0"
 	}
 	textix="Switch Word"
@@ -381,10 +381,10 @@ display {
 }
 "text" {
 	object {
-		x="289"
-		y="372"
-		width="97"
-		height="19"
+		x="255"
+		y="369"
+		width="131"
+		height="20"
 		groupid="0"
 	}
 	textix="LVDT"
@@ -392,10 +392,10 @@ display {
 }
 "text" {
 	object {
-		x="357"
+		x="251"
 		y="144"
-		width="114"
-		height="19"
+		width="220"
+		height="20"
 		groupid="0"
 	}
 	textix="Position"
@@ -1169,12 +1169,103 @@ display {
 		groupid="0"
 	}
 }
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="3"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if not zero"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan="$(TC)optsensorEnable"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs=""
+		}
+	}
+}
+"line" {
+	object {
+		x="228"
+		y="250"
+		width="12"
+		height="105"
+		groupid="2"
+	}
+	npoints="2"
+	point[0] {
+		x="228"
+		y="250"
+	}
+	point[1] {
+		x="240"
+		y="355"
+	}
+	orgpoint[0] {
+		x="0"
+		y="0"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="1000"
+	}
+}
+"line" {
+	object {
+		x="228"
+		y="250"
+		width="12"
+		height="105"
+		groupid="2"
+	}
+	npoints="2"
+	point[0] {
+		x="240"
+		y="250"
+	}
+	point[1] {
+		x="228"
+		y="355"
+	}
+	orgpoint[0] {
+		x="1000"
+		y="0"
+	}
+	orgpoint[1] {
+		x="0"
+		y="1000"
+	}
+}
 "text update" {
 	object {
-		x="142"
-		y="478"
-		width="102"
-		height="34"
+		x="141"
+		y="479"
+		width="111"
+		height="28"
 		groupid="0"
 	}
 	monitor {
@@ -1218,9 +1309,9 @@ display {
 "text update" {
 	object {
 		x="397"
-		y="311"
+		y="317"
 		width="111"
-		height="33"
+		height="28"
 		groupid="0"
 	}
 	monitor {
@@ -1439,6 +1530,140 @@ display {
 	clr="1"
 	bclr="6"
 	menu_title=""
+	decorate="none"
+}
+"related display" {
+	object {
+		x="251"
+		y="526"
+		width="170"
+		height="26"
+		groupid="0"
+	}
+	selfkill="off"
+	display[0] {
+		label="LVDT"
+		name="gmMaskLvdtEng.dl"
+		args="T=$(T),D=msk"
+	}
+	display[1] {
+		label=""
+		name=""
+		args=""
+	}
+	display[2] {
+		label=""
+		name=""
+		args=""
+	}
+	display[3] {
+		label=""
+		name=""
+		args=""
+	}
+	display[4] {
+		label=""
+		name=""
+		args=""
+	}
+	display[5] {
+		label=""
+		name=""
+		args=""
+	}
+	display[6] {
+		label=""
+		name=""
+		args=""
+	}
+	display[7] {
+		label=""
+		name=""
+		args=""
+	}
+	display[8] {
+		label=""
+		name=""
+		args=""
+	}
+	display[9] {
+		label=""
+		name=""
+		args=""
+	}
+	display[10] {
+		label=""
+		name=""
+		args=""
+	}
+	display[11] {
+		label=""
+		name=""
+		args=""
+	}
+	display[12] {
+		label=""
+		name=""
+		args=""
+	}
+	display[13] {
+		label=""
+		name=""
+		args=""
+	}
+	display[14] {
+		label=""
+		name=""
+		args=""
+	}
+	display[15] {
+		label=""
+		name=""
+		args=""
+	}
+	display[16] {
+		label=""
+		name=""
+		args=""
+	}
+	display[17] {
+		label=""
+		name=""
+		args=""
+	}
+	display[18] {
+		label=""
+		name=""
+		args=""
+	}
+	display[19] {
+		label=""
+		name=""
+		args=""
+	}
+	display[20] {
+		label=""
+		name=""
+		args=""
+	}
+	display[21] {
+		label=""
+		name=""
+		args=""
+	}
+	display[22] {
+		label=""
+		name=""
+		args=""
+	}
+	display[23] {
+		label=""
+		name=""
+		args=""
+	}
+	clr="1"
+	bclr="6"
+	menu_title="LVDT Stuff"
 	decorate="none"
 }
 "kill display" {

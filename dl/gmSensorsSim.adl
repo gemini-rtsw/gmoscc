@@ -7,7 +7,7 @@ display {
 	mnrv="4"
 	ndyng="0"
 	npc="14"
-	nstr="66"
+	nstr="74"
 	ndynamic="13"
 	nplot="0"
 	nrd="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="28"
-	nwords_dspy="2042"
+	nwords_dspy="2124"
 	nwords_sta="364"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1172"
-	osta="808"
-	odynamic="1172"
-	oplot="2030"
-	ord="2030"
-	oes="2030"
-	okd="2030"
-	opd="2042"
-	opo="2042"
+	odyng="1254"
+	osta="890"
+	odynamic="1254"
+	oplot="2112"
+	ord="2112"
+	oes="2112"
+	okd="2112"
+	opd="2124"
+	opo="2124"
 	opc="68"
 	ostr="246"
-	ocmap="808"
-	ocrules="808"
+	ocmap="890"
+	ocrules="890"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -64,13 +64,13 @@ display {
 }
 "text" {
 	object {
-		x="61"
+		x="10"
 		y="15"
-		width="562"
-		height="27"
+		width="660"
+		height="25"
 		groupid="0"
 	}
-	textix="GMOS Mask Switch Simulation"
+	textix="GMOS Mask Switch Simulation/Direct Control"
 	align="horiz. centered"
 }
 "<<basic attribute>>" {
@@ -83,28 +83,28 @@ display {
 }
 "line" {
 	object {
-		x="63"
+		x="15"
 		y="50"
-		width="560"
-		height="1"
+		width="645"
+		height="0"
 		groupid="0"
 	}
 	npoints="2"
 	point[0] {
-		x="63"
+		x="15"
 		y="50"
 	}
 	point[1] {
-		x="623"
-		y="51"
+		x="660"
+		y="50"
 	}
 	orgpoint[0] {
 		x="0"
-		y="0"
+		y="1000"
 	}
 	orgpoint[1] {
 		x="1000"
-		y="1000"
+		y="0"
 	}
 }
 "<<basic attribute>>" {
@@ -117,10 +117,10 @@ display {
 }
 "text" {
 	object {
-		x="124"
+		x="6"
 		y="102"
-		width="97"
-		height="19"
+		width="215"
+		height="20"
 		groupid="0"
 	}
 	textix="Release"
@@ -128,10 +128,10 @@ display {
 }
 "text" {
 	object {
-		x="128"
+		x="5"
 		y="210"
-		width="92"
-		height="19"
+		width="215"
+		height="20"
 		groupid="0"
 	}
 	textix="Gripper"
@@ -139,10 +139,10 @@ display {
 }
 "text" {
 	object {
-		x="75"
+		x="5"
 		y="302"
-		width="145"
-		height="19"
+		width="215"
+		height="20"
 		groupid="0"
 	}
 	textix="Slot Aligned?"
@@ -150,10 +150,10 @@ display {
 }
 "text" {
 	object {
-		x="47"
+		x="5"
 		y="352"
-		width="173"
-		height="19"
+		width="215"
+		height="20"
 		groupid="0"
 	}
 	textix="Slot Occupied?"
@@ -161,10 +161,10 @@ display {
 }
 "text" {
 	object {
-		x="9"
+		x="0"
 		y="403"
-		width="211"
-		height="19"
+		width="220"
+		height="20"
 		groupid="0"
 	}
 	textix="Cassette Installed?"
@@ -172,10 +172,10 @@ display {
 }
 "text" {
 	object {
-		x="50"
+		x="8"
 		y="453"
-		width="170"
-		height="19"
+		width="212"
+		height="20"
 		groupid="0"
 	}
 	textix="Mask in FP?"
@@ -183,10 +183,10 @@ display {
 }
 "text" {
 	object {
-		x="59"
+		x="4"
 		y="504"
-		width="161"
-		height="19"
+		width="216"
+		height="20"
 		groupid="0"
 	}
 	textix="IFU in FP?"
@@ -194,10 +194,10 @@ display {
 }
 "text" {
 	object {
-		x="410"
+		x="374"
 		y="417"
-		width="157"
-		height="19"
+		width="193"
+		height="20"
 		groupid="0"
 	}
 	textix="Master Enable"
@@ -208,7 +208,7 @@ display {
 		x="375"
 		y="463"
 		width="193"
-		height="19"
+		height="20"
 		groupid="0"
 	}
 	textix="Opt.Sensor Enable"
@@ -216,10 +216,10 @@ display {
 }
 "text" {
 	object {
-		x="394"
+		x="372"
 		y="508"
-		width="175"
-		height="19"
+		width="197"
+		height="20"
 		groupid="0"
 	}
 	textix="Sensor Enable"
@@ -227,10 +227,10 @@ display {
 }
 "text" {
 	object {
-		x="77"
+		x="6"
 		y="555"
-		width="143"
-		height="19"
+		width="214"
+		height="20"
 		groupid="0"
 	}
 	textix="FP Occupied?"
