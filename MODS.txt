@@ -1,8 +1,0 @@
- nov 19 : gmOiwfsFollowA.sch 
- nov 19:  gmOiwfsMoveCad.sch
- nov 19: src/gmos/gmosGensub.c changed strncmp with strncpy in
-         gmosHealthCombineInt function
- nov19: gmTempCalibrate.pv
- nov19: atmdc.sch  doors.sch  gmIlckWatchdog.sch  gmMaskSensors.sch  lifter.sch  xycomIn.sch gratState.sch
-      : added "barcode" type in edb.def
- dec19:  fixed devOiwfsControl.c
