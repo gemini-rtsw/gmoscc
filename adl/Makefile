@@ -4,7 +4,7 @@
 include .applTop
 -include $(APPLIC_TOP)/config/CONFIG
 
-APPLIC_DIR_TYPE = dl
+APPLIC_DIR_TYPE = adl
 
 -include $(APPLIC_TOP)/config/RULES.Dirs
 

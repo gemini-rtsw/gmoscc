@@ -6,7 +6,7 @@ display {
 	majv="2"
 	mnrv="4"
 	ndyng="26"
-	npc="35"
+	npc="36"
 	nstr="119"
 	ndynamic="29"
 	nplot="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="6974"
+	nwords_dspy="6992"
 	nwords_sta="1452"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="3106"
-	osta="1654"
-	odynamic="4354"
-	oplot="6322"
-	ord="6322"
-	oes="6962"
-	okd="6962"
-	opd="6974"
-	opo="6974"
+	odyng="3124"
+	osta="1672"
+	odynamic="4372"
+	oplot="6340"
+	ord="6340"
+	oes="6980"
+	okd="6980"
+	opd="6992"
+	opo="6992"
 	opc="68"
-	ostr="558"
-	ocmap="1654"
-	ocrules="1654"
+	ostr="576"
+	ocmap="1672"
+	ocrules="1672"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1024"
-	pixht="768"
-	mmwid="347"
-	mmht="260"
+	pixwid="2560"
+	pixht="1024"
+	mmwid="722"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -1449,12 +1449,12 @@ display {
 	attr {
 		mod {
 			clrmod="static"
-			vis="if greater zero"
+			vis="if zero"
 		}
 		param {
 			rulecolorfg="1"
 			rulecolorbg="1"
-			chan="$(T)atmTrack:atmTrack.VALA"
+			chan="$(T)atmTrack:atmTrack.SEVR"
 			rulechan[0] = ""
 			rulechan[1] = ""
 			rulechan[2] = ""
@@ -1479,7 +1479,7 @@ display {
 "text" {
 	object {
 		x="266"
-		y="481"
+		y="492"
 		width="90"
 		height="20"
 		groupid="0"
@@ -1529,7 +1529,7 @@ display {
 "text" {
 	object {
 		x="266"
-		y="481"
+		y="493"
 		width="90"
 		height="20"
 		groupid="0"
@@ -1549,12 +1549,12 @@ display {
 	attr {
 		mod {
 			clrmod="static"
-			vis="if zero"
+			vis="if greater zero"
 		}
 		param {
 			rulecolorfg="1"
 			rulecolorbg="1"
-			chan="$(T)atmTrack:atmTrack.VALA"
+			chan="$(T)atmTrack:atmTrack.SEVR"
 			rulechan[0] = ""
 			rulechan[1] = ""
 			rulechan[2] = ""
@@ -1579,7 +1579,7 @@ display {
 "text" {
 	object {
 		x="266"
-		y="481"
+		y="492"
 		width="90"
 		height="20"
 		groupid="0"
@@ -1599,12 +1599,12 @@ display {
 	attr {
 		mod {
 			clrmod="static"
-			vis="if greater zero"
+			vis="if zero"
 		}
 		param {
 			rulecolorfg="1"
 			rulecolorbg="1"
-			chan="$(T)atmTrack:atmTrack.VALA"
+			chan="$(T)atmTrack:atmTrack.SEVR"
 			rulechan[0] = ""
 			rulechan[1] = ""
 			rulechan[2] = ""
@@ -1628,8 +1628,8 @@ display {
 }
 "text" {
 	object {
-		x="266"
-		y="499"
+		x="264"
+		y="516"
 		width="90"
 		height="20"
 		groupid="0"
@@ -1678,8 +1678,8 @@ display {
 }
 "text" {
 	object {
-		x="266"
-		y="499"
+		x="267"
+		y="517"
 		width="90"
 		height="20"
 		groupid="0"
@@ -1699,12 +1699,12 @@ display {
 	attr {
 		mod {
 			clrmod="static"
-			vis="if zero"
+			vis="if greater zero"
 		}
 		param {
 			rulecolorfg="1"
 			rulecolorbg="1"
-			chan="$(T)atmTrack:atmTrack.VALA"
+			chan="$(T)atmTrack:atmTrack.SEVR"
 			rulechan[0] = ""
 			rulechan[1] = ""
 			rulechan[2] = ""
@@ -1728,8 +1728,8 @@ display {
 }
 "text" {
 	object {
-		x="266"
-		y="499"
+		x="265"
+		y="517"
 		width="90"
 		height="20"
 		groupid="0"

@@ -139,7 +139,7 @@ display {
 		groupid="0"
 	}
 	type="gif"
-	image_name="/gemini/epics3.13.4/gmos/gmos/gmos_logo.gif"
+	image_name="/gemini/GEM8.6/gmos/gmos/data/gmos_logo.gif"
 }
 "<<basic attribute>>" {
 	attr {

@@ -1,12 +1,12 @@
 file {
-	name="gmSeq.dl"
+	name="gmSeq.adl"
 }
 display {
 	magic="305419896"
 	majv="2"
 	mnrv="4"
 	ndyng="35"
-	npc="38"
+	npc="39"
 	nstr="147"
 	ndynamic="13"
 	nplot="0"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="8290"
+	nwords_dspy="8308"
 	nwords_sta="560"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="2630"
-	osta="2070"
-	odynamic="4538"
-	oplot="5408"
-	ord="5408"
-	oes="7488"
-	okd="8278"
-	opd="8290"
-	opo="8290"
+	odyng="2648"
+	osta="2088"
+	odynamic="4556"
+	oplot="5426"
+	ord="5426"
+	oes="7506"
+	okd="8296"
+	opd="8308"
+	opo="8308"
 	opc="68"
-	ostr="544"
-	ocmap="2070"
-	ocrules="2070"
+	ostr="562"
+	ocmap="2088"
+	ocrules="2088"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1600"
-	pixht="1200"
-	mmwid="320"
-	mmht="240"
+	pixwid="2560"
+	pixht="1024"
+	mmwid="722"
+	mmht="289"
 }
 "<<basic attribute>>" {
 	attr {
@@ -1610,12 +1610,12 @@ display {
 	attr {
 		mod {
 			clrmod="static"
-			vis="if greater zero"
+			vis="if zero"
 		}
 		param {
 			rulecolorfg="1"
 			rulecolorbg="1"
-			chan="$(T)atmTrack:atmTrack.VALA"
+			chan="$(T)atmTrack:atmTrack.SEVR"
 			rulechan[0] = ""
 			rulechan[1] = ""
 			rulechan[2] = ""
@@ -1660,12 +1660,12 @@ display {
 	attr {
 		mod {
 			clrmod="static"
-			vis="if zero"
+			vis="if greater zero"
 		}
 		param {
 			rulecolorfg="1"
 			rulecolorbg="1"
-			chan="$(T)atmTrack:atmTrack.VALA"
+			chan="$(T)atmTrack:atmTrack.SEVR"
 			rulechan[0] = ""
 			rulechan[1] = ""
 			rulechan[2] = ""
@@ -1689,7 +1689,7 @@ display {
 }
 "text" {
 	object {
-		x="34"
+		x="31"
 		y="316"
 		width="280"
 		height="20"
@@ -1987,8 +1987,8 @@ display {
 }
 "text" {
 	object {
-		x="34"
-		y="316"
+		x="20"
+		y="315"
 		width="280"
 		height="20"
 		groupid="0"

@@ -38,7 +38,7 @@ cd ${GMOS_OP};
 
 if "$arg" == "CP" then
    echo "Connecting to GMOS Cerro Pachon database"
-   gmosStartCP
+   gmosCP_dm.sh
 else if "$arg" == "RS" then
    echo "Connecting to GMOS Mauna Kea database - simulated post focal-plane"
    gmosStartMKRS
@@ -62,7 +62,7 @@ else if "$arg" == "SIM2" then
    gmosStartMKSS2
 else
    echo "Connecting to GMOS"
-   gmosStartMKRR
+   gmosMK_dm.sh
 endif
 
 

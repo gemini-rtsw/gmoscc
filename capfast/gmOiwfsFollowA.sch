@@ -38,38 +38,39 @@ w 2306 1931 100 0 mode elongouts.followMove.OUT 2208 1920 2464 1920 outhier.mode
 w 2306 2155 100 0 dir elongouts.followStart.OUT 2208 2144 2464 2144 outhier.dir.p
 w 270 1995 100 0 y_t inhier.y_t.P -128 1984 704 1984 egenSubF.followA.B
 w 270 2043 100 0 x_t inhier.x_t.P -128 2032 704 2032 704 2016 egenSubF.followA.A
-s 2608 1280 100 2 To Status Alarm Database
-s 1744 2192 100 512 START
-s 1744 1984 100 512 MOVE
-s 1072 1936 100 0 new_track
-s 512 800 100 512 track_id
-s 0 656 100 512 track_id
-s 1056 1712 100 0 offset_stream
-s 1040 288 100 0 reject_offset
-s 1600 1056 100 0 X_offset
-s 1600 992 100 0 Y_offset
-s 1600 928 100 0 Z_offset
-s 1600 864 100 0 R_offset
-s 1600 800 100 0 track_ID
-s 432 928 100 0 X_target
-s 432 864 100 0 Y_target
-s 0 912 100 512 X_origin
-s 0 848 100 512 Y_origin
-s 0 784 100 512 period
-s 0 720 100 512 radius
-s 1088 2032 100 0 reject
-s 1088 1984 100 0 follow_s
-s 1200 1872 100 0 mask_x
-s 1200 1840 100 0 mask_y
-s 1184 1808 100 0 in_position
-s 1184 1776 100 0 stream_valid
-s 352 1744 100 512 x_hi_limit
-s 352 1568 100 512 x_lo_limit
-s 368 1424 100 512 y_hi_limit
 s 416 1264 100 512 y_lo_limit
+s 368 1424 100 512 y_hi_limit
+s 352 1568 100 512 x_lo_limit
+s 352 1744 100 512 x_hi_limit
+s 1184 1776 100 0 stream_valid
+s 1184 1808 100 0 in_position
+s 1200 1840 100 0 mask_y
+s 1200 1872 100 0 mask_x
+s 1088 1984 100 0 follow_s
+s 1088 2032 100 0 reject
+s 0 720 100 512 radius
+s 0 784 100 512 period
+s 0 848 100 512 Y_origin
+s 0 912 100 512 X_origin
+s 432 864 100 0 Y_target
+s 432 928 100 0 X_target
+s 1600 800 100 0 track_ID
+s 1600 864 100 0 R_offset
+s 1600 928 100 0 Z_offset
+s 1600 992 100 0 Y_offset
+s 1600 1056 100 0 X_offset
+s 1040 288 100 0 reject_offset
+s 1056 1712 100 0 offset_stream
+s 0 656 100 512 track_id
+s 512 800 100 512 track_id
+s 1072 1936 100 0 new_track
+s 1744 1984 100 512 MOVE
+s 1744 2192 100 512 START
+s 2608 1280 100 2 To Status Alarm Database
 [cell use]
 use egenSubF 704 1207 100 0 followA
 xform 0 848 1632
+p 416 1774 100 0 0 DISV:1
 p 481 789 100 0 0 FTH:LONG
 p 481 725 100 0 0 FTK:LONG
 p 481 981 100 0 0 FTVA:LONG
@@ -85,20 +86,14 @@ p 481 341 100 0 0 NOJ:6
 p 481 341 100 0 0 NOVJ:9
 p 416 1758 100 0 0 PREC:4
 p 721 101 100 512 -1 PV:$(top)
+p 416 1902 100 0 0 SCAN:Passive
 p 416 1582 100 3328 1 SNAM:oiFollowA
 p 816 1200 100 1792 0 name:$(top)$(I)
+p 656 1722 50 3072 -1 pproc(INPJ):NPP
 p 1002 1818 50 3072 -1 pproc(OUTG):PP
 p 1002 1786 50 3072 -1 pproc(OUTH):PP
 p 1002 1722 50 3072 -1 pproc(OUTJ):PP
 p 416 1850 75 0 0 typ(INPF):path
-use ebos 2512 816 100 0 inPosBo
-xform 0 2528 736
-p 2448 640 100 0 1 OMSL:closed_loop
-p 2448 576 100 0 1 ONAM:INPOSITION
-p 2512 816 100 512 1 PV:$(top)
-p 2448 608 100 0 1 ZNAM:NOT_INPOSITION
-p 2688 704 75 768 -1 palrm(OUT):MS
-p 2656 704 75 768 -1 pproc(OUT):PP
 use ebos 2064 1360 100 0 following
 xform 0 2080 1280
 p 2000 1184 100 0 1 OMSL:closed_loop
@@ -107,48 +102,49 @@ p 2064 1360 100 512 1 PV:$(top)
 p 2000 1152 100 0 1 ZNAM:NOT_FOLLOWING
 p 2240 1248 75 768 -1 palrm(OUT):MS
 p 2208 1248 75 768 -1 pproc(OUT):PP
-use hwin 1696 887 100 0 hwin#303
-xform 0 1792 928
-p 1699 920 100 0 -1 val(in):$(top)probeAssembly.BUSY
-use hwin 1760 1943 100 0 hwin#278
-xform 0 1856 1984
-p 1763 1976 100 0 -1 val(in):1
+use ebos 2512 816 100 0 inPosBo
+xform 0 2528 736
+p 2448 640 100 0 1 OMSL:closed_loop
+p 2448 576 100 0 1 ONAM:INPOSITION
+p 2512 816 100 512 1 PV:$(top)
+p 2448 608 100 0 1 ZNAM:NOT_INPOSITION
+p 2688 704 75 768 -1 palrm(OUT):MS
+p 2656 704 75 768 -1 pproc(OUT):PP
 use hwin 1760 2167 100 0 hwin#279
 xform 0 1856 2208
 p 1763 2200 100 0 -1 val(in):3
+use hwin 1760 1943 100 0 hwin#278
+xform 0 1856 1984
+p 1763 1976 100 0 -1 val(in):1
+use hwin 1696 887 100 0 hwin#303
+xform 0 1792 928
+p 1699 920 100 0 -1 val(in):$(top)probeAssembly.BUSY
 use ecalcs 2288 912 100 0 inPosCalc
 xform 0 2160 752
 p 2144 528 100 0 1 CALC:(A=1) && (B=0)
 p 2176 912 100 0 1 PV:$(top)
-use hwout 2272 1207 100 0 hwout#292
-xform 0 2368 1248
-p 2272 1200 100 0 -1 val(outp):$(top)followS.VAL PP MS
-use hwout 2688 663 100 0 hwout#294
-xform 0 2784 704
-p 2688 672 100 0 -1 val(outp):$(top)inPosition.VAL PP NMS
-use hwout 2272 983 100 0 hwout#295
-xform 0 2368 1024
-p 2272 976 100 0 -1 val(outp):$(top)arrayS.VAL PP NMS
 use hwout 2272 407 100 0 hwout#296
 xform 0 2368 448
 p 2272 400 100 0 -1 val(outp):$(agProbeOffset) PP NMS
-use inhier -240 1936 100 0 cur_pos
-xform 0 -128 1936
-use inhier -144 1047 100 0 tolerance
-xform 0 -128 1088
-use inhier -144 1111 100 0 follow
-xform 0 -128 1152
-use inhier -160 1984 100 512 y_t
-xform 0 -128 1984
+use hwout 2272 983 100 0 hwout#295
+xform 0 2368 1024
+p 2272 976 100 0 -1 val(outp):$(top)arrayS.VAL PP NMS
+use hwout 2688 663 100 0 hwout#294
+xform 0 2784 704
+p 2688 672 100 0 -1 val(outp):$(top)inPosition.VAL PP NMS
+use hwout 2272 1207 100 0 hwout#292
+xform 0 2368 1248
+p 2272 1200 100 0 -1 val(outp):$(top)followS.VAL PP MS
 use inhier -160 2032 100 512 x_t
 xform 0 -128 2032
-use eaos 2112 1808 100 0 followX
-xform 0 2080 1728
-p 1952 1680 70 512 1 DISV:-1
-p 1920 1454 100 0 0 EGU:millimetres
-p 1984 1632 100 0 1 OMSL:closed_loop
-p 2048 1680 100 0 1 PREC:3
-p 2112 1808 100 512 1 PV:$(top)
+use inhier -160 1984 100 512 y_t
+xform 0 -128 1984
+use inhier -144 1111 100 0 follow
+xform 0 -128 1152
+use inhier -144 1047 100 0 tolerance
+xform 0 -128 1088
+use inhier -240 1936 100 0 cur_pos
+xform 0 -128 1936
 use eaos 2112 1584 100 0 followY
 xform 0 2080 1504
 p 1952 1456 70 512 1 DISV:-1
@@ -156,23 +152,13 @@ p 1920 1230 100 0 0 EGU:millimetres
 p 1984 1408 100 0 1 OMSL:closed_loop
 p 2048 1456 100 0 1 PREC:3
 p 2112 1584 100 512 1 PV:$(top)
-use egenSub 1456 1120 100 0 Offset
-xform 0 1424 688
-p 1360 320 100 0 1 DISV:-1
-p 1360 1024 70 0 -1 FTA:DOUBLE
-p 1488 1056 70 512 -1 FTVA:DOUBLE
-p 1488 992 70 512 -1 FTVB:DOUBLE
-p 1488 928 70 512 -1 FTVC:DOUBLE
-p 1488 864 70 512 -1 FTVD:DOUBLE
-p 1488 800 70 512 -1 FTVE:DOUBLE
-p 1488 480 70 512 -1 FTVJ:DOUBLE
-p 1360 1056 70 0 1 NOA:9
-p 1488 448 70 512 1 NOVJ:9
-p 1312 208 100 0 1 PREC:4
-p 1440 1120 100 512 -1 PV:$(top)$(dev)
-p 1312 240 100 0 1 SNAM:oiProbeOffset
-p 1648 464 100 0 0 def(OUTJ):0.0
-p 1568 458 75 0 -1 pproc(OUTJ):PP
+use eaos 2112 1808 100 0 followX
+xform 0 2080 1728
+p 1952 1680 70 512 1 DISV:-1
+p 1920 1454 100 0 0 EGU:millimetres
+p 1984 1632 100 0 1 OMSL:closed_loop
+p 2048 1680 100 0 1 PREC:3
+p 2112 1808 100 512 1 PV:$(top)
 use egenSub 208 976 100 0 tcsSimulator
 xform 0 208 560
 p -64 192 100 0 1 DISV:1
@@ -191,26 +177,49 @@ p 192 976 100 512 -1 PV:$(top)
 p 64 96 100 0 1 SCAN:.05 second
 p 64 128 100 0 1 SNAM:oiTargetSimulator
 p 352 330 75 0 -1 pproc(OUTJ):PP
-use eais 128 1808 100 0 PatrolXHiLim
-xform 0 96 1744
-p -288 1486 100 0 0 EGU:millimetres
-p 96 1712 100 256 1 PREC:3
-p 128 1808 100 512 1 PV:$(top)$(dev)
-use eais 128 1648 100 0 PatrolXLoLim
-xform 0 96 1584
-p -288 1326 100 0 0 EGU:millimetres
-p 96 1552 100 256 1 PREC:3
-p 128 1648 100 512 1 PV:$(top)$(dev)
-use eais 128 1488 100 0 PatrolYHiLim
-xform 0 96 1424
-p -288 1166 100 0 0 EGU:millimetres
-p 96 1392 100 256 1 PREC:3
-p 128 1488 100 512 1 PV:$(top)$(dev)
+use egenSub 1456 1120 100 0 Offset
+xform 0 1424 688
+p 1360 320 100 0 1 DISV:-1
+p 1360 1024 70 0 -1 FTA:DOUBLE
+p 1488 1056 70 512 -1 FTVA:DOUBLE
+p 1488 992 70 512 -1 FTVB:DOUBLE
+p 1488 928 70 512 -1 FTVC:DOUBLE
+p 1488 864 70 512 -1 FTVD:DOUBLE
+p 1488 800 70 512 -1 FTVE:DOUBLE
+p 1488 480 70 512 -1 FTVJ:DOUBLE
+p 1360 1056 70 0 1 NOA:9
+p 1488 448 70 512 1 NOVJ:9
+p 1312 208 100 0 1 PREC:4
+p 1440 1120 100 512 -1 PV:$(top)$(dev)
+p 1312 240 100 0 1 SNAM:oiProbeOffset
+p 1648 464 100 0 0 def(OUTJ):0.0
+p 1568 458 75 0 -1 pproc(OUTJ):PP
 use eais 128 1328 100 0 PatrolYLoLim
 xform 0 96 1264
 p -288 1006 100 0 0 EGU:millimetres
 p 96 1232 100 256 1 PREC:3
 p 128 1328 100 512 1 PV:$(top)$(dev)
+use eais 128 1488 100 0 PatrolYHiLim
+xform 0 96 1424
+p -288 1166 100 0 0 EGU:millimetres
+p 96 1392 100 256 1 PREC:3
+p 128 1488 100 512 1 PV:$(top)$(dev)
+use eais 128 1648 100 0 PatrolXLoLim
+xform 0 96 1584
+p -288 1326 100 0 0 EGU:millimetres
+p 96 1552 100 256 1 PREC:3
+p 128 1648 100 512 1 PV:$(top)$(dev)
+use eais 128 1808 100 0 PatrolXHiLim
+xform 0 96 1744
+p -288 1486 100 0 0 EGU:millimetres
+p 96 1712 100 256 1 PREC:3
+p 128 1808 100 512 1 PV:$(top)$(dev)
+use elongouts 2112 2032 100 0 followMove
+xform 0 2080 1952
+p 1952 1904 70 512 1 DISV:-1
+p 1792 2094 100 0 0 EGU:mode
+p 1984 1856 100 0 1 OMSL:closed_loop
+p 2112 2032 100 512 1 PV:$(top)
 use elongouts 2112 2256 100 0 followStart
 xform 0 2080 2176
 p 1952 2128 70 512 1 DISV:-1
@@ -218,20 +227,14 @@ p 1792 2318 100 0 0 EGU:directive
 p 1984 2080 100 0 1 OMSL:closed_loop
 p 2112 2256 100 512 1 PV:$(top)
 p 2208 2144 75 768 -1 pproc(OUT):PP
-use elongouts 2112 2032 100 0 followMove
-xform 0 2080 1952
-p 1952 1904 70 512 1 DISV:-1
-p 1792 2094 100 0 0 EGU:mode
-p 1984 1856 100 0 1 OMSL:closed_loop
-p 2112 2032 100 512 1 PV:$(top)
-use outhier 2496 2144 100 0 dir
-xform 0 2448 2144
-use outhier 2496 1472 100 0 y_m
-xform 0 2448 1472
-use outhier 2496 1696 100 0 x_m
-xform 0 2448 1696
 use outhier 2496 1920 100 0 mode
 xform 0 2448 1920
+use outhier 2496 1696 100 0 x_m
+xform 0 2448 1696
+use outhier 2496 1472 100 0 y_m
+xform 0 2448 1472
+use outhier 2496 2144 100 0 dir
+xform 0 2448 2144
 use gmosBorderC -416 -153 100 0 gmosBorderC#91
 xform 0 1264 1152
 p 2840 -24 100 512 1 File:gmOiwfsFollowA.sch

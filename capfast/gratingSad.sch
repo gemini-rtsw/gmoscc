@@ -1,7 +1,8 @@
 [schematic2]
-uniq 210
+uniq 213
 [tools]
 [detail]
+w 562 -1381 100 0 n#211 hwin.hwin#212.in 480 -1392 704 -1392 esirs.MotorSteps.INP
 w -590 -405 100 0 n#205 hwin.hwin#206.in -672 -416 -448 -416 esirs.Debug.INP
 w -1486 -885 100 0 n#201 hwin.hwin#202.in -1568 -896 -1344 -896 esirs.Update.INP
 w 1650 -885 100 0 n#195 hwin.hwin#196.in 1568 -896 1792 -896 esirs.Rotation.INP
@@ -19,6 +20,48 @@ s 1312 64 100 0 Written by assembly record --->
 s 1312 544 100 0 Written by assembly record --->
 s 1152 -416 100 0 Written by grating switch genSub record --->
 [cell use]
+use hwin -864 -457 100 0 hwin#206
+xform 0 -768 -416
+p -861 -424 100 0 -1 val(in):$(top)$(dev)Assembly.DBUG
+use hwin -1760 503 100 0 hwin#158
+xform 0 -1664 544
+p -1757 536 100 0 -1 val(in):$(top)$(dev)Assembly.INIT
+use hwin -1760 23 100 0 hwin#159
+xform 0 -1664 64
+p -1757 56 100 0 -1 val(in):$(top)$(dev)Assembly.INDX
+use hwin -1760 -457 100 0 hwin#160
+xform 0 -1664 -416
+p -1757 -424 100 0 -1 val(in):$(top)$(dev)Assembly.PARK
+use hwin -864 23 100 0 hwin#161
+xform 0 -768 64
+p -861 56 100 0 -1 val(in):$(top)$(dev)Assembly.HLTH
+use hwin -864 503 100 0 hwin#162
+xform 0 -768 544
+p -861 536 100 0 -1 val(in):$(top)$(dev)Assembly.ASTA
+use hwin -864 -937 100 0 hwin#179
+xform 0 -768 -896
+p -861 -904 100 0 -1 val(in):$(top)$(dev)Assembly.SIMM
+use hwin 256 503 100 0 hwin#188
+xform 0 352 544
+p 259 536 100 0 -1 val(in):$(top)$(dev)ADevice.MPOS
+use hwin 256 23 100 0 hwin#189
+xform 0 352 64
+p 259 56 100 0 -1 val(in):$(top)$(dev)BDevice.MPOS
+use hwin 256 -457 100 0 hwin#192
+xform 0 352 -416
+p 259 -424 100 0 -1 val(in):$(top)$(dev)CDevice.MPOS
+use hwin 256 -937 100 0 hwin#193
+xform 0 352 -896
+p 259 -904 100 0 -1 val(in):$(top)$(dev)DDevice.MPOS
+use hwin 1376 -937 100 0 hwin#196
+xform 0 1472 -896
+p 1379 -904 100 0 -1 val(in):$(top)$(dev)tDevice.MPOS
+use hwin -1760 -937 100 0 hwin#202
+xform 0 -1664 -896
+p -1757 -904 100 0 -1 val(in):$(top)$(dev)Assembly.INIT
+use hwin 288 -1433 100 0 hwin#212
+xform 0 384 -1392
+p 291 -1400 100 0 -1 val(in):$(top)$(dev)Assembly.VALC
 use esirs 1792 -1145 100 0 Rotation
 xform 0 2000 -992
 p 1856 -1216 100 0 1 DESC:Rotation of turret
@@ -149,45 +192,15 @@ p 1856 -736 100 0 0 FDSC:Grating in beam?
 p 1856 -768 100 0 1 FTVL:LONG
 p 1856 -800 100 0 1 PV:$(sadtop)$(dev)
 p 1856 -704 100 0 1 SCAN:Passive
-use hwin -864 -457 100 0 hwin#206
-xform 0 -768 -416
-p -861 -424 100 0 -1 val(in):$(top)$(dev)Assembly.DBUG
-use hwin -1760 503 100 0 hwin#158
-xform 0 -1664 544
-p -1757 536 100 0 -1 val(in):$(top)$(dev)Assembly.INIT
-use hwin -1760 23 100 0 hwin#159
-xform 0 -1664 64
-p -1757 56 100 0 -1 val(in):$(top)$(dev)Assembly.INDX
-use hwin -1760 -457 100 0 hwin#160
-xform 0 -1664 -416
-p -1757 -424 100 0 -1 val(in):$(top)$(dev)Assembly.PARK
-use hwin -864 23 100 0 hwin#161
-xform 0 -768 64
-p -861 56 100 0 -1 val(in):$(top)$(dev)Assembly.HLTH
-use hwin -864 503 100 0 hwin#162
-xform 0 -768 544
-p -861 536 100 0 -1 val(in):$(top)$(dev)Assembly.ASTA
-use hwin -864 -937 100 0 hwin#179
-xform 0 -768 -896
-p -861 -904 100 0 -1 val(in):$(top)$(dev)Assembly.SIMM
-use hwin 256 503 100 0 hwin#188
-xform 0 352 544
-p 259 536 100 0 -1 val(in):$(top)$(dev)ADevice.MPOS
-use hwin 256 23 100 0 hwin#189
-xform 0 352 64
-p 259 56 100 0 -1 val(in):$(top)$(dev)BDevice.MPOS
-use hwin 256 -457 100 0 hwin#192
-xform 0 352 -416
-p 259 -424 100 0 -1 val(in):$(top)$(dev)CDevice.MPOS
-use hwin 256 -937 100 0 hwin#193
-xform 0 352 -896
-p 259 -904 100 0 -1 val(in):$(top)$(dev)DDevice.MPOS
-use hwin 1376 -937 100 0 hwin#196
-xform 0 1472 -896
-p 1379 -904 100 0 -1 val(in):$(top)$(dev)tDevice.MPOS
-use hwin -1760 -937 100 0 hwin#202
-xform 0 -1664 -896
-p -1757 -904 100 0 -1 val(in):$(top)$(dev)Assembly.INIT
+use esirs 704 -1641 100 0 MotorSteps
+xform 0 912 -1488
+p 768 -1712 100 0 1 DESC:Motorsteps before forwardlash
+p 960 -1744 100 0 1 EGU:motor steps
+p 768 -1712 100 0 0 FDSC:Motorsteps before forwardlash
+p 768 -1744 100 0 1 FTVL:DOUBLE
+p 1152 -1744 100 0 1 PREC:4
+p 768 -1776 100 0 1 PV:$(sadtop)$(dev)
+p 768 -1664 100 0 1 SCAN:1 second
 use ukatcBorderD -2192 -2265 100 0 ukatcBorderD#177
 xform 0 448 -560
 p 1520 -2128 100 0 -1 ID:$Id$

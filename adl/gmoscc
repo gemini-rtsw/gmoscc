@@ -44,11 +44,11 @@ pushd ${HOME}/consoleLogs/$day/gmos
 
 if ( $1 == "nolog" ) then
 
-   xterm -geometry 80x50-0+0 -sb -sl 256 -n gmos -T "GMOS MK VxWorks Console" -e gmosIocAnnex GmosAnnex 7003 gmos &
+   xterm -geometry 80x50-0+0 -sb -sl 256 -n gmos -T "GMOS CP` VxWorks Console" -e gmosIocAnnex gmos-annex 7006 gmos &
    echo "No log file will be created."
 else
 
-   xterm -l -geometry 80x50-0+0 -sb -sl 256 -n gmos -T "GMOS MK VxWorks Console" -e gmosIocAnnex GmosAnnex 7003 gmos &
+   xterm -l -geometry 80x50-0+0 -sb -sl 256 -n gmos -T "GMOS CP VxWorks Console" -e gmosIocAnnex gmos-annex 7006 gmos &
    echo "A log file will be created in the `pwd`"
    echo "directory. Check for files called XtermLog.*"
 endif

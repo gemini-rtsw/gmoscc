@@ -1,19 +1,17 @@
-
 include ../.applTop
 include $(APPLIC_TOP)/config/CONFIG
-#ADL2DL = $(EPICS)/extensions/bin/solaris/adl2dl2-4
 
 SCRIPTS = gmosCcStartMKRR gmosCcStartMKRS gmosCcStartMKSR gmosCcStartMKSS \
 	  gmosCcStartCP gmEditFile gmEditFileField gmCcDoCommand \
 	  gmSeqStart gmSeqStartMKRR gmSeqDoCommand gmSeqCcCommand \
-          gmosStartMKRR gmosStartMKSS gmosStartMKSS2 gmosStartCP \
+          gmosMK_dm.sh gmosStartMKSS gmosStartMKSS2 gmosCP_dm.sh \
 	  gmosStart gmosStartMK gmosAlarm gmosCcAlarm gmosDcAlarm \
 	  gmosXterm gmosIocConsole gmosIocAnnex sim2 gmoscc gmosdc \
 	  gmosannex gmosLog gmosSetResetAliases gmosHelp gmosTest
 
 # List of display (*.dl) files
 #DATA    = ../gmos_logo.gif ../colors.dl ../gmColors.dl $(wildcard ../*.dl) \
-#          $(patsubst ../%.adl, %.dl, $(wildcard ../*.adl ../*.bit ../*.gif ../*.tk \
+#          $(patsubst ../%.adl, %.dl, $(wildcard ../*.adl ../*.bit ../*.tk \
 #	  ../*.sh ../*.test))
 
 
@@ -21,7 +19,7 @@ DATA = colorsMK.dl colorsCP.dl gmColors.dl template.dl\
 	$(patsubst ../%.adl, %.dl, $(wildcard ../*.adl ../*.bit ../*.gif ../*.tk \
           ../*.sh ../*.test))
 
-
 CMAPFILE=gmColors.dl
- 
+
 include $(APPLIC_TOP)/config/RULES.Build
+

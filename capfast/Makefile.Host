@@ -34,11 +34,11 @@ DEPSCHS = $(wildcard ../*.sch)
 #
 
 
-DATA	= gmosCcTopMKRR.db    gmosCcSadTopMKRR.db  \
-	  gmosCcTopMKSS.db    gmosCcSadTopMKSS.db  \
-	  gmSeqTopMKRR.db     gmSeqSadTopMKRR.db   \
-	  gmSeqTopMKRRtc1.db     \
-	  gmSeqTopMKSS.db     gmSeqSadTopMKSS.db   
+DATA	= gmosCcTop.db    gmosCcSadTop.db  \
+	  gmosCcTopSS.db    gmosCcSadTopSS.db  \
+	  gmSeqTop.db     gmSeqSadTop.db   \
+	  gmSeqToptc1.db     \
+	  gmSeqTopSS.db     gmSeqSadTopSS.db   
 
 # Remove these databases from the build list until required
 #	  gmosCcTopCP.db      gmosCcSadTopCP.db    \

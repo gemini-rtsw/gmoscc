@@ -9,18 +9,19 @@ s 1008 1952 200 0 by the underlying schematics
 [cell use]
 use oslBorderC -144 -105 100 0 oslBorderC#1
 xform 0 1536 1200
+p 2796 144 120 256 -1 Title:GMOS MK - top level Instrument Sequencer
 use gmSeq 1192 1024 100 0 gmSeq#0
 xform 0 1536 1224
-p 1280 1624 100 0 -1 seta:top g7:
-p 1280 1592 100 0 -1 setb:gm g7:
+p 1280 1624 100 0 -1 seta:top gm:
+p 1280 1592 100 0 -1 setb:gm gm:
 p 1680 1672 100 0 -1 setc:CAR_IDLE 0
 p 1680 1624 100 0 -1 setd:CAR_BUSY 2
 p 1680 1576 100 0 -1 sete:CAR_ERROR 3
 p 1680 1512 100 0 -1 setf:CAD_MARK 0
 p 1680 1464 100 0 -1 setg:CAD_START 3
-p 1280 1560 100 0 -1 seth:sad g7:sad:
-p 1264 1512 100 0 -1 seti:cc g7:cc:
-p 1264 1464 100 0 -1 setj:dc g7:dc:
+p 1280 1560 100 0 -1 seth:sad gm:sad:
+p 1264 1512 100 0 -1 seti:cc gm:cc:
+p 1264 1464 100 0 -1 setj:dc gm:dc:
 p 1456 1464 100 0 -1 setk:sys gmSeq
 p 1856 1504 100 0 -1 setl:CAD_PRESET 2
 p 1856 1472 100 0 -1 setm:MODE_MOVE 1
