@@ -72,8 +72,8 @@ dbpf "gm:cc:msEnableEnable","0"
 dbpf "gm:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "gm:sad:name.VAL","GMOS-CP (V4-2)"
-dbpf "gm:sad:cc:name.VAL","GMOS-CP (V4-2)"
+dbpf "gm:sad:name.VAL","GMOS-CP (V4-3)"
+dbpf "gm:sad:cc:name.VAL","GMOS-CP (V4-3)"
 
 # Load initialization files
 pvload "$(version)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"

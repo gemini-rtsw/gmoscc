@@ -411,3 +411,12 @@ Files modified:
 
 - Removed aux_gr.lut from /gmos/src/MK/lut/Makefile.Vx
 
+V4-3 Nov 2003 tpaz
+------------------
+
+- new lifter timeout (10sec) . 
+   Files modified: lifter.h
+- "ignore barcode" feature modified not to go back to FALSE automaticaly. 
+   Files modified: devMaskCtrl.c 
+
+

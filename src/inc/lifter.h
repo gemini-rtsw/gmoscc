@@ -17,6 +17,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.4  2003/05/27 21:16:51  gemvx
+ * Version 4-1
+ *
  * Revision 1.3  2003/01/31 14:12:46  gemvx
  * Merged gmos-south
  *
@@ -74,7 +77,7 @@
 #define GR_VALVE_ACTIVE    0
 #define GR_PRESSURE_OK     0
 
-#define GR_LIFTER_CYCLE_TIME  9		/* Lifter cycle time in seconds			*/
+#define GR_LIFTER_CYCLE_TIME  10	/* Lifter cycle time in seconds			*/
 #define GR_LIFTER_SHORT_TIME  2		/* Lifter short reprocessing time in seconds	*/
 #define GR_LIFTER_MAX_CYCLES  1		/* Maximum number of lifter cycles		*/
 

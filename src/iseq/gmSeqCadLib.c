@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.4  2003/07/21 21:37:20  gemvx
+ * V4-2 follow in z only version
+ *
  * Revision 1.3  2003/01/31 14:12:46  gemvx
  * Merged gmos-south
  *
@@ -2436,7 +2439,7 @@ n", focusOffset);*/
 		if (maskLocation == 0)
 		{
 		*(double *) pcad->valc = focusOffset;
- 		printf("DEBUG MESSAGE: Focus offset written to record. pcad->valc\n");
+ 		/*printf("DEBUG MESSAGE: Focus offset written to record. pcad->valc\n");*/
 		}
 		else
 		{

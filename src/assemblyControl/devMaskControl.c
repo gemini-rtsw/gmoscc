@@ -65,6 +65,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2003/05/27 21:16:51  gemvx
+ * Version 4-1
+ *
  * Revision 1.1  2002/04/24 05:24:56  ajf
  * New directory for port to epics3.13.4GEM8.4.
  *
@@ -5004,13 +5007,14 @@ static long mkMoveMode
     /*  If outbeam  requested when a mask is inbeam 
         or update requested, return the ignore
         barcode failures flag to false */
-        if ( pMkPriv->currentCmd == DAR_MODE_MOVE && 
+   /*  TEST removing for tests */
+   /*     if ( pMkPriv->currentCmd == DAR_MODE_MOVE && 
               pMkPriv->currentLoc == MK_CMD_INBEAM )
         {
 		MK_IGNORE_BARCODE = FALSE;
                  printf("TEST DEBUG: MK_IGNORE_BARCODE set to FALSE due to an out-of-beam, update request ");
         }
-    
+   */ 
     /* 
      *  If an out-of-beam request or update is requested, then clear
      *  the current command code.
@@ -5035,7 +5039,7 @@ static long mkMoveMode
 
     if ( par->mode == DAR_MODE_MOVE || par->mode == DAR_MODE_PARK )
     {
-        printf("TEST DEBUG: MK_IGNORE_BARCODE set to FALSE due to an out-of-beam  or update request");
+          /*TEST printf("TEST DEBUG: MK_IGNORE_BARCODE set to FALSE due to an out-of-beam  or update request");*/
         if ( (status = mkBuildList( par, par->mode )) != DAR_S_SUCCESS )
         {
             DEBUG(DAR_MSG_ERROR, 
