@@ -247,7 +247,11 @@ This version is the same as V2-5 with
 - A fix to future-proof the fanout connected to the top level apply
   record in the components controller against a power PC fanout
   record bug that crashes Channel Access.
+- Changed some of the messages reported by the checkout scripts to
+  make them less confusing (as noticed during the training exercise).
 
-V2-7 ?? ??? 2001 ???
+V?-? ?? ??? 2001 ???
 --------------------
-A future version will contain Malcolm Smith's ADC correction code.
+A future version will need to contain Malcolm Smith's ADC correction code
+for the OIWFS software and the actual ADC assembly software (rather than
+the present code running in simulation mode).
