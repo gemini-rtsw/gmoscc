@@ -217,7 +217,7 @@ In addition:
   name, which is GMOS-N.
 THIS IS THE VERSION USED TO TEST THE TRANSLATION STAGE ON 02 MAY 2001.
 
-V2-5 ?? May 2001 SMB:
+V2-5 16 May 2001 SMB:
 ---------------------
 This version is the same as V2-4 with
 - All references to HSWA field removed from checkout scripts,
