@@ -25,7 +25,7 @@ p 1264 1464 100 0 -1 setj:dc g3:dc:
 p 1456 1464 100 0 -1 setk:sys gmSeq
 p 1856 1504 100 0 -1 setl:CAD_PRESET 2
 p 1856 1472 100 0 -1 setm:MODE_MOVE 1
-p 1280 1712 100 0 -1 setn:tcs tcs:
+p 1280 1712 100 0 -1 setn:tcs tc1:
 p 1856 1536 100 0 -1 seto:CAD_STOP 4
 p 1856 1584 100 0 -1 setp:CAD_CLEAR 1
 [comments]

@@ -109,6 +109,12 @@ if ( -e ${GMOS_OP}/bin/solaris/gmosSetResetAliases ) then
    source ${GMOS_OP}/bin/solaris/gmosSetResetAliases
 endif
 
+# Define gmosTest command alias
+
+if ( -e ${GMOS_OP}/bin/solaris/gmosTest ) then
+   alias gmosTest 'source ${GMOS_OP}/bin/solaris/gmosTest'
+endif
+
 #
 # ------------------------------------------------------------------------
 #      MISCELLANEOUS DEFINITIONS
