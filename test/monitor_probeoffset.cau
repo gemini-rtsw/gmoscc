@@ -1,0 +1,12 @@
+# monitor_probeoffset.cau
+#
+# cau macro which monitors the X,Y,Z and angle output from the
+# OIWFS probeOffset record.
+# Invoked using cau "source" command.
+#
+monitor gm:wfs:probeOffset.VALA
+monitor gm:wfs:probeOffset.VALB
+monitor gm:wfs:probeOffset.VALC
+monitor gm:wfs:probeOffset.VALD
+
+# Type dataOut cau_probeoffset.log
