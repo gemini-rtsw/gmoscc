@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2001/04/23 18:24:42  smb
+ * DEBUG macro changed from logMsg to printf so it can display floating point values (bug 196)
+ *
  * Revision 1.58  2001/03/20 13:40:27  gmos
  * Modified DEBUG macro. All files now use printf() rather than logMsg(). All also print the output from taskName(0).
  *
@@ -500,6 +503,7 @@ typedef enum
 {
     GR_STOP_TASK = 0,		/* Stop everything. 				*/
     GR_INIT_ALL,		/* Initialise everything.			*/
+    GR_TEST_ALL,		/* Test everything.				*/
     GR_INDEX_ALL,		/* Index all devices.				*/
     GR_PARK_ALL,		/* Park all devices.				*/
     GR_MV_GRATING_ALL,		/* Move all gratings simultaneously.		*/
@@ -554,6 +558,9 @@ typedef enum
 
 static GR_TASK_LIST  grInit[] = {					/* INIT */
     { GR_INIT_ALL,           TRUE,  TRUE,  TRUE,  TRUE,  TRUE } ,
+};
+static GR_TASK_LIST  grTest[] = {					/* TEST */
+    { GR_TEST_ALL,           TRUE,  TRUE,  TRUE,  TRUE,  TRUE } ,
 };
 static GR_TASK_LIST  grIndexAll[] = {					/* INDEX */
      { GR_TURRET_POWER_ON,   FALSE, FALSE, FALSE, FALSE, FALSE } ,
@@ -1431,6 +1438,30 @@ static long grBuildList(ASSEMBLY_CONTROL_RECORD *par, int mode)
              return (status);
           }
           newTask->item = (void *)&(grInit[0]);
+          ellAdd( (ELLLIST *) &(pGrPriv->taskList), &(newTask->node) );
+
+          break;
+
+     case DAR_MODE_TEST:
+
+          /*
+           *  Build the task list to test all devices at the same time.
+           *  (The following statements assume TEST only has ont task on the list).
+           */
+
+          GRDEBUG(DAR_MSG_FULL, "grBuildList: adding TEST to task list%c\n", ' ');
+
+          newTask = malloc( sizeof ( GR_LIST ) );
+          if ( newTask == NULL )
+          {
+             GRDEBUG(DAR_MSG_FATAL,
+                "grBuildList: Memory allocation failure for test task%c\n", ' ' );
+
+             status = DAR_E_MALLOC;
+             assAddErrorMessage( par, "Grating, insufficient memory for new task");
+             return (status);
+          }
+          newTask->item = (void *)&(grTest[0]);
           ellAdd( (ELLLIST *) &(pGrPriv->taskList), &(newTask->node) );
 
           break;
@@ -2365,6 +2396,20 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                     pGrPriv->velocity[i] = GR_VELOCITY_NONE;     /* Do not change the velocity */
                }
                pGrPriv->mode = DAR_MODE_INIT;
+               semGive (pGrPriv->mutexSem);
+               break;
+
+          case GR_TEST_ALL:
+                 
+               GRDEBUG(DAR_MSG_MIN, "grDoTask: Test all devices%c\n", ' ');
+
+               semTake (pGrPriv->mutexSem, WAIT_FOREVER);
+               for (i=0; i < GR_NUM_DEVICES; i++)
+               {
+                    (void) strcpy( pGrPriv->position[i], " " );
+                    pGrPriv->velocity[i] = GR_VELOCITY_NONE;     /* Do not change the velocity */
+               }
+               pGrPriv->mode = DAR_MODE_TEST;
                semGive (pGrPriv->mutexSem);
                break;
 
@@ -4571,6 +4616,7 @@ static long grTaskCheck(ASSEMBLY_CONTROL_RECORD *par)
 
           break;
 
+     case GR_TEST_ALL:
      case GR_BC_GRATING_ALL:
      case GR_MV_TURRET_A:
      case GR_MV_TURRET_B:
@@ -5007,6 +5053,7 @@ static long grTaskFinished(ASSEMBLY_CONTROL_RECORD *par)
  * DESCRIPTION:
  * Test that all links to the 5 motors are not CONSTANT.
  * Test that the task list is empty.
+ * Forward a TEST command to the underlying devices.
  *
  * EXTERNAL VARIABLES:
  *
@@ -5149,14 +5196,28 @@ static long grTestMode
     else
     {
         /* 
-         *  All tests pass successfully, finish the command.
+         *  All assembly tests pass successfully.
+         *  Build the task list for testing the grating devices.
          */
 
-        GRDEBUG(DAR_MSG_LOG, "grTestMode: All tests passed%c\n", ' ' );
-        grTerminateTasks( par, status, NULL );
-    }
+        semTake (pGrPriv->mutexSem, WAIT_FOREVER);
+        pGrPriv->currentCmd = par->mode;
+        semGive (pGrPriv->mutexSem);
 
-    /* TEST THE GRATING DEVICES ? - SMB */
+        if ( (status = grBuildList( par, DAR_MODE_TEST )) != DAR_S_SUCCESS )
+        {
+            GRDEBUG(DAR_MSG_ERROR, "grTestMode: grbuildList failed. status=%ld\n", status);
+        }
+        else if ( ( status = grDoTask( par )) != DAR_S_SUCCESS )
+        {
+
+            /*
+             *  Start the task list, which will trigger all devices to test.
+             */
+
+            GRDEBUG(DAR_MSG_ERROR, "grTestMode: grDoTask failed. status=%ld\n", status);
+        }
+    }
 
     return (status);
 }

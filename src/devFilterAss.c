@@ -42,6 +42,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2001/04/23 18:24:42  smb
+ * DEBUG macro changed from logMsg to printf so it can display floating point values (bug 196)
+ *
  * Revision 1.50  2001/03/20 13:40:26  gmos
  * Modified DEBUG macro. All files now use printf() rather than logMsg(). All also print the output from taskName(0).
  *
@@ -381,6 +384,7 @@ typedef enum
 {
     FL_STOP_TASK = 0,		/* Stop everything. 				*/
     FL_INIT_ALL,		/* Initialise everything.			*/
+    FL_TEST_ALL,		/* Test everything.				*/
     FL_INDEX_ALL,		/* Index all devices.				*/
     FL_MV_FILTER1,		/* Move filter wheel 1.				*/
     FL_MV_FILTER2,		/* Move filter wheel 2.				*/
@@ -406,6 +410,9 @@ typedef enum
 
 static FL_TASK_LIST  flInit[] = {			/* INIT */
      { FL_INIT_ALL,             TRUE,  TRUE  }
+};
+static FL_TASK_LIST  flTest[] = {			/* TEST */
+     { FL_TEST_ALL,             TRUE,  TRUE  }
 };
 static FL_TASK_LIST  flIndexAll[] = {			/* INDEX */
      { FL_INDEX_ALL,            TRUE,  TRUE  } ,
@@ -1172,7 +1179,7 @@ static long flBuildList(ASSEMBLY_CONTROL_RECORD *par, const int mode)
 
           /*
            *  Build the task list to initialise all devices at the same time.
-           *  (The following statements assume INIT only has ont task on the list).
+           *  (The following statements assume INIT only has one task on the list).
            */
 
           FLDEBUG(DAR_MSG_FULL, "flBuildList: adding INIT to task list%c\n", ' ');
@@ -1187,6 +1194,29 @@ static long flBuildList(ASSEMBLY_CONTROL_RECORD *par, const int mode)
              return (status);
           }
           newTask->item = (void *)&(flInit[0]);
+          ellAdd( (ELLLIST *) &(pFlPriv->taskList), &(newTask->node) );
+
+          break;
+
+     case DAR_MODE_TEST:
+
+          /*
+           *  Build the task list to test all devices at the same time.
+           *  (The following statements assume TEST only has one task on the list).
+           */
+
+          FLDEBUG(DAR_MSG_FULL, "flBuildList: adding TEST to task list%c\n", ' ');
+          newTask = malloc( sizeof ( FL_LIST ) );
+          if ( newTask == NULL )
+          {
+             FLDEBUG(DAR_MSG_FATAL,
+                     "flBuildList: Memory allocation failure for test task%c\n", ' ' );
+
+             status = DAR_E_MALLOC;
+             assAddErrorMessage( par, "Filter, insufficient memory for new task");
+             return (status);
+          }
+          newTask->item = (void *)&(flTest[0]);
           ellAdd( (ELLLIST *) &(pFlPriv->taskList), &(newTask->node) );
 
           break;
@@ -2184,6 +2214,17 @@ static long flDoTask(ASSEMBLY_CONTROL_RECORD *par)
                (void) strcpy( pFlPriv->position[FLT1], " " );
                (void) strcpy( pFlPriv->position[FLT2], " " );
                pFlPriv->mode = DAR_MODE_INIT;
+               semGive (pFlPriv->mutexSem);
+               break;
+
+          case FL_TEST_ALL:
+                 
+               FLDEBUG(DAR_MSG_MIN, "flDoTask: Test all devices%c\n", ' ');
+
+               semTake (pFlPriv->mutexSem, WAIT_FOREVER);
+               (void) strcpy( pFlPriv->position[FLT1], " " );
+               (void) strcpy( pFlPriv->position[FLT2], " " );
+               pFlPriv->mode = DAR_MODE_TEST;
                semGive (pFlPriv->mutexSem);
                break;
 
@@ -3589,6 +3630,12 @@ static long flTaskCheck(ASSEMBLY_CONTROL_RECORD *par)
             &barcode, &nRequest)), return (status));
           break;
 
+     case FL_TEST_ALL:
+
+          /* This command doesn't need any checks */
+
+          break;
+
      case FL_INDEX_ALL:
      case FL_PARK_ALL_DEFAULT:
      case FL_PARK_ALL_LOAD:
@@ -3948,13 +3995,13 @@ static long flTaskFinished(ASSEMBLY_CONTROL_RECORD *par)
  * DESCRIPTION:
  * Test that all links to the 2 motors are not CONSTANT.
  * Test that the task list is empty.
- *
+ * Forward a TEST command to the underlying devices.
  *
  * EXTERNAL VARIABLES:
  *
- *
  * PRIOR REQUIREMENTS:
- * None.
+ * Assumes that deviceControl records are wired up with
+ * 1=FLT1, 2=FLT2
  *
  * DEFICIENCIES:
  * None known.
@@ -4055,11 +4102,27 @@ static long flTestMode
     else
     {
         /* 
-         *  All tests pass successfully, finish the command.
+         *  All assembly tests pass successfully.
+         *  Build the task list for testing the filter devices.
          */
 
-        FLDEBUG(DAR_MSG_LOG, "flTestMode: All tests passed.%c\n", ' ' );
-        flTerminateTasks( par, status, NULL );
+        semTake (pFlPriv->mutexSem, WAIT_FOREVER);
+        pFlPriv->currentCmd = par->mode;
+        semGive (pFlPriv->mutexSem);
+
+        if ( (status = flBuildList( par, DAR_MODE_TEST )) != DAR_S_SUCCESS )
+        {
+            FLDEBUG(DAR_MSG_ERROR, "flTestMode: flbuildList failed. status=%ld\n", status);
+        }
+        else if ( ( status = flDoTask( par )) != DAR_S_SUCCESS )
+        {
+
+            /*
+             *  Start the task list, which will trigger all devices to test.
+             */
+
+            FLDEBUG(DAR_MSG_ERROR, "flTestMode: flDoTask failed. status=%ld\n", status);
+        }
     }
 
     return (status);
