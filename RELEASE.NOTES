@@ -1,358 +1,69 @@
-V0-4 01 Mar 2000 SMB:
----------------------
-gmos004 - Post focal-place version 4 software.  Used for testing the GMOS
-system during March 2000 (device layer only). Uses November 1999 version of the
-HIA records.  ARCHIVED.
-
-V0-5 10 Mar 2000 SMB:
----------------------
-gmos005 - Post focal-plane version 5 software.  Newest version which uses the
-February 2000 version of the HIA records. This version has a much more reliable
-assembly layer.  ARCHIVED.
-
-V0-6 10 Apr 2000 SMB:
----------------------
-The result of the first attempt to integrate the pre and post focal-plane
-software. This version uses unchanged device record but required several OMS
-scan tasks. Saved on 10 April 2000.  ARCHIVED.
-
-V0-7 15 Apr 2000 SMB:
----------------------
-gmos007 - First fully integrated pre and post focal-plane software. This
-resulted from William Rambold's visit of April 2000.  The device control record
-has been modified to satisfy both pre and post focal-plane requirements. There
-are currently four versions available: A full version for the real hardware,
-databases with simulated post or pre focal-plane hardware, and a fully
-simulated database. Saved 15 April 2000.  ARCHIVED.
-
-V0-8 01 Jun 2000 SMB:
----------------------
-gmos008 - Version containing commented code from William Rambold with serious
-memory corruption problems. Use of this version is not recommended. Saved in
-June 2000.  ARCHIVED.
-
-V0-9 12 Jul 2000 SMB:
----------------------
-gmos009 - Version with the memory corruption problems contained in gmos008
-fixed. Saved 12 July 2000.  ARCHIVED.
-
-V1-0 31 Jul 2000 SMB:
----------------------
-gmos010 - This is the first version of the software to use the new turret
-microswitches, rather than prompting the user to index the turret on the lower
-hard limit. Saved 31 July 2000. ARCHIVED.
-
-V1-1 16 Aug 2000 SMB:
----------------------
-gmos011 - The first version of the software to make use of the Instrument
-Sequencer. This version of the software was used during the first GMOS cold
-tests from 18-31 August 2000.  This software automatically switches off the
-mask opto sensors, but requires that the sensors be switched on manually before
-operating the mask assembly. Saved 16 August 2000.  ARCHIVED.
-
-V1-2 29 Sep 2000 SMB:
----------------------
-gmos012 - This version of the software fixes the mask assembly opto sensor
-problem and has the ability to park the filter assembly at various load
-positions. It also fixes some minor bugs noticed during and after the cold
-tests and fixes several bugs detected during the Instrument Sequencer tests.
-Used extensively for grating tilt repeatability tests.  Saved 29 September
-2000. ARCHIVED
-
-V1-3 13 Oct 2000 SMB:
----------------------
-gmos013 - This version contains the changes to the device record which had to
-be made to support the new wavefront sensor. From this version of the software
-onwards, lookup tables are obtained from the /gemini/gmos directory. Saved 13
-October 2000. ARCHIVED.
-
-V1-4 01 Nov 2000 SMB:
----------------------
-gmos014 - This version contains Bob Wooff's October 2000 release of the
-wavefront sensor software. It also contains some bug fixes to the filter and
-grating software. Saved 1 November 2000. ARCHIVED
-
-V1-5 17 Nov 2000 SMB:
----------------------
-gmos015 - This version fixes problems found in the OIWFS to TCS interface and
-corrects bugs found in the flexure control part of the GMOS Instrument
-Sequencer. It also contains some bug fixes to the device and assembly records.
-This version was used for the first set of flexure tests. Saved 17 November
-2000. ARCHIVED
-
-V1-6 12 Dec 2000 SMB:
----------------------
-gmos016 - This version fixes problems found during the first set of flexure
-tests. It also "jiggles" the grating tilt drives automatically and leaves them
-out of contact with the worm, to give better repeatability.  This version was
-used for the second set of flexure tests. This version includes a 7 second
-delay before lowering the turret. Saved 12 December 2000. ARCHIVED
-
-V1-7 01 Feb 2001 SMB:
----------------------
-gmos017 - This version has better handling of barcode read failures by the mask
-and filter assemblies. It also has some major changes to the instrument
-sequencer, in which the focus offset of a filter is separated into its
-wavelength and surface curvature components, and a grating may have a surface
-curvature components. The effective wavelength of an observation is derived
-from the filter in imaging mode and from the grating settings in spectroscopy
-mode.  This change requires a change in format of the "filters.lut" and
-"gratings.lut" files.  Several improvements have also been made to the
-reliability and maintainability of the instrument sequencer code and
-readability of the dm screens. Saved 1 February 2001.
-
-V1-8 13 Feb 2001 SMB:
----------------------
-gmos018 - This version includes all the changes Bob Wooff made to use the
-new interlock hardware. Older versions of the software will not work with
-the new hardware. Saved 13 February 2001.
-
-V1-9 20 Feb 2001 SMB:
----------------------
-gmos019 - This version contains all the changes made to the flexure control
-software which converts TCS coordinates to GMOS coordinates and converts those
-GMOS coordinates into a flexure offset using a model based on actual GMOS
-flexure measurements. Saved 20 February 2001.
-
-V2-0 26 Feb 2001 SMB:
----------------------
-gmos020 - This version allows masks to be selected by name as well as by
-barcode ID. It also extends the acceptable wavelength range to 1100nm, The mask
-and OIWFS assemblies are converted to use the same error reporting scheme as
-the post focal plane assemblies.  Saved 26 February 2001.
-
-V2-1 02 Mar 2000 SMB:
----------------------
-gmos021 - This version fixes a problem selecting the same mask twice in the
-mask assembly and corrects a bug in the instrument sequencer debug command. A
-problem with the messages displayed by the new interlock software has been
-fixed.  The assembly and device record code also display error messages on the
-console by default. Some bad practise with "void *" pointers in the instrument
-sequencer code tidied up.  Used for GMOS science tests. Saved 2 March 2001.
-
-V2-2 08 Mar 2001 SMB:
----------------------
-gmos022 - This version fixes a bug found in the OIWFS SAD and changes the way
-the system health is determined to more closely match Gemini requirements.
-There are minor changes to some of the "dm" screens. This frozen version will
-be used for GMOS acceptance tests and for post shipping evaluation. Saved 8
-March 2001.
-FIRST VERSION SAVED TO CVS REPOSITORY AT GEMINI HBF - gmoscc and gmosis merged.
-
-V2-2-1 16 Apr 2001 SMB:
------------------------
-This version is identical to V2-2 except additional housekeeping changes
-were made to allow the software work properly at HBF:
-- Top level gmosIocAnnex and sim2 scripts were added, for VME crates
-  contacted through an annex.
-- The lookup tables directory was changed from /home/smb/gmos/lut
-  back to /gemini/gmos/lut.
-- dm screen colours were changed to match the descriptions in the
-  "GMOS Software User Manual".
-- Startup scripts were edited to refer to "$(iocpath)" rather than
-  "$(version)" or "$(install)".
-
-V2-2-2 16 Apr 2001 SMB:
------------------------
-This version is identical to V2-2-1 except the shell scripts have been
-moved to the bin/solaris directory and the PATH and EPICS_DISPLAY_PATH
-variables have been defined to include /gemini/gmos/gmos/bin and
-/gemini/gmos/gmos/data.
-
-V2-2-3 20 Apr 2001 SMB:
------------------------
-This version is identical to V2-2-2 except that the wait time associated
-with the grating lifter has been increased to compensate for the denser
-air in Hilo as compared with Edinburgh. The error messages reported by
-some of the mask checkout scripts have been made more explicit.
-
-V2-2-4 23 Apr 2001 SMB:
------------------------
-This version is identical to V2-2-3 except that a smoothing factor has been
-applied to the mask LVDT readings to cope with increased noise in the mask LVDT
-electronics. A gmosannex script has been added because the connections made by
-the gmos and gmosdc scripts to the annex have a problem with multiple carriage
-returns.
-
-V2-3 23 Apr 2001 SMB:
----------------------
-gmos023 - This version, which has been merged with V2-2-4, contains fixes to
-the following problems:
-- #168 spontaneous motion error: OIWFS devices will no longer time out
-  after being moved manually by a significant amount.
-- #196 DEBUG macro cannot display floating point values: All DEBUG macros
-  now use printf and can display floating point values.
-- #218 Device control HSWA field can stick: A field monitoring problem
-  that may have caused this bug has been identified and fixed. The result
-  still needs to be tested.
-- #258 Device control record does not fully simulate: A problem that
-  caused the simulation mode to be set up incorrectly if the mode
-  is changed after the device has already executed an INIT has been fixed.
-THIS IS THE VERSION USED FOR THE SOFTWARE ACCEPTANCE TESTS ON 12 APRIL 2001.
-
-V2-4 30 Apr 2001 SMB:
----------------------
-This version fixes problems seen during the software acceptance tests:
-- The filter and grating assemblies forward the TEST command to their
-  devices.
-- The instrument sequencer includes the dtaXoffset, dtaYoffset and dtaZoffset
-  records and keeps them up to date with the translation stage base
-  position.
-- The instrument sequencer updates the dtaZstart, dtaZend and dtaZmean
-  records each time an observation is made.
-- Translation assembly test script enhanced to include a check on the
-  actual position arriving to within a small tolerance of the target
-  position.
-In addition:
-- Mask extractor ID position adjusted to read barcodes on masks rather
-  than mask frames.
-- gmosHelp and gmosTest commands added, with online help.
-- The endObserve command clears the detector controller observe CAD
-  record, as an attempt to work around a channel access problem.
-- Test script log files are now written to a separate directory for
-  each date.
-- A gmSeqTopMKRRtc1 version of the EPICS database created to connect
-  to the TCS simulator, and a corresponding startupTc1 script created.
-- Startup scripts modified to generate labels using the standard instrument
-  name, which is GMOS-N.
-THIS IS THE VERSION USED TO TEST THE TRANSLATION STAGE ON 02 MAY 2001.
-
-V2-5 15 May 2001 SMB:
----------------------
-This version is the same as V2-4 with
-- All references to HSWA field removed from checkout scripts,
-  since that field is not important and does not always accurately
-  reflect the state of the hardware (problem 218).
-- Some cosmetic improvements to the "dm" screens. (Many of the font
-  sizes were much larger on Hilo workstations, rendering some text
-  information unreadable). Interlock information on the top level
-  WFS screen corrected.
-- Bob Wooff and Malcolm Smith's changes to the OIWFS focus settings.
-  The OIWFS will now return a focus offset based on the different
-  between the probe's position and the telescope focal surface rather
-  than the flat mask plane. The software has also been given the ability
-  to change the focal surface when the AtmDC is fitted, but this part
-  of the code is will be tested later.
-- More on-line help.
-THIS IS THE VERSION RICK USED TO CHECK THE OIWFS FOCUS OFFSETS ON 15 MAY
-2001
-
-V2-6 17 May 2001 SMB:
--------------------------
-This version is the same as V2-5 with
-- GMOS sequencer startup changed so the detector controller apply record
-  is not activated during a reboot.
-- gmOiwfsCalibrate.c function modified so it will build correctly.
-- Malcolm Smith's bug fix to CalcApproxProbePosition in gmOiwfsCalc.c.
-- A fix to future-proof the fanout connected to the top level apply
-  record in the components controller against a power PC fanout
-  record bug that crashes Channel Access.
-- Changed some of the messages reported by the checkout scripts to
-  make them less confusing (as noticed during the training exercise).
-- Worked around mysterious bug which causes adl2dl2.4 to crash when
-  building the dm screens for the first time. The screens are built
-  twice.
-
-
-
-V2-7 26 June 2001 ROBERT WOOFF:
------------------
-This version is based based on V2-6 with the following improvements:
-- the deviceControl record files were changed to implement a more 
-  reliable method for determining when a motion stopped,  
-- the drvOmsVme.c error debugging is now always enabled whereas before 
-  both error and informational debugging were off by default (the 
-  informational debugging must still be enabled with the IOC console 
-  command "drvOmsVmeDebug=1"),
-- since the deviceControl changes should fix the chronic power status 
-  problems, this version all re-enables power status checking via the
-  appropriate *.pv files and checks to see that they are enabled in
-  the appropriate *.scr checkout scripts,
-- the deviceControl changes should also make the values of LSWA and
-  HSWA more reliable, but the latter has not been fully tested. 
-
-V?-? ?? ??? 2001 ???
+V5-1 Jun 2004 tpaz
 --------------------
-A future version will need to contain Malcolm Smith's ADC correction code
-for the OIWFS software and the actual ADC assembly software (rather than
-the present code running in simulation mode).
 
-V2-8 July 2001 TPAZ:
+-Fixed file open/close bug for aux luts.
+Files modified: devGratingAss.c
+
+-Modified number NOJ  to 45 in tcs context input.
+Files modified:  gmSeqAtmTrack.sch
+
+-Writing grstep to assembly VALC.
+Files changed: devGratingAss.c
+
+-E-OFFSETS ON label added to gmSeqMechCommands.adl
+
+-gmOiwfs.pv: tolerance changed from 0.06 to 1.75
+
+V5-0 Apr 2004 tpaz
+--------------------
+-Ported to GEM8.5
+
+
+V4-4 Dec 2003 tpaz
 -------------------
-Improvements made to version 2-7:
-- gmSeqApply changed to avoid the "configuring while reading out" error, 
-  as suggested by Steven Beard. 
-- default values for the motor power scan changed to 0.1 seconds. 	
+- a small patch:
 
-CJT changes :
--------------
-- Fixed pvload of gmSeqTracking.pv to load iaa = 180 upon reboot.
-- Fixed gmosAlarm. Account gmos needed write accsess to /gemini/gmos/gmos/data.
-  This needs a longer term solution.
-- Limits changed in pv/gmTempCalibrate.pv
-- SMB changes to sys/gmSeqTracking.c:
-   * calculation of GMOS angles in function gmSeqAtmDemands().
-   * changes to record issPort in capfast/gmSeqAtmTrack.sch
-   * dl/gmSeqTcsSimulate.dl : added control for IAA value
+  incremented maximum number of grating lut entries from 100 to 1500.
+  Files modified: gmosLutLib.h
 
-V3-0 October 2001 TPAZ:
-----------------------
--  Ported component controler code to epics 3.13.4GEM8
--  Changed lifter.h for pneumatic upgrade conformance.
+- changes for electronic offsets:
+  files changed: gmOiwfsGenSubs.c
+                 gmOiwfsFollowA.sch
+                 gmOiwfsCmd.adl
+                 MK/gmOiwfs.pv
+                 CP/gmOiwfs.pv
 
-V3-1 April 24 2002 ajf/tpaz:
-----------------------------
--  Completed port to epics3.13.4GEM8.4.
--  Uses new applyRecord (from EPICS release) which works
-   correctly between IOC's.
--  Split pv and lut files for Gemini North and South
--  Restructuring of application directories to make this 
-   system look more like the Gemini standard
--  Fixed the install script so that it works with "instRelease"
+  minimum tolerance changed from 1 to 0.05
+  default X/Y tolerance changed from 1 to 0.06
+  files changed: MK/gmOiwfs.pv
+                 CP/gmOiwfs.pv
 
-V3-2 April 24 2002 ajf/tpaz:
-----------------------------
--  Tidy up of CVS.
--  Some things left out of the V3-1 release.
+- tuning of extractor release postion due to gripper/extractor failures with ifu
+  files changed: MK/gmMask.pv
 
-V3-3 April 24 2002 ajf/tpaz:
-----------------------------
--  Fixed incorrect path macro for pv and lut files
-   $(iocpath) should not be used. It should be $(version).
+V4-3 Nov 2003 tpaz
+------------------
 
-V3-4 April 27 2002 ajf/tpaz:
-----------------------------
--  Path names to "luts" too long in assemblyControl Records.
-   Use relative path instead i.e. "./data".
+- new lifter timeout (10sec) .
+   Files modified: lifter.h
+- "ignore barcode" feature modified not to go back to FALSE automaticaly.
+   Files modified: devMaskCtrl.c
 
-V3-5 April 29 2002 ajf/tpaz:
-----------------------------
--  Change LIFTER CYCLE TIME from 6 to 9 seconds.
+V4-2 July 2003 tpaz
+-------------------
+- Added "follow z" option.
 
-V3-6 April 29 2002 ajf/tpaz:
-----------------------------
--  Add "aux_gr_allgratings.lut" to the list of required LUTs.
+Files modified:
 
-V3-7 May 2nd 2002 ajf/tpaz:
-----------------------------
--  Fixed the problems found by Isobel during her tests:
-   (a) Focus did not change when moving the IFU in/out of beam.
-   (b) Headers have wrong values for FILTER1, FILTER2, GRATING
-       and some barcode ID's.
-   (c) Default port has gone back to upward looking.
-   (d) The gmos account cannot create files in /gemini/gmos/lut.
-   (e) "select grating and Tilt" had changed to "select grating and T".
--  Found and fixed two more problems:
-   (a) The TCS and DC were always reported as connected even if they
-       were not.
-   (b) The gmosStart script needed to "cd" to the correct directory
-       before starting the "dm" screens.
--  LUT files have been updated in CVS.
+        gmSeqTracking.c:
+        gmSeqDtaTrackCad.sch :
+        gmSeqDtaControl.adl
 
 
-V4-0 January 2003  pgigoux/tpaz:
---------------------------------
-- Merged atc changes for gmos south
+- Cleaned up some debug messages from :
+  devGratingAss.c, gmSeqCadLib.c
+
+- Removed aux_gr.lut from /gmos/src/MK/lut/Makefile.Vx
 
 V4-1 April 2003  tpaz:
 ----------------------
@@ -382,7 +93,7 @@ aux_gr_allgratings.lut
   is set to FALSE.
 
   Files changed:
-  
+
   src/MK/pv/gmMask.pv
   src/CP/pv/gmMask.pv
   devMaskControl.c
@@ -391,58 +102,363 @@ aux_gr_allgratings.lut
 
 
 - Lifter timecycle raised from 6 to 9 due to lifter timeouts.
-
   Files changed:
   inc/lifter.h
 
-V4-2 July 2003 tpaz
+
+V4-0 January 2003  pgigoux/tpaz:
+--------------------------------
+- Merged atc changes for gmos south
+
+
+V3-7 May 2nd 2002 ajf/tpaz:
+----------------------------
+-  Fixed the problems found by Isobel during her tests:
+   (a) Focus did not change when moving the IFU in/out of beam.
+   (b) Headers have wrong values for FILTER1, FILTER2, GRATING
+       and some barcode ID's.
+   (c) Default port has gone back to upward looking.
+   (d) The gmos account cannot create files in /gemini/gmos/lut.
+   (e) "select grating and Tilt" had changed to "select grating and T".
+-  Found and fixed two more problems:
+   (a) The TCS and DC were always reported as connected even if they
+       were not.
+   (b) The gmosStart script needed to "cd" to the correct directory
+       before starting the "dm" screens.
+-  LUT files have been updated in CVS.
+
+
+V3-6 April 29 2002 ajf/tpaz:
+----------------------------
+-  Add "aux_gr_allgratings.lut" to the list of required LUTs.
+
+V3-5 April 29 2002 ajf/tpaz:
+----------------------------
+-  Change LIFTER CYCLE TIME from 6 to 9 seconds.
+
+V3-4 April 27 2002 ajf/tpaz:
+----------------------------
+-  Path names to "luts" too long in assemblyControl Records.
+   Use relative path instead i.e. "./data".
+
+V3-3 April 24 2002 ajf/tpaz:
+----------------------------
+-  Fixed incorrect path macro for pv and lut files
+   $(iocpath) should not be used. It should be $(version).
+
+V3-2 April 24 2002 ajf/tpaz:
+----------------------------
+-  Tidy up of CVS.
+-  Some things left out of the V3-1 release.
+
+V3-1 April 24 2002 ajf/tpaz:
+----------------------------
+-  Completed port to epics3.13.4GEM8.4.
+-  Uses new applyRecord (from EPICS release) which works
+   correctly between IOC's.
+-  Split pv and lut files for Gemini North and South
+-  Restructuring of application directories to make this
+   system look more like the Gemini standard
+-  Fixed the install script so that it works with "instRelease"
+
+V3-0 October 2001 TPAZ:
+----------------------
+-  Ported component controler code to epics 3.13.4GEM8
+-  Changed lifter.h for pneumatic upgrade conformance.
+
+V2-8 July 2001 TPAZ:
 -------------------
-- Added "follow z" option.
+Improvements made to version 2-7:
+- gmSeqApply changed to avoid the "configuring while reading out" error,
+  as suggested by Steven Beard.
+- default values for the motor power scan changed to 0.1 seconds.
 
-Files modified:
+CJT changes :
+-------------
+- Fixed pvload of gmSeqTracking.pv to load iaa = 180 upon reboot.
+- Fixed gmosAlarm. Account gmos needed write accsess to /gemini/gmos/gmos/data.
+  This needs a longer term solution.
+- Limits changed in pv/gmTempCalibrate.pv
+- SMB changes to sys/gmSeqTracking.c:
+   * calculation of GMOS angles in function gmSeqAtmDemands().
+   * changes to record issPort in capfast/gmSeqAtmTrack.sch
+   * dl/gmSeqTcsSimulate.dl : added control for IAA value
 
-	gmSeqTracking.c: 
-	gmSeqDtaTrackCad.sch : 
-	gmSeqDtaControl.adl
-
-
-- Cleaned up some debug messages from :
-  devGratingAss.c, gmSeqCadLib.c
-
-- Removed aux_gr.lut from /gmos/src/MK/lut/Makefile.Vx
-
-V4-3 Nov 2003 tpaz
-------------------
-
-- new lifter timeout (10sec) . 
-   Files modified: lifter.h
-- "ignore barcode" feature modified not to go back to FALSE automaticaly. 
-   Files modified: devMaskCtrl.c 
-
-V4-4 Dec 2003 tpaz
--------------------
-- a small patch:
-
-  incremented maximum number of grating lut entries from 100 to 1500.
-  Files modified: gmosLutLib.h
-
-- changes for electronic offsets:
-  files changed: gmOiwfsGenSubs.c
-                 gmOiwfsFollowA.sch
-                 gmOiwfsCmd.adl
-                 MK/gmOiwfs.pv 
-                 CP/gmOiwfs.pv
-
-  minimum tolerance changed from 1 to 0.05 
-  default X/Y tolerance changed from 1 to 0.06
-  files changed: MK/gmOiwfs.pv
-                 CP/gmOiwfs.pv
-
-- tuning of extractor release postion due to gripper/extractor failures with ifu
-  files changed: MK/gmMask.pv
-
-
-V5-0 Apr 2004 tpaz
+V?-? ?? ??? 2001 ???
 --------------------
--Ported to GEM8.5
+A future version will need to contain Malcolm Smith's ADC correction code
+for the OIWFS software and the actual ADC assembly software (rather than
+the present code running in simulation mode).
+
+V2-7 26 June 2001 ROBERT WOOFF:
+-----------------
+This version is based based on V2-6 with the following improvements:
+- the deviceControl record files were changed to implement a more
+  reliable method for determining when a motion stopped,
+- the drvOmsVme.c error debugging is now always enabled whereas before
+  both error and informational debugging were off by default (the
+  informational debugging must still be enabled with the IOC console
+  command "drvOmsVmeDebug=1"),
+- since the deviceControl changes should fix the chronic power status
+  problems, this version all re-enables power status checking via the
+  appropriate *.pv files and checks to see that they are enabled in
+  the appropriate *.scr checkout scripts,
+- the deviceControl changes should also make the values of LSWA and
+  HSWA more reliable, but the latter has not been fully tested.
+
+V2-6 17 May 2001 SMB:
+-------------------------
+This version is the same as V2-5 with
+- GMOS sequencer startup changed so the detector controller apply record
+  is not activated during a reboot.
+- gmOiwfsCalibrate.c function modified so it will build correctly.
+- Malcolm Smith's bug fix to CalcApproxProbePosition in gmOiwfsCalc.c.
+- A fix to future-proof the fanout connected to the top level apply
+  record in the components controller against a power PC fanout
+  record bug that crashes Channel Access.
+- Changed some of the messages reported by the checkout scripts to
+  make them less confusing (as noticed during the training exercise).
+- Worked around mysterious bug which causes adl2dl2.4 to crash when
+  building the dm screens for the first time. The screens are built
+  twice.
+
+V2-5 15 May 2001 SMB:
+---------------------
+This version is the same as V2-4 with
+- All references to HSWA field removed from checkout scripts,
+  since that field is not important and does not always accurately
+  reflect the state of the hardware (problem 218).
+- Some cosmetic improvements to the "dm" screens. (Many of the font
+  sizes were much larger on Hilo workstations, rendering some text
+  information unreadable). Interlock information on the top level
+  WFS screen corrected.
+- Bob Wooff and Malcolm Smith's changes to the OIWFS focus settings.
+  The OIWFS will now return a focus offset based on the different
+  between the probe's position and the telescope focal surface rather
+  than the flat mask plane. The software has also been given the ability
+  to change the focal surface when the AtmDC is fitted, but this part
+  of the code is will be tested later.
+- More on-line help.
+THIS IS THE VERSION RICK USED TO CHECK THE OIWFS FOCUS OFFSETS ON 15 MAY
+2001
+
+V2-4 30 Apr 2001 SMB:
+---------------------
+This version fixes problems seen during the software acceptance tests:
+- The filter and grating assemblies forward the TEST command to their
+  devices.
+- The instrument sequencer includes the dtaXoffset, dtaYoffset and dtaZoffset
+  records and keeps them up to date with the translation stage base
+  position.
+- The instrument sequencer updates the dtaZstart, dtaZend and dtaZmean
+  records each time an observation is made.
+- Translation assembly test script enhanced to include a check on the
+  actual position arriving to within a small tolerance of the target
+  position.
+In addition:
+- Mask extractor ID position adjusted to read barcodes on masks rather
+  than mask frames.
+- gmosHelp and gmosTest commands added, with online help.
+- The endObserve command clears the detector controller observe CAD
+  record, as an attempt to work around a channel access problem.
+- Test script log files are now written to a separate directory for
+  each date.
+- A gmSeqTopMKRRtc1 version of the EPICS database created to connect
+  to the TCS simulator, and a corresponding startupTc1 script created.
+- Startup scripts modified to generate labels using the standard instrument
+  name, which is GMOS-N.
+THIS IS THE VERSION USED TO TEST THE TRANSLATION STAGE ON 02 MAY 2001.
+
+V2-3 23 Apr 2001 SMB:
+---------------------
+gmos023 - This version, which has been merged with V2-2-4, contains fixes to
+the following problems:
+- #168 spontaneous motion error: OIWFS devices will no longer time out
+  after being moved manually by a significant amount.
+- #196 DEBUG macro cannot display floating point values: All DEBUG macros
+  now use printf and can display floating point values.
+- #218 Device control HSWA field can stick: A field monitoring problem
+  that may have caused this bug has been identified and fixed. The result
+  still needs to be tested.
+- #258 Device control record does not fully simulate: A problem that
+  caused the simulation mode to be set up incorrectly if the mode
+  is changed after the device has already executed an INIT has been fixed.
+THIS IS THE VERSION USED FOR THE SOFTWARE ACCEPTANCE TESTS ON 12 APRIL 2001.
+
+V2-2-4 23 Apr 2001 SMB:
+-----------------------
+This version is identical to V2-2-3 except that a smoothing factor has been
+applied to the mask LVDT readings to cope with increased noise in the mask LVDT
+electronics. A gmosannex script has been added because the connections made by
+the gmos and gmosdc scripts to the annex have a problem with multiple carriage
+
+V2-2-3 20 Apr 2001 SMB:
+-----------------------
+This version is identical to V2-2-2 except that the wait time associated
+with the grating lifter has been increased to compensate for the denser
+air in Hilo as compared with Edinburgh. The error messages reported by
+some of the mask checkout scripts have been made more explicit.
+
+V2-2-2 16 Apr 2001 SMB:
+-----------------------
+This version is identical to V2-2-1 except the shell scripts have been
+moved to the bin/solaris directory and the PATH and EPICS_DISPLAY_PATH
+variables have been defined to include /gemini/gmos/gmos/bin and
+
+V2-2-1 16 Apr 2001 SMB:
+-----------------------
+This version is identical to V2-2 except additional housekeeping changes
+were made to allow the software work properly at HBF:
+- Top level gmosIocAnnex and sim2 scripts were added, for VME crates
+  contacted through an annex.
+- The lookup tables directory was changed from /home/smb/gmos/lut
+  back to /gemini/gmos/lut.
+- dm screen colours were changed to match the descriptions in the
+  "GMOS Software User Manual".
+- Startup scripts were edited to refer to "$(iocpath)" rather than
+  "$(version)" or "$(install)".
+
+V2-2 08 Mar 2001 SMB:
+---------------------
+gmos022 - This version fixes a bug found in the OIWFS SAD and changes the way
+the system health is determined to more closely match Gemini requirements.
+There are minor changes to some of the "dm" screens. This frozen version will
+be used for GMOS acceptance tests and for post shipping evaluation. Saved 8
+March 2001.
+FIRST VERSION SAVED TO CVS REPOSITORY AT GEMINI HBF - gmoscc and gmosis merged.
+
+
+V2-1 02 Mar 2000 SMB:
+---------------------
+gmos021 - This version fixes a problem selecting the same mask twice in the
+mask assembly and corrects a bug in the instrument sequencer debug command. A
+problem with the messages displayed by the new interlock software has been
+fixed.  The assembly and device record code also display error messages on the
+console by default. Some bad practise with "void *" pointers in the instrument
+sequencer code tidied up.  Used for GMOS science tests. Saved 2 March 2001.
+
+V2-0 26 Feb 2001 SMB:
+---------------------
+gmos020 - This version allows masks to be selected by name as well as by
+barcode ID. It also extends the acceptable wavelength range to 1100nm, The mask
+and OIWFS assemblies are converted to use the same error reporting scheme as
+the post focal plane assemblies.  Saved 26 February 2001.
+
+V1-9 20 Feb 2001 SMB:
+---------------------
+gmos019 - This version contains all the changes made to the flexure control
+software which converts TCS coordinates to GMOS coordinates and converts those
+GMOS coordinates into a flexure offset using a model based on actual GMOS
+flexure measurements. Saved 20 February 2001.
+
+V1-8 13 Feb 2001 SMB:
+---------------------
+gmos018 - This version includes all the changes Bob Wooff made to use the
+new interlock hardware. Older versions of the software will not work with
+the new hardware. Saved 13 February 2001.
+
+V1-7 01 Feb 2001 SMB:
+---------------------
+gmos017 - This version has better handling of barcode read failures by the mask
+and filter assemblies. It also has some major changes to the instrument
+sequencer, in which the focus offset of a filter is separated into its
+wavelength and surface curvature components, and a grating may have a surface
+curvature components. The effective wavelength of an observation is derived
+from the filter in imaging mode and from the grating settings in spectroscopy
+mode.  This change requires a change in format of the "filters.lut" and
+"gratings.lut" files.  Several improvements have also been made to the
+reliability and maintainability of the instrument sequencer code and
+readability of the dm screens. Saved 1 February 2001.
+
+V1-6 12 Dec 2000 SMB:
+---------------------
+gmos016 - This version fixes problems found during the first set of flexure
+tests. It also "jiggles" the grating tilt drives automatically and leaves them
+out of contact with the worm, to give better repeatability.  This version was
+used for the second set of flexure tests. This version includes a 7 second
+delay before lowering the turret. Saved 12 December 2000. ARCHIVED
+
+V1-5 17 Nov 2000 SMB:
+---------------------
+gmos015 - This version fixes problems found in the OIWFS to TCS interface and
+corrects bugs found in the flexure control part of the GMOS Instrument
+Sequencer. It also contains some bug fixes to the device and assembly records.
+This version was used for the first set of flexure tests. Saved 17 November
+2000. ARCHIVED
+
+V1-4 01 Nov 2000 SMB:
+---------------------
+gmos014 - This version contains Bob Wooff's October 2000 release of the
+wavefront sensor software. It also contains some bug fixes to the filter and
+grating software. Saved 1 November 2000. ARCHIVED
+
+V1-3 13 Oct 2000 SMB:
+---------------------
+gmos013 - This version contains the changes to the device record which had to
+be made to support the new wavefront sensor. From this version of the software
+onwards, lookup tables are obtained from the /gemini/gmos directory. Saved 13
+October 2000. ARCHIVED.
+
+V1-2 29 Sep 2000 SMB:
+---------------------
+gmos012 - This version of the software fixes the mask assembly opto sensor
+problem and has the ability to park the filter assembly at various load
+positions. It also fixes some minor bugs noticed during and after the cold
+tests and fixes several bugs detected during the Instrument Sequencer tests.
+Used extensively for grating tilt repeatability tests.  Saved 29 September
+2000. ARCHIVED
+
+V1-1 16 Aug 2000 SMB:
+---------------------
+gmos011 - The first version of the software to make use of the Instrument
+Sequencer. This version of the software was used during the first GMOS cold
+tests from 18-31 August 2000.  This software automatically switches off the
+mask opto sensors, but requires that the sensors be switched on manually before
+operating the mask assembly. Saved 16 August 2000.  ARCHIVED.
+
+V1-0 31 Jul 2000 SMB:
+---------------------
+gmos010 - This is the first version of the software to use the new turret
+microswitches, rather than prompting the user to index the turret on the lower
+hard limit. Saved 31 July 2000. ARCHIVED.
+
+V0-9 12 Jul 2000 SMB:
+---------------------
+gmos009 - Version with the memory corruption problems contained in gmos008
+fixed. Saved 12 July 2000.  ARCHIVED.
+
+V0-8 01 Jun 2000 SMB:
+---------------------
+gmos008 - Version containing commented code from William Rambold with serious
+memory corruption problems. Use of this version is not recommended. Saved in
+June 2000.  ARCHIVED.
+
+V0-7 15 Apr 2000 SMB:
+---------------------
+gmos007 - First fully integrated pre and post focal-plane software. This
+resulted from William Rambold's visit of April 2000.  The device control record
+has been modified to satisfy both pre and post focal-plane requirements. There
+are currently four versions available: A full version for the real hardware,
+databases with simulated post or pre focal-plane hardware, and a fully
+simulated database. Saved 15 April 2000.  ARCHIVED.
+
+V0-6 10 Apr 2000 SMB:
+---------------------
+The result of the first attempt to integrate the pre and post focal-plane
+software. This version uses unchanged device record but required several OMS
+scan tasks. Saved on 10 April 2000.  ARCHIVED.
+
+V0-5 10 Mar 2000 SMB:
+---------------------
+gmos005 - Post focal-plane version 5 software.  Newest version which uses the
+February 2000 version of the HIA records. This version has a much more reliable
+assembly layer.  ARCHIVED.
+
+V0-4 01 Mar 2000 SMB:
+---------------------
+gmos004 - Post focal-place version 4 software.  Used for testing the GMOS
+system during March 2000 (device layer only). Uses November 1999 version of the
+HIA records.  ARCHIVED.
+
+
 

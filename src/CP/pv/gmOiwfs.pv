@@ -217,13 +217,13 @@ long   $(top)move.DIR             =     0;  # MARK directive
 #
 #  preload tolerance CAD
 #
-string $(top)tolerance.A          =  "0.06" ;  # default X/Y tolerance
+string $(top)tolerance.A          =  "1.75" ;  # default X/Y tolerance
 string $(top)tolerance.B          =  "0" ;  # default Z tolerance
 string $(top)tolerance.C          =  "0.05" ;  # X/Y tolerance low limit
 string $(top)tolerance.D          = "10" ;  # X/Y tolerance high limit
 long   $(top)tolerance.DIR        =   0  ;  # MARK directive
-double $(top)followA.I            =   1.0;  # preload tolerance followA 
-long   $(top)followA.K            =   0     # electronic offsets disabled
+double $(top)followA.I            =   1.75;  # preload tolerance followA 
+long   $(top)followA.K            =   0  ;   # electronic offsets disabled
 #
 #  preload followState
 # 

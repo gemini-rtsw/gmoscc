@@ -41,9 +41,6 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  * $Log$
- * Revision 1.5  2004/04/29 19:05:39  gemvx
- * ported to GEM8.5
- *
  * Revision 1.4  2003/07/21 21:37:20  gemvx
  * V4-2 follow in z only version
  *
@@ -468,6 +465,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 #define GR_TURRET_POWER_STATE   par->sim            /* Ptr. to turret power input port.       */
 
 #define GR_TILT_VALUE           par->sov            /* Ptr. to grating tilt output - for SAD. */
+#define GR_STEP_VALUE           *(double *)par->valc    /* Ptr. to grating tilt output - for SAD. */
 
 #define GR_TURRET_POWER_ON_VAL  1
 #define GR_TURRET_POWER_OFF_VAL 0
@@ -772,6 +770,7 @@ typedef struct devConfig {
      double             tiltScale;      /* Degrees per motor step when no LUT available.        */
      double             backlash;       /* Amount of grating tilt backlash.                     */
      double             forwardlash;    /* Movement required to release contact with worm gear. */
+     double             zpc;            /* Zero point correction                                */
      long               magic;          /* magic value to guard against pointer corruption      */
 } GR_DEV_CONFIG;
 
@@ -1544,7 +1543,7 @@ static long grBuildList(ASSEMBLY_CONTROL_RECORD *par, int mode)
  *          > par->a    long     select only flag {1 = grating only}
  *          > par->b    string   gratingId {barcode number string}
  *          > par->c    double   grating tilt angle {radians}
- *          > par->d    string   backlash/forwardlash parameters
+ *          > par->d    string   backlash/forwardlash/zpc parameters
  *          > par->e    long     park position
  *
  * FUNCTION VALUE:
@@ -1581,12 +1580,15 @@ static long grCheckAttributes(ASSEMBLY_CONTROL_RECORD *par)
      long           barcodeId;
      double         tiltAngle;
      int            match = FALSE;                   /* boolean search flag         */
-     char           tempString[3][MAX_STRING_SIZE];  /* temp string buffers         */
-     double         tempDouble[3];                   /* temp doubles                */
+     char           tempString[4][MAX_STRING_SIZE];  /* temp string buffers         */
+     double         tempDouble[4];                   /* temp doubles                */
      int            count;                           /* simple counter              */
      BOOL           gotTscale;                       /* TRUE when tscale allocated  */
      BOOL           gotFlash;                        /* TRUE when flash  allocated  */
      BOOL           gotBlash;                        /* TRUE when blash allocated  */
+     BOOL           gotZpc;                          /* TRUE when zerp point correction allocated */
+     double         pixZpc;                         /* zpc in pixels */
+     double         stepsZpc;                         /* zpc in motorsteps*/
 
 
      GRDEBUG(DAR_MSG_MAX, "grCheckAttributes: entry, sim=%d\n", assSimulateLevel(par) );
@@ -1700,11 +1702,13 @@ static long grCheckAttributes(ASSEMBLY_CONTROL_RECORD *par)
 	  gotTscale = FALSE;
 	  gotBlash  = FALSE;
 	  gotFlash  = FALSE;
+          gotZpc    = FALSE;
 
-	  if (sscanf((char *)par->d, "%s %lf %s %lf %s %lf",
+	  if (sscanf((char *)par->d, "%s %lf %s %lf %s %lf %s %lf",
 		     &tempString[0][0], &tempDouble[0],
 		     &tempString[1][0], &tempDouble[1],
-		     &tempString[2][0], &tempDouble[2]) != 6)
+		     &tempString[2][0], &tempDouble[2],
+                     &tempString[3][0], &tempDouble[3]) != 8)
 	  {
 	       GRDEBUG(DAR_MSG_ERROR,
 		       "grCheckAttributes: wrong string read from input D%c\n",
@@ -1716,27 +1720,38 @@ static long grCheckAttributes(ASSEMBLY_CONTROL_RECORD *par)
 	  }
 	  else
 	  {
-	       for (count = 0; count < 3; count++)
+	       for (count = 0; count < 4; count++)
 	       {
-		    if (!strcmp(&tempString[count][0], "TSCALE"))
+		    if (!strcmp(&tempString[count][0], "TS"))
 		    {
 			 pDevConfig->tiltScale = tempDouble[count];
 			 gotTscale = TRUE;
 		    }
-		    else if (!strcmp(&tempString[count][0], "BLASH"))
+		    else if (!strcmp(&tempString[count][0], "BL"))
 		    {
 			 pDevConfig->backlash = tempDouble[count];
 			 gotBlash = TRUE;
 		    }
-		    else if (!strcmp(&tempString[count][0], "FLASH"))
+		    else if (!strcmp(&tempString[count][0], "FL"))
 		    {
 			 pDevConfig->forwardlash = tempDouble[count];
 			 gotFlash = TRUE;
 		    }
+		    else if (!strcmp(&tempString[count][0], "ZPC"))
+		    {  
+                         pixZpc = tempDouble[count]; 
+                         /*(printf("*** zero point correction in pixels received : %f ***\n", pixZpc);*/
+                         if (pixZpc >  0) {
+                         stepsZpc = (pixZpc - 182)/12;
+                         }
+                         /*printf("*** zero point correction in motorsteps : %f ***\n", stepsZpc);*/
+			 pDevConfig->zpc = stepsZpc;
+			 gotZpc = TRUE;
+                    }
 	       }
 	  }
 
-	  if (!gotTscale || !gotBlash || !gotFlash)
+	  if (!gotTscale || !gotBlash || !gotFlash || !gotZpc)
 	  {
 	       GRDEBUG(DAR_MSG_ERROR,
 		       "grCheckAttributes: incomplete string read from input D%c\n",
@@ -2293,7 +2308,6 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
      int lifterWaitTime = 1 + (int) ( (float) GR_LIFTER_CYCLE_TIME * 1.5);
 
      double fsteps;
-     double fsteps2;
 
      pGrPriv = ( GR_DEV_PRIVATE *) assGetPrivateStruct( par );
      pDevConfig = pGrPriv->pGratingPriv;
@@ -2440,8 +2454,6 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                GRDEBUG(DAR_MSG_MIN, "grDoTask: Read grating barcode ID%c\n", ' ');
 
                strncpy( GRAT_BARCODE_READ_FIELD, "WAITING", MAX_STRING_SIZE-1);
-               /*if ( recGblPutLinkValue (&(GRAT_BARCODE_TRIGGER), (void *) par, DBR_LONG,
-                      &nRequest, &nRequest) != DAR_S_SUCCESS )*/
                  if((dbPutLink(&(GRAT_BARCODE_TRIGGER),DBR_LONG,&nRequest,nRequest))!= DAR_S_SUCCESS)
                {
                     status = GR_TRIG_FAILED;
@@ -2457,8 +2469,6 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 
                /* set lifter control to up */
 
-               /*if ( recGblPutLinkValue (&(GR_LIFTER_CMD), (void *) par, DBR_LONG, &lifterUp,
-                      &nRequest) != DAR_S_SUCCESS )*/
                  if(dbPutLink(&(GR_LIFTER_CMD),DBR_LONG,&lifterUp,nRequest)!= DAR_S_SUCCESS)
                {
                     status = GR_TRIG_FAILED;
@@ -2470,8 +2480,6 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                  
                /* set lifter control to down */
 
-               /*if ( recGblPutLinkValue (&(GR_LIFTER_CMD), (void *) par, DBR_LONG, &lifterDown,
-                      &nRequest) != DAR_S_SUCCESS )*/
                  if(
  			dbPutLink(&(GR_LIFTER_CMD),DBR_LONG,&lifterDown,nRequest)!= DAR_S_SUCCESS
                    )
@@ -2693,7 +2701,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
                sprintf( pGrPriv->position[GRA], "%f", fsteps);
-               fsteps2 = fsteps; 
+               GR_STEP_VALUE = fsteps;
                printf(" GRATING A MOTORSTEPS : %f\n", fsteps);
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
@@ -2860,6 +2868,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
                sprintf( pGrPriv->position[GRB], "%f", fsteps);
                printf(" GRATING B MOTORSTEPS : %f\n", fsteps);
+               GR_STEP_VALUE = fsteps;
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -3017,6 +3026,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
                sprintf( pGrPriv->position[GRC], "%f", fsteps);
                printf(" GRATING C MOTORSTEPS : %f\n", fsteps);
+               GR_STEP_VALUE = fsteps;
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -3170,6 +3180,7 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
                semTake (pGrPriv->mutexSem, WAIT_FOREVER);
                sprintf( pGrPriv->position[GRD], "%f", fsteps);
                printf(" GRATING D MOTORSTEPS : %f\n", fsteps);
+               GR_STEP_VALUE = fsteps;
                pGrPriv->mode = DAR_MODE_MOVE;
                semGive (pGrPriv->mutexSem);
                break;
@@ -3314,8 +3325,6 @@ switch (pGrPriv->parkPosition)
                break;
 
           case GR_TURRET_POWER_OFF:
-               /*if (recGblPutLinkValue (&(GR_TURRET_POWER), (void *) par, DBR_LONG, &turretPowerOff,
-                     &nRequest) != DAR_S_SUCCESS)*/
                  if(
 			(dbPutLink(&(GR_TURRET_POWER),DBR_LONG,&turretPowerOff,nRequest))!=DAR_S_SUCCESS
  		   )
@@ -3325,8 +3334,6 @@ switch (pGrPriv->parkPosition)
                break;
 
           case GR_TURRET_POWER_ON:
-               /*if (recGblPutLinkValue (&(GR_TURRET_POWER), (void *) par, DBR_LONG, &turretPowerOn,
-                     &nRequest) != DAR_S_SUCCESS)*/
                  if(
 			(dbPutLink(&(GR_TURRET_POWER),DBR_LONG,&turretPowerOn,nRequest))!=DAR_S_SUCCESS	
 		   )
@@ -3713,9 +3720,6 @@ static long grExecuteTask(ASSEMBLY_CONTROL_RECORD *par, GR_TASK_LIST *taskItem)
              */
 
             GRDEBUG(DAR_MSG_MIN, "grExecuteTask: Putting POS=%s\n", pGrPriv->position[i] );
-            /*CHECKSTAT( (status = recGblPutLinkValue( posLink, 
-                    (void *) par, DBR_STRING, pGrPriv->position[i], &nRequest)), 
-                    return(status) );*/
              CHECKSTAT((status = dbPutLink(posLink,DBR_STRING,pGrPriv->position[i],nRequest)),return(status));
 
 
@@ -3728,9 +3732,6 @@ static long grExecuteTask(ASSEMBLY_CONTROL_RECORD *par, GR_TASK_LIST *taskItem)
             {
 
                GRDEBUG(DAR_MSG_FULL, "grExecuteTask: Putting VEL=%f\n", vel );
-               /*CHECKSTAT( (status = recGblPutLinkValue( velLink, (void *) par, 
-                       DBR_DOUBLE, &vel, &nRequest)), 
-                       return(status) );*/
 	         CHECKSTAT((status = dbPutLink(velLink,DBR_DOUBLE,&vel,nRequest)),return(status));
 
             }
@@ -3741,9 +3742,6 @@ static long grExecuteTask(ASSEMBLY_CONTROL_RECORD *par, GR_TASK_LIST *taskItem)
              */
 
             GRDEBUG(DAR_MSG_FULL, "grExecuteTask: Putting MODE=%d\n", mode );
-            /*CHECKSTAT( (status = recGblPutLinkValue( modLink, 
-                    (void *) par, DBR_SHORT, &mode, &nRequest)), 
-                    return(status) );*/
             CHECKSTAT((status = dbPutLink(modLink,DBR_SHORT,&mode,nRequest)),return(status));
 
 
@@ -3752,9 +3750,6 @@ static long grExecuteTask(ASSEMBLY_CONTROL_RECORD *par, GR_TASK_LIST *taskItem)
              */
 
             GRDEBUG(DAR_MSG_FULL, "grExecuteTask: Putting DIR=%d\n", dir );
-            /*CHECKSTAT( (status = recGblPutLinkValue( dirLink, 
-                    (void *) par, DBR_SHORT, (void *) (&dir), &nRequest)), 
-                    return(status) );*/
              CHECKSTAT((status = dbPutLink(dirLink,DBR_SHORT,(void *) (&dir),nRequest)),return(status));
 
 
@@ -4509,8 +4504,6 @@ static long grStopDirective
 
             GRDEBUG(DAR_MSG_FULL, "grStopDirective: sending STOP to grating A%c\n",
                             ' ');
-            /*status = recGblPutLinkValue(pGrPriv->grADevice.dirLink,
-                    (void *) par, DBR_SHORT, (void *) (&dir), &nRequest);*/
               status = dbPutLink(pGrPriv->grADevice.dirLink,DBR_SHORT,(void *) (&dir),nRequest);
         }
         if ( status == DAR_S_SUCCESS && newTask->grDResponse && !pGrPriv->grDFinished )
@@ -4521,8 +4514,6 @@ static long grStopDirective
 
             GRDEBUG(DAR_MSG_FULL, "grStopDirective: sending STOP to grating D%c\n",
                             ' ');
-            /*status = recGblPutLinkValue(pGrPriv->grDDevice.dirLink,
-                    (void *) par, DBR_SHORT, (void *) (&dir), &nRequest);*/
              status = dbPutLink(pGrPriv->grDDevice.dirLink,DBR_SHORT,(void *) (&dir),nRequest); 
         }
         if (  status == DAR_S_SUCCESS && newTask->grBResponse  
@@ -4534,8 +4525,6 @@ static long grStopDirective
 
             GRDEBUG(DAR_MSG_FULL, "grStopDirective: sending STOP to grating B%c\n",
                             ' ');
-            /*status = recGblPutLinkValue( pGrPriv->grBDevice.dirLink,
-                    (void *) par, DBR_SHORT, (void *) (&dir), &nRequest);*/
               status = dbPutLink(pGrPriv->grBDevice.dirLink,DBR_SHORT,(void *) (&dir),nRequest);
         }
         if (  status == DAR_S_SUCCESS && newTask->grCResponse 
@@ -4547,8 +4536,6 @@ static long grStopDirective
 
             GRDEBUG(DAR_MSG_FULL, "grStopDirective: sending STOP to grating D%c\n",
                             ' ');
-            /*status = recGblPutLinkValue( pGrPriv->grCDevice.dirLink,
-                    (void *) par, DBR_SHORT, (void *) (&dir), &nRequest);*/
               status = dbPutLink(pGrPriv->grCDevice.dirLink,DBR_SHORT,(void *) (&dir),nRequest);
         }
         if (  status == DAR_S_SUCCESS && newTask->trtResponse 
@@ -4560,8 +4547,6 @@ static long grStopDirective
 
             GRDEBUG(DAR_MSG_FULL, "grStopDirective: sending STOP to turret%c\n",
                             ' ');
-            /*status = recGblPutLinkValue( pGrPriv->trtDevice.dirLink,
-                    (void *) par, DBR_SHORT, (void *) (&dir), &nRequest);*/
               status = dbPutLink(pGrPriv->trtDevice.dirLink,DBR_SHORT,(void *) (&dir),nRequest);
         }
 
@@ -4710,14 +4695,10 @@ static long grTaskCheck(ASSEMBLY_CONTROL_RECORD *par)
           barcode = GR_NO_BARCODE;
             if ((status = dbPutLink(&(par->sot),DBR_LONG,&barcode,nRequest)))
           {
-               /*recGblPutLinkValue (&(GR_TILT_VALUE), (void *) par, DBR_FLOAT,
-                 &zeroPointZero, &nRequest);*/
                  dbPutLink(&(GR_TILT_VALUE),DBR_FLOAT,&zeroPointZero,nRequest);
           }
           else 
           {
-               /*status = recGblPutLinkValue (&(GR_TILT_VALUE), (void *) par, DBR_FLOAT,
-                 &zeroPointZero, &nRequest);*/
                  status = dbPutLink (&(GR_TILT_VALUE),DBR_FLOAT,&zeroPointZero,nRequest);
           }
 
@@ -4749,8 +4730,6 @@ static long grTaskCheck(ASSEMBLY_CONTROL_RECORD *par)
 
           /* Set the current grating tilt to zero after parking */
 
-          /*status = recGblPutLinkValue (&(GR_TILT_VALUE), (void *) par, DBR_FLOAT,
-                     &zeroPointZero, &nRequest);*/
             status = dbPutLink(&(GR_TILT_VALUE),DBR_FLOAT, &zeroPointZero,nRequest);
           break;
 
@@ -4767,8 +4746,6 @@ static long grTaskCheck(ASSEMBLY_CONTROL_RECORD *par)
      case GR_MV_GRATING_A_3:
 
 	  tiltAngle = pDevConfig->newGratTilt[GRA];
-          /*status = recGblPutLinkValue (&(GR_TILT_VALUE), (void *) par, DBR_FLOAT,
-                     &tiltAngle, &nRequest);*/
             status = dbPutLink(&(GR_TILT_VALUE),DBR_FLOAT,&tiltAngle,nRequest);
           turretPosition = grReadSwitches( par);
           break;
@@ -4786,8 +4763,6 @@ static long grTaskCheck(ASSEMBLY_CONTROL_RECORD *par)
      case GR_MV_GRATING_B_3:
 
 	  tiltAngle = pDevConfig->newGratTilt[GRB];
-          /*status = recGblPutLinkValue (&(GR_TILT_VALUE), (void *) par, DBR_FLOAT,
-                     &tiltAngle, &nRequest);*/
           status = dbPutLink(&(GR_TILT_VALUE),DBR_FLOAT,&tiltAngle,nRequest);
           turretPosition = grReadSwitches( par);
           break;
@@ -4805,8 +4780,6 @@ static long grTaskCheck(ASSEMBLY_CONTROL_RECORD *par)
      case GR_MV_GRATING_C_3:
 
 	  tiltAngle = pDevConfig->newGratTilt[GRC];
-          /*status = recGblPutLinkValue (&(GR_TILT_VALUE), (void *) par, DBR_FLOAT,
-                     &tiltAngle, &nRequest);*/
           status = dbPutLink(&(GR_TILT_VALUE),DBR_FLOAT,&tiltAngle,nRequest);
           turretPosition = grReadSwitches( par);
           break;
@@ -4824,8 +4797,6 @@ static long grTaskCheck(ASSEMBLY_CONTROL_RECORD *par)
      case GR_MV_GRATING_D_3:
 
 	  tiltAngle = pDevConfig->newGratTilt[GRD];
-          /*status = recGblPutLinkValue (&(GR_TILT_VALUE), (void *) par, DBR_FLOAT,
-                     &tiltAngle, &nRequest);*/
           status = dbPutLink(&(GR_TILT_VALUE),DBR_FLOAT,&tiltAngle,nRequest);
           turretPosition = grReadSwitches( par);
           break;
@@ -4855,20 +4826,6 @@ static long grTaskCheck(ASSEMBLY_CONTROL_RECORD *par)
            */
 
           barcode = GR_NO_BARCODE;
-
-
-          /*if (status = recGblPutLinkValue (&(par->sot), (void *) par, DBR_LONG, &barcode, &nRequest))
-          *{
-          *     recGblPutLinkValue (&(GR_TILT_VALUE), (void *) par, DBR_FLOAT,
-          *       &zeroPointZero, &nRequest);
-          *}
-          *else 
-          *{
-          *     status = recGblPutLinkValue (&(GR_TILT_VALUE), (void *) par, DBR_FLOAT,
-          *       &zeroPointZero, &nRequest);
-          *}
-          */
-
 
 
           if ((status = dbPutLink(&(par->sot),DBR_LONG,&barcode,nRequest)))
@@ -4908,13 +4865,10 @@ static long grTaskCheck(ASSEMBLY_CONTROL_RECORD *par)
 
                if ( status == DAR_S_SUCCESS )
                {
-                    /*status = recGblPutLinkValue (&(par->sot), (void *) par, DBR_LONG,
-                               &barcode, &nRequest);*/
                       status = dbPutLink(&(par->sot),DBR_LONG,&barcode,nRequest);
                }
                else
                {
-                    /*recGblPutLinkValue (&(par->sot), (void *) par, DBR_LONG, &barcode, &nRequest);*/
                       dbPutLink(&(par->sot),DBR_LONG,&barcode,nRequest);
                }
 
@@ -5852,7 +5806,7 @@ static long grReadConfig(ASSEMBLY_CONTROL_RECORD *par)
                               pGrPriv->tilt2StepsLut[grind -1].input[n[grind -1]]  = tilt;
                               GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: TILT = %f\n",tilt);
                               pGrPriv->tilt2StepsLut[grind -1].measured[n[grind -1]] = steps;
-                              GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: STEPS = %f \n", steps);
+                              GRDEBUG(DAR_MSG_MIN,"TEST DEBUG: STEPS = %f\n",steps);
                               semGive (pGrPriv->mutexSem);
                               n[grind - 1]++;
                          }
@@ -5872,8 +5826,8 @@ static long grReadConfig(ASSEMBLY_CONTROL_RECORD *par)
                     }/*if*/
                }/*if*/
           }/*while*/
-        fclose (fp);
         }/*for*/
+    fclose (fp);
      }
 
      semTake (pGrPriv->mutexSem, WAIT_FOREVER);

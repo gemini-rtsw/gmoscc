@@ -6,16 +6,12 @@ aux_grating
 # are the same as cells A,B,C,D. 65 degrees is the zero order reflection
 # angle.
 #
-
 #
-# All these lookup tables assume that the tilt vs motor steps curve for each
-# cell in any position is linear with the same gradient. The gradient is
-# currently chosen to be the average best fit for the B1200 and R600
-# grating cells in the blaze direction +ve orientation, as measured by Chris
-# Tierney and Morag Hasite at UKATC in July 2002
+# The curve for this lookup table was empirically measured over the range 
+# of 50.947 to 60.532 (assumed to encompass the entire useful range of 
+# the grating) by Matthew Stevenson in March, 2004.  A linear extrapolation 
+# was used to determine all values outside of this range.
 #
-# (107.2623129 + 107.1323352) / 2.0 = 107.19732
-
 # The curve for each position is offset by the number of motor steps
 # required to bring the centre of the mask field to the centre of
 # the detector field at, apparently, 65 degrees (which is the GMOS-S fold
@@ -24,26 +20,72 @@ aux_grating
 # a grating cell is moved.
 ## Grating position D translation table
 # tilt = steps /107.19732
-# 65.00 required  6884.42  motor steps
+# 65.00 required  6885.0  motor steps (2004apr14, BM)
 # 30000019 Cell 4
 #               Cell      Tilt      Steps
-4               0.0       -83.4058 
-4               5.0       452.5808 
-4               10.0      988.5674 
-4               15.0      1524.5540
-4               20.0      2060.5406
-4               25.0      2596.5272
-4               30.0      3132.5138
-4               35.0      3668.5004
-4               40.0      4204.4870
-4               45.0      4740.4736
-4               50.0      5276.4602
-4               55.0      5812.4468
-4               60.0      6348.4334
-4               65.0      6884.4200
-4               70.0      7420.4066
-4               75.0      7956.3932
-4               80.0      8492.3798
-4               85.0      9028.3664
-4               90.0      9564.3530
-
+ 4                   0.  20.7999999
+ 4                   5.       548.8
+ 4                  10.      1076.8
+ 4                  15.      1604.8
+ 4                  20.      2132.8
+ 4                  25.      2660.8
+ 4                  30.      3188.9
+ 4                  35.      3716.9
+ 4                  40.      4244.9
+ 4                  45.      4772.9
+ 4                  50.      5300.9
+ 4    50.94700000000001      5399.7
+ 4    51.14099999999997      5420.7
+ 4    51.33599999999999      5441.7
+ 4               51.522      5462.7
+ 4    51.71599999999997      5483.7
+ 4               51.905      5503.7
+ 4               52.323      5546.2
+ 4    52.52799999999998      5566.7
+ 4    52.73000000000001      5587.7
+ 4               52.931      5608.7
+ 4    53.11799999999998      5629.2
+ 4                 53.3      5650.2
+ 4    53.49399999999999      5670.7
+ 4               53.679      5691.7
+ 4               53.877      5712.2
+ 4               54.077      5732.7
+ 4                54.29      5753.7
+ 4    54.49699999999999      5774.2
+ 4               54.695      5794.7
+ 4               54.889      5815.7
+ 4               55.074      5836.2
+ 4    55.25299999999999      5856.7
+ 4               55.449      5877.2
+ 4               55.639      5898.2
+ 4               55.838      5918.7
+ 4               56.039      5939.2
+ 4               56.245      5959.7
+ 4    56.44899999999999      5980.2
+ 4    56.64800000000001      6000.7
+ 4               56.834      6021.2
+ 4    57.01999999999999      6041.7
+ 4               57.201      6062.2
+ 4    57.38999999999998      6083.2
+ 4               57.578      6103.7
+ 4    57.77799999999999      6124.2
+ 4    57.98399999999999      6144.2
+ 4               58.191      6164.7
+ 4               58.389      6185.2
+ 4    58.58999999999998      6205.7
+ 4               58.765      6226.2
+ 4    58.95099999999999      6246.7
+ 4    59.13399999999999      6267.2
+ 4    59.32299999999999      6287.7
+ 4    59.51500000000001      6308.2
+ 4    59.71200000000001      6328.2
+ 4               59.919      6348.7
+ 4               60.126      6369.2
+ 4               60.326      6389.7
+ 4               60.532      6410.2
+ 4                  65.       6885.
+ 4                  70.       7413.
+ 4                  75.       7941.
+ 4                  80.      8469.1
+ 4                  85.      8997.1
+ 4                  90.      9525.1
