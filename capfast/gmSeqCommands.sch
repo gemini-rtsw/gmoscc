@@ -47,32 +47,32 @@ w -548 1603 100 0 MESS eapply.comapply.MESS -736 1504 -544 1504 -544 1712 -416 1
 w -580 1683 100 0 VAL eapply.comapply.VAL -736 1536 -576 1536 -576 1840 -416 1840 outhier.VAL.p
 s 2960 2608 150 0 gmSeqCommands
 [cell use]
-use outhier 2592 231 100 0 CFLK
-xform 0 2608 272
-use outhier 2592 327 100 0 OERR
-xform 0 2608 368
-use outhier 2592 423 100 0 OMSS
-xform 0 2608 464
-use outhier 2592 519 100 0 CAR
-xform 0 2608 560
-use outhier -448 1575 100 0 FLNK
-xform 0 -432 1616
-use outhier -448 1671 100 0 MESS
-xform 0 -432 1712
 use outhier -448 1799 100 0 VAL
 xform 0 -432 1840
-use inhier 1728 135 100 0 ILOCK
-xform 0 1744 176
-use inhier 1728 199 100 0 RDOUT
-xform 0 1744 240
-use inhier 336 2135 100 0 RDOUT
-xform 0 352 2176
-use inhier 336 2199 100 0 ILOCK
-xform 0 352 2240
-use inhier -1344 1543 100 0 DIR
-xform 0 -1328 1584
+use outhier -448 1671 100 0 MESS
+xform 0 -432 1712
+use outhier -448 1575 100 0 FLNK
+xform 0 -432 1616
+use outhier 2592 519 100 0 CAR
+xform 0 2608 560
+use outhier 2592 423 100 0 OMSS
+xform 0 2608 464
+use outhier 2592 327 100 0 OERR
+xform 0 2608 368
+use outhier 2592 231 100 0 CFLK
+xform 0 2608 272
 use inhier -1344 1463 100 0 ICID
 xform 0 -1328 1504
+use inhier -1344 1543 100 0 DIR
+xform 0 -1328 1584
+use inhier 336 2199 100 0 ILOCK
+xform 0 352 2240
+use inhier 336 2135 100 0 RDOUT
+xform 0 352 2176
+use inhier 1728 199 100 0 RDOUT
+xform 0 1744 240
+use inhier 1728 135 100 0 ILOCK
+xform 0 1744 176
 use gmSeqDtaTrack 1952 55 100 0 gmSeqDtaTrack#409
 xform 0 2112 384
 p 1972 28 100 0 1 seta:top $(gm)dtaTrack:
@@ -91,7 +91,7 @@ p 128 1312 100 0 1 setd:dtyp atmDC
 p 128 1216 100 0 1 setg:event 1
 use gmSeqTranslation 960 39 100 0 gmSeqTranslation#353
 xform 0 1120 256
-p 944 -176 100 0 1 setg:event 5
+p 960 -144 100 0 1 setg:event 5
 use gmSeqGrating 64 71 100 0 gmSeqGrating#352
 xform 0 224 272
 p 48 -160 100 0 1 setg:event 4
