@@ -1,0 +1,453 @@
+file {
+	name="gmPre.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="0"
+	npc="3"
+	nstr="72"
+	ndynamic="4"
+	nplot="0"
+	nrd="1"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="298"
+		height="239"
+	}
+	clr="1"
+	bclr="13"
+	nwords_dspy="1202"
+	nwords_sta="52"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="742"
+	osta="690"
+	odynamic="742"
+	oplot="1030"
+	ord="1030"
+	oes="1190"
+	okd="1190"
+	opd="1202"
+	opo="1202"
+	opc="68"
+	ostr="100"
+	ocmap="690"
+	ocrules="690"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1600"
+	pixht="1200"
+	mmwid="320"
+	mmht="240"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="13"
+		y="28"
+		width="270"
+		height="163"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="74"
+		y="45"
+		width="106"
+		height="20"
+		groupid="0"
+	}
+	textix="Interlock"
+	align="horiz. centered"
+}
+"text" {
+	object {
+		x="15"
+		y="112"
+		width="55"
+		height="20"
+		groupid="0"
+	}
+	textix="mask"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="23"
+		y="72"
+		width="45"
+		height="20"
+		groupid="0"
+	}
+	textix="wfs"
+	align="horiz. right"
+}
+"message button" {
+	object {
+		x="80"
+		y="71"
+		width="95"
+		height="28"
+		groupid="0"
+	}
+	control {
+		chan="$(Twfs)$(Dwfs)Ilock"
+		clr="0"
+		bclr="23"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="E-STOP"
+	pressed_label=" ----"
+	press_msg="1"
+	release_msg=""
+}
+"message button" {
+	object {
+		x="79"
+		y="108"
+		width="96"
+		height="28"
+		groupid="0"
+	}
+	control {
+		chan="$(Tmsk)$(Dmsk)Ilock"
+		clr="0"
+		bclr="23"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="E-STOP"
+	pressed_label=" ----"
+	press_msg="1"
+	release_msg=""
+}
+"message button" {
+	object {
+		x="185"
+		y="70"
+		width="77"
+		height="28"
+		groupid="0"
+	}
+	control {
+		chan="$(Twfs)$(Dwfs)Ilock"
+		clr="1"
+		bclr="24"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="CLEAR"
+	pressed_label=" ---"
+	press_msg="0"
+	release_msg=""
+}
+"message button" {
+	object {
+		x="184"
+		y="107"
+		width="79"
+		height="28"
+		groupid="0"
+	}
+	control {
+		chan="$(Tmsk)$(Dmsk)Ilock"
+		clr="1"
+		bclr="4"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	inactive_label="CLEAR"
+	pressed_label=" ---"
+	press_msg="0"
+	release_msg=""
+}
+"related display" {
+	object {
+		x="21"
+		y="143"
+		width="171"
+		height="35"
+		groupid="0"
+	}
+	selfkill="off"
+	display[0] {
+		label="OIWFS Assembly"
+		name="gmOiwfs.dl"
+		args="T=$(Twfs),D=$(Dwfs)"
+	}
+	display[1] {
+		label="Mask Assembly"
+		name="gmMask.dl"
+		args="T=$(Tmsk),D=$(Dmsk)"
+	}
+	display[2] {
+		label="OIWFS Commands"
+		name="gmOiwfsCmd.dl"
+		args="T=$(Twfs),D="
+	}
+	display[3] {
+		label=""
+		name=""
+		args=""
+	}
+	display[4] {
+		label=""
+		name=""
+		args=""
+	}
+	display[5] {
+		label=""
+		name=""
+		args=""
+	}
+	display[6] {
+		label=""
+		name=""
+		args=""
+	}
+	display[7] {
+		label=""
+		name=""
+		args=""
+	}
+	display[8] {
+		label=""
+		name=""
+		args=""
+	}
+	display[9] {
+		label=""
+		name=""
+		args=""
+	}
+	display[10] {
+		label=""
+		name=""
+		args=""
+	}
+	display[11] {
+		label=""
+		name=""
+		args=""
+	}
+	display[12] {
+		label=""
+		name=""
+		args=""
+	}
+	display[13] {
+		label=""
+		name=""
+		args=""
+	}
+	display[14] {
+		label=""
+		name=""
+		args=""
+	}
+	display[15] {
+		label=""
+		name=""
+		args=""
+	}
+	display[16] {
+		label=""
+		name=""
+		args=""
+	}
+	display[17] {
+		label=""
+		name=""
+		args=""
+	}
+	display[18] {
+		label=""
+		name=""
+		args=""
+	}
+	display[19] {
+		label=""
+		name=""
+		args=""
+	}
+	display[20] {
+		label=""
+		name=""
+		args=""
+	}
+	display[21] {
+		label=""
+		name=""
+		args=""
+	}
+	display[22] {
+		label=""
+		name=""
+		args=""
+	}
+	display[23] {
+		label=""
+		name=""
+		args=""
+	}
+	clr="0"
+	bclr="7"
+	menu_title="Assemblies"
+	decorate="none"
+}
+"kill display" {
+	object {
+		x="202"
+		y="196"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

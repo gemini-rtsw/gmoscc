@@ -1,0 +1,917 @@
+file {
+	name="gmWfsMessages.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="3"
+	npc="18"
+	nstr="77"
+	ndynamic="10"
+	nplot="0"
+	nrd="0"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="583"
+		height="382"
+	}
+	clr="1"
+	bclr="13"
+	nwords_dspy="2414"
+	nwords_sta="608"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="1582"
+	osta="974"
+	odynamic="1742"
+	oplot="2402"
+	ord="2402"
+	oes="2402"
+	okd="2402"
+	opd="2414"
+	opo="2414"
+	opc="68"
+	ostr="330"
+	ocmap="974"
+	ocrules="974"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="20"
+		y="67"
+		width="150"
+		height="15"
+		groupid="0"
+	}
+	textix="activeC Message:"
+	align="horiz. right"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="14"
+		y="7"
+		width="560"
+		height="22"
+		groupid="0"
+	}
+	textix="GMOS OIWFS Messages"
+	align="horiz. centered"
+}
+"text" {
+	object {
+		x="20"
+		y="101"
+		width="400"
+		height="15"
+		groupid="0"
+	}
+	textix="Probe controller"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="13"
+		y="36"
+		width="560"
+		height="285"
+		groupid="0"
+	}
+}
+"line" {
+	object {
+		x="13"
+		y="94"
+		width="560"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="13"
+		y="94"
+	}
+	point[1] {
+		x="573"
+		y="94"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="60"
+		y="125"
+		width="110"
+		height="15"
+		groupid="0"
+	}
+	textix="init"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="60"
+		y="145"
+		width="110"
+		height="15"
+		groupid="0"
+	}
+	textix="datum"
+	align="horiz. right"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="13"
+		y="206"
+		width="560"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="13"
+		y="206"
+	}
+	point[1] {
+		x="573"
+		y="206"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="23"
+		y="212"
+		width="400"
+		height="15"
+		groupid="0"
+	}
+	textix="OIWFS probe Assembly"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="60"
+		y="235"
+		width="110"
+		height="15"
+		groupid="0"
+	}
+	textix="probeC CAR:"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="60"
+		y="256"
+		width="110"
+		height="15"
+		groupid="0"
+	}
+	textix="Assembly:"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="60"
+		y="277"
+		width="110"
+		height="15"
+		groupid="0"
+	}
+	textix="Base:"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="60"
+		y="298"
+		width="110"
+		height="15"
+		groupid="0"
+	}
+	textix="Pickoff:"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="27"
+		y="165"
+		width="143"
+		height="15"
+		groupid="0"
+	}
+	textix="move"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="60"
+		y="185"
+		width="110"
+		height="15"
+		groupid="0"
+	}
+	textix="follow"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="20"
+		y="46"
+		width="150"
+		height="15"
+		groupid="0"
+	}
+	textix="Reject Message:"
+	align="horiz. right"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="rule"
+			vis="static"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan=""
+			rulechan[0] = "$(T)wfs:activeC.VAL"
+			rulechan[1] = "$(T)wfs:activeC.VAL"
+			rulechan[2] = "$(T)wfs:activeC.VAL"
+			rulechan[3] = "$(T)wfs:activeC.VAL"
+			rulechan[4] = "$(T)wfs:activeC.VAL"
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="flashifbusy"
+			clrargs="C=$(T)wfs:activeC"
+		}
+	}
+}
+"oval" {
+	object {
+		x="503"
+		y="99"
+		width="21"
+		height="21"
+		groupid="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="rule"
+			vis="static"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan=""
+			rulechan[0] = "$(T)wfs:probeC.VAL"
+			rulechan[1] = "$(T)wfs:probeC.VAL"
+			rulechan[2] = "$(T)wfs:probeC.VAL"
+			rulechan[3] = "$(T)wfs:probeC.VAL"
+			rulechan[4] = "$(T)wfs:probeC.VAL"
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="flashifbusy"
+			clrargs="C=$(T)wfs:probeC"
+		}
+	}
+}
+"oval" {
+	object {
+		x="503"
+		y="210"
+		width="21"
+		height="21"
+		groupid="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="rule"
+			vis="static"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan=""
+			rulechan[0] = "$(T):wfs:health.VAL"
+			rulechan[1] = "$(T):wfs:health.VAL"
+			rulechan[2] = "$(T):wfs:health.VAL"
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="health"
+			clrargs="C=$(T):wfs:health"
+		}
+	}
+}
+"oval" {
+	object {
+		x="532"
+		y="99"
+		width="21"
+		height="21"
+		groupid="0"
+	}
+}
+"text update" {
+	object {
+		x="177"
+		y="67"
+		width="390"
+		height="15"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)wfs:activeC.OMSS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="177"
+		y="125"
+		width="390"
+		height="15"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)wfs:init.MESS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="177"
+		y="235"
+		width="390"
+		height="15"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)wfs:probeC.OMSS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="177"
+		y="145"
+		width="390"
+		height="15"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)wfs:datum.MESS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="177"
+		y="256"
+		width="390"
+		height="15"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)wfs:probeAssembly.MESS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="177"
+		y="277"
+		width="390"
+		height="15"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)wfs:probeBasDevice.MESS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="177"
+		y="298"
+		width="390"
+		height="15"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)wfs:probePkoDevice.MESS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="177"
+		y="165"
+		width="390"
+		height="15"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)wfs:move.MESS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="177"
+		y="185"
+		width="390"
+		height="15"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)wfs:follow.MESS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="177"
+		y="46"
+		width="390"
+		height="15"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)wfs:rejectMess.IMSS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"kill display" {
+	object {
+		x="494"
+		y="332"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

@@ -1,0 +1,60 @@
+#!/bin/csh -f
+#
+# Script to spawn an xterm to connect to the sim2 simulation crate.
+#
+# A log file is written to the "${HOME}/consoleLogs" directory.
+# The log file output may be suppressed by specifying "nolog" as a first
+# argument.
+#
+
+#
+# Save the current day
+#
+
+set day = `date +%d%h%y`
+
+#
+# Create the "consoleLogs" directory if it doesn't exist.
+#
+
+if ( !(-e ${HOME}/consoleLogs) ) then
+
+    mkdir ${HOME}/consoleLogs
+endif
+
+if (!(-e ${HOME}/consoleLogs/$day)) then
+
+    mkdir ${HOME}/consoleLogs/$day
+endif
+
+if (!(-e ${HOME}/consoleLogs/$day/sim2)) then
+
+    mkdir ${HOME}/consoleLogs/$day/sim2
+endif
+
+#
+# Change directory to day's console log directory.
+#
+
+pushd ${HOME}/consoleLogs/$day/sim2
+
+#
+# Spawn an X terminal to act as the VxWorks console.
+#
+
+if ( $1 == "nolog" ) then
+
+   xterm -geometry 80x50-0+0 -sb -sl 128 -n sim2 -T "GMOS MK VxWorks Console" -e gmosIocAnnex hbf-annx-instlab 7002 sim2 &
+   echo "No log file will be created."
+else
+
+   xterm -l -geometry 80x50-0+0 -sb -sl 128 -n sim2 -T "GMOS MK VxWorks Console" -e gmosIocAnnex hbf-annx-instlab 7002 sim2 &
+   echo "A log file will be created in the `pwd`"
+   echo "directory. Check for files called XtermLog.*"
+endif
+
+#
+# Restore the original directory.
+#
+
+popd

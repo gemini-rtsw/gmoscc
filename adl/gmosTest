@@ -1,0 +1,52 @@
+#!/bin/csh -f
+#
+# Script to go to GMOS test directory and display help information
+#
+# NOTE: For the cd command to work this script need to be invoked
+# using "source".
+
+#
+# Find the first GMOS test directory within the user's home directory
+#
+
+#set testlist = `find ${HOME} -name "test" | grep gmos`
+#set testdir = `echo $testlist | awk '{print $1}'`
+
+set testdir = /home/gemvx/tpaz/gmosDev/gmos/test
+if ( $#testdir == 1 ) then
+
+  cd ${testdir}
+else
+
+  echo "GMOS test directory not found - try ""cvs checkout gmos""."
+  exit
+endif
+
+more <<EOF
+		GMOS ENGINEERING CHECKOUT
+		=========================
+
+For detailed information please consult the "GMOS Software User Manual",
+contained in file gmos_smb_011.fm, and the "GMOS Service and Calibration
+Manual".
+
+Now that you are in the GMOS test directory the following commands are
+available:
+
+checkout XXX   - Check out component XXX by running the script
+                 scripts/XXXCheckout.scr. For a list of scripts see the
+                 README.TESTS and HOW_TO_RUN_TESTS files within this
+                 directory.
+
+XXXReset       - Reset component XXX so its checkout script can be run
+                 again without rebooting.
+
+soak script name delay -auto
+               - Run a checkout script over and over again. Read the
+                 introduction within "soak" for details.
+
+There are many more scripts and commands described in README.TESTS.
+
+EOF
+
+echo Your current directory has been changed to ${testdir}

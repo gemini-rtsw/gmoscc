@@ -1,0 +1,691 @@
+file {
+	name="gmosTopHelp.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="0"
+	npc="1"
+	nstr="68"
+	ndynamic="0"
+	nplot="0"
+	nrd="0"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="549"
+		height="254"
+	}
+	clr="1"
+	bclr="13"
+	nwords_dspy="1698"
+	nwords_sta="1052"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="1686"
+	osta="634"
+	odynamic="1686"
+	oplot="1686"
+	ord="1686"
+	oes="1686"
+	okd="1686"
+	opd="1698"
+	opo="1698"
+	opc="68"
+	ostr="72"
+	ocmap="634"
+	ocrules="634"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1600"
+	pixht="1200"
+	mmwid="320"
+	mmht="240"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="14"
+		y="12"
+		width="490"
+		height="20"
+		groupid="0"
+	}
+	textix="Colour Codes Used On These Screens"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="4"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="229"
+		y="66"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="229"
+		y="39"
+		width="100"
+		height="20"
+		groupid="0"
+	}
+	textix="Health"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="269"
+		y="68"
+		width="110"
+		height="20"
+		groupid="0"
+	}
+	textix="= GOOD"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="3"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="229"
+		y="94"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="269"
+		y="96"
+		width="110"
+		height="20"
+		groupid="0"
+	}
+	textix="= WARNING"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="2"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="229"
+		y="123"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="269"
+		y="125"
+		width="110"
+		height="20"
+		groupid="0"
+	}
+	textix="= BAD"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="230"
+		y="57"
+		width="100"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="230"
+		y="57"
+	}
+	point[1] {
+		x="330"
+		y="57"
+	}
+	orgpoint[0] {
+		x="0"
+		y="0"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="1000"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="10"
+		y="66"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="39"
+		width="100"
+		height="20"
+		groupid="0"
+	}
+	textix="State"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="50"
+		y="68"
+		width="175"
+		height="20"
+		groupid="0"
+	}
+	textix="= BOOTING"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="3"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="10"
+		y="94"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="50"
+		y="96"
+		width="175"
+		height="20"
+		groupid="0"
+	}
+	textix="= INITIALIZING"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="4"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="10"
+		y="123"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="50"
+		y="125"
+		width="175"
+		height="20"
+		groupid="0"
+	}
+	textix="= RUNNING"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="11"
+		y="57"
+		width="100"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="11"
+		y="57"
+	}
+	point[1] {
+		x="111"
+		y="57"
+	}
+	orgpoint[0] {
+		x="0"
+		y="0"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="1000"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="14"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="10"
+		y="152"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="50"
+		y="154"
+		width="175"
+		height="20"
+		groupid="0"
+	}
+	textix="= CONFIGURING"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="0"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="10"
+		y="180"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="50"
+		y="182"
+		width="175"
+		height="20"
+		groupid="0"
+	}
+	textix="= DISCONNECTED"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="2"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="10"
+		y="209"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="50"
+		y="211"
+		width="175"
+		height="20"
+		groupid="0"
+	}
+	textix="= ERROR"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="4"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="384"
+		y="66"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="384"
+		y="39"
+		width="100"
+		height="20"
+		groupid="0"
+	}
+	textix="Busy"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="424"
+		y="68"
+		width="100"
+		height="20"
+		groupid="0"
+	}
+	textix="= IDLE"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="14"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="384"
+		y="94"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="424"
+		y="96"
+		width="100"
+		height="20"
+		groupid="0"
+	}
+	textix="= BUSY"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="15"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="384"
+		y="123"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="424"
+		y="125"
+		width="100"
+		height="20"
+		groupid="0"
+	}
+	textix="= PAUSED"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="385"
+		y="57"
+		width="100"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="385"
+		y="57"
+	}
+	point[1] {
+		x="485"
+		y="57"
+	}
+	orgpoint[0] {
+		x="0"
+		y="0"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="1000"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="2"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="384"
+		y="152"
+		width="25"
+		height="24"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="424"
+		y="154"
+		width="100"
+		height="20"
+		groupid="0"
+	}
+	textix="= ERROR"
+	align="horiz. left"
+}
+"kill display" {
+	object {
+		x="444"
+		y="198"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

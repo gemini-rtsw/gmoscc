@@ -1,0 +1,674 @@
+file {
+	name="dtaGraph.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="0"
+	npc="11"
+	nstr="69"
+	ndynamic="9"
+	nplot="1"
+	nrd="0"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="694"
+		height="656"
+	}
+	clr="1"
+	bclr="13"
+	nwords_dspy="1590"
+	nwords_sta="120"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="912"
+	osta="792"
+	odynamic="912"
+	oplot="1506"
+	ord="1578"
+	oes="1578"
+	okd="1578"
+	opd="1590"
+	opo="1590"
+	opc="68"
+	ostr="216"
+	ocmap="792"
+	ocrules="792"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1280"
+	pixht="1024"
+	mmwid="361"
+	mmht="289"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="9"
+		y="49"
+		width="660"
+		height="546"
+		groupid="0"
+	}
+}
+"rectangle" {
+	object {
+		x="9"
+		y="26"
+		width="660"
+		height="23"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="13"
+		y="29"
+		width="650"
+		height="20"
+		groupid="0"
+	}
+	textix="Position of Detector Translation Axes - $(T)$(D)"
+	align="horiz. centered"
+}
+"text" {
+	object {
+		x="553"
+		y="56"
+		width="96"
+		height="17"
+		groupid="0"
+	}
+	textix="Z"
+	align="horiz. centered"
+}
+"text" {
+	object {
+		x="27"
+		y="56"
+		width="95"
+		height="17"
+		groupid="0"
+	}
+	textix="Y"
+	align="horiz. centered"
+}
+"text" {
+	object {
+		x="68"
+		y="524"
+		width="52"
+		height="17"
+		groupid="0"
+	}
+	textix="X"
+	align="horiz. right"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="45"
+		y="606"
+		width="250"
+		height="16"
+		groupid="0"
+	}
+	textix="Target position in black"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="319"
+		y="606"
+		width="250"
+		height="16"
+		groupid="0"
+	}
+	textix="Current position in blue"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="140"
+		y="54"
+		width="87"
+		height="17"
+		groupid="0"
+	}
+	textix="X,Y,Z ="
+	align="horiz. right"
+}
+"indicator" {
+	object {
+		x="603"
+		y="76"
+		width="55"
+		height="415"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)3Device.MPOS"
+		clr="11"
+		bclr="13"
+		label="outline"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="4600"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	direction="left"
+}
+"indicator" {
+	object {
+		x="547"
+		y="76"
+		width="55"
+		height="415"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)3Device.VAL"
+		clr="1"
+		bclr="13"
+		label="outline"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="4600"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	direction="right"
+}
+"indicator" {
+	object {
+		x="73"
+		y="76"
+		width="55"
+		height="415"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)2Device.MPOS"
+		clr="11"
+		bclr="13"
+		label="outline"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="240"
+		ldl="-19"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	direction="left"
+}
+"indicator" {
+	object {
+		x="17"
+		y="76"
+		width="55"
+		height="415"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)2Device.VAL"
+		clr="1"
+		bclr="13"
+		label="outline"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="240"
+		ldl="-19"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	direction="right"
+}
+"indicator" {
+	object {
+		x="130"
+		y="492"
+		width="415"
+		height="40"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)1Device.MPOS"
+		clr="11"
+		bclr="13"
+		label="outline"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="240"
+		ldl="-32"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	direction="down"
+}
+"indicator" {
+	object {
+		x="130"
+		y="533"
+		width="415"
+		height="40"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)1Device.VAL"
+		clr="1"
+		bclr="13"
+		label="outline"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="240"
+		ldl="-32"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	direction="up"
+}
+"text update" {
+	object {
+		x="442"
+		y="52"
+		width="100"
+		height="20"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)3Device.MPOS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="338"
+		y="52"
+		width="100"
+		height="20"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)2Device.MPOS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="234"
+		y="52"
+		width="100"
+		height="20"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(D)1Device.MPOS"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
+"cartesian plot" {
+	object {
+		x="130"
+		y="76"
+		width="415"
+		height="415"
+		groupid="0"
+	}
+	plotcom {
+		title="XY position"
+		xlabel=""
+		ylabel=""
+		clr="1"
+		bclr="13"
+		package=""
+		label="none"
+	}
+	style="point plot"
+	erase_oldest="off"
+	count="0"
+	trace[0] {
+		xdata="F $(T)$(D)1Device.MPOS"
+		ydata="F $(T)$(D)2Device.MPOS"
+		data_clr="11"
+	}
+	trace[1] {
+		xdata=""
+		ydata=""
+		data_clr="1"
+	}
+	trace[2] {
+		xdata=""
+		ydata=""
+		data_clr="1"
+	}
+	trace[3] {
+		xdata=""
+		ydata=""
+		data_clr="1"
+	}
+	trace[4] {
+		xdata=""
+		ydata=""
+		data_clr="1"
+	}
+	trace[5] {
+		xdata=""
+		ydata=""
+		data_clr="1"
+	}
+	trace[6] {
+		xdata=""
+		ydata=""
+		data_clr="1"
+	}
+	trace[7] {
+		xdata=""
+		ydata=""
+		data_clr="1"
+	}
+	trigger="$(T)$(D)1Device.MPOS"
+}
+"kill display" {
+	object {
+		x="600"
+		y="602"
+		width="70"
+		height="28"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

@@ -1,0 +1,44 @@
+#!/bin/csh -f
+#
+# Script to display GMOS help information.
+#
+more <<EOF
+		GMOS COMMAND SUMMARY
+		====================
+
+For detailed information please consult the "GMOS Software User Manual",
+contained in file gmos_smb_011.fm.
+
+The following GMOS commands are available (NOTE - for these commands to work
+you must be logged on to a workstation that can see the /gemini directory).
+
+gmosMK         - Allow access to the GMOS MK instrument (for safety)
+gmosNoMK       - Disallow access to the GMOS MK instrument (for safety)
+
+gmosStart      - Start the GMOS EPICS control screens.
+
+gmosAlarm      - Start the GMOS EPICS alarm handler screens for the
+                 components controller AND detector controller.
+
+gmosDcAlarm    - Start the GMOS EPICS alarm handler screens for the
+                 detector controller only.
+
+gmosCcAlarm    - Start the GMOS EPICS alarm handler screens for the
+                 components controller only.
+
+gmoscc         - Create an xterm window and connect it to the GMOS
+                 components controller VxWorks console. (A log file is
+                 written to $HOME/consoleLogs).
+
+gmosdc         - Create an xterm window and connect it to the GMOS
+                 detector controller VxWorks console. (A log file is
+                 written to $HOME/consoleLogs).
+
+gmosannex      - Create an xterm window and connect it to the GMOS
+                 annex - prompting for the I/O port.
+
+gmosStartMK    - A combination of gmosStart, gmoscc and gmosdc.
+
+gmosTest       - Start a series of GMOS checkout scripts
+EOF
+

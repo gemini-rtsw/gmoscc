@@ -1,0 +1,1214 @@
+file {
+	name="ttlInterlockPoke.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="0"
+	npc="18"
+	nstr="96"
+	ndynamic="17"
+	nplot="0"
+	nrd="0"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="825"
+		height="491"
+	}
+	clr="1"
+	bclr="28"
+	nwords_dspy="3268"
+	nwords_sta="920"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="2134"
+	osta="1214"
+	odynamic="2134"
+	oplot="3256"
+	ord="3256"
+	oes="3256"
+	okd="3256"
+	opd="3268"
+	opo="3268"
+	opc="68"
+	ostr="296"
+	ocmap="1214"
+	ocrules="1214"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1600"
+	pixht="1200"
+	mmwid="320"
+	mmht="240"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="9"
+		y="14"
+		width="800"
+		height="39"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="24"
+		y="21"
+		width="760"
+		height="25"
+		groupid="0"
+	}
+	textix="Simulate GMOS Xycom Interlock Signal Changes"
+	align="horiz. centered"
+}
+"text" {
+	object {
+		x="21"
+		y="125"
+		width="235"
+		height="20"
+		groupid="0"
+	}
+	textix="GIS Demand Error"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="21"
+		y="163"
+		width="235"
+		height="20"
+		groupid="0"
+	}
+	textix="Interlock Event"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="21"
+		y="201"
+		width="235"
+		height="20"
+		groupid="0"
+	}
+	textix="Interlock Event Error"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="21"
+		y="88"
+		width="235"
+		height="20"
+		groupid="0"
+	}
+	textix="GIS Demand"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="421"
+		y="88"
+		width="210"
+		height="20"
+		groupid="0"
+	}
+	textix="EE1 Front Door"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="421"
+		y="125"
+		width="210"
+		height="20"
+		groupid="0"
+	}
+	textix="EE1 Back Door"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="421"
+		y="163"
+		width="210"
+		height="20"
+		groupid="0"
+	}
+	textix="EE2 Front Door"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="421"
+		y="201"
+		width="210"
+		height="20"
+		groupid="0"
+	}
+	textix="EE2 Back Door"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="421"
+		y="238"
+		width="225"
+		height="20"
+		groupid="0"
+	}
+	textix="Grating/Camera Door"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="421"
+		y="276"
+		width="210"
+		height="20"
+		groupid="0"
+	}
+	textix="Mask Door"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="421"
+		y="314"
+		width="210"
+		height="20"
+		groupid="0"
+	}
+	textix="Grating/Filter Door"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="421"
+		y="352"
+		width="225"
+		height="20"
+		groupid="0"
+	}
+	textix="Door 8/Hand Paddle"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="9"
+		y="53"
+		width="800"
+		height="380"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="0"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"line" {
+	object {
+		x="38"
+		y="739"
+		width="386"
+		height="10"
+		groupid="0"
+	}
+	npoints="0"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="21"
+		y="238"
+		width="235"
+		height="20"
+		groupid="0"
+	}
+	textix="Upstream Pressure OK"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="21"
+		y="276"
+		width="245"
+		height="20"
+		groupid="0"
+	}
+	textix="Downstream Pressure OK"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="21"
+		y="314"
+		width="235"
+		height="20"
+		groupid="0"
+	}
+	textix="Motor Shutdown"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="25"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="24"
+		y="61"
+		width="226"
+		height="20"
+		groupid="0"
+	}
+	textix="-- Interlocks --"
+	align="horiz. centered"
+}
+"text" {
+	object {
+		x="413"
+		y="59"
+		width="145"
+		height="20"
+		groupid="0"
+	}
+	textix="-- Doors --"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="21"
+		y="352"
+		width="235"
+		height="20"
+		groupid="0"
+	}
+	textix="Soft Interlock"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="1"
+	}
+}
+"line" {
+	object {
+		x="410"
+		y="51"
+		width="0"
+		height="340"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="410"
+		y="51"
+	}
+	point[1] {
+		x="410"
+		y="391"
+	}
+	orgpoint[0] {
+		x="1000"
+		y="0"
+	}
+	orgpoint[1] {
+		x="0"
+		y="1000"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="141"
+		y="404"
+		width="330"
+		height="20"
+		groupid="0"
+	}
+	textix="Door Interlock Defeat Switch"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="1"
+	}
+}
+"line" {
+	object {
+		x="8"
+		y="392"
+		width="800"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="8"
+		y="392"
+	}
+	point[1] {
+		x="808"
+		y="392"
+	}
+	orgpoint[0] {
+		x="0"
+		y="-1"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="-1"
+	}
+}
+"choice button" {
+	object {
+		x="267"
+		y="199"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)gisEventError"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)gisEventError"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="267"
+		y="161"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)gisEvent"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)gisEvent"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="267"
+		y="123"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)gisError"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)gisError"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="267"
+		y="86"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)gisDemand"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)gisDemand"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="267"
+		y="236"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(C2)upstreamOk"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)upstreamOk"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="267"
+		y="274"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(C2)downstreamOk"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="267"
+		y="312"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)masterDisabled"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)masterDisabled"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="648"
+		y="199"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)door4"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)door4"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="648"
+		y="161"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)door3"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)door3"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="648"
+		y="123"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)door2"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)door2"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="648"
+		y="86"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)door1"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)door1"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="648"
+		y="236"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)door5"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)door5"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="648"
+		y="274"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)door6"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)door6"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="648"
+		y="312"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)door7"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)door7"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="648"
+		y="350"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)door8"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)door8"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="267"
+		y="350"
+		width="136"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)softIlock"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)masterDisabled"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"choice button" {
+	object {
+		x="482"
+		y="402"
+		width="150"
+		height="25"
+		groupid="0"
+	}
+	control {
+		chan="$(T)$(CC)doorIlckDefeat"
+		clr="0"
+		bclr="6"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)doorIlckDefeat"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	stacking="row"
+}
+"kill display" {
+	object {
+		x="728"
+		y="444"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

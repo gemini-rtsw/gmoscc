@@ -1,0 +1,623 @@
+file {
+	name="gmSeqMechHelp.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="0"
+	npc="4"
+	nstr="139"
+	ndynamic="0"
+	nplot="0"
+	nrd="0"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="593"
+		height="793"
+	}
+	clr="1"
+	bclr="13"
+	nwords_dspy="3176"
+	nwords_sta="860"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="3164"
+	osta="2304"
+	odynamic="3164"
+	oplot="3164"
+	ord="3164"
+	oes="3164"
+	okd="3164"
+	opd="3176"
+	opo="3176"
+	opc="68"
+	ostr="114"
+	ocmap="2304"
+	ocrules="2304"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1600"
+	pixht="1200"
+	mmwid="320"
+	mmht="240"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="7"
+		y="12"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="GMOS Mechanism Control Screen Help"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="92"
+		y="34"
+		width="400"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="92"
+		y="34"
+	}
+	point[1] {
+		x="492"
+		y="34"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="7"
+		y="54"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="To configure the instrument using this screen"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="116"
+		y="622"
+		width="460"
+		height="20"
+		groupid="0"
+	}
+	textix="indicate the health and status of each"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="166"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="2) Clear any existing errors or marks, if"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="76"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="Use the following procedure:"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="192"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   necessary, by pressing the CLEAR button."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="292"
+		width="450"
+		height="20"
+		groupid="0"
+	}
+	textix="3) Using the right mouse button on the"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="314"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   menus, select the desired mask, filters and"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="111"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="1) Ensure the instrument has been INDEX'ed"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="133"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   (check top level instrument sequencer screen)."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="336"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   grating, OR type the names required into the"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="0"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"rectangle" {
+	object {
+		x="465"
+		y="280"
+		width="120"
+		height="30"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="1"
+	}
+}
+"rectangle" {
+	object {
+		x="464"
+		y="280"
+		width="120"
+		height="30"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="485"
+		y="285"
+		width="100"
+		height="20"
+		groupid="0"
+	}
+	textix="600+"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="7"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"line" {
+	object {
+		x="465"
+		y="280"
+		width="20"
+		height="30"
+		groupid="0"
+	}
+	npoints="3"
+	point[0] {
+		x="466"
+		y="280"
+	}
+	point[1] {
+		x="485"
+		y="296"
+	}
+	point[2] {
+		x="465"
+		y="310"
+	}
+	orgpoint[0] {
+		x="50"
+		y="0"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="555"
+	}
+	orgpoint[2] {
+		x="0"
+		y="1000"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="6"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"rectangle" {
+	object {
+		x="46"
+		y="364"
+		width="120"
+		height="30"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="1"
+	}
+}
+"3-D border" {
+	object {
+		x="45"
+		y="364"
+		width="120"
+		height="30"
+		groupid="0"
+	}
+	border_type="inward"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="181"
+		y="370"
+		width="370"
+		height="20"
+		groupid="0"
+	}
+	textix="selection boxes."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="539"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="4) Select the required wavelength and order."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="582"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="5) Press the APPLY button."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="464"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   If the menus don't look right try pressing"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="486"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   the 'Update menu' button, then EXIT and"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="507"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   restart the screen."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="408"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   Two filters must be selected even if one of"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="7"
+		y="428"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="   them is open."
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="465"
+		y="218"
+		width="45"
+		height="40"
+		groupid="2"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"rectangle" {
+	object {
+		x="491"
+		y="217"
+		width="20"
+		height="20"
+		groupid="2"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="7"
+		y="218"
+		width="450"
+		height="20"
+		groupid="0"
+	}
+	textix="   A marked assembly is indicated by a"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="3"
+	}
+}
+"oval" {
+	object {
+		x="17"
+		y="617"
+		width="32"
+		height="32"
+		groupid="0"
+	}
+}
+"oval" {
+	object {
+		x="57"
+		y="617"
+		width="32"
+		height="32"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="4"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"oval" {
+	object {
+		x="18"
+		y="618"
+		width="30"
+		height="30"
+		groupid="0"
+	}
+}
+"oval" {
+	object {
+		x="58"
+		y="618"
+		width="30"
+		height="30"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="116"
+		y="642"
+		width="460"
+		height="20"
+		groupid="0"
+	}
+	textix="assembly and will turn green when done."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="116"
+		y="663"
+		width="460"
+		height="20"
+		groupid="0"
+	}
+	textix="Yellow and red mean there is a problem."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="694"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="The 'control' menus can be used to examine"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="8"
+		y="718"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="assemblies in more detail."
+	align="horiz. left"
+}
+"kill display" {
+	object {
+		x="505"
+		y="746"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

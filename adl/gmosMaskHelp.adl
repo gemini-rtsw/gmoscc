@@ -1,0 +1,606 @@
+file {
+	name="gmosMaskHelp.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="0"
+	npc="1"
+	nstr="92"
+	ndynamic="0"
+	nplot="0"
+	nrd="1"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="639"
+		height="877"
+	}
+	clr="1"
+	bclr="13"
+	nwords_dspy="2018"
+	nwords_sta="572"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="1846"
+	osta="1274"
+	odynamic="1846"
+	oplot="1846"
+	ord="1846"
+	oes="2006"
+	okd="2006"
+	opd="2018"
+	opo="2018"
+	opc="68"
+	ostr="72"
+	ocmap="1274"
+	ocrules="1274"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1600"
+	pixht="1200"
+	mmwid="320"
+	mmht="240"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="12"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="GMOS Mask Assembly Help"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="155"
+		y="34"
+		width="280"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="155"
+		y="34"
+	}
+	point[1] {
+		x="435"
+		y="34"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="52"
+		width="510"
+		height="20"
+		groupid="0"
+	}
+	textix="Read the general assembly help screen for"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="10"
+		y="75"
+		width="510"
+		height="20"
+		groupid="0"
+	}
+	textix="information about modes and directives -->"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="10"
+		y="120"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="1) Ensure the assembly has been initialized"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="143"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   and indexed before proceeding."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="183"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="2) To put a mask or IFU into the beam type the"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="205"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   barcode in the 'ID' box, set 'Loc' to IN,"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="225"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   then select MOVE then START."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="348"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="4) To determine which masks are loaded"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="370"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   select UPDATE then START. Repeat in QUICK"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="390"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   mode if there is a barcode read failure."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="431"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="5) To load a new cassette of masks choose a"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="453"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   park position, then select PARK then START."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="506"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="The five menus at the bottom are:"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="604"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Control - Direct control of mask devices"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="23"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="627"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="          (WARNING - Do not try this unless you are"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="689"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Status - Display mask status. 'device summary',"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="712"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="         'picture', 'sensors' are useful displays."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="750"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Set Debug/Sim - Set debug/simulation mode"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="773"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="                (engineering only)."
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="266"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="3) To remove a mask or IFU from the beam set"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="287"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   'Loc' to OUT, then select MOVE then START."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="308"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   The 'ID' box is ignored."
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="544"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Config - Set assembly configuration parameters"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="10"
+		y="567"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="         (engineering only)."
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="23"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="648"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="           confident you can avoid a device clash)."
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="817"
+		width="500"
+		height="20"
+		groupid="0"
+	}
+	textix="SAD - Mask assembly SAD."
+	align="horiz. left"
+}
+"related display" {
+	object {
+		x="536"
+		y="70"
+		width="75"
+		height="25"
+		groupid="0"
+	}
+	selfkill="off"
+	display[0] {
+		label="Assembly modes"
+		name="gmosAssemblyHelp.dl"
+		args=""
+	}
+	display[1] {
+		label=""
+		name=""
+		args=""
+	}
+	display[2] {
+		label=""
+		name=""
+		args=""
+	}
+	display[3] {
+		label=""
+		name=""
+		args=""
+	}
+	display[4] {
+		label=""
+		name=""
+		args=""
+	}
+	display[5] {
+		label=""
+		name=""
+		args=""
+	}
+	display[6] {
+		label=""
+		name=""
+		args=""
+	}
+	display[7] {
+		label=""
+		name=""
+		args=""
+	}
+	display[8] {
+		label=""
+		name=""
+		args=""
+	}
+	display[9] {
+		label=""
+		name=""
+		args=""
+	}
+	display[10] {
+		label=""
+		name=""
+		args=""
+	}
+	display[11] {
+		label=""
+		name=""
+		args=""
+	}
+	display[12] {
+		label=""
+		name=""
+		args=""
+	}
+	display[13] {
+		label=""
+		name=""
+		args=""
+	}
+	display[14] {
+		label=""
+		name=""
+		args=""
+	}
+	display[15] {
+		label=""
+		name=""
+		args=""
+	}
+	display[16] {
+		label=""
+		name=""
+		args=""
+	}
+	display[17] {
+		label=""
+		name=""
+		args=""
+	}
+	display[18] {
+		label=""
+		name=""
+		args=""
+	}
+	display[19] {
+		label=""
+		name=""
+		args=""
+	}
+	display[20] {
+		label=""
+		name=""
+		args=""
+	}
+	display[21] {
+		label=""
+		name=""
+		args=""
+	}
+	display[22] {
+		label=""
+		name=""
+		args=""
+	}
+	display[23] {
+		label=""
+		name=""
+		args=""
+	}
+	clr="9"
+	bclr="1"
+	menu_title="Help"
+	decorate="none"
+}
+"kill display" {
+	object {
+		x="535"
+		y="824"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

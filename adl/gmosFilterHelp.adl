@@ -1,0 +1,503 @@
+file {
+	name="gmosFilterHelp.dl"
+}
+display {
+	magic="305419896"
+	majv="2"
+	mnrv="4"
+	ndyng="0"
+	npc="1"
+	nstr="170"
+	ndynamic="0"
+	nplot="0"
+	nrd="1"
+	nes="0"
+	nkd="1"
+	npd="0"
+	npo="0"
+	object {
+		x="0"
+		y="0"
+		width="624"
+		height="703"
+	}
+	clr="1"
+	bclr="13"
+	nwords_dspy="3560"
+	nwords_sta="488"
+	nwords_cmap="0"
+	nwords_crules="0"
+	odyng="3388"
+	osta="2900"
+	odynamic="3388"
+	oplot="3388"
+	ord="3388"
+	oes="3548"
+	okd="3548"
+	opd="3560"
+	opo="3560"
+	opc="68"
+	ostr="72"
+	ocmap="2900"
+	ocrules="2900"
+	style="solid"
+	fill="outline"
+	width="0"
+	clrmod="static"
+	vismod="static"
+	precision="-1"
+	clrrule="alarm"
+	pv=""
+	cmap="gmColors.dl"
+	pixwid="1600"
+	pixht="1200"
+	mmwid="320"
+	mmht="240"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="10"
+		y="12"
+		width="570"
+		height="20"
+		groupid="0"
+	}
+	textix="GMOS Filter Assembly Help"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"line" {
+	object {
+		x="155"
+		y="34"
+		width="280"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="155"
+		y="34"
+	}
+	point[1] {
+		x="435"
+		y="34"
+	}
+	orgpoint[0] {
+		x="0"
+		y="1000"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="11"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="12"
+		y="52"
+		width="510"
+		height="20"
+		groupid="0"
+	}
+	textix="Read the general assembly help screen for"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="12"
+		y="75"
+		width="510"
+		height="20"
+		groupid="0"
+	}
+	textix="information about modes and directives -->"
+	align="horiz. right"
+}
+"text" {
+	object {
+		x="12"
+		y="120"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="1) Ensure the assembly has been initialized"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="12"
+		y="143"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   and indexed before proceeding."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="12"
+		y="183"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="2) To position the filter wheels fill in"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="12"
+		y="205"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   FLT1 and FLT2 with the barcodes of the"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="12"
+		y="225"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   target filters, then select MOVE then START."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="12"
+		y="265"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="3) To determine which filters are loaded"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="12"
+		y="287"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   select UPDATE then START. Repeat in QUICK"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="12"
+		y="307"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   mode if there is a barcode read failure."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="12"
+		y="343"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="4) To load a new filter choose a Park/Load"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="12"
+		y="365"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   position, then select PARK then START"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="12"
+		y="385"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   You may need to switch off the in-position"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="12"
+		y="405"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="   switch checking (see 'Broken Hardware' menu)."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="453"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="The three menus at the bottom are:"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="9"
+		y="489"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Control - Direct control of filter devices"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="512"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="          (engineering only)."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="546"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Status - Display filter status and SAD."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="569"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="         'device summary' is a useful display."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="605"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="Engineering - Engineering screens (such as."
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="9"
+		y="628"
+		width="600"
+		height="20"
+		groupid="0"
+	}
+	textix="              interlocks)."
+	align="horiz. left"
+}
+"related display" {
+	object {
+		x="536"
+		y="70"
+		width="75"
+		height="25"
+		groupid="0"
+	}
+	selfkill="off"
+	display[0] {
+		label="Assembly modes"
+		name="gmosAssemblyHelp.dl"
+		args=""
+	}
+	display[1] {
+		label=""
+		name=""
+		args=""
+	}
+	display[2] {
+		label=""
+		name=""
+		args=""
+	}
+	display[3] {
+		label=""
+		name=""
+		args=""
+	}
+	display[4] {
+		label=""
+		name=""
+		args=""
+	}
+	display[5] {
+		label=""
+		name=""
+		args=""
+	}
+	display[6] {
+		label=""
+		name=""
+		args=""
+	}
+	display[7] {
+		label=""
+		name=""
+		args=""
+	}
+	display[8] {
+		label=""
+		name=""
+		args=""
+	}
+	display[9] {
+		label=""
+		name=""
+		args=""
+	}
+	display[10] {
+		label=""
+		name=""
+		args=""
+	}
+	display[11] {
+		label=""
+		name=""
+		args=""
+	}
+	display[12] {
+		label=""
+		name=""
+		args=""
+	}
+	display[13] {
+		label=""
+		name=""
+		args=""
+	}
+	display[14] {
+		label=""
+		name=""
+		args=""
+	}
+	display[15] {
+		label=""
+		name=""
+		args=""
+	}
+	display[16] {
+		label=""
+		name=""
+		args=""
+	}
+	display[17] {
+		label=""
+		name=""
+		args=""
+	}
+	display[18] {
+		label=""
+		name=""
+		args=""
+	}
+	display[19] {
+		label=""
+		name=""
+		args=""
+	}
+	display[20] {
+		label=""
+		name=""
+		args=""
+	}
+	display[21] {
+		label=""
+		name=""
+		args=""
+	}
+	display[22] {
+		label=""
+		name=""
+		args=""
+	}
+	display[23] {
+		label=""
+		name=""
+		args=""
+	}
+	clr="9"
+	bclr="1"
+	menu_title="Help"
+	decorate="none"
+}
+"kill display" {
+	object {
+		x="529"
+		y="659"
+		width="80"
+		height="35"
+		groupid="0"
+	}
+	label="EXIT"
+	clr="1"
+	bclr="9"
+	decorate="outward"
+}

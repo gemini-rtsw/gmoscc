@@ -1,0 +1,87 @@
+#!/bin/csh
+#
+# Start the top level GMOS "dm" screens.
+#
+# Invocation:
+#   ./gmosStart
+#
+# Original Author: Steven M Beard
+#
+# $Id$
+#
+
+set arg = "$1"
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!("$arg" == "SS" || "$arg" == "SIM" || "$arg" == "SIM2" || "$arg" == "CP")) then
+
+    #
+    # Check for gmos safety
+    #
+
+    if (!($?GMOS_MK_ACCESS)) then
+	echo ""
+	echo "GMOS MK safety check failed."
+	echo ""
+	echo "Before starting these screens, which will allow control of real MK hardware,"
+	echo 'you must type "gmosMK" to confirm that it is safe to do so.'
+	echo ""
+	exit
+    else
+	echo "GMOS MK safety check passed."
+    endif
+endif
+
+if ("$arg" == "CP") then
+
+    #
+    # Check for gmos safety
+    #
+
+    if (!($?GMOS_CP_ACCESS)) then
+	echo ""
+	echo "GMOS CP safety check failed."
+	echo ""
+	echo "Before starting these screens, which will allow control of real CP hardware,"
+	echo 'you must type "gmosCP" to confirm that it is safe to do so.'
+	echo ""
+	exit
+    else
+	echo "GMOS CP safety check passed."
+    endif
+endif
+
+if "$arg" == "CP" then
+   echo "Connecting to GMOS Cerro Pachon database"
+   gmosStartCP
+else if "$arg" == "RS" then
+   echo "Connecting to GMOS Mauna Kea database - simulated post focal-plane"
+   gmosStartMKRS
+else if "$arg" == "PRE" then
+   echo "Connecting to GMOS Mauna Kea database - simulated post focal-plane"
+   gmosStartMKRS
+else if "$arg" == "SR" then
+   echo "Connecting to GMOS Mauna Kea database - simulated pre focal-plane"
+   gmosStartMKSR
+else if "$arg" == "POST" then
+   echo "Connecting to GMOS Mauna Kea database - simulated pre focal-plane"
+   gmosStartMKSR
+else if "$arg" == "SS" then
+   echo "Connecting to GMOS Mauna Kea database - simulated"
+   gmosStartMKSS
+else if "$arg" == "SIM" then
+   echo "Connecting to GMOS Mauna Kea database - simulated"
+   gmosStartMKSS
+else if "$arg" == "SIM2" then
+   echo "Connecting to GMOS Mauna Kea database - simulated 2"
+   gmosStartMKSS2
+else
+   echo "Connecting to GMOS Mauna Kea database"
+   gmosStartMKRR
+endif
+
+
