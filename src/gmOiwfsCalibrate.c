@@ -1,27 +1,26 @@
-
 /*
  ************************************************************************
  ****      D A O   I N S T R U M E N T A T I O N   G R O U P        *****
  *
- * (c) 1999                         (c) 1999
- * National Research Council        Conseil national de recherches
- * Ottawa, Canada, K1A 0R6          Ottawa, Canada, K1A 0R6
- * All rights reserved              Tous droits reserves
- *                     
- * NRC disclaims any warranties,    Le CNRC denie toute garantie
- * expressed, implied, or statu-    enoncee, implicite ou legale,
- * tory, of any kind with respect   de quelque nature que se soit,
- * to the software, including       concernant le logiciel, y com-
- * without limitation any war-      pris sans restriction toute
- * ranty of merchantability or      garantie de valeur marchande
- * fitness for a particular pur-    ou de pertinence pour un usage
- * pose.  NRC shall not be liable   particulier.  Le CNRC ne
- * in any event for any damages,    pourra en aucun cas etre tenu
- * whether direct or indirect,      responsable de tout dommage,
- * special or general, consequen-   direct ou indirect, particul-
- * tial or incidental, arising      ier ou general, accessoire ou
- * from the use of the software.    fortuit, resultant de l'utili-
- *                                  sation du logiciel.
+ * (c) 1999  				(c) 1999
+ * National Research Council		Conseil national de recherches
+ * Ottawa, Canada, K1A 0R6 		Ottawa, Canada, K1A 0R6
+ * All rights reserved			Tous droits reserves
+ * 					
+ * NRC disclaims any warranties,	Le CNRC denie toute garantie
+ * expressed, implied, or statu-	enoncee, implicite ou legale,
+ * tory, of any kind with respect	de quelque nature que se soit,
+ * to the software, including		concernant le logiciel, y com-
+ * without limitation any war-		pris sans restriction toute
+ * ranty of merchantability or		garantie de valeur marchande
+ * fitness for a particular pur-	ou de pertinence pour un usage
+ * pose.  NRC shall not be liable	particulier.  Le CNRC ne
+ * in any event for any damages,	pourra en aucun cas etre tenu
+ * whether direct or indirect,		responsable de tout dommage,
+ * special or general, consequen-	direct ou indirect, particul-
+ * tial or incidental, arising		ier ou general, accessoire ou
+ * from the use of the software.	fortuit, resultant de l'utili-
+ * 					sation du logiciel.
  *
  ************************************************************************
  *
@@ -33,8 +32,7 @@
  *
  * FUNCTION NAME(S)  [ Global scope ]
  *
- * main             - Calculates the offsets from a given data file.
- *
+ *   None.
  *
  * FUNCTION NAME(S)  [ Local scope ]
  *
@@ -92,7 +90,7 @@
 #define  MAX_DIMENSIONS  4     /* Number of minimization parameters  */
 #define  MAX_NUM  200          /* Max # of calibration points        */
 
-#define  MIN_CAL_POINTS  5     /* Minimum number of calibration pts required */
+#define  MIN_CAL_POINTS  5
 
 #if (MIN_CAL_POINTS <= 4)
 #error  MIN_CAL_POINTS must be at least 5.
@@ -111,29 +109,28 @@
 #define  MIN_XY_OFFSET   -20.0
 #define  MAX_XY_OFFSET    20.0
 
-static double xPos[MAX_NUM];    /* x position data set read from file       */
-static double yPos[MAX_NUM];    /* y position data set read from file       */
-static double base[MAX_NUM];    /* base angle data set read from file       */
-static double pickoff[MAX_NUM]; /* pickoff angle data set read from file    */
+static double xPos[MAX_NUM];
+static double yPos[MAX_NUM];
+static double base[MAX_NUM];
+static double pickoff[MAX_NUM];
 
-static int    numCalPts;        /* number of calibration points to evaluate */
-static int    traceFlag;        /* print trace information flag             */
-
+static int    numCalPts;
+static int    traceFlag;
  
 /*
  *  Function Prototypes (local).
  */
 
-static void aveError (double * xErr, double * yErr);
+static void aveError(double * xErr, double * yErr);
 
-static double evaluate (int n, int print);
+static double evaluate(int n, int print);
 
-static double explore (int nDim, double (*f)(int, double []),
-                       double x[], double dx[], double oldMin, int * nEvals);
+static double explore(int nDim, double (*f)(int, double []),
+                     double x[], double dx[], double oldMin, int * nEvals);
 
-static int minSearch (int nDim, double (*f)(int, double []),
-                      double x[], double dx[], double epsilon[],
-                      double rho, int maxEval);
+static int minSearch(int nDim, double (*f)(int, double []),
+                     double x[], double dx[], double epsilon[],
+                     double rho, int maxEval);
 
 static void printProgress(double errSSq, double params[], int label, int mod);
 
@@ -186,17 +183,18 @@ static double ssq(int n, double X[]);
  ************************************************************************
  */
 
+
 static void aveError
 (
     double * xErr,   /* (out)  Average error in the X direction */
     double * yErr    /* (out)  Average error in the Y direction */
 )
 {
-    double xt;          /* probe X position estimated from angles */
-    double yt;          /* probe Y position estimated from angles */
-    double zt;          /* probe Z position estimated from angles */
-    double probeAngle;  /* probe angle estimated from anglges */
-    int i;              /* calibration point counter */
+    double xt;
+    double yt;
+    double zt;
+    double probeAngle;
+    int i;
 
 
     /*
@@ -216,7 +214,7 @@ static void aveError
          */
 
         (void) gmOiwfsCalculateProbePosition(base[i], pickoff[i], 
-                         &xt, &yt, &zt, &probeAngle);
+					     &xt, &yt, &zt, &probeAngle);
 
 
         /*
@@ -235,6 +233,8 @@ static void aveError
     *xErr = *xErr / numCalPts;
     *yErr = *yErr / numCalPts;
 }
+
+
 
 /*
  ************************************************************************
@@ -283,8 +283,8 @@ static double evaluate(int n, int print)
     double dy;            /* Error of data point i in Y direction.  */
     double d2;            /* Squared error of data point i.         */
     double xt, yt, zt;    /* X,Y,Z position estimated from angles.  */
-    double probeAngle;    /* probe angle estimated from angles.     */
-    int i;                /* calibration point counter.             */
+    double probeAngle;
+    int i;
 
 
     if (print != 0)
@@ -337,6 +337,8 @@ static double evaluate(int n, int print)
 
     return err;
 }
+
+
 
 /*
  ************************************************************************
@@ -348,15 +350,11 @@ static double evaluate(int n, int print)
  * minValue = explore(4, ssq, offsets, delta, minDelta, &nFuncs);
  *
  * PARAMETERS: (">" input, "!" modified, "<" output)
- * (>)  nDim (int)                       number of dimensions to evaluate
- * (>)  (*f)(int, double []) (double)    pointer to function being solved
- * (>)  x[]  (double)                    data set to evaluate
- * (>)  dx[] (double)                    step size
- * (>)  oldMin (double)                  minimum value of error
- * (<)  nEvals (int *)                   number of evaluations performed
+ *   (>) n     (int)  Number of data points in calibration set.
+ *   (>) print (int)  Print details (0 = no, nonzero = yes)
  *
  * FUNCTION VALUE:
- *   (double)   Minimum "nearby" sum of postion error
+ *   (double)   Minimum "nearby" sum of 
  *
  * PURPOSE:
  *   Evaluates the total (squared) error of the calibration data set
@@ -386,18 +384,18 @@ static double evaluate(int n, int print)
 
 static double explore
 (
-    int nDim,                       /* number of dimensions to evaluate     */ 
-    double (*f)(int, double []),    /* pointer to function being solved.    */
-    double x[],                     /* data set to evaluate                 */
-    double dx[],                    /* step size                            */
-    double oldMin,                  /* minimum value of error               */
-    int    * nEvals                 /* number of evaluations performed      */
+    int nDim, 
+    double (*f)(int, double []),     /* Pointer to function being solved. */
+    double x[], 
+    double dx[],
+    double oldMin,
+    int    * nEvals
 )
 {
-    double newMin;                  /* minimum value found so far           */
-    double fx;                      /* evaluation function return value     */
-    double original;                /* temporary parameter storage          */
-    int i;                          /* data point counter                   */
+    double newMin;
+    double fx;
+    double original;
+    int i;
 
     /*
      *  Minimum function value found so far.
@@ -471,6 +469,7 @@ static double explore
 
     return newMin;
 }
+
 
 /*
  ************************************************************************
@@ -543,25 +542,26 @@ static double explore
  ************************************************************************
  */
 
+
 static int minSearch
 (
-    int nDim,                    /* Number of dimensions in search space    */
-    double (*f)(int, double []), /* Pointer to function being solved.       */
-    double x[],                  /* start of search -> minimum              */
-    double dx[],                 /* start step size -> final step size      */
-    double epsilon[],            /* smallest allowable step size            */
-    double rho,                  /* step size shrink factor                 */
-    int    maxEval               /* maximum number of evaluations           */
+    int nDim,
+    double (*f)(int, double []),     /* Pointer to function being solved. */
+    double x[],
+    double dx[],
+    double epsilon[],
+    double rho,
+    int    maxEval
 )
 {
-    double old[MAX_DIMENSIONS];  /* storage array for original values       */
-    double oMin;                 /* minimum derived from original values    */
-    double exploreMin;           /* minimum val from current exploration    */
-    double temp;                 /* temporoay storage location              */
-    int    nEvals;               /* number of evaluations performed so far  */
-    int    i;                    /* generic index thing                     */
-    int    unconverged;          /* number of unconverged evaluations       */
-    int    traceLines;           /* number of trace lines printed so far    */
+    double old[MAX_DIMENSIONS];
+    double oMin;
+    double exploreMin;
+    double temp;
+    int    nEvals;
+    int    i;
+    int    unconverged;
+    int    traceLines;
 
     /*
      *  Make sure that the search space is not too large.
@@ -603,8 +603,8 @@ static int minSearch
          *  in the same direction.
          */
 
-        while (exploreMin < oMin)
-        {
+	    while (exploreMin < oMin)
+	    {
             if (traceFlag != 0)
             {
                 if ((traceLines % 50) == 0)
@@ -686,6 +686,8 @@ static int minSearch
 
     return nEvals;
 }
+
+
 
 /*
  ************************************************************************
@@ -694,7 +696,7 @@ static int minSearch
  * readFile
  *
  * INVOCATION:
- *   readFile(fileName);
+ *   readFile();
  *
  * PARAMETERS: 
  *  (>) filename  (char *)    Name of datafile, or NULL if filename is
@@ -704,12 +706,8 @@ static int minSearch
  *   (int)  Number of data points read, or 0 if unsuccessful.
  *
  * PURPOSE:
- *   Load calibration information from a data file
  *
  * DESCRIPTION:
- *   Read the given file (or ask for one if a file is not given) and
- *   store the four values for each data point in the calibration 
- *   arrays.   Comment and unrecognized lines are ignored in the process.
  *
  * EXTERNAL VARIABLES:
  *   numCalPts
@@ -726,22 +724,22 @@ static int minSearch
  ************************************************************************
  */
 
+
 static int readFile
 (
-    const char * filename           /* name of file to be read          */
+    const char * filename
 )
 {
-    FILE * fp;                      /* system generated file pointer    */
-    int    n;                       /* number of data lines found       */
-    int    c;                       /* character read from file         */
-    int    line;                    /* lines read from file counter     */
-    int    success;                 /* number of values found on line   */
-    char   fname[FILENAME_MAX];     /* manually input file name         */
+    FILE * fp;
+    int    n;
+    int    c;
+    int    line;
+    int    success;
+    char   fname[FILENAME_MAX];
 
 
     /*
-     *  If a file name is supplied then open it, otherwise ask for
-     *  the calibration data file interactively.
+     *  Read the filename from the user and open the file.
      */
 
     if (filename != (char *) NULL)
@@ -892,6 +890,7 @@ static int readFile
 
     return (n - numCalPts);
 }
+
 
 /*
  ************************************************************************
@@ -908,7 +907,7 @@ static int readFile
  *   
  *
  * FUNCTION VALUE:
- *   None.
+ *   (int)  Number of data points read.
  *
  * PURPOSE:
  *   Safely read a filename from the user.
@@ -932,18 +931,22 @@ static int readFile
  ************************************************************************
  */
 
+
+
 static void readFilename
 (
-    char * fname,           /* file entered by user     */
-    int bufferSize          /* maximum file name length */
+    char * fname, 
+    int bufferSize
 )
 {
-    int  len;               /* number of characters read so far */
+    int  len;
 
 
     /*
      *  Read the filename from the user (use fgets since gets is not
-     *  safe from buffer overruns.
+     *  safe from buffer overruns (this is such a common source of
+     *  problems (especially root exploits) that FreeBSD even warns when
+     *  a program uses gets!)).
      */
 
     fgets(fname, bufferSize, stdin);
@@ -960,6 +963,8 @@ static void readFilename
         fname[len-1] = (char) 0;
     }
 }
+
+
 
 /*
  ************************************************************************
@@ -999,10 +1004,10 @@ static void readFilename
 
 static void skipLine
 (
-    FILE * fp       /* file pointer for active data point file */
+    FILE * fp
 )
 {
-    int c;          /* generic character storage */
+    int c;
 
 
     /*
@@ -1020,6 +1025,8 @@ static void skipLine
         if (c == '\n') return;
     }
 }
+
+
 
 /*
  ************************************************************************
@@ -1061,15 +1068,17 @@ static void skipLine
  ************************************************************************
  */
 
+
 static double ssq
 (
-    int n,          /* not used in this function */ 
-    double X[]      /* location in search space  */
+    /*@ unused @*/ int n, 
+    double X[]
 )
 {
-    gmOiwfsSetOffsets(X[0], X[1], X[2], X[3]);
+    gmOiwfsSetOffsets(X[0], X[1], X[2], X[3], 0.0);
     return evaluate(numCalPts, 0);
 }
+
 
 /*
  ************************************************************************
@@ -1107,6 +1116,7 @@ static double ssq
  ************************************************************************
  */
 
+
 static void printHelp
 (
     void
@@ -1123,6 +1133,8 @@ static void printHelp
     printf("\n-?            Print this help information");
     printf("\n\n");
 }
+
+
 
 /*
  ************************************************************************
@@ -1165,24 +1177,20 @@ static void printHelp
 
 static int getInitialValueArg
 (
-    const char * arg,       /* Pointer to command line argument      */
-    double * param          /* Pointer to corresponding parameter    */
+    const char * arg, 
+    double * param
 )
 {
-    int ok;                  /* parse success flag */
-
-    /*
-     *  Try to convert input string to a value of type double
-     */
-
-    ok = sscanf(arg, "%lf", param);
-    if (ok == 0)
-    {
-        printf("\nInvalid parameter value: %s\n", arg);
-    }
-
-    return ok;
+   int ok;
+   ok = sscanf(arg, "%lf", param);
+   if (ok == 0)
+   {
+       printf("\nInvalid parameter value: %s\n", arg);
+   }
+   return ok;
 }
+
+
 
 /*
  ************************************************************************
@@ -1191,8 +1199,8 @@ static int getInitialValueArg
  * readInitialValue
  *
  * INVOCATION:
- *   readInitialValue("Please enter starting base angle", offsets[0],
- *                     180.0, MIN_ANGLE_OFFSET, MAX_ANGLE_OFFSET);
+ *   getInitialValue("Please enter starting base angle", offsets[0],
+                      180.0, MIN_ANGLE_OFFSET, MAX_ANGLE_OFFSET);
  *
  * PARAMETERS: 
  *  (>) prompt  (char *)     Prompt string
@@ -1228,22 +1236,16 @@ static int getInitialValueArg
 
 static void readInitialValue
 (
-    const char * prompt,    /* Prompt string                        */
-    double * param,         /* Pointer to parameter to be read      */
-    double defValue,        /* Default parameter value              */
-    double minValue,        /* Minimum parameter value              */
-    double maxValue         /* Maximum parameter value              */
+    const char * prompt, 
+    double * param, 
+    double defValue,
+    double minValue,
+    double maxValue
 )
 {
-    int ok;                 /* string parsing success flag          */
-    char buff[40];          /* scratchpad buffer                    */
-    char * s;               /* buffer offset pointer                */
-
-
-    /*
-     *  Ask user to enter a value.   Keep repeating the request until
-     *  the user gets it right!
-     */
+    int ok;
+    char buff[40];
+    char * s;
 
     do {
         printf("\n%s [ %5.3f ]: ", prompt, defValue);
@@ -1277,63 +1279,20 @@ static void readInitialValue
         }
     } while (ok == 0);
 }
-
-/*
- ************************************************************************
- *+
- * FUNCTION NAME:
- * printProgress
- *
- * INVOCATION:
- *   printProgress("errSSq, params, label, mod);
- *
- * PARAMETERS: 
- *  (>) errSSq  (double)     Sum of squared error terms
- *  (>) params  (double [])  Array of values to be printed
- *  (>) label   (int)        Print header line before printing values flag
- *  (>) mod     (int)        Map all angles to -180 to +180 degrees (modulus)
- *   
- * FUNCTION VALUE:
- *   None.
- *
- * PURPOSE:
- *   Print an array of values
- *
- * DESCRIPTION:
- *   Print a single line (with optional header) displaying the most recent
- *   iteration of the minimizing algorithm.
- *
- * EXTERNAL VARIABLES:
- *   None.
- *
- * PRIOR REQUIREMENTS:
- *   None.
- * 
- * SEE ALSO:
- *   None.
- *
- * DEFICIENCIES:
- *   None.
- *-
- ************************************************************************
- */
+
+
 
 static void printProgress
 (
-    double errSSq,      /* Sum of squared error terms                       */
-    double params[],    /* Array of values to be printed                    */
-    int    label,       /* Print header line flag                           */
-    int    mod          /* Map all angles to -180 to +180 degrees (modulus) */
+    double errSSq,
+    double params[],
+    int    label,
+    int    mod
 )
 {
-    double sdev;                /* standard deviation                       */
-    double baseAngle;           /* base angle for this iteration            */
-    double pickoffAngle;        /* pickoff angle for this iteration         */
-
-
-    /*
-     *  If a header line is requested print it first
-     */
+    double sdev;
+    double baseAngle;
+    double pickoffAngle;
 
     if (label != 0)
     {
@@ -1383,44 +1342,11 @@ static void printProgress
     printf("%15.3f  %12.6f  %12.6f  %12.6f  %12.6f\n",
            sdev,  baseAngle, pickoffAngle, params[2], params[3]);
 }
-
-/*
- ************************************************************************
- *+
- * FUNCTION NAME:
- * convertAngle
- *
- * INVOCATION:
- * radians = convertAngle(degrees);
- *
- * PARAMETERS: 
- *  (>) degrees   (double)   Angle (in degrees) to be converted
- *   
- * FUNCTION VALUE:
- *  (double) Input angle converted to radians.
- *
- * PURPOSE:
- *  Convert degrees to radians
- *
- *
- * EXTERNAL VARIABLES:
- *   None.
- *
- * PRIOR REQUIREMENTS:
- *   None.
- * 
- * SEE ALSO:
- *   None.
- *
- * DEFICIENCIES:
- *   None.
- *-
- ************************************************************************
- */
+
 
 static double convertAngle
 (
-    double degrees          /* angle to be converted */
+    double degrees
 )
 {
 
@@ -1437,66 +1363,23 @@ static double convertAngle
 
     return (degrees * M_PI / 180.0);
 }
-
-/*
- ************************************************************************
- *+
- * FUNCTION NAME:
- * main
- *
- * INVOCATION:
- * by magic, as usual....
- *
- * PARAMETERS: 
- *  (>) argc   (int)     Number of command line arguments
- *  (>) argv   (char[])  Array of command line arguments
- *   
- * FUNCTION VALUE:
- *  (int)  function status return
- *
- * PURPOSE:
- *  Calculate calibration offsets from calibration data file
- *
- * DESCRIPTION:
- *  Read the command line flags and associated arguments (substituting
- *  defaults for those not supplied) and then try to find a solution
- *  to the data point sets using the tools in this module.....
- *
- *  The data point sets are contained in a text file formatted like this:
- *  measuredXposition      measuredYposition     baseAngle   pickoffAngle
- *
- * EXTERNAL VARIABLES:
- *   None.
- *
- * PRIOR REQUIREMENTS:
- *   None.
- * 
- * SEE ALSO:
- *   None.
- *
- * DEFICIENCIES:
- *   None.
- *-
- ************************************************************************
- */
-
 
 
 int main
 (
-    int argc,               /* number of command line arguments         */ 
-    char * argv[]           /* command line argument array              */
+    int argc, 
+    char * argv[]
 )
 {
-    double offsets[4];      /* offset for each data set                 */
-    double stepSize[4];     /* step size for each data set              */
-    double minStep[4];      /* minimum step size for each data set      */ 
-    double xErr, yErr;      /* calculated errors                        */
-    double err;             /* minimum error so far                     */
-    int    fileArg, baseArg, pickoffArg, xArg, yArg;     /* input args  */
-    int    i;               /* generic index thing                      */
-    int    npts;            /* number of points analyzed                */
-    int    nEvals;          /* number of evaluations performed          */
+    double offsets[4];
+    double stepSize[4];
+    double minStep[4];
+    double xErr, yErr;
+    double err;
+    int    fileArg, baseArg, pickoffArg, xArg, yArg;
+    int    i;
+    int    npts;
+    int    nEvals;
   
 
 
@@ -1810,7 +1693,7 @@ int main
      * using the initial offset values.
      */
 
-    gmOiwfsSetOffsets(offsets[0], offsets[1], offsets[2], offsets[3]);
+    gmOiwfsSetOffsets(offsets[0], offsets[1], offsets[2], offsets[3], 0.0);
 
     printf("\nStarting offsets:\n");
 
