@@ -22,7 +22,7 @@ display {
 		height="559"
 	}
 	clr="10"
-	bclr="13"
+	bclr="5"
 	nwords_dspy="5192"
 	nwords_sta="224"
 	nwords_cmap="0"
@@ -1702,7 +1702,7 @@ display {
 	monitor {
 		chan="$(T)$(C2)$(D)Assembly.DESC"
 		clr="12"
-		bclr="13"
+		bclr="5"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -2197,59 +2197,59 @@ display {
 	}
 	selfkill="off"
 	display[0] {
-		label="XYCOM interlocks"
-		name="ttlInterlocks.dl"
+		label="Interlocks             "
+		name="gmInterlocks.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[1] {
-		label="XYCOM assemblies"
+		label="XYCOM assembly switches"
 		name="ttlSwitches.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[2] {
-		label="XYCOM outputs   "
-		name="ttlOut.dl"
+		label="XYCOM motor power      "
+		name="ttlMotorPower.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[3] {
-		label="All Barcodes    "
-		name="barcodeReaders.dl"
+		label="XYCOM outputs          "
+		name="ttlOut.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[4] {
-		label="Temperatures    "
-		name="tempSensors.dl"
+		label="CC Lookup Tables       "
+		name="gmosLookupTables.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[5] {
-		label=""
-		name=""
-		args=""
+		label="All CC barcodes        "
+		name="barcodeReaders.dl"
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[6] {
-		label=""
-		name=""
-		args=""
+		label="Temperatures           "
+		name="tempSensors.dl"
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[7] {
-		label=""
-		name=""
-		args=""
+		label="CC Debugging           "
+		name="gmosCcDebug.dl"
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[8] {
-		label=""
-		name=""
-		args=""
+		label="CC Simulation          "
+		name="gmosCcSimulate.dl"
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[9] {
-		label=""
-		name=""
-		args=""
+		label="Broken Hardware        "
+		name="brokenHardware.dl"
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[10] {
-		label=""
-		name=""
-		args=""
+		label="Watchdog test          "
+		name="wdgTest.dl"
+		args="T=$(T),CC=$(CC)"
 	}
 	display[11] {
 		label=""

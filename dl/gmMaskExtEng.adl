@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1280"
-	pixht="1024"
-	mmwid="361"
-	mmht="289"
+	pixwid="1600"
+	pixht="1200"
+	mmwid="320"
+	mmht="240"
 }
 "<<basic attribute>>" {
 	attr {
@@ -1103,7 +1103,7 @@ display {
 		args=""
 	}
 	clr="1"
-	bclr="9"
+	bclr="6"
 	menu_title="LVDT Stuff"
 	decorate="none"
 }
@@ -1117,6 +1117,6 @@ display {
 	}
 	label="EXIT"
 	clr="10"
-	bclr="23"
+	bclr="9"
 	decorate="none"
 }

@@ -733,6 +733,6 @@ display {
 	}
 	label="EXIT"
 	clr="10"
-	bclr="23"
+	bclr="9"
 	decorate="none"
 }

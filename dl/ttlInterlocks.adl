@@ -5,10 +5,10 @@ display {
 	magic="305419896"
 	majv="2"
 	mnrv="4"
-	ndyng="34"
-	npc="33"
-	nstr="94"
-	ndynamic="16"
+	ndyng="36"
+	npc="37"
+	nstr="102"
+	ndynamic="17"
 	nplot="0"
 	nrd="1"
 	nes="0"
@@ -18,28 +18,28 @@ display {
 	object {
 		x="0"
 		y="0"
-		width="824"
-		height="450"
+		width="825"
+		height="495"
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="5186"
-	nwords_sta="760"
+	nwords_dspy="5724"
+	nwords_sta="988"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="2142"
-	osta="1382"
-	odynamic="3958"
-	oplot="5014"
-	ord="5014"
-	oes="5174"
-	okd="5174"
-	opd="5186"
-	opo="5186"
+	odyng="2502"
+	osta="1514"
+	odynamic="4430"
+	oplot="5552"
+	ord="5552"
+	oes="5712"
+	okd="5712"
+	opd="5724"
+	opo="5724"
 	opc="68"
-	ostr="486"
-	ocmap="1382"
-	ocrules="1382"
+	ostr="544"
+	ocmap="1514"
+	ocrules="1514"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -49,10 +49,10 @@ display {
 	clrrule="alarm"
 	pv=""
 	cmap="gmColors.dl"
-	pixwid="1120"
-	pixht="817"
-	mmwid="295"
-	mmht="215"
+	pixwid="1600"
+	pixht="1200"
+	mmwid="320"
+	mmht="240"
 }
 "<<basic attribute>>" {
 	attr {
@@ -235,7 +235,7 @@ display {
 		x="9"
 		y="54"
 		width="800"
-		height="338"
+		height="380"
 		groupid="0"
 	}
 }
@@ -297,8 +297,8 @@ display {
 }
 "oval" {
 	object {
-		x="14"
-		y="407"
+		x="15"
+		y="447"
 		width="25"
 		height="25"
 		groupid="0"
@@ -314,8 +314,8 @@ display {
 }
 "oval" {
 	object {
-		x="144"
-		y="409"
+		x="145"
+		y="449"
 		width="25"
 		height="25"
 		groupid="0"
@@ -331,8 +331,8 @@ display {
 }
 "text" {
 	object {
-		x="50"
-		y="409"
+		x="51"
+		y="449"
 		width="86"
 		height="20"
 		groupid="0"
@@ -342,8 +342,8 @@ display {
 }
 "text" {
 	object {
-		x="182"
-		y="411"
+		x="183"
+		y="451"
 		width="86"
 		height="20"
 		groupid="0"
@@ -463,6 +463,59 @@ display {
 	}
 	textix="Watchdog:"
 	align="horiz. right"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="1"
+	}
+}
+"line" {
+	object {
+		x="9"
+		y="391"
+		width="800"
+		height="0"
+		groupid="0"
+	}
+	npoints="2"
+	point[0] {
+		x="9"
+		y="391"
+	}
+	point[1] {
+		x="809"
+		y="391"
+	}
+	orgpoint[0] {
+		x="0"
+		y="0"
+	}
+	orgpoint[1] {
+		x="1000"
+		y="1000"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="161"
+		y="400"
+		width="330"
+		height="20"
+		groupid="0"
+	}
+	textix="Door Interlock Defeat Switch"
+	align="horiz. left"
 }
 "<<basic attribute>>" {
 	attr {
@@ -1920,6 +1973,102 @@ display {
 		groupid="0"
 	}
 }
+"<<basic attribute>>" {
+	attr {
+		clr="1"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if not zero"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan="$(T)$(CC)doorIlckDefeat"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs=""
+		}
+	}
+}
+"oval" {
+	object {
+		x="127"
+		y="398"
+		width="25"
+		height="25"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="0"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if zero"
+		}
+		param {
+			rulecolorfg="1"
+			rulecolorbg="1"
+			chan="$(T)$(CC)doorIlckDefeat"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs=""
+		}
+	}
+}
+"oval" {
+	object {
+		x="127"
+		y="398"
+		width="25"
+		height="25"
+		groupid="0"
+	}
+}
 "text update" {
 	object {
 		x="311"
@@ -2656,10 +2805,56 @@ display {
 	align="horiz. left"
 	format="decimal"
 }
+"text update" {
+	object {
+		x="502"
+		y="400"
+		width="120"
+		height="20"
+		groupid="0"
+	}
+	monitor {
+		chan="$(T)$(CC)doorIlckDefeat"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="rule"
+		rulechan[0] = "$(T)doorIlckDefeat.SEVR"
+		rulechan[1] = "$(T)doorIlckDefeat.SEVR"
+		rulechan[2] = "$(T)doorIlckDefeat.SEVR"
+		rulechan[3] = "$(T)doorIlckDefeat.SEVR"
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule="alarm"
+		clrargs="C=$(T)doorIlckDefeat"
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="none"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. left"
+	format="decimal"
+}
 "related display" {
 	object {
-		x="334"
-		y="407"
+		x="335"
+		y="447"
 		width="246"
 		height="30"
 		groupid="0"
@@ -2792,8 +2987,8 @@ display {
 }
 "kill display" {
 	object {
-		x="729"
-		y="403"
+		x="730"
+		y="443"
 		width="80"
 		height="35"
 		groupid="0"

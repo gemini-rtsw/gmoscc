@@ -5,9 +5,9 @@ display {
 	magic="305419896"
 	majv="2"
 	mnrv="4"
-	ndyng="11"
-	npc="20"
-	nstr="114"
+	ndyng="12"
+	npc="21"
+	nstr="111"
 	ndynamic="13"
 	nplot="0"
 	nrd="5"
@@ -22,24 +22,24 @@ display {
 		height="563"
 	}
 	clr="1"
-	bclr="13"
-	nwords_dspy="4222"
-	nwords_sta="496"
+	bclr="5"
+	nwords_dspy="4466"
+	nwords_sta="520"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1908"
-	osta="1412"
-	odynamic="2552"
-	oplot="3410"
-	ord="3410"
-	oes="4210"
-	okd="4210"
-	opd="4222"
-	opo="4222"
+	odyng="1896"
+	osta="1376"
+	odynamic="2796"
+	oplot="3654"
+	ord="3654"
+	oes="4454"
+	okd="4454"
+	opd="4466"
+	opo="4466"
 	opc="68"
-	ostr="336"
-	ocmap="1412"
-	ocrules="1412"
+	ostr="350"
+	ocmap="1376"
+	ocrules="1376"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -356,6 +356,40 @@ display {
 	}
 	textix="Deg."
 	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="7"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"rectangle" {
+	object {
+		x="620"
+		y="43"
+		width="36"
+		height="36"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"rectangle" {
+	object {
+		x="620"
+		y="43"
+		width="36"
+		height="36"
+		groupid="0"
+	}
 }
 "<<basic attribute>>" {
 	attr {
@@ -875,6 +909,79 @@ display {
 	textix="YES"
 	align="horiz. left"
 }
+"<<basic attribute>>" {
+	attr {
+		clr="10"
+		style="solid"
+		fill="outline"
+		width="4"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if not zero"
+		}
+		param {
+			rulecolorfg="10"
+			rulecolorbg="10"
+			chan="$(T)$(D)Assembly.MARK"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs=""
+		}
+	}
+}
+"line" {
+	object {
+		x="626"
+		y="49"
+		width="23"
+		height="24"
+		groupid="0"
+	}
+	npoints="3"
+	point[0] {
+		x="626"
+		y="60"
+	}
+	point[1] {
+		x="635"
+		y="73"
+	}
+	point[2] {
+		x="649"
+		y="49"
+	}
+	orgpoint[0] {
+		x="0"
+		y="481"
+	}
+	orgpoint[1] {
+		x="423"
+		y="1000"
+	}
+	orgpoint[2] {
+		x="1000"
+		y="0"
+	}
+}
 "choice button" {
 	object {
 		x="21"
@@ -886,7 +993,7 @@ display {
 	control {
 		chan="$(T)$(D)Assembly.MODE"
 		clr="1"
-		bclr="20"
+		bclr="0"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -931,7 +1038,7 @@ display {
 	control {
 		chan="$(T)$(D)Assembly.DIR"
 		clr="1"
-		bclr="20"
+		bclr="0"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -1021,7 +1128,7 @@ display {
 	monitor {
 		chan="$(T)$(D)Assembly.MESS"
 		clr="23"
-		bclr="13"
+		bclr="5"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -1067,7 +1174,7 @@ display {
 	monitor {
 		chan="$(T)$(D)C.VAL"
 		clr="11"
-		bclr="13"
+		bclr="5"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -1113,7 +1220,7 @@ display {
 	monitor {
 		chan="$(T)$(D)Assembly.ASTA"
 		clr="11"
-		bclr="13"
+		bclr="5"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -1159,7 +1266,7 @@ display {
 	monitor {
 		chan="$(T)$(D)Assembly.HLTH"
 		clr="11"
-		bclr="13"
+		bclr="5"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -1205,7 +1312,7 @@ display {
 	monitor {
 		chan="$(T)$(D)Assembly.SIMM"
 		clr="11"
-		bclr="13"
+		bclr="5"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -1251,7 +1358,7 @@ display {
 	monitor {
 		chan="$(T)$(D)Assembly.DBUG"
 		clr="11"
-		bclr="13"
+		bclr="5"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -1297,7 +1404,7 @@ display {
 	monitor {
 		chan="$(T)$(D)Assembly.NMDV"
 		clr="11"
-		bclr="13"
+		bclr="5"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -1388,7 +1495,7 @@ display {
 	monitor {
 		chan="$(T)$(D)ExpDevice.MPOS"
 		clr="11"
-		bclr="13"
+		bclr="5"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -1434,7 +1541,7 @@ display {
 	monitor {
 		chan="$(T)$(D)EnpDevice.MPOS"
 		clr="11"
-		bclr="13"
+		bclr="5"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""

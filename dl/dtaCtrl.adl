@@ -7,7 +7,7 @@ display {
 	mnrv="4"
 	ndyng="14"
 	npc="27"
-	nstr="139"
+	nstr="138"
 	ndynamic="19"
 	nplot="0"
 	nrd="4"
@@ -22,24 +22,24 @@ display {
 		height="487"
 	}
 	clr="10"
-	bclr="13"
-	nwords_dspy="5062"
+	bclr="5"
+	nwords_dspy="5054"
 	nwords_sta="280"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="2120"
-	osta="1840"
-	odynamic="3144"
-	oplot="4410"
-	ord="4410"
-	oes="5050"
-	okd="5050"
-	opd="5062"
-	opo="5062"
+	odyng="2112"
+	osta="1832"
+	odynamic="3136"
+	oplot="4402"
+	ord="4402"
+	oes="5042"
+	okd="5042"
+	opd="5054"
+	opo="5054"
 	opc="68"
 	ostr="512"
-	ocmap="1840"
-	ocrules="1840"
+	ocmap="1832"
+	ocrules="1832"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -1532,7 +1532,7 @@ display {
 	monitor {
 		chan="$(T)$(C2)$(D)Assembly.DESC"
 		clr="12"
-		bclr="13"
+		bclr="5"
 		label="none"
 		clrmod="static"
 		rulechan[0] = ""
@@ -2209,59 +2209,59 @@ display {
 	}
 	selfkill="off"
 	display[0] {
-		label="XYCOM interlocks"
-		name="ttlInterlocks.dl"
+		label="Interlocks             "
+		name="gmInterlocks.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[1] {
-		label="XYCOM assemblies"
-		name="ttlAssemblies.dl"
+		label="XYCOM assembly switches"
+		name="ttlSwitches.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[2] {
-		label="XYCOM outputs   "
-		name="ttlOut.dl"
+		label="XYCOM motor power      "
+		name="ttlMotorPower.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[3] {
-		label="All Barcodes    "
-		name="barcodeReaders.dl"
+		label="XYCOM outputs          "
+		name="ttlOut.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[4] {
-		label="Temperatures    "
-		name="tempSensors.dl"
+		label="CC Lookup Tables       "
+		name="gmosLookupTables.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[5] {
-		label=""
-		name=""
-		args=""
+		label="All CC barcodes        "
+		name="barcodeReaders.dl"
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[6] {
-		label=""
-		name=""
-		args=""
+		label="Temperatures           "
+		name="tempSensors.dl"
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[7] {
-		label=""
-		name=""
-		args=""
+		label="CC Debugging           "
+		name="gmosCcDebug.dl"
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[8] {
-		label=""
-		name=""
-		args=""
+		label="CC Simulation          "
+		name="gmosCcSimulate.dl"
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[9] {
-		label=""
-		name=""
-		args=""
+		label="Broken Hardware        "
+		name="brokenHardware.dl"
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[10] {
-		label=""
-		name=""
-		args=""
+		label="Watchdog test          "
+		name="wdgTest.dl"
+		args="T=$(T),CC=$(CC)"
 	}
 	display[11] {
 		label=""

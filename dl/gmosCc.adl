@@ -3320,7 +3320,7 @@ display {
 	}
 	selfkill="off"
 	display[0] {
-		label="Interlocks       "
+		label="Interlocks             "
 		name="gmInterlocks.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
@@ -3340,39 +3340,39 @@ display {
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[4] {
-		label="All barcodes           "
-		name="barcodeReaders.dl"
+		label="CC Lookup Tables       "
+		name="gmosLookupTables.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
 	display[5] {
+		label="All CC barcodes        "
+		name="barcodeReaders.dl"
+		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
+	}
+	display[6] {
 		label="Temperatures           "
 		name="tempSensors.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
-	display[6] {
-		label="Watchdog test          "
-		name="wdgTest.dl"
-		args="T=$(T),CC=$(CC)"
-	}
 	display[7] {
-		label="Broken Hardware"
-		name="brokenHardware.dl"
-		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
-	}
-	display[8] {
-		label="Debugging"
+		label="CC Debugging           "
 		name="gmosCcDebug.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
-	display[9] {
-		label="Simulation"
+	display[8] {
+		label="CC Simulation          "
 		name="gmosCcSimulate.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
 	}
-	display[10] {
-		label="Lookup Tables"
-		name="gmosLookupTables.dl"
+	display[9] {
+		label="Broken Hardware        "
+		name="brokenHardware.dl"
 		args="T=$(T),C1=$(C1),C2=$(C2),CC=$(CC)"
+	}
+	display[10] {
+		label="Watchdog test          "
+		name="wdgTest.dl"
+		args="T=$(T),CC=$(CC)"
 	}
 	display[11] {
 		label=""
