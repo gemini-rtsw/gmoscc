@@ -73,11 +73,18 @@ OG515_G0330       20000045       -230.0                  650.0
 RG610_G0331       20000046       -238.0                  650.0
 RG780_G0334       20000049        390.0                  860.0
 
-# GMOS South Empty filter cells - to be filled and barcodes reused
+#GMOS South narrow band filters [SII] (Feb 20 2005), Ha, HaCont (Feb 28, 2005)
+# HaC - no focus differences.
+SII_G0335         20000050        69.0                  672.0
+Ha_G0336          20000032        50.0                  656.0
+HaC_G0337         20000048         0.0                  662.0
 
+# GMOS South Empty filter cells - to be filled and barcodes reused
+# Emtpy filter cells 11,13,and 02 commented. Replaced by SII, Ha and
+# HaC - 2005feb28 - RC
 #empty_00          20000030          0.0                    0.0
 #empty_01          20000031          0.0                    0.0
-empty_02          20000032          0.0                    0.0
+#empty_02          20000032          0.0                    0.0
 open1-6           20000033          0.0                    0.0
 empty_04          20000034          0.0                    0.0
 empty_05          20000035          0.0                    0.0
@@ -88,9 +95,9 @@ open2-8           20000041          0.0                    0.0
 #empty_08          20000041          0.0                    0.0
 #empty_09          20000044          0.0                    0.0
 #empty_10          20000045          0.0                    0.0
-empty_11          20000050          0.0                    0.0
+#empty_11          20000050          0.0                    0.0
 empty_12          20000047          0.0                    0.0
-empty_13          20000048          0.0                    0.0
+#empty_13          20000048          0.0                    0.0
 empty_14          20000036          0.0                    0.0
 empty-15          20000017          0.0                    0.0
 empty-16          20000018          0.0                    0.0

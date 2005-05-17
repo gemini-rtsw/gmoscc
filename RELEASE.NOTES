@@ -1,3 +1,13 @@
+V6-4 May 2005 tpaz
+------------------
+-Enabled N and S IFU names for the south
+ Files changed: 
+	adl/gmSeqIFUSelect.adl
+        src/MK/lut/masks.lut
+        src/CP/lut/masks.lut
+
+-Added new OIII filter names
+
 V6-3 Feb 2005 tpaz
 ------------------
 - ifu modes dm screen now enables users to define the ifu mode
