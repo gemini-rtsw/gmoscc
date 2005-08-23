@@ -44,6 +44,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.3  2005/02/23 01:51:59  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.1  2002/04/24 05:18:14  ajf
  * Changes for epics3.13.4GEM8.4.
  *
@@ -195,7 +198,7 @@
  */
 
 #define DRV_OMS_VME_MAX_REPLY_TIME          4       /* read timeout..       */
-#define DRV_OMS_VME_MAX_REQUESTS            5       /* max synch attempts   */
+#define DRV_OMS_VME_MAX_REQUESTS            6       /* max synch attempts   */
 #define DRV_OMS_VME_MAX_MESSAGES            16      /* size of message queue*/
 #define DRV_OMS_VME_MAX_CARDS               8       /* max cards in a system*/
 #define DRV_OMS_VME_CTL_X                   0x18    /* define control-X     */
