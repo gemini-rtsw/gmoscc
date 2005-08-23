@@ -49,6 +49,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.5  2005/02/23 01:52:56  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.4  2002/04/24 05:14:05  ajf
  * Changes for 3.13.4GEM8.4.
  *
@@ -172,7 +175,7 @@
 #define DEVICE_LENGTH   10      /* Maximum device string length.       */
 #define MESSAGE_LENGTH  5       /* Size of string for message queue.   */
 #define READ_TIMEOUT    1       /* Number of seconds before giving up. */
-#define MAX_RESCANS     3       /* Maximum number of scan attempts.    */
+#define MAX_RESCANS     10       /* Maximum number of scan attempts.    */
 
 #define BAR_SIM_BASE	50000000 /* Base number for simulated barcode.  */
 
