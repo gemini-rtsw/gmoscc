@@ -49,7 +49,7 @@ ld < $(version)/bin/$(arch)/systemCar
 ld < $(version)/bin/$(arch)/commandCar
 
 # Initialise the Gemini Time System (1=master, 1=simulate, intPerSecond, intPerTick, timeOffset)
-timeClockInit 0, 0, 60, 1, 0
+timeClockInit 0, 1, 60, 1, 0
 
 # Configure the Timestamp system, 1=Master IOC
 TSconfigure 1, 0, 0, 0, 0, 0
@@ -61,8 +61,13 @@ dbLoadRecords "$(version)/data/gmosCcSadTop.db"
 dbLoadRecords "$(version)/data/gmSeqTop.db"
 dbLoadRecords "$(version)/data/gmSeqSadTop.db"
 
+#putenv("EPICS_IOC_LOG_PORT=7004")
+#putenv("EPICS_IOC_LOG_INET=10.2.2.57")
+#putenv("EPICS_IOC_LOG_FILE_NAME=/gemdata/log/iocLog.text")
+#iocLogDisable=0
+
 # This turns off logging
-# iocLogDisable=1
+ iocLogDisable=1
 
 iocInit "$(version)/data/resource.def"
 
@@ -72,8 +77,8 @@ dbpf "gm:cc:msEnableEnable","0"
 dbpf "gm:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "gm:sad:name.VAL","GMOS-N (V6-3)"
-dbpf "gm:sad:cc:name.VAL","GMOS-N (V6-3)"
+dbpf "gm:sad:name.VAL","GMOS-N (V6-4)"
+dbpf "gm:sad:cc:name.VAL","GMOS-N (V6-4)"
 
 # Load initialization files
 pvload "$(version)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"

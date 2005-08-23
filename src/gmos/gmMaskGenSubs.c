@@ -36,6 +36,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2005/03/09 19:46:14  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.1  2001/11/28 20:08:48  mbec
  * *** empty log message ***
  *
@@ -409,7 +412,7 @@ long mkIfuSelection
    printf("ifuSelection = %s\n",ifuSelection);
 /* Read in barcode */
    strncpy (barcode, (char *)pgs->a, 8);
-   printf("barcode read = %s\n", barcode);
+   printf("barcode read = %s\n", (char *)barcode);
       
 /* Check to see if IFU  barcode is read */
    if (strncmp (barcode,"10000004", 8) == 0)
