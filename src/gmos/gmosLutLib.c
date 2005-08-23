@@ -66,6 +66,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  * HISTORY
  * -------
  * $Log$
+ * Revision 1.2  2003/05/27 21:16:51  gemvx
+ * Version 4-1
+ *
  * Revision 1.1  2001/11/28 20:08:50  mbec
  * *** empty log message ***
  *
@@ -498,7 +501,7 @@ static int gmosLutPolint (
         * value of y. Update ns accordingly
         */
 
-        if ( 2*ns < (n-m) )
+        if ( 2*(ns+1) < (n-m) )
         {
             *dy = c[ns+1];
         }
