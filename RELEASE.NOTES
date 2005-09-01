@@ -1,3 +1,12 @@
+V6-4-1 September 2005 tpaz
+--------------------
+Disabled observe checking in the CC to avoid
+"GMOS currently observing" error when a STOP
+is issued.
+
+Files changed:
+	src/iseq/gmSeqCadLib.c
+ 
 V6-4 May 2005 tpaz
 ------------------
 -Enabled N and S IFU names for the south
