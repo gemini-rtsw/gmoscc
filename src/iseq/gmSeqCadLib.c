@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.8  2005/03/09 19:46:14  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.7  2004/12/17 03:45:18  gemvx
  * *** empty log message ***
  *
@@ -1916,13 +1919,13 @@ long gmSeqConfigEnd (struct cadRecord *cad)
              return CAD_REJECT;
           }
       
-          if ( ((testMask & OBSERVING) != 0) && (observing == TRUE) )
+          /*if ( ((testMask & OBSERVING) != 0) && (observing == TRUE) )
           {
              DBGMSG(DBG_FULL,"GMOS START fail: observing interlock");
              strncpy(cad->mess, "GMOS currently observing", MAX_STRING_SIZE-1);
              return CAD_REJECT;
           }    
-     
+          */ 
        default:
 
 /* Always copy out the directive to VALA */
