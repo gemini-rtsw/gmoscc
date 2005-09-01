@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.9  2005/09/01 20:32:45  gemvx
+ * Disabled observing check
+ *
  * Revision 1.8  2005/03/09 19:46:14  gemvx
  * *** empty log message ***
  *
@@ -1912,12 +1915,12 @@ long gmSeqConfigEnd (struct cadRecord *cad)
 
        case menuDirectiveSTART: 
     
-          if ( ((testMask & READING_OUT) != 0) && (reading_out == TRUE) )
+          /*if ( ((testMask & READING_OUT) != 0) && (reading_out == TRUE) )
           {
              DBGMSG(DBG_FULL,"GMOS START fail: readout interlock");
              strncpy(cad->mess, "GMOS detector currently reading out", MAX_STRING_SIZE-1);
              return CAD_REJECT;
-          }
+          }*/
       
           /*if ( ((testMask & OBSERVING) != 0) && (observing == TRUE) )
           {
