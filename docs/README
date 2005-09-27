@@ -1,6 +1,6 @@
 		GMOS TOP LEVEL SOFTWARE DIRECTORY
 		=================================
-
+ 
 This is the top level GMOS software directory. It contains the
 GMOS Components Controller and Instrument Sequencer software.
 
@@ -26,7 +26,7 @@ uaeSetup       - Original script for setting up the UAE environment for
                  pointer from the GMOS_DC environment variable.
 
 uaeUnsetup     - Script to destroy all the built files and UAE
-                 environment in the GMOS software
+                 environment in the GMOS software.
 
 makeEverything - Script to build all the GMOS software.
 
