@@ -35,10 +35,13 @@
  * oiCalcAbsAngles   - Calculate current angles from absolute encoders
  * oiFollowA         - Convert target position to Mask frame of reference
  * oiProbeOffset     - Make Offset info available for engineering
- *
+ * oiProbeMap        - Build an array of coefficients for probe map corrections
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.3  2004/03/08 21:03:52  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.2  2003/01/31 14:12:46  gemvx
  * Merged gmos-south
  *
@@ -178,6 +181,7 @@
 #define IN_TOLERANCE *(double *)pgs->i    /* Tolerance (tracking deadband)  */
 #define IN_STREAM    ((double *)pgs->j)   /* Input target stream to follow  */
 #define IN_EO          *(long *)pgs->k    /* Electronic offsets flag        */
+#define IN_COEFF    ((double *)pgs->u)    /* Probe map coefficients in */
 
 /*
  *  --- FollowA gensub record ---
@@ -193,6 +197,32 @@
 #define OUT_IN_POSITION *(long *)pgs->valg  /* In Position flag for the SAD */
 #define OUT_ARRAY_S     *(long *)pgs->valh  /* Array valid flag for the SAD */
 #define OUT_STREAM    ((double *)pgs->valj) /* Probe offset stream out      */
+
+
+/****************************************************************************
+ *  --- ProbeMap gensub record --- 
+ *  input field access mnemonics 
+ */
+
+#define IN_A0  *(double *)pgs->a    /* transformation term              */
+#define IN_A1  *(double *)pgs->b    /* transformation term              */
+#define IN_A2  *(double *)pgs->c    /* transformation term              */
+#define IN_A3  *(double *)pgs->d    /* transformation term              */
+#define IN_A4  *(double *)pgs->e    /* transformation term              */
+#define IN_A5  *(double *)pgs->f    /* transformation term              */
+#define IN_B0  *(double *)pgs->g    /* transformation term              */
+#define IN_B1  *(double *)pgs->h    /* transformation term              */
+#define IN_B2  *(double *)pgs->i    /* transformation term              */
+#define IN_B3  *(double *)pgs->j    /* transformation term              */
+#define IN_B4  *(double *)pgs->k    /* transformation term              */
+#define IN_B5  *(double *)pgs->l    /* transformation term              */
+
+/*
+ *  --- ProbeMap gensub record ---
+ *  output field access mnemonics
+ */
+
+#define OUT_COEFF    ((double *)pgs->vala) /* Probe map coefficients out */
 
 
 /****************************************************************************
@@ -312,6 +342,7 @@ long oiAngles2Position (genSubRecord *);
 long oiCalcAbsAngles (genSubRecord *);
 long oiFollowA (genSubRecord *);
 long oiProbeOffset(genSubRecord *);
+long oiProbeMap(genSubRecord *);
 
 
 /*
@@ -335,6 +366,112 @@ long    newTrack = TRUE;        /* indicates 1st pass with new trackID      */
              printf ("%s: "FMT, taskName(0), tickGet(), pgs->name, V);                         \
 }
 
+
+/*
+ ************************************************************************
+ *+
+ * FUNCTION NAME:
+ * oiCalcProbeX
+ *
+ * INVOCATION:
+ * status = oiCalcProbeX(xmask,ymask);
+ *
+ * PARAMETERS: (">" input, "!" modified, "<" output)
+ * (>)xmask  Mask X coordinate
+ * (>)ymask  Mask Y coordinate
+ *
+ * FUNCTION VALUE:
+ * (double) xnew  Transformed X coordinate
+ *
+ * PURPOSE:
+ * Apply Probe Map Correction to the mask X coordinate
+ *
+ * DESCRIPTION:
+ * Calculate the new mask X coordinate using the Probe Map coefficients
+ *
+ * EXTERNAL VARIABLES:
+ * None.
+ *
+ * PRIOR REQUIREMENTS:
+ * None.
+ *
+ * SEE ALSO:
+ * - other function name.
+ *
+ * DEFICIENCIES:
+ * None.
+ *-
+ ************************************************************************
+ */
+
+double oiCalcProbeX
+(
+    struct genSubRecord *pgs,        /* calling record structure             */
+    double xmask,       /* mask X coord */
+    double ymask        /* mask Y coord */
+)
+{
+  double xnew;
+  DEBUG("<%ld> %s: oiCalcProbeX xmask: %f\n",xmask);
+  xnew = IN_COEFF[0] + IN_COEFF[1]*xmask + IN_COEFF[2]*xmask*xmask + IN_COEFF[3]*ymask
+    + IN_COEFF[4]*ymask*ymask + IN_COEFF[5]*xmask*ymask;
+  DEBUG("<%ld> %s: oiCalcProbeX xnew: %f\n",xnew);  
+  return xnew;
+}
+
+
+/*
+ ************************************************************************
+ *+
+ * FUNCTION NAME:
+ * oiCalcProbeY
+ *
+ * INVOCATION:
+ * status = oiCalcProbeY(xmask,ymask);
+ *
+ * PARAMETERS: (">" input, "!" modified, "<" output)
+ * (>)xmask  Mask X coordinate
+ * (>)ymask  Mask Y coordinate
+ *
+ * FUNCTION VALUE:
+ * (double) ynew  Transformed X coordinate
+ *
+ * PURPOSE:
+ * Apply Probe Map Correction to the mask Y coordinate
+ *
+ * DESCRIPTION:
+ * Calculate the new mask Y coordinate using the Probe Map coefficients
+ *
+ * EXTERNAL VARIABLES:
+ * None.
+ *
+ * PRIOR REQUIREMENTS:
+ * None.
+ *
+ * SEE ALSO:
+ * - other function name.
+ *
+ * DEFICIENCIES:
+ * None.
+ *-
+ ************************************************************************
+ */
+
+double oiCalcProbeY
+(
+    struct genSubRecord *pgs,        /* calling record structure             */
+    double xmask,       /* mask X coord */
+    double ymask        /* mask Y coord */
+)
+{
+  double ynew;
+
+  DEBUG("<%ld> %s: oiCalcProbeY ymask: %f\n",ymask);
+  ynew = IN_COEFF[6] + IN_COEFF[7]*xmask + IN_COEFF[8]*xmask*xmask + IN_COEFF[9]*ymask
+    + IN_COEFF[10]*ymask*ymask + IN_COEFF[11]*xmask*ymask;
+  DEBUG("<%ld> %s: oiCalcProbeY ynew: %f\n",ynew);
+  return ynew;
+}
 
 
 /*
@@ -649,6 +786,7 @@ long oiCalcAbsAngles
  *    I -> Current tolerance (tracking deadband)
  *    J -> Stream of probe target structures generated by the TCS system
  *    K -> Electronic offsets flag
+ *    U -> Probe Map Correction Coefficients
  *
  * Gensub output fields:
  *    VALA -> Probe assemblyControl record inhibit flag
@@ -786,8 +924,12 @@ long oiFollowA
 
             else
             {
-                /* NEED SOME TRANSFORMATION ACTION HERE!!!!! */
-
+	      /*
+	       * Apply OIWFS Probe Mapping transformation
+	       */
+	      xTarget = oiCalcProbeX(pgs, IN_X_TARGET, IN_Y_TARGET);
+	      yTarget = oiCalcProbeY(pgs, IN_X_TARGET, IN_Y_TARGET);
+	      
                 status = CALC_SUCCESS;
             }
 
@@ -800,9 +942,8 @@ long oiFollowA
                    
             if (status == CALC_SUCCESS)
             {
-                DEBUG("<%ld> %s: oiFollowA: Move to new target %c\n",' ');
-                OUT_X_MASK = IN_X_TARGET;
-                OUT_Y_MASK = IN_Y_TARGET;
+                OUT_X_MASK = xTarget;
+                OUT_Y_MASK = yTarget;
                 assemblyCtrl = SCAN_ENABLE;
             }
 
@@ -866,8 +1007,8 @@ long oiFollowA
  
              IN_X_TARGET = xTarget;
              IN_Y_TARGET = yTarget;
-             db_post_events(pgs, &IN_X_TARGET, DBE_VALUE);
-             db_post_events(pgs, &IN_Y_TARGET, DBE_VALUE);
+             db_post_events(pgs, &IN_X_TARGET, DBE_VALUE|DBE_LOG);
+             db_post_events(pgs, &IN_Y_TARGET, DBE_VALUE|DBE_LOG);
 
 
             /*
@@ -985,7 +1126,6 @@ long oiFollowA
                     }
 
                     
-                        /* HEY!!!! NO COORDINATE TRANSFORMATION !!!! */
                     /*
                      *  If the transformation was successful (probe can physically
                      *  reach the target position), send the transformed target
@@ -994,6 +1134,12 @@ long oiFollowA
                      *  and reset stream count.
                      */
 
+		    /*
+		     * Apply OIWFS Probe Mapping transformation
+		     */
+		    xTarget = oiCalcProbeX(pgs, IN_X_TARGET, IN_Y_TARGET);
+		    yTarget = oiCalcProbeY(pgs, IN_X_TARGET, IN_Y_TARGET);
+		    
                     OUT_X_MASK = xTarget;
                     OUT_Y_MASK = yTarget;
 
@@ -1105,6 +1251,80 @@ long oiFollowA
     return (status); 
 }
 
+
+/*
+ ************************************************************************
+ *+
+ * FUNCTION NAME:
+ * oiProbeMap
+ *
+ * INVOCATION:
+ * status = oiProbeMap (pgs); 
+ *
+ * PARAMETERS: (">" input, "!" modified, "<" output)
+ * (>) pgs  (genSub *) Pointer to genSub record structure.
+ *
+ *
+ * FUNCTION VALUE:
+ * (long) function return status.
+ *
+ * PURPOSE:
+ * Combine 12 transformation coefficients into an array for input into followA
+ *
+ * DESCRIPTION:
+ * Simply build the array from the inputs.  This is triggered by a PP INP link.
+ *
+ * Gensub input fields:
+ *    A -> A0 coefficient
+ *    B -> A1 coefficient
+ *    C -> A2 coefficient
+ *    D -> A3 coefficient
+ *    E -> A4 coefficient
+ *    F -> A5 coefficient
+ *    G -> B0 coefficient
+ *    H -> B1 coefficient
+ *    I -> B2 coefficient
+ *    J -> B3 coefficient
+ *    K -> B4 coefficient
+ *    L -> B5 coefficient
+ *
+ * Gensub output fields:
+ *    VALA -> array of 12 coefficients
+ *
+ * EXTERNAL VARIABLES:
+ *
+ *
+ * PRIOR REQUIREMENTS:
+ * None.
+ *
+ * SEE ALSO:
+ *
+ * DEFICIENCIES:
+ * None.
+ *-
+ ************************************************************************
+ */
+
+long oiProbeMap
+(
+    genSubRecord *pgs               /* gensub record structure              */
+)
+{
+  OUT_COEFF[0] = IN_A0;
+  OUT_COEFF[1] = IN_A1;
+  OUT_COEFF[2] = IN_A2;
+  OUT_COEFF[3] = IN_A3;
+  OUT_COEFF[4] = IN_A4;
+  OUT_COEFF[5] = IN_A5;
+  OUT_COEFF[6] = IN_B0;
+  OUT_COEFF[7] = IN_B1;
+  OUT_COEFF[8] = IN_B2;
+  OUT_COEFF[9] = IN_B3;
+  OUT_COEFF[10] = IN_B4;
+  OUT_COEFF[11] = IN_B5;
+
+  return 0;
+}
 
 
 /*
