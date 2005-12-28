@@ -70,10 +70,10 @@ devBarcodeSimulate = 3
 
 # Load one or more ASCII databases
 dbLoadDatabase "$(iocpath)/dbd/gemini.dbd"
-dbLoadRecords "$(iocpath)/data/gmosCcTopMKSS.db"
-dbLoadRecords "$(iocpath)/data/gmosCcSadTopMKSS.db"
-dbLoadRecords "$(iocpath)/data/gmSeqTopMKSS.db"
-dbLoadRecords "$(iocpath)/data/gmSeqSadTopMKSS.db"
+dbLoadRecords "$(iocpath)/data/gmosCcTopSS.db"
+dbLoadRecords "$(iocpath)/data/gmosCcSadTopSS.db"
+dbLoadRecords "$(iocpath)/data/gmSeqTopSS.db"
+dbLoadRecords "$(iocpath)/data/gmSeqSadTopSS.db"
 
 # This turns off logging
 # iocLogDisable=1
