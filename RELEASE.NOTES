@@ -1,3 +1,18 @@
+V6-5 December 2005 aebbers
+------------------
+Added OIWFS Probe Map Correction
+Fixed the simulation startup script
+Files changed:
+	adl/gmOiwfs.adl
+	src/MK/pv/gmOiwfs.pv
+	src/MK/pv/gmOiwfsSim.pv
+	capfast/gmOiwfsFollowA.sch
+	src/gmos/gmOiwfsGenSubs.c
+	startup/common/gmStartupMKSS.vws
+Files added:
+	adl/gmOiwfsCoeffs.adl
+	
+
 V6-4-1 September 2005 tpaz
 --------------------
 Disabled observe checking in the CC to avoid
