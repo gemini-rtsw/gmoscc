@@ -159,6 +159,23 @@ group {
    double $(top)probeSinPko.EGUF    =  1.0;
 }
 
+# Probe Map Correction Coefficients
+
+group {
+   double $(top)probeMap.A	= -1.35465E-02;     # A0
+   double $(top)probeMap.B	=  9.92657E-01;     # A1
+   double $(top)probeMap.C	=  2.49028E-05;     # A2
+   double $(top)probeMap.D	= -4.23930E-05;     # A3
+   double $(top)probeMap.E	= -7.10253E-06;     # A4
+   double $(top)probeMap.F	=  2.65889E-05;     # A5
+   double $(top)probeMap.G	=  1.70636E-02;     # B0
+   double $(top)probeMap.H	=  8.90068E-03;     # B1
+   double $(top)probeMap.I	= -3.39217E-05;     # B2
+   double $(top)probeMap.J	=  9.95244E-01;     # B3
+   double $(top)probeMap.K	=  6.38404E-07;     # B4
+   double $(top)probeMap.L	= -3.95636E-05;     # B5
+}
+
 # Pre-load engineering targets
 #
 group {
