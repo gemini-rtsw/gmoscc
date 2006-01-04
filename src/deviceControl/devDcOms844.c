@@ -45,6 +45,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.3  2004/12/17 03:43:31  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.2  2002/04/24 21:09:58  ajf
  * Changes for the port to epics3.13.4GEM8.4
  *
@@ -2172,12 +2175,15 @@ static int omsScanTask
              *  Remember that the timer is counting the number of 
              *  times omsScanTask will run before the timeout occurs.
              */
- 
+
+	    semTake (pMotor->mutexSem, WAIT_FOREVER);
+
             if (pMotor->scansLeft)
             {
                 pDevice->timeout = (--pMotor->scansLeft <= 0);
             }
 
+	    semGive (pMotor->mutexSem);
 
             /*
              *  Check motor status to see if motor position and state  
