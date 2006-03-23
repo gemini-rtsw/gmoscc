@@ -62,6 +62,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.2  2005/03/09 19:46:13  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.1  2002/04/24 05:18:14  ajf
  * Changes for epics3.13.4GEM8.4.
  *
@@ -3649,7 +3652,10 @@ static void monitor
     if (MONITORED(RECORD_BRK))  db_post_events(pdr, &pdr->brk, DBE_VALUE|DBE_LOG);
 
     if (MONITORED(RECORD_MIP))  db_post_events(pdr, &pdr->mip, DBE_VALUE|DBE_LOG);
-    if (MONITORED(RECORD_MPOS)) db_post_events(pdr, &pdr->mpos, DBE_VALUE|DBE_LOG);
+    if (MONITORED(RECORD_MPOS)) {
+      db_post_events(pdr, &pdr->mpos, DBE_VALUE|DBE_LOG);
+      recGblGetTimeStamp( pdr );
+    }
     if (MONITORED(RECORD_RPOS)) db_post_events(pdr, &pdr->rpos, DBE_VALUE|DBE_LOG);
     if (MONITORED(RECORD_RRBV)) db_post_events(pdr, &pdr->rrbv, DBE_VALUE|DBE_LOG);
     if (MONITORED(RECORD_RVEL)) db_post_events(pdr, &pdr->rvel, DBE_VALUE|DBE_LOG);
