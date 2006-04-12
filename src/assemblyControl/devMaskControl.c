@@ -65,6 +65,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.4  2005/02/23 01:50:52  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.3  2003/11/18 18:53:55  gemvx
  * *** empty log message ***
  *
@@ -469,6 +472,7 @@
 
 #define MK_BARCODE_TRIGGER      par->sot            /* Ptr. to barcode link.*/
 #define MK_SENSOR_POWER         par->sor     /* Ptr. to control sensor power*/
+#define MK_IFU_BARCODE          par->sov     /* Expected IFU barcode from lut */
 
 
 /*
@@ -5203,6 +5207,7 @@ static long mkReadBarList
     char     scratchBuf[256];           /* Scratchpad character buffer.*/
     int        casNum;                  /* Cassette number.            */
     int        slotNum;                 /* Slot number.                */
+    long       nRequest = 1;              /* Number requested.                */
     long       barCode;                 /* Barcode.                    */
     int        barCount;                /* Barcode counter (0-26)      */
     int         i;                      /* Generic counter.            */
@@ -5312,6 +5317,14 @@ static long mkReadBarList
 
                 else
                 {
+		    /*
+		     * If this is the IFU (cas 1, slot 7) make the IFU barcode available on sov
+		     */
+		    if ((casNum == 1) && (slotNum == 7))
+		      {
+			dbPutLink(&(MK_IFU_BARCODE),DBR_LONG,&barCode,nRequest);
+		      }
+		    
                     barCount = (casNum - 1) * MK_NUM_SLOTS + (slotNum - 1);
 
                     /*
