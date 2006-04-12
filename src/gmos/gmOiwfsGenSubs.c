@@ -39,6 +39,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.4  2005/12/28 00:32:47  gemvx
+ * added Probe Map Correction
+ *
  * Revision 1.3  2004/03/08 21:03:52  gemvx
  * *** empty log message ***
  *
@@ -835,13 +838,13 @@ long oiFollowA
     long tcsArray     = ARRAY_INVALID;    /* array valid flag               */
     long followMode;                      /* follow mode                    */
     long eoFlag;                          /* electronic offsets flag        */
+    double  xTarget;                      /* target X                       */ 
+    double  yTarget;                      /* target Y                       */
+    double  zTarget;                      /* target Z                       */
 
     double tcsDemands[6];                 /* demand stream from TCS         */
     double tAppl;                         /* time demand applies            */
     double trackId;                       /* trackID of demand              */
-    double xTarget;                       /* target X                       */ 
-    double yTarget;                       /* target Y                       */
-    double zTarget;                       /* target Z                       */
 
     double probePosition[4];              /* current probe positions        */
     double xCurrent;                      /* current x position             */
@@ -859,8 +862,7 @@ long oiFollowA
     yCurrent = probePosition[1];
     zCurrent = probePosition[2];
     rCurrent = probePosition[3];
-
-
+        
     /*
      *  Further processing depends on the current following mode,
      *  which can be:
@@ -883,8 +885,14 @@ long oiFollowA
 
         case FOLLOW_MOVE:
 
+	    /*
+	     * Apply OIWFS Probe Mapping transformation
+	     */
+	    xTarget = oiCalcProbeX(pgs, IN_X_TARGET, IN_Y_TARGET);
+	    yTarget = oiCalcProbeY(pgs, IN_X_TARGET, IN_Y_TARGET);
+	  
             if (prev_follow != FOLLOW_MOVE)
-            {
+	    {
                 DEBUG("<%ld> %s: oiFollowA: Move mode%c\n",' ');
             }
 
@@ -908,10 +916,10 @@ long oiFollowA
              *  the assemblyControl link does not get enabled.
              */
 
-            if (IN_X_TARGET > IN_X_HI_LIM || 
-                IN_X_TARGET < IN_X_LO_LIM ||
-                IN_Y_TARGET > IN_Y_HI_LIM || 
-                IN_Y_TARGET < IN_Y_LO_LIM)
+            if (xTarget > IN_X_HI_LIM || 
+                xTarget < IN_X_LO_LIM ||
+                yTarget > IN_Y_HI_LIM || 
+                yTarget < IN_Y_LO_LIM)
             {
                 status = CALC_FAILURE;
             }
@@ -923,13 +931,7 @@ long oiFollowA
              */
 
             else
-            {
-	      /*
-	       * Apply OIWFS Probe Mapping transformation
-	       */
-	      xTarget = oiCalcProbeX(pgs, IN_X_TARGET, IN_Y_TARGET);
-	      yTarget = oiCalcProbeY(pgs, IN_X_TARGET, IN_Y_TARGET);
-	      
+            {	      
                 status = CALC_SUCCESS;
             }
 
@@ -957,13 +959,19 @@ long oiFollowA
 
         case FOLLOW_MOVE_R:
 
+	    /*
+	     * Apply OIWFS Probe Mapping transformation
+	     */
+	    xTarget = oiCalcProbeX(pgs, IN_X_TARGET, IN_Y_TARGET);
+	    yTarget = oiCalcProbeY(pgs, IN_X_TARGET, IN_Y_TARGET);
+
             /*
              *  If the motion vector is less than the tolerance value then
              *  set the in-position flag.
              */
 
-            if (sqrt((IN_X_TARGET - xCurrent) * (IN_X_TARGET - xCurrent) + 
-                          (IN_Y_TARGET - yCurrent) * (IN_Y_TARGET - yCurrent)) < 
+            if (sqrt((xTarget - xCurrent) * (xTarget - xCurrent) + 
+                          (yTarget - yCurrent) * (yTarget - yCurrent)) < 
                      IN_TOLERANCE                         )
             {
                 inPosition = TRUE;
@@ -996,9 +1004,13 @@ long oiFollowA
 
             tAppl   = tcsDemands[0];
             trackId = tcsDemands[2];
-            xTarget = tcsDemands[3];
-            yTarget = tcsDemands[4];
             zTarget = tcsDemands[5];
+
+	    /*
+	     * Apply OIWFS Probe Mapping transformation
+	     */
+	    xTarget = oiCalcProbeX(pgs, tcsDemands[3], tcsDemands[4]);
+	    yTarget = oiCalcProbeY(pgs, tcsDemands[3], tcsDemands[4]);
 
               /*
               *  Copy the follow targets to the move targets inputs to
@@ -1133,12 +1145,6 @@ long oiFollowA
                      *  position.  Enable the assemblyControl record output link
                      *  and reset stream count.
                      */
-
-		    /*
-		     * Apply OIWFS Probe Mapping transformation
-		     */
-		    xTarget = oiCalcProbeX(pgs, IN_X_TARGET, IN_Y_TARGET);
-		    yTarget = oiCalcProbeY(pgs, IN_X_TARGET, IN_Y_TARGET);
 		    
                     OUT_X_MASK = xTarget;
                     OUT_Y_MASK = yTarget;
