@@ -1,3 +1,14 @@
+V6-6 April 2006 aebbers
+------------------
+some final tweaking and a bug fix in the OIWFS probe mapping
+added output of the IFU barcode from the mask assembly to the 
+ifuSelection record.
+Files Changed:
+	src/MK/pv/gmOiwfs.pv
+	src/gmos/gmOiwfsGenSubs.c
+	capfast/gmMask.sch
+	src/assemblyControl/devMaskControl.c
+
 V6-5 December 2005 aebbers
 ------------------
 Added OIWFS Probe Map Correction
