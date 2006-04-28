@@ -49,6 +49,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.6  2005/08/23 21:41:56  gemvx
+ * Increased max rescans
+ *
  * Revision 1.5  2005/02/23 01:52:56  gemvx
  * *** empty log message ***
  *
@@ -519,7 +522,7 @@ static long init_chan
        monitor_id = taskSpawn("monitor_port", 
                               100, 
                               VX_FP_TASK, 
-                              2000,
+                              8000,
                               (FUNCPTR)monitor_port,
                               0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
@@ -535,7 +538,7 @@ static long init_chan
        return_id = taskSpawn("return_scan", 
                              100, 
                              VX_FP_TASK, 
-                             2000,
+                             8000,
                              (FUNCPTR)return_scan,
                              0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
        if ( return_id == ERROR )
