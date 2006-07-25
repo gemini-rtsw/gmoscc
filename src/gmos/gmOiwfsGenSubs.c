@@ -39,6 +39,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.5  2006/04/12 02:57:53  gemvx
+ * implemented OIWFS probe mapping
+ *
  * Revision 1.4  2005/12/28 00:32:47  gemvx
  * added Probe Map Correction
  *
@@ -275,6 +278,25 @@
 #define OUT_X_POSITION *(double *)pgs->valc /* calculated X probe position  */
 #define OUT_Y_POSITION *(double *)pgs->vald /* calculated Y probe position  */
 
+/****************************************************************************
+ *  --- LimitCheck genSub ---
+ *  input and output field access mnemonics
+ */
+
+#define IN_ABS_X  *(double *)pgs->b  /* Absolute X Position */
+#define IN_ABS_Y  *(double *)pgs->d  /* Absolute Y Position */
+#define IN_X_NL   *(double *)pgs->f  /* X Negative Limit */
+#define IN_X_PL   *(double *)pgs->h  /* X Positive Limit */
+#define IN_Y_NL   *(double *)pgs->j  /* Y Negative Limit */
+#define IN_Y_PL   *(double *)pgs->l  /* Y Positive Limit */
+#define IN_BUFFER *(double *)pgs->o  /* Y Buffer btw limit and patrol area */
+
+#define OUT_MESS     (char *)pgs->vala /* Limit Status */
+#define OUT_Y_LL  *(double *)pgs->valc /* Effective Y Lo Limit */
+#define OUT_Y_HL  *(double *)pgs->vale /* Effective Y Hi Limit */
+#define OUT_ILOCK   *(long *)pgs->vals /* Interlock Status */
+#define OUT_SDIS    *(long *)pgs->valu /* Interlock Out SDIS */
+
 
 /****************************************************************************
  *  --- CalcPosition genSub record ---
@@ -336,28 +358,54 @@
                                         every FOLLOW_CENTER stream updates */
 #define FOLLOW_RESUME    -1        /* Resume following target from
                                         previous trackID                   */
+#define num_elements     20      /* number of values to keep in the potentiometer array */
 
 /*
  *  Gensub record support function prototypes
  */
 
 long oiAngles2Position (genSubRecord *);
+long oiInitCalcAbsAngles (genSubRecord *);
 long oiCalcAbsAngles (genSubRecord *);
+long oiLimitCheck (genSubRecord *);
+long oiInitLimitCheck (genSubRecord *);
 long oiFollowA (genSubRecord *);
 long oiProbeOffset(genSubRecord *);
 long oiProbeMap(genSubRecord *);
 
+/*
+ * Local function prototypes 
+ */
+
+long insert_pots (double, double, double, double);
+long get_filtered_pots (double *, double *, double *, double *);
+static void next_ptr (int *);
+static void prev_ptr (int *);
 
 /*
  *  Global Variables
  */
+
+typedef struct {
+  double    sinBas;
+  double    cosBas; 
+  double    sinPko;
+  double    cosPko;
+}OI_POT_ARRAY;
+
+static  OI_POT_ARRAY pots[num_elements];
+static int start_ptr;           /* first sequential element of the pot array */
+static int end_ptr;             /* last sequential element of the pot array */
+static int limitState;          /* current limit state */
 long    prev_follow;            /* previous follow mode                     */
 double  prev_x;                 /* previous x target                        */
 double  prev_y;                 /* previous y target                        */
 long    stream_count;           /* number of targets since last start cmd   */
 int     gmOiwfsFollowDebug = 0; /* debug output level flag                  */
 long    newTrack = TRUE;        /* indicates 1st pass with new trackID      */
-
+int     gmOiwfsFilter = 1;      /* turn software filtering on/off           */
+int     oiDebugLevel=0;
+int     oiPutDebugLevel;
 
 /*
  *  Debug macro to control debugging information output
@@ -367,6 +415,166 @@ long    newTrack = TRUE;        /* indicates 1st pass with new trackID      */
 {                                                                           \
         if (gmOiwfsFollowDebug)                                             \
              printf ("%s: "FMT, taskName(0), tickGet(), pgs->name, V);                         \
+}
+
+/*
+ ************************************************************************
+ *+
+ *  FUNCTION: next_ptr
+ *
+ * RETURNS: void
+ *
+ * DESCRIPTION: Increment an array pointer sequentially.
+ * Wraps around to beginning if the end of the array is reached.
+ *
+ * [NOTES:]:
+ *-
+ ************************************************************************
+ */
+
+static void next_ptr
+(
+    int *ptr
+)
+{
+  (*ptr)++;
+
+  if (*ptr >= num_elements) *ptr = 0;
+
+  return;
+}
+
+/*
+ ************************************************************************
+ *+
+ *  FUNCTION: prev_ptr
+ *
+ * RETURNS: void
+ *
+ * DESCRIPTION: Decrement an array pointer sequentially.
+ * Wraps around to end if the beginning of the array is reached.
+ *
+ * [NOTES:]:
+ *-
+ ************************************************************************
+ */
+
+static void prev_ptr
+(
+    int *ptr
+)
+{
+  (*ptr)--;
+
+  if (*ptr < 0) *ptr = num_elements-1;
+
+  return;
+}
+
+
+/*
+ ************************************************************************
+ *+
+ *  FUNCTION: insert_pots
+ *
+ * RETURNS: long, processing status
+ *
+ * DESCRIPTION: Insert a new pots into the pots_array structure
+ * New point is added at position pots_ptr.  pots_ptr increments
+ * and wraps around to zero as a ring buffer.
+ *
+ * [NOTES:]:
+ *-
+ ************************************************************************
+ */
+
+long insert_pots
+(
+    double sinBas,
+    double cosBas,
+    double sinPko,
+    double cosPko
+)
+{
+
+  next_ptr(&end_ptr);
+
+  pots[end_ptr].sinBas = sinBas;
+  pots[end_ptr].cosBas = cosBas;
+  pots[end_ptr].sinPko = sinPko;
+  pots[end_ptr].cosPko = cosPko;
+
+  if (oiPutDebugLevel) 
+    {
+      printf("\nInserted pots at %d.  sinBas: %f, cosBas: %f, sinPko: %f, cosPko: %f\n", end_ptr,
+             sinBas, cosBas, sinPko, cosPko);
+    }
+
+  if (start_ptr == end_ptr)
+    {
+      next_ptr(&start_ptr);
+    }
+
+  return CALC_SUCCESS;
+}
+
+
+/*
+ ************************************************************************
+ *+
+ *  FUNCTION: get_filtered_pots
+ *
+ * RETURNS: long, processing status
+ *
+ * DESCRIPTION: get a set of pot values from the queue, after filtering
+ *
+ * [NOTES:]:
+ *-
+ ************************************************************************
+ */
+
+long get_filtered_pots
+(
+    double *sinBas,
+    double *cosBas,
+    double *sinPko,
+    double *cosPko
+)
+{
+  int ptr;         /* array pointer */
+  int cnt;       /* in case the array isn't full */
+  double sbSum, cbSum, spSum, cpSum;
+  sbSum = 0;
+  cbSum = 0;
+  spSum = 0;
+  cpSum = 0;
+  cnt = 0;
+
+  if ( oiDebugLevel >=2 )
+     printf("\nget_filtered_pots:  end_ptr=%d, start_ptr=%d \n", end_ptr, start_ptr);
+
+  ptr = start_ptr;  /* start of structure */
+
+  /* 
+   * Simplest of filters ... average
+   */
+
+  while (ptr != end_ptr)
+    {
+      next_ptr(&ptr);
+      sbSum = sbSum + pots[ptr].sinBas;
+      cbSum = cbSum + pots[ptr].cosBas;
+      spSum = spSum + pots[ptr].sinPko;
+      cpSum = cpSum + pots[ptr].cosPko;
+      cnt ++;
+    }
+
+  *sinBas = sbSum/cnt;
+  *cosBas = cbSum/cnt;
+  *sinPko = spSum/cnt;
+  *cosPko = cpSum/cnt;
+
+  return CALC_SUCCESS;
 }
 
 
@@ -590,6 +798,126 @@ long oiAngles2Position
 
     return (status); 
 }
+
+
+/*
+ ************************************************************************
+ *+
+ * FUNCTION NAME:
+ * oiLimitCheck
+ *
+ * INVOCATION:
+ * status = oiLimitCheck (pgs); 
+ *
+ * PARAMETERS: (">" input, "!" modified, "<" output)
+ * (>) pgs  (genSubRecord *) Pointer to gensub record structure.
+ *
+ *
+ * FUNCTION VALUE:
+ * (long) function return status.
+ *
+ * PURPOSE:
+ * Check Absolute position against limits.
+ *
+ * DESCRIPTION:
+ * Check absolute positions calculated from the sin and cos pots against
+ * field of travel limits set in the MOVE Gensub.
+ *
+ * Gensub input fields:
+ *    B -> Absolute X Position
+ *    D -> Absolute Y Position
+ *    F -> X Negative Limit
+ *    H -> X Positive Limit
+ *    J -> Y Negative Limit
+ *    L -> Y Positive Limit
+ *
+ * Gensub output fields:
+ *    VALA -> calculated base stage angle from potentiometers
+ *    VALB -> calculated pickoff stage angle from potentiometers
+ *    VALC -> calculated X probe position from potentiometers
+ *    VALD -> calculated Y probe position from potentiometers
+ *
+ * EXTERNAL VARIABLES:
+ *
+ *
+ * PRIOR REQUIREMENTS:
+ * None.
+ *
+ * SEE ALSO:
+ *
+ * DEFICIENCIES:
+
+ *-
+ ************************************************************************
+ */
+
+long oiInitLimitCheck
+(
+    genSubRecord *pgs               /* calling record structure             */
+)
+{
+  IN_BUFFER = 3.0; /* some buffer btw patrol area and limit ... 3mm is a guess */
+  limitState = 0;
+  OUT_SDIS = 1; /* disable ILOCK Out */
+  OUT_ILOCK = 0; /* No Interlock */
+  strcpy(OUT_MESS, "No Limit Detected");
+  return 0;
+}
+
+long oiLimitCheck
+(
+    genSubRecord *pgs               /* calling record structure             */
+)
+{
+  /* 
+   * The main collision is in the Y axis, so only check the y axis here.
+   * The Hard stop nedds to be a bit beyond the move limits to allow for 
+   * inaccuracy in the absolute encoders.  This space was also designed into
+   * the system.  This is temporarily replacing the hard limits.
+   * Also need to tweak the move limits to allow for indexing and parking 
+   */
+
+  /* 
+   * NOTE: This sets an interlock to stop the motor.  The regular
+   * interlock system will override this interlock automatically after a
+   * brief amount of time.  Since index is lost, the assembly will have to 
+   * be indexed before continuing ... which will move the OIWFS away from the
+   * Limit.
+   */
+
+  /* set the effective limits */
+  OUT_Y_LL = IN_Y_NL - IN_BUFFER;
+  OUT_Y_HL = IN_Y_PL + IN_BUFFER;
+
+  if ( IN_ABS_Y < OUT_Y_LL) {
+    if (limitState == 0) {
+      limitState = 1;
+      OUT_ILOCK = 1;
+      OUT_SDIS = 0;
+      strcpy(OUT_MESS, "Y Negative Limit Detected");
+      /*printf ("\noiLimitCheck: Y Negative Limit Detected\n");*/
+    } else {
+      OUT_SDIS = 1; /* disable ILOCK Out */
+    }
+  } else if ( IN_ABS_Y > OUT_Y_HL) {
+    if (limitState == 0) {
+      limitState = 1;
+      OUT_ILOCK = 1;
+      OUT_SDIS = 0;
+      strcpy(OUT_MESS, "Y Positive Limit Detected");
+      /*printf ("\noiLimitCheck: Y Positive Limit Detected\n");*/
+    } else {
+      OUT_SDIS = 1; /* disable ILOCK Out */
+    }
+  } else {
+    limitState = 0;
+    OUT_SDIS = 1; /* disable ILOCK Out */
+    OUT_ILOCK = 0; /* No Interlock */
+    strcpy(OUT_MESS, "No Limit Detected");
+  } 
+  return 0;
+}
+
 
 /*
  ************************************************************************
@@ -649,6 +977,32 @@ long oiAngles2Position
  ************************************************************************
  */
 
+/*
+ * Init Function for CalcAbsAngles
+ */
+long oiInitCalcAbsAngles 
+(
+    genSubRecord *pgs               /* calling record structure             */
+)
+{
+  int i;  /* loop counter */
+  
+  /* initialize the target array */
+  for(i=0;i<num_elements;i++)
+    {
+      pots[i].sinBas = 0;
+      pots[i].cosBas = 0;
+      pots[i].sinPko = 0;
+      pots[i].cosPko = 0;
+    }
+  
+  start_ptr = 0;
+  end_ptr = -1;
+  
+  return CALC_SUCCESS;
+
+}
+
 long oiCalcAbsAngles 
 (
     genSubRecord *pgs               /* calling record structure             */
@@ -662,27 +1016,64 @@ long oiCalcAbsAngles
     double basCosineSign;           /* sign of base cosine angle            */
     double pkoSineSign;             /* sign of pickoff sine angle           */
     double pkoCosineSign;           /* sign of pickoff cosine angle         */
-
-
-    /*
-     *  Determine the sign of each of the angular components
-     */
-
-    basSineSign =   (IN_BAS_SINE > 0.0)   ? 1.0 : -1.0;
-    basCosineSign = (IN_BAS_COSINE > 0.0) ? 1.0 : -1.0;
-    pkoSineSign =   (IN_PKO_SINE > 0.0)   ? 1.0 : -1.0;
-    pkoCosineSign = (IN_PKO_COSINE > 0.0) ? 1.0 : -1.0;
-
+    double filtBasSin;
+    double filtBasCos;
+    double filtPkoSin;
+    double filtPkoCos;
 
     /*
-     *  Then determine the angular position components
+     * First store incoming values in a queue
      */
 
-    basSine = IN_BAS_SINE * M_PI / 2.0;
-    basCosine = IN_BAS_COSINE * M_PI / 2.0;
-    pkoSine = IN_PKO_SINE * M_PI / 2.0;
-    pkoCosine = IN_PKO_COSINE * M_PI / 2.0;
-    
+    insert_pots(IN_BAS_SINE, IN_BAS_COSINE, IN_PKO_SINE, IN_PKO_COSINE);
+
+    if (gmOiwfsFilter) {
+
+      /*
+       * Get filtered values
+       */
+      
+      get_filtered_pots(&filtBasSin, &filtBasCos, &filtPkoSin, &filtPkoCos);
+      
+      /*
+       *  Determine the sign of each of the angular components
+       */
+      
+      basSineSign =   (filtBasSin > 0.0)   ? 1.0 : -1.0;
+      basCosineSign = (filtBasCos > 0.0) ? 1.0 : -1.0;
+      pkoSineSign =   (filtPkoSin > 0.0)   ? 1.0 : -1.0;
+      pkoCosineSign = (filtPkoCos > 0.0) ? 1.0 : -1.0;
+      
+      
+      /*
+       *  Then determine the angular position components
+       */
+      
+      basSine = filtBasSin * M_PI / 2.0;
+      basCosine = filtBasCos * M_PI / 2.0;
+      pkoSine = filtPkoSin * M_PI / 2.0;
+      pkoCosine = filtPkoCos * M_PI / 2.0;
+      
+    } else {
+      /*
+       *  Determine the sign of each of the angular components
+       */
+      
+      basSineSign =   (IN_BAS_SINE > 0.0)   ? 1.0 : -1.0;
+      basCosineSign = (IN_BAS_COSINE > 0.0) ? 1.0 : -1.0;
+      pkoSineSign =   (IN_PKO_SINE > 0.0)   ? 1.0 : -1.0;
+      pkoCosineSign = (IN_PKO_COSINE > 0.0) ? 1.0 : -1.0;
+      
+      
+      /*
+       *  Then determine the angular position components
+       */
+      
+      basSine = IN_BAS_SINE * M_PI / 2.0;
+      basCosine = IN_BAS_COSINE * M_PI / 2.0;
+      pkoSine = IN_PKO_SINE * M_PI / 2.0;
+      pkoCosine = IN_PKO_COSINE * M_PI / 2.0;
+    }
 
     /*
      *  Calculate the approximate stage angles adding in the zero offset.
@@ -696,13 +1087,12 @@ long oiCalcAbsAngles
     }
     else
     {
-        OUT_BAS_ANGLE = IN_BAS_ABS_OFFSET +
-                       (180.0 / M_PI) * (atan (basSine / basCosine)) + 
-                       90.0 * (1.0 - basCosineSign) * basSineSign; 
-
-        OUT_PKO_ANGLE = IN_PKO_ABS_OFFSET +
-                       (180.0 / M_PI) * (atan (pkoSine / pkoCosine)) + 
-                       90.0 * (1.0 - pkoCosineSign) * pkoSineSign; 
+      OUT_BAS_ANGLE = IN_BAS_ABS_OFFSET +
+	(180.0 / M_PI) * (atan (basSine / basCosine)) + 
+	90.0 * (1.0 - basCosineSign) * basSineSign; 
+      OUT_PKO_ANGLE = IN_PKO_ABS_OFFSET +
+	(180.0 / M_PI) * (atan (pkoSine / pkoCosine)) + 
+	90.0 * (1.0 - pkoCosineSign) * pkoSineSign; 
     }
 
     /*

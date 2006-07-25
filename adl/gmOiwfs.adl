@@ -5,9 +5,9 @@ display {
 	magic="305419896"
 	majv="2"
 	mnrv="4"
-	ndyng="10"
-	npc="26"
-	nstr="130"
+	ndyng="12"
+	npc="27"
+	nstr="133"
 	ndynamic="19"
 	nplot="0"
 	nrd="5"
@@ -23,23 +23,23 @@ display {
 	}
 	clr="1"
 	bclr="5"
-	nwords_dspy="5532"
-	nwords_sta="1076"
+	nwords_dspy="5708"
+	nwords_sta="1092"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="2686"
-	osta="1610"
-	odynamic="3466"
-	oplot="4720"
-	ord="4720"
-	oes="5520"
-	okd="5520"
-	opd="5532"
-	opo="5532"
+	odyng="2750"
+	osta="1658"
+	odynamic="3642"
+	oplot="4896"
+	ord="4896"
+	oes="5696"
+	okd="5696"
+	opd="5708"
+	opo="5708"
 	opc="68"
-	ostr="422"
-	ocmap="1610"
-	ocrules="1610"
+	ostr="438"
+	ocmap="1658"
+	ocrules="1658"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -568,6 +568,25 @@ display {
 }
 "<<basic attribute>>" {
 	attr {
+		clr="1"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="5"
+		y="3"
+		width="153"
+		height="17"
+		groupid="0"
+	}
+	textix="Soft Abs Limit:"
+	align="horiz. centered"
+}
+"<<basic attribute>>" {
+	attr {
 		clr="2"
 		style="solid"
 		fill="outline"
@@ -1055,6 +1074,102 @@ display {
 	orgpoint[2] {
 		x="1000"
 		y="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="24"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if zero"
+		}
+		param {
+			rulecolorfg="0"
+			rulecolorbg="0"
+			chan="$(T)$(D)LimitCheck.VALS"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs=""
+		}
+	}
+}
+"oval" {
+	object {
+		x="163"
+		y="-1"
+		width="25"
+		height="25"
+		groupid="0"
+	}
+}
+"<<basic attribute>>" {
+	attr {
+		clr="23"
+		style="solid"
+		fill="solid"
+		width="0"
+	}
+}
+"<<dynamic attribute>>" {
+	attr {
+		mod {
+			clrmod="static"
+			vis="if not zero"
+		}
+		param {
+			rulecolorfg="0"
+			rulecolorbg="0"
+			chan="$(T)$(D)LimitCheck.VALS"
+			rulechan[0] = ""
+			rulechan[1] = ""
+			rulechan[2] = ""
+			rulechan[3] = ""
+			rulechan[4] = ""
+			rulechan[5] = ""
+			rulechan[6] = ""
+			rulechan[7] = ""
+			rulechan[8] = ""
+			rulechan[9] = ""
+			rulechan[10] = ""
+			rulechan[11] = ""
+			rulechan[12] = ""
+			rulechan[13] = ""
+			rulechan[14] = ""
+			rulechan[15] = ""
+			clrrule="alarm"
+			clrargs=""
+		}
+	}
+}
+"oval" {
+	object {
+		x="163"
+		y="-1"
+		width="25"
+		height="25"
+		groupid="0"
 	}
 }
 "text entry" {
