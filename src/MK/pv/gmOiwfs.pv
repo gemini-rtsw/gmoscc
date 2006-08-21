@@ -123,8 +123,8 @@ group {
 # Load offsets for converting X/Y to angles and vice versa
 #
 group {
-   double $(top)probeBasOffset      = 175.179; # Base offset angle
-   double $(top)probePkoOffset      = -13.182; # Pickoff offset angle
+   double $(top)probeBasOffset      = 174.612; # Base offset angle
+   double $(top)probePkoOffset      = -13.958; # Pickoff offset angle
    double $(top)probeXOffset        =   0.184; # X offset
    double $(top)probeYOffset        =  -0.077; # Y offset
 
@@ -141,8 +141,8 @@ group {
 # following values:
 #
 group {
-   double $(top)probeBaseZero       =  -3.7;
-   double $(top)probePickoffZero    = -13.6;
+   double $(top)probeBaseZero       =  -6.3;
+   double $(top)probePickoffZero    = -14.5;
 }
 
 # Sin/cos output corrections.  EGUL and EGUF determine the high and low 
