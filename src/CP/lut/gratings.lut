@@ -20,9 +20,8 @@
 
 # name            barcodeId     linesPerMm     blazeDir   focusOffset (microns)
 
+#mirror             30000007              0           0        0.0
 mirror             30000012              0           0        0.0
-#Mirror1_rev        30000020              0           0        0.0
-
 B1200+_G5321       30000016	      1200          +1      -50.6
 B1200-_G5321       30000015           1200          -1      -50.6
 R831+_G5322        30000011            831          +1        0.0
