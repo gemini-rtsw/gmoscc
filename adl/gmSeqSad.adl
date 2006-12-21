@@ -6,9 +6,9 @@ display {
 	majv="2"
 	mnrv="4"
 	ndyng="0"
-	npc="24"
-	nstr="89"
-	ndynamic="22"
+	npc="26"
+	nstr="92"
+	ndynamic="25"
 	nplot="0"
 	nrd="0"
 	nes="0"
@@ -19,27 +19,27 @@ display {
 		x="0"
 		y="0"
 		width="802"
-		height="628"
+		height="673"
 	}
 	clr="1"
 	bclr="13"
-	nwords_dspy="3132"
-	nwords_sta="584"
+	nwords_dspy="3456"
+	nwords_sta="660"
 	nwords_cmap="0"
 	nwords_crules="0"
-	odyng="1656"
-	osta="1072"
-	odynamic="1656"
-	oplot="3108"
-	ord="3108"
-	oes="3108"
-	okd="3108"
-	opd="3132"
-	opo="3132"
+	odyng="1782"
+	osta="1122"
+	odynamic="1782"
+	oplot="3432"
+	ord="3432"
+	oes="3432"
+	okd="3432"
+	opd="3456"
+	opo="3456"
 	opc="68"
-	ostr="330"
-	ocmap="1072"
-	ocrules="1072"
+	ostr="354"
+	ocmap="1122"
+	ocrules="1122"
 	style="solid"
 	fill="outline"
 	width="0"
@@ -52,7 +52,7 @@ display {
 	pixwid="1280"
 	pixht="1024"
 	mmwid="361"
-	mmht="289"
+	mmht="288"
 }
 "<<basic attribute>>" {
 	attr {
@@ -83,8 +83,8 @@ display {
 }
 "text" {
 	object {
-		x="21"
-		y="73"
+		x="20"
+		y="57"
 		width="116"
 		height="15"
 		groupid="0"
@@ -102,8 +102,8 @@ display {
 }
 "text" {
 	object {
-		x="161"
-		y="86"
+		x="107"
+		y="83"
 		width="95"
 		height="16"
 		groupid="0"
@@ -113,8 +113,8 @@ display {
 }
 "text" {
 	object {
-		x="273"
-		y="86"
+		x="435"
+		y="83"
 		width="105"
 		height="16"
 		groupid="0"
@@ -124,8 +124,8 @@ display {
 }
 "text" {
 	object {
-		x="383"
-		y="86"
+		x="293"
+		y="83"
 		width="95"
 		height="16"
 		groupid="0"
@@ -135,8 +135,8 @@ display {
 }
 "text" {
 	object {
-		x="517"
-		y="86"
+		x="161"
+		y="138"
 		width="104"
 		height="16"
 		groupid="0"
@@ -146,8 +146,8 @@ display {
 }
 "text" {
 	object {
-		x="638"
-		y="86"
+		x="293"
+		y="138"
 		width="118"
 		height="16"
 		groupid="0"
@@ -168,16 +168,16 @@ display {
 		x="13"
 		y="40"
 		width="769"
-		height="120"
+		height="143"
 		groupid="0"
 	}
 }
 "rectangle" {
 	object {
 		x="13"
-		y="171"
+		y="192"
 		width="769"
-		height="81"
+		height="84"
 		groupid="0"
 	}
 }
@@ -192,7 +192,7 @@ display {
 "text" {
 	object {
 		x="22"
-		y="191"
+		y="205"
 		width="116"
 		height="15"
 		groupid="0"
@@ -211,7 +211,7 @@ display {
 "text" {
 	object {
 		x="171"
-		y="215"
+		y="235"
 		width="95"
 		height="16"
 		groupid="0"
@@ -222,7 +222,7 @@ display {
 "text" {
 	object {
 		x="306"
-		y="217"
+		y="237"
 		width="89"
 		height="16"
 		groupid="0"
@@ -241,7 +241,7 @@ display {
 "text" {
 	object {
 		x="19"
-		y="272"
+		y="294"
 		width="150"
 		height="15"
 		groupid="0"
@@ -252,7 +252,7 @@ display {
 "text" {
 	object {
 		x="19"
-		y="287"
+		y="309"
 		width="150"
 		height="15"
 		groupid="0"
@@ -263,7 +263,7 @@ display {
 "text" {
 	object {
 		x="19"
-		y="357"
+		y="379"
 		width="150"
 		height="15"
 		groupid="0"
@@ -274,7 +274,7 @@ display {
 "text" {
 	object {
 		x="19"
-		y="376"
+		y="398"
 		width="150"
 		height="15"
 		groupid="0"
@@ -293,7 +293,7 @@ display {
 "rectangle" {
 	object {
 		x="13"
-		y="259"
+		y="281"
 		width="487"
 		height="83"
 		groupid="0"
@@ -302,7 +302,7 @@ display {
 "rectangle" {
 	object {
 		x="13"
-		y="346"
+		y="368"
 		width="487"
 		height="83"
 		groupid="0"
@@ -318,8 +318,8 @@ display {
 }
 "text" {
 	object {
-		x="174"
-		y="309"
+		x="172"
+		y="331"
 		width="95"
 		height="16"
 		groupid="0"
@@ -329,8 +329,8 @@ display {
 }
 "text" {
 	object {
-		x="278"
-		y="309"
+		x="281"
+		y="331"
 		width="95"
 		height="16"
 		groupid="0"
@@ -340,8 +340,8 @@ display {
 }
 "text" {
 	object {
-		x="388"
-		y="309"
+		x="390"
+		y="331"
 		width="95"
 		height="16"
 		groupid="0"
@@ -359,8 +359,8 @@ display {
 }
 "text" {
 	object {
-		x="581"
-		y="306"
+		x="559"
+		y="378"
 		width="204"
 		height="14"
 		groupid="0"
@@ -378,8 +378,8 @@ display {
 }
 "rectangle" {
 	object {
-		x="553"
-		y="294"
+		x="531"
+		y="366"
 		width="231"
 		height="99"
 		groupid="0"
@@ -395,8 +395,8 @@ display {
 }
 "text" {
 	object {
-		x="587"
-		y="363"
+		x="565"
+		y="435"
 		width="95"
 		height="16"
 		groupid="0"
@@ -406,8 +406,8 @@ display {
 }
 "text" {
 	object {
-		x="688"
-		y="364"
+		x="666"
+		y="436"
 		width="95"
 		height="16"
 		groupid="0"
@@ -418,7 +418,7 @@ display {
 "text" {
 	object {
 		x="171"
-		y="232"
+		y="252"
 		width="95"
 		height="16"
 		groupid="0"
@@ -429,7 +429,7 @@ display {
 "text" {
 	object {
 		x="306"
-		y="232"
+		y="252"
 		width="86"
 		height="16"
 		groupid="0"
@@ -448,7 +448,7 @@ display {
 "text" {
 	object {
 		x="19"
-		y="443"
+		y="465"
 		width="150"
 		height="14"
 		groupid="0"
@@ -459,7 +459,7 @@ display {
 "text" {
 	object {
 		x="19"
-		y="461"
+		y="483"
 		width="150"
 		height="15"
 		groupid="0"
@@ -478,7 +478,7 @@ display {
 "rectangle" {
 	object {
 		x="13"
-		y="434"
+		y="456"
 		width="487"
 		height="87"
 		groupid="0"
@@ -494,8 +494,8 @@ display {
 }
 "text" {
 	object {
-		x="517"
-		y="103"
+		x="161"
+		y="155"
 		width="104"
 		height="16"
 		groupid="0"
@@ -505,8 +505,8 @@ display {
 }
 "text" {
 	object {
-		x="638"
-		y="103"
+		x="293"
+		y="155"
 		width="118"
 		height="16"
 		groupid="0"
@@ -516,8 +516,8 @@ display {
 }
 "text" {
 	object {
-		x="174"
-		y="391"
+		x="172"
+		y="413"
 		width="95"
 		height="16"
 		groupid="0"
@@ -527,8 +527,8 @@ display {
 }
 "text" {
 	object {
-		x="278"
-		y="391"
+		x="277"
+		y="413"
 		width="95"
 		height="16"
 		groupid="0"
@@ -538,8 +538,8 @@ display {
 }
 "text" {
 	object {
-		x="388"
-		y="391"
+		x="387"
+		y="413"
 		width="95"
 		height="16"
 		groupid="0"
@@ -550,7 +550,7 @@ display {
 "text" {
 	object {
 		x="172"
-		y="480"
+		y="502"
 		width="95"
 		height="16"
 		groupid="0"
@@ -561,7 +561,7 @@ display {
 "text" {
 	object {
 		x="276"
-		y="480"
+		y="502"
 		width="95"
 		height="16"
 		groupid="0"
@@ -572,7 +572,7 @@ display {
 "text" {
 	object {
 		x="386"
-		y="480"
+		y="502"
 		width="95"
 		height="16"
 		groupid="0"
@@ -582,8 +582,8 @@ display {
 }
 "text" {
 	object {
-		x="273"
-		y="141"
+		x="567"
+		y="83"
 		width="200"
 		height="16"
 		groupid="0"
@@ -602,7 +602,7 @@ display {
 "text" {
 	object {
 		x="19"
-		y="536"
+		y="558"
 		width="150"
 		height="14"
 		groupid="0"
@@ -613,7 +613,7 @@ display {
 "text" {
 	object {
 		x="19"
-		y="554"
+		y="576"
 		width="150"
 		height="15"
 		groupid="0"
@@ -632,7 +632,7 @@ display {
 "rectangle" {
 	object {
 		x="13"
-		y="527"
+		y="549"
 		width="487"
 		height="87"
 		groupid="0"
@@ -649,7 +649,7 @@ display {
 "text" {
 	object {
 		x="172"
-		y="573"
+		y="595"
 		width="95"
 		height="16"
 		groupid="0"
@@ -660,7 +660,7 @@ display {
 "text" {
 	object {
 		x="276"
-		y="573"
+		y="595"
 		width="95"
 		height="16"
 		groupid="0"
@@ -671,7 +671,7 @@ display {
 "text" {
 	object {
 		x="386"
-		y="573"
+		y="595"
 		width="95"
 		height="16"
 		groupid="0"
@@ -679,11 +679,91 @@ display {
 	textix="Zoffset"
 	align="horiz. left"
 }
+"text" {
+	object {
+		x="435"
+		y="155"
+		width="105"
+		height="16"
+		groupid="0"
+	}
+	textix="Wavelength"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="567"
+		y="155"
+		width="200"
+		height="16"
+		groupid="0"
+	}
+	textix="Wavelength"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="435"
+		y="138"
+		width="105"
+		height="16"
+		groupid="0"
+	}
+	textix="Adjusted"
+	align="horiz. left"
+}
+"text" {
+	object {
+		x="567"
+		y="138"
+		width="200"
+		height="16"
+		groupid="0"
+	}
+	textix="Ajusted Effective"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="0"
+	}
+}
+"text" {
+	object {
+		x="525"
+		y="299"
+		width="116"
+		height="15"
+		groupid="0"
+	}
+	textix="Mask"
+	align="horiz. left"
+}
+"<<basic attribute>>" {
+	attr {
+		clr="12"
+		style="solid"
+		fill="outline"
+		width="2"
+	}
+}
+"rectangle" {
+	object {
+		x="509"
+		y="281"
+		width="272"
+		height="50"
+		groupid="0"
+	}
+}
 "text update" {
 	object {
-		x="161"
-		y="53"
-		width="100"
+		x="107"
+		y="52"
+		width="153"
 		height="25"
 		groupid="0"
 	}
@@ -727,8 +807,8 @@ display {
 }
 "text update" {
 	object {
-		x="273"
-		y="53"
+		x="435"
+		y="52"
 		width="100"
 		height="25"
 		groupid="0"
@@ -773,8 +853,8 @@ display {
 }
 "text update" {
 	object {
-		x="383"
-		y="53"
+		x="293"
+		y="52"
 		width="100"
 		height="25"
 		groupid="0"
@@ -819,8 +899,8 @@ display {
 }
 "text update" {
 	object {
-		x="517"
-		y="53"
+		x="161"
+		y="109"
 		width="100"
 		height="25"
 		groupid="0"
@@ -865,8 +945,8 @@ display {
 }
 "text update" {
 	object {
-		x="638"
-		y="53"
+		x="293"
+		y="109"
 		width="100"
 		height="25"
 		groupid="0"
@@ -912,7 +992,7 @@ display {
 "text update" {
 	object {
 		x="171"
-		y="179"
+		y="200"
 		width="100"
 		height="25"
 		groupid="0"
@@ -958,7 +1038,7 @@ display {
 "text update" {
 	object {
 		x="306"
-		y="179"
+		y="200"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1003,8 +1083,8 @@ display {
 }
 "text update" {
 	object {
-		x="174"
-		y="273"
+		x="173"
+		y="294"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1049,8 +1129,8 @@ display {
 }
 "text update" {
 	object {
-		x="278"
-		y="273"
+		x="282"
+		y="294"
 		width="99"
 		height="25"
 		groupid="0"
@@ -1095,8 +1175,8 @@ display {
 }
 "text update" {
 	object {
-		x="388"
-		y="273"
+		x="387"
+		y="294"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1141,8 +1221,8 @@ display {
 }
 "text update" {
 	object {
-		x="174"
-		y="357"
+		x="173"
+		y="379"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1188,7 +1268,7 @@ display {
 "text update" {
 	object {
 		x="278"
-		y="357"
+		y="379"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1234,7 +1314,7 @@ display {
 "text update" {
 	object {
 		x="388"
-		y="357"
+		y="379"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1279,8 +1359,8 @@ display {
 }
 "text update" {
 	object {
-		x="565"
-		y="329"
+		x="543"
+		y="401"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1325,8 +1405,8 @@ display {
 }
 "text update" {
 	object {
-		x="669"
-		y="329"
+		x="647"
+		y="401"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1371,8 +1451,8 @@ display {
 }
 "text update" {
 	object {
-		x="174"
-		y="445"
+		x="173"
+		y="467"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1417,8 +1497,8 @@ display {
 }
 "text update" {
 	object {
-		x="278"
-		y="445"
+		x="279"
+		y="467"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1464,7 +1544,7 @@ display {
 "text update" {
 	object {
 		x="388"
-		y="445"
+		y="467"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1509,8 +1589,8 @@ display {
 }
 "text update" {
 	object {
-		x="273"
-		y="108"
+		x="567"
+		y="52"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1556,7 +1636,7 @@ display {
 "text update" {
 	object {
 		x="174"
-		y="538"
+		y="560"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1601,8 +1681,8 @@ display {
 }
 "text update" {
 	object {
-		x="278"
-		y="538"
+		x="280"
+		y="560"
 		width="100"
 		height="25"
 		groupid="0"
@@ -1647,14 +1727,152 @@ display {
 }
 "text update" {
 	object {
-		x="388"
-		y="538"
+		x="389"
+		y="560"
 		width="100"
 		height="25"
 		groupid="0"
 	}
 	monitor {
 		chan="$(S)dtaZoffset"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule=""
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="435"
+		y="109"
+		width="100"
+		height="25"
+		groupid="0"
+	}
+	monitor {
+		chan="$(S)grAdjWavelen"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule=""
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="567"
+		y="109"
+		width="100"
+		height="25"
+		groupid="0"
+	}
+	monitor {
+		chan="$(S)grAdjEffWavelen"
+		clr="0"
+		bclr="7"
+		label="none"
+		clrmod="static"
+		rulechan[0] = ""
+		rulechan[1] = ""
+		rulechan[2] = ""
+		rulechan[3] = ""
+		rulechan[4] = ""
+		rulechan[5] = ""
+		rulechan[6] = ""
+		rulechan[7] = ""
+		rulechan[8] = ""
+		rulechan[9] = ""
+		rulechan[10] = ""
+		rulechan[11] = ""
+		rulechan[12] = ""
+		rulechan[13] = ""
+		rulechan[14] = ""
+		rulechan[15] = ""
+		clrrule=""
+		clrargs=""
+		rulecolorbg="1"
+		rulecolorfg="1"
+		hdl="0"
+		ldl="0"
+		prec="-1"
+		newunits=""
+		units="none"
+		decorate="inward"
+		convertFunc=""
+		convertParams=""
+	}
+	align="horiz. centered"
+	format="decimal"
+}
+"text update" {
+	object {
+		x="578"
+		y="294"
+		width="185"
+		height="25"
+		groupid="0"
+	}
+	monitor {
+		chan="$(S)mskName"
 		clr="0"
 		bclr="7"
 		label="none"
@@ -1707,7 +1925,7 @@ display {
 "kill display" {
 	object {
 		x="705"
-		y="580"
+		y="602"
 		width="80"
 		height="35"
 		groupid="0"
