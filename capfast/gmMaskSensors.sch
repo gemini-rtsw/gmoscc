@@ -4,8 +4,8 @@ uniq 475
 [detail]
 w 1234 891 100 0 bcread gmBarcode.gmBarcode#466.FLNK 896 880 1632 880 1632 720 1856 720 egenSub.ifuSelection.SLNK
 w 2154 1435 100 0 barcode egenSub.ifuSelection.VALA 2144 1424 2224 1424 outhier.barcode.p
-w 306 1515 100 0 n#455 ebis.NotInFp.FLNK 32 800 160 800 160 1504 512 1504 egenSubD.SwitchWord.SLNK
 w 66 1963 100 0 n#455 ebis.GrpNotGripped.FLNK 32 1952 160 1952 160 1504 junction
+w 306 1515 100 0 n#455 ebis.NotInFp.FLNK 32 800 160 800 160 1504 512 1504 egenSubD.SwitchWord.SLNK
 w -142 891 100 0 n#454 ebis.IfuNotIn.FLNK 32 992 80 992 80 880 -304 880 -304 784 -224 784 ebis.NotInFp.SLNK
 w -142 1083 100 0 n#453 ebis.MaskNotIn.FLNK 32 1184 80 1184 80 1072 -304 1072 -304 976 -224 976 ebis.IfuNotIn.SLNK
 w -142 1275 100 0 n#452 ebis.NotCassette.FLNK 32 1376 80 1376 80 1264 -304 1264 -304 1168 -224 1168 ebis.MaskNotIn.SLNK
@@ -39,6 +39,9 @@ w -270 1587 100 0 n#144 hwin.hwin#146.in -256 1584 -224 1584 ebis.NotInSlot.INP
 w -270 819 100 0 n#134 hwin.hwin#135.in -256 816 -224 816 ebis.NotInFp.INP
 w -270 1011 100 0 n#133 hwin.hwin#132.in -256 1008 -224 1008 ebis.IfuNotIn.INP
 w -270 1203 100 0 n#131 hwin.hwin#130.in -256 1200 -224 1200 ebis.MaskNotIn.INP
+s 1824 1504 100 0 C: IFU barcode (site dependent)
+s 1824 1536 100 0 B: IFU selection
+s 1824 1568 100 0 A: barcode
 [cell use]
 use inhier -464 535 100 0 bc_trigger
 xform 0 -448 576
@@ -66,12 +69,12 @@ xform 0 1232 1648
 p 1312 1504 100 0 1 CALC:A+1
 p 1232 1904 100 512 1 PV:$(top)$(dev)
 p 1312 1472 100 0 1 SCAN:Passive
-use outhier 1536 2135 100 0 switches
-xform 0 1552 2176
-use outhier 1536 1111 100 0 zones
-xform 0 1552 1152
 use outhier 2192 1383 100 0 barcode
 xform 0 2208 1424
+use outhier 1536 1111 100 0 zones
+xform 0 1552 1152
+use outhier 1536 2135 100 0 switches
+xform 0 1552 2176
 use egenSubD 704 2272 100 0 SwitchWord
 xform 0 656 1840
 p 592 2208 70 0 -1 FTA:LONG
@@ -97,99 +100,36 @@ p 576 1408 100 0 1 SNAM:mkSwitchWord
 p 512 1344 70 0 0 def(INPK):0.0
 use gmMaskLvdt 1024 1063 100 0 gmMaskLvdt#426
 xform 0 1168 1152
-use hwin -448 1927 100 0 hwin#366
-xform 0 -352 1968
-p -336 1920 100 512 -1 val(in):#<$(grpNLim)>
-use hwin -448 2119 100 0 hwin#365
-xform 0 -352 2160
-p -336 2112 100 512 -1 val(in):#<$(grpPLim)>
-use hwin -448 2311 100 0 hwin#364
-xform 0 -352 2352
-p -336 2304 100 512 -1 val(in):#<$(relNLim)>
-use hwin -448 2503 100 0 hwin#363
-xform 0 -352 2544
-p -336 2496 100 512 -1 val(in):#<$(relPLim)>
-use hwin -448 1351 100 0 hwin#317
-xform 0 -352 1392
-p -320 1344 100 512 -1 val(in):#<$(casInst)>
-use hwin -448 1735 100 0 hwin#179
-xform 0 -352 1776
-p -320 1728 100 512 -1 val(in):#<$(slotAlign)>
-use hwin -448 775 100 0 hwin#135
-xform 0 -352 816
-p -320 768 100 512 -1 val(in):#<$(fpOcc)>
-use hwin -448 967 100 0 hwin#132
-xform 0 -352 1008
-p -320 960 100 512 -1 val(in):#<$(ifuAtFp)>
-use hwin -448 1159 100 0 hwin#130
-xform 0 -352 1200
-p -320 1152 100 512 -1 val(in):#<$(maskAtFp)>
 use hwin -448 1543 100 0 hwin#146
 xform 0 -352 1584
 p -320 1536 100 512 -1 val(in):#<$(slotOcc)>
-use ebis -32 2000 100 0 GrpNotGripped
-xform 0 -96 1936
-p -224 1872 70 0 1 DTYP:$(xycom)
-p -64 1856 70 0 1 ONAM:Unknown
-p -224 2000 100 0 1 PV:$(top)$(dev)
-p -224 1856 70 0 1 SCAN:Passive
-p -64 1872 70 0 1 ZNAM:Gripped
-use ebis -32 2192 100 0 GrpNotReleased
-xform 0 -96 2128
-p -224 2064 70 0 1 DTYP:$(xycom)
-p -64 2048 70 0 1 ONAM:Unknown
-p -224 2192 100 0 1 PV:$(top)$(dev)
-p -224 2048 70 0 1 SCAN:Passive
-p -64 2064 70 0 1 ZNAM:Released
-use ebis -32 2384 100 0 RelNotReleased
-xform 0 -96 2320
-p -224 2256 70 0 1 DTYP:$(xycom)
-p -64 2240 70 0 1 ONAM:Unknown
-p -224 2384 100 0 1 PV:$(top)$(dev)
-p -224 2240 70 0 1 SCAN:Passive
-p -64 2256 70 0 1 ZNAM:Released
-use ebis -32 2576 100 0 RelNotLocked
-xform 0 -96 2512
-p -224 2448 70 0 1 DTYP:$(xycom)
-p -64 2432 70 0 1 ONAM:Unknown
-p -224 2576 100 0 1 PV:$(top)$(dev)
-p -224 2432 70 0 1 SCAN:.1 second
-p -64 2448 70 0 1 ZNAM:Locked
-use ebis -32 1424 100 0 NotCassette
-xform 0 -96 1360
-p -224 1296 70 0 1 DTYP:$(xycom)
-p -64 1280 70 0 1 ONAM:Unknown
-p -224 1424 100 0 1 PV:$(top)$(dev)
-p -224 1280 70 0 1 SCAN:Passive
-p -64 1296 70 0 1 ZNAM:CassetteInstalled
-use ebis -32 1808 100 0 NotAligned
-xform 0 -96 1744
-p -224 1680 70 0 1 DTYP:$(xycom)
-p -64 1664 70 0 1 ONAM:Unknown
-p -224 1808 100 0 1 PV:$(top)$(dev)
-p -224 1664 70 0 1 SCAN:$(iointr)
-p -64 1680 70 0 1 ZNAM:Aligned
-use ebis -32 848 100 0 NotInFp
-xform 0 -96 784
-p -224 720 70 0 1 DTYP:$(xycom)
-p -64 704 70 0 1 ONAM:Unknown
-p -224 848 100 0 1 PV:$(top)$(dev)
-p -224 704 70 0 1 SCAN:Passive
-p -64 720 70 0 1 ZNAM:InFp
-use ebis -32 1040 100 0 IfuNotIn
-xform 0 -96 976
-p -224 912 70 0 1 DTYP:$(xycom)
-p -64 896 70 0 1 ONAM:Unknown
-p -224 1040 100 0 1 PV:$(top)$(dev)
-p -224 896 70 0 1 SCAN:Passive
-p -64 912 70 0 1 ZNAM:IfuIn
-use ebis -32 1232 100 0 MaskNotIn
-xform 0 -96 1168
-p -224 1104 70 0 1 DTYP:$(xycom)
-p -64 1088 70 0 1 ONAM:Unknown
-p -224 1232 100 0 1 PV:$(top)$(dev)
-p -224 1088 70 0 1 SCAN:Passive
-p -64 1104 70 0 1 ZNAM:MaskIn
+use hwin -448 1159 100 0 hwin#130
+xform 0 -352 1200
+p -320 1152 100 512 -1 val(in):#<$(maskAtFp)>
+use hwin -448 967 100 0 hwin#132
+xform 0 -352 1008
+p -320 960 100 512 -1 val(in):#<$(ifuAtFp)>
+use hwin -448 775 100 0 hwin#135
+xform 0 -352 816
+p -320 768 100 512 -1 val(in):#<$(fpOcc)>
+use hwin -448 1735 100 0 hwin#179
+xform 0 -352 1776
+p -320 1728 100 512 -1 val(in):#<$(slotAlign)>
+use hwin -448 1351 100 0 hwin#317
+xform 0 -352 1392
+p -320 1344 100 512 -1 val(in):#<$(casInst)>
+use hwin -448 2503 100 0 hwin#363
+xform 0 -352 2544
+p -336 2496 100 512 -1 val(in):#<$(relPLim)>
+use hwin -448 2311 100 0 hwin#364
+xform 0 -352 2352
+p -336 2304 100 512 -1 val(in):#<$(relNLim)>
+use hwin -448 2119 100 0 hwin#365
+xform 0 -352 2160
+p -336 2112 100 512 -1 val(in):#<$(grpPLim)>
+use hwin -448 1927 100 0 hwin#366
+xform 0 -352 1968
+p -336 1920 100 512 -1 val(in):#<$(grpNLim)>
 use ebis -32 1616 100 0 NotInSlot
 xform 0 -96 1552
 p -224 1488 70 0 1 DTYP:$(xycom)
@@ -197,6 +137,69 @@ p -64 1472 70 0 1 ONAM:Unknown
 p -224 1616 100 0 1 PV:$(top)$(dev)
 p -224 1472 70 0 1 SCAN:Passive
 p -64 1488 70 0 1 ZNAM:InSlot
+use ebis -32 1232 100 0 MaskNotIn
+xform 0 -96 1168
+p -224 1104 70 0 1 DTYP:$(xycom)
+p -64 1088 70 0 1 ONAM:Unknown
+p -224 1232 100 0 1 PV:$(top)$(dev)
+p -224 1088 70 0 1 SCAN:Passive
+p -64 1104 70 0 1 ZNAM:MaskIn
+use ebis -32 1040 100 0 IfuNotIn
+xform 0 -96 976
+p -224 912 70 0 1 DTYP:$(xycom)
+p -64 896 70 0 1 ONAM:Unknown
+p -224 1040 100 0 1 PV:$(top)$(dev)
+p -224 896 70 0 1 SCAN:Passive
+p -64 912 70 0 1 ZNAM:IfuIn
+use ebis -32 848 100 0 NotInFp
+xform 0 -96 784
+p -224 720 70 0 1 DTYP:$(xycom)
+p -64 704 70 0 1 ONAM:Unknown
+p -224 848 100 0 1 PV:$(top)$(dev)
+p -224 704 70 0 1 SCAN:Passive
+p -64 720 70 0 1 ZNAM:InFp
+use ebis -32 1808 100 0 NotAligned
+xform 0 -96 1744
+p -224 1680 70 0 1 DTYP:$(xycom)
+p -64 1664 70 0 1 ONAM:Unknown
+p -224 1808 100 0 1 PV:$(top)$(dev)
+p -224 1664 70 0 1 SCAN:$(iointr)
+p -64 1680 70 0 1 ZNAM:Aligned
+use ebis -32 1424 100 0 NotCassette
+xform 0 -96 1360
+p -224 1296 70 0 1 DTYP:$(xycom)
+p -64 1280 70 0 1 ONAM:Unknown
+p -224 1424 100 0 1 PV:$(top)$(dev)
+p -224 1280 70 0 1 SCAN:Passive
+p -64 1296 70 0 1 ZNAM:CassetteInstalled
+use ebis -32 2576 100 0 RelNotLocked
+xform 0 -96 2512
+p -224 2448 70 0 1 DTYP:$(xycom)
+p -64 2432 70 0 1 ONAM:Unknown
+p -224 2576 100 0 1 PV:$(top)$(dev)
+p -224 2432 70 0 1 SCAN:.1 second
+p -64 2448 70 0 1 ZNAM:Locked
+use ebis -32 2384 100 0 RelNotReleased
+xform 0 -96 2320
+p -224 2256 70 0 1 DTYP:$(xycom)
+p -64 2240 70 0 1 ONAM:Unknown
+p -224 2384 100 0 1 PV:$(top)$(dev)
+p -224 2240 70 0 1 SCAN:Passive
+p -64 2256 70 0 1 ZNAM:Released
+use ebis -32 2192 100 0 GrpNotReleased
+xform 0 -96 2128
+p -224 2064 70 0 1 DTYP:$(xycom)
+p -64 2048 70 0 1 ONAM:Unknown
+p -224 2192 100 0 1 PV:$(top)$(dev)
+p -224 2048 70 0 1 SCAN:Passive
+p -64 2064 70 0 1 ZNAM:Released
+use ebis -32 2000 100 0 GrpNotGripped
+xform 0 -96 1936
+p -224 1872 70 0 1 DTYP:$(xycom)
+p -64 1856 70 0 1 ONAM:Unknown
+p -224 2000 100 0 1 PV:$(top)$(dev)
+p -224 1856 70 0 1 SCAN:Passive
+p -64 1872 70 0 1 ZNAM:Gripped
 use gmosBorderC -864 263 100 0 gmosBorderC#333
 xform 0 816 1568
 p 2388 392 100 512 1 File:/sw3/gmos/development/gmosHIA/rel/capfast/gmMaskSensors.sch
