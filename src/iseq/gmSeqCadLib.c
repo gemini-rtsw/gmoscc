@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.10  2005/09/01 23:22:56  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.9  2005/09/01 20:32:45  gemvx
  * Disabled observing check
  *
@@ -165,6 +168,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 #include  <lstLib.h>
 #include  <strLib.h>
 #include  <taskLib.h>
+#include  <logLib.h>
 #include  <rebootLib.h>
 #include  <sysLib.h>
 
@@ -206,11 +210,38 @@ static gmosLookupTable lambdaFocusLut;       /* Wavelength vs. focus offset LUT 
 
 int gmSeqDbgLevel = DBG_NONE;                /* Global debug level flag, initialised to DBG_NONE */
 
+/*
+ * Radians <-> degrees conversion macros
+ */
+#define RAD2DEG(x)	(x * 57.29577951308232)
+#define DEG2RAD(x)	(x * 0.017453292519943)
+
+/*
+ * Maximum estimated size of the grating equation lookup table.
+ * The table will be reallocated if needed.
+ */
+#define MAX_GR_TABLE	70
+
+/*
+ * Grating equation lookup table structure.
+ */
+typedef struct GRTABLE {
+    double greq;
+    double tilt;
+} GRTABLE;
+
+static int	gmSeqGratTblCount = 0;
+static GRTABLE	*gmSeqGratTblPtr  = NULL;
+
 /* Function definitions */
 
-long gmSeqMaskLUTread( char * lutfilename );
-long gmSeqFilterLUTread( char * lutfilename );
-long gmSeqGratingLUTread( char * lutfilename );
+long	gmSeqMaskLUTread (char * lutfilename);
+long	gmSeqFilterLUTread (char * lutfilename);
+long	gmSeqGratingLUTread (char * lutfilename);
+int	gmSeqGratingEqLUTread (const char *);
+double	gmSeqAdjustedWavelength (double, double, char *);
+int	gmSeqGratingEqLUTinterp (double, double *);
+int	gmSeqGratingEqLUTsearch (double);
 
 /******************************************************************************/
 
@@ -961,8 +992,11 @@ long gmSeqCadGrating(struct cadRecord *pcad)
     static double lambdaOffset;         /* Focus offset interpolated from LUT    */
     static double focusOffset;          /* Focus offset for this grating         */
     static long gratingOrder;           /* Grating order required                */
+    static double adjCenWavelength;
+    static double adjEffWavelength;
     char wavelengthString[MAX_STRING_SIZE];
     char gratingOrderString[MAX_STRING_SIZE];    
+    char maskString[MAX_STRING_SIZE];    
     static long selectModeOut;
     static char barcodeId[ MAX_STRING_SIZE];
     static double tiltAngle;
@@ -1065,6 +1099,8 @@ long gmSeqCadGrating(struct cadRecord *pcad)
              gratingOrder  = 0;
              cenWavelength = 0.0;
              effWavelength = 0.0;
+             adjCenWavelength = 0.0;
+             adjEffWavelength = 0.0;
              lambdaOffset  = 0.0;
              linesPerMm    = 0;
              blazeDir      = 0;
@@ -1107,9 +1143,9 @@ long gmSeqCadGrating(struct cadRecord *pcad)
                 }
 
 /*
- * If the grating order is greater than zero, check that specified central wavelength
- * is a valid number and in-range. If the grating order is zero the central wavelength
- * is ignored.
+ * If the grating order is greater than zero, check that specified central
+ * wavelength is a valid number and in-range. If the grating order is zero
+ * the central wavelength is ignored.
  */
 
                 if ( gratingOrder > 0 )
@@ -1144,19 +1180,31 @@ long gmSeqCadGrating(struct cadRecord *pcad)
                    {
                       effWavelength = cenWavelength;
                    }
+
+/*
+ * Adjust wavelengths when using the IFU-R and IFU-B masks.
+ */
+		strncpy(maskString, (char *)pcad->f, MAX_STRING_SIZE-1);
+		adjCenWavelength = gmSeqAdjustedWavelength (cenWavelength,
+					linesPerMm, maskString);
+		adjEffWavelength = gmSeqAdjustedWavelength (effWavelength,
+					linesPerMm, maskString);
+
                 }
                 else
                 {
  /*
   * Zero order - central and effective wavelengths have no meaning.
   */
-
                    cenWavelength = 0.0;
                    effWavelength = 0.0;
+		   adjCenWavelength = 0.0;
+		   adjEffWavelength = 0.0;
                 }
 
 #ifdef VERBOSE
                 printf ("Central and effective wavelengths: %f %f\n", cenWavelength, effWavelength);
+                printf ("Adjusted central and effective wavelengths: %f %f\n", adjCenWavelength, adjEffWavelength);
 #endif
 
 /*
@@ -1165,9 +1213,9 @@ long gmSeqCadGrating(struct cadRecord *pcad)
  * set offset focus value to zero.)
  */
 
-                if ( effWavelength >= MIN_WAVELENGTH )
+                if ( adjEffWavelength >= MIN_WAVELENGTH )
                 {
-                   ret = gmosLutApply(effWavelength, &lambdaFocusLut, &lambdaOffset);
+                   ret = gmosLutApply(adjEffWavelength, &lambdaFocusLut, &lambdaOffset);
                    if (ret != GMOSLUT_S_OK)
                    {
                       gmosLutMessage(ret, STRING_BUF_SZ, buff);
@@ -1186,7 +1234,7 @@ long gmSeqCadGrating(struct cadRecord *pcad)
 
                 if ( blazeDir >= 0 )
                 {
-                   if ((gratingSci2Tilt(cenWavelength, gratingOrder, (double)linesPerMm, 
+                   if ((gratingSci2Tilt(adjCenWavelength, gratingOrder, (double)linesPerMm, 
                         &tiltAngle)) != 0)
                    {
                       strncpy(pcad->mess, "Failed to calculate grating angle",
@@ -1196,7 +1244,7 @@ long gmSeqCadGrating(struct cadRecord *pcad)
                 }
                 else
                 {
-                   if ((gratingSci2Tilt(cenWavelength, -gratingOrder, (double)linesPerMm, 
+                   if ((gratingSci2Tilt(adjCenWavelength, -gratingOrder, (double)linesPerMm, 
                         &tiltAngle)) != 0)
                    {
                        strncpy(pcad->mess, "Failed to calculate grating angle",
@@ -1216,7 +1264,8 @@ long gmSeqCadGrating(struct cadRecord *pcad)
 
 /*
  * Get the effective wavelength for the focus offset from fields E or C.
- * Set order to 1 (spectroscopy mode) if valid wavelength specified or 0 if not specified.
+ * Set order to 1 (spectroscopy mode) if valid wavelength specified or 0
+ * if not specified.
  */       
 
                 strncpy(wavelengthString, (char *)pcad->e, MAX_STRING_SIZE-1);
@@ -1288,6 +1337,8 @@ long gmSeqCadGrating(struct cadRecord *pcad)
           *(double *)pcad->vali = lambdaOffset;
           *(double *)pcad->valj = focusOffset;
           *(double *) pcad->valk = effWavelength;
+          *(double *) pcad->vall = adjCenWavelength;
+          *(double *) pcad->valm = adjEffWavelength;
 
           DBGMSG(DBG_FULL,"CAD grSelect. Output values A..K: ");
           DBGMSGINT(DBG_FULL,"A: ",*(long *)pcad->vala);
@@ -1301,6 +1352,8 @@ long gmSeqCadGrating(struct cadRecord *pcad)
           DBGMSGREAL(DBG_FULL,"I: ",*(double *)pcad->vali);
           DBGMSGREAL(DBG_FULL,"J: ",*(double *)pcad->valj);
           DBGMSGREAL(DBG_FULL,"K: ",*(double *)pcad->valk);
+          DBGMSGREAL(DBG_FULL,"L: ",*(double *)pcad->vall);
+          DBGMSGREAL(DBG_FULL,"M: ",*(double *)pcad->valm);
 
           status = CAD_ACCEPT;
           break;
@@ -1390,6 +1443,7 @@ long gmSeqReboot (struct subRecord *psub)
  *   c => gratings lut file name
  *   d => lamdafocus lut file name
  *   e => masks lut file name
+ *   f => grating equation lut file name
  *
  *   Function value:
  *   (<)  status  (long) Return status, 0 = OK
@@ -1402,7 +1456,7 @@ long gmSeqReboot (struct subRecord *psub)
  */
 long gmSeqCadInit (struct cadRecord *pcad)
 {
-     long fstatus, gstatus, mstatus;
+     long fstatus, gstatus, mstatus, gestatus;
      long status = CAD_ACCEPT;
      char lutName[STRING_BUF_SZ];
       
@@ -1472,11 +1526,28 @@ long gmSeqCadInit (struct cadRecord *pcad)
                DBGMSG(DBG_MIN,"Initialized grating database OK");
           }
 
-          if ((mstatus != CAD_ACCEPT) || (fstatus != CAD_ACCEPT) || (gstatus != CAD_ACCEPT)) 
+          strncpy (lutName, (char *)pcad->a, HALF_BUF_SZ);
+          strcat  (lutName, "/");
+          strncat (lutName, (char *)pcad->f, HALF_BUF_SZ-2);
+
+          gestatus = gmSeqGratingEqLUTread(lutName);
+          if (gestatus != CAD_ACCEPT)
+          {
+               strncpy(pcad->mess, "Error initializing Grating eq. database",
+                       MAX_STRING_SIZE-1);
+               DBGMSG(DBG_MIN,"gmSeqCadInit: Error initialising Grating eq. database");
+          }
+          else
+          {
+               DBGMSG(DBG_MIN,"Initialized grating database OK");
+          }
+
+          if ((mstatus != CAD_ACCEPT) || (fstatus != CAD_ACCEPT) ||
+	      (gstatus != CAD_ACCEPT) || (gestatus != CAD_ACCEPT)) 
                status = CAD_REJECT;
           else
           {
-               DBGMSG(DBG_MIN,"Initialized all three databases OK");
+               DBGMSG(DBG_MIN,"Initialized all databases OK");
           }
 
           /* Ignore any errors reading lambdaFocus.lut */
@@ -2450,7 +2521,8 @@ n", focusOffset);*/
  		/* Output the location,  barcode ID and name  */
  		if (maskLocation == 0) {
                    *(long *) pcad->vala = barcodeID;
-                   *(char *) pcad->vald = maskname;
+		   strncpy ((char *) pcad->vald, maskname, MAX_STRING_SIZE-1);
+                   /* *(char *) pcad->vald = maskname; */
                    }
 		*(long *)pcad->valb = maskLocation;
 		/* Output mask offset */
@@ -2774,3 +2846,462 @@ long gmSeqCadDtaPos(struct cadRecord *pcad)
    return(status);
 }
 
+/*+
+ * FUNCTION NAME:
+ * gmSeqGratingEqLUTread
+ *
+ * INVOCATION:
+ * gmSeqGratingEqLUTread (fname)
+ *
+ * PARAMETERS: (">" input, "!" modified, "<" output)  
+ * (>) fname (char *)	table file name
+ *
+ * FUNCTION VALUE:
+ * (int)	CAD_ACCEPT if the table was read sucessfully into memory
+ *		CAD_REJECT otherwise
+ *   
+ * PURPOSE
+ * Read the grating table into memory
+ * 
+ * DESCRIPTION
+ * This routine reads the grating table, which is a two column text file,
+ * containing the "gating equation" value and the tilt angle into memory.
+ * This table was generated using the following formula:
+ *
+ *  for (tilt = 1; tilt <= 65; tilt += 1) {
+ *      greq = cos (y * PI / 180.0) + cos ((y + 50.0) * PI / 180.0)
+ *  }
+ *
+ * A look up table is simpler since the inverse transformation is needed.
+ * The values in the table are used later to calculate the wavelength
+ * correction when the red or blue IFU's are used.
+ * 
+ * The table in memory is freed if already existed and will be reallocated
+ * dynamically to make room for the contents of the file. Blank lines, lines
+ * starting with a '#', or lines that do not contain two double numbers
+ * will be ignored.
+ * 
+ * EXTERNAL VARIABLES:
+ * gmSeqGratTblCount, gmSeqGratTblPtr
+ *
+ * PRIOR REQUIREMENTS:
+ * None
+ *
+ * DEFICIENCIES:
+ * None
+ *-
+ */
+int gmSeqGratingEqLUTread (const char *fname)
+{
+	FILE	*fp;
+	GRTABLE	*ptr;
+	double	x, y;
+	int	size;
+	char	line[80];
+
+	/*
+	 * Open grating table. Return CAD_REJECT if the file cannot
+	 * be opened. Print an error message on the console if that's
+	 * the case.
+	 */
+	if ((fp = fopen (fname, "r")) == NULL) {
+	    logMsg ("Cannot open grating equation table %s\n",
+		    (int) fname, 0,0,0,0,0);
+	    return CAD_REJECT;
+	}
+
+	/*
+	 * Free up old table if this is not the first time is read.
+	 */
+	if (gmSeqGratTblPtr != NULL) {
+	    free (gmSeqGratTblPtr);
+	    gmSeqGratTblCount = 0;
+	    gmSeqGratTblPtr   = NULL;
+	}
+
+	/*
+	 * Allocate space in the table for MAX_GR_TABLE entries.
+	 * The table will be reallocated if more space is needed.
+	 */
+	size = MAX_GR_TABLE;
+	gmSeqGratTblPtr = (GRTABLE *) malloc (size * sizeof (GRTABLE));
+	if (gmSeqGratTblPtr == NULL) {
+	    logMsg ("Cannot allocate grating equation table\n",
+		    0,0,0,0,0,0);
+	    fclose (fp);
+	    return CAD_REJECT;
+	}
+
+	/*
+	 * Read file lines. Skip lines starting with a '#' or that do
+	 * not have two double numbers. Reallocate the table as needed.
+	 */
+	while (fgets (line, 80, fp) != NULL) {
+	    if (line[0] == '#')
+		continue;
+	    if (sscanf (line, "%lg %lg", &x, &y) == 2) {
+#ifdef 0
+printf ("count=%d, size=%d, x=%g, y=%g\n", gmSeqGratTblCount, size, x, y);
+#endif
+		(gmSeqGratTblPtr + gmSeqGratTblCount)->greq = x;
+		(gmSeqGratTblPtr + gmSeqGratTblCount)->tilt = y;
+		gmSeqGratTblCount++;
+		if (gmSeqGratTblCount >= size) {
+		    size += (size * 0.3);
+#ifdef 0
+fprintf (stderr, "realloc, size=%d\n", size);
+#endif
+		    ptr = (GRTABLE *) realloc (gmSeqGratTblPtr,
+					       size * sizeof (GRTABLE));
+		    if (ptr == NULL) {
+			logMsg ("Cannot reallocate grating equation table\n",
+				0,0,0,0,0,0);
+			fclose (fp);
+			return CAD_REJECT;
+		    } else
+			gmSeqGratTblPtr = ptr;
+		}
+	    }
+	}
+
+	fclose (fp);
+
+	return CAD_ACCEPT;
+}
+
+/*+
+ * FUNCTION NAME:
+ * gmSeqAdjustedWavelength
+ *
+ * INVOCATION:
+ * gmSeqAdjustedWavelength (wavelen, lpmm, mask)
+ *
+ * PARAMETERS: (">" input, "!" modified, "<" output)  
+ * (>) wavelen (double)		wavelength to correct
+ * (>) lpmm (double)		lines per mm
+ * (>) mask (char *)		mask name (e.g. IFU-R)
+ *
+ * FUNCTION VALUE:
+ * (double)	corrected wavelength
+ *   
+ * PURPOSE
+ * Correct the center wavelength when an IFU mask is in the beam
+ * 
+ * DESCRIPTION
+ * When the red or blue IFU's are in use the center wavelength needs
+ * to be in a different part of the CCD. This routine calculates the
+ * corrected wavelength that needs to be used to make that happen.
+ * The algorithm used was written by Bryan Miller as an IRAF script
+ * and then ported to C to be used in EPICS.
+ * The uncorrected wavelength will be returned in the mask is empty
+ * or if it's not one of the four possible blue or red IFU's.
+ * 
+ * EXTERNAL VARIABLES:
+ * None
+ *
+ * PRIOR REQUIREMENTS:
+ * The grating equation table must be loaded in memory
+ *
+ * DEFICIENCIES:
+ * The uncorrected wavelength will be returned if there's an error when
+ * trying to interpolate between two points of the table (empty table).
+ *-
+ */
+double gmSeqAdjustedWavelength (double wavelen, double lpmm, char *mask)
+{
+	double	greq, tilt;
+	double	scale, asecmm;
+	double	a, resol, nmppx, slitsep, wshift;
+	int	wsign;
+
+#if 0
+	printf ("wavelength         = %.15g\n", wavelen);
+	printf ("lpmm               = %.15g\n", lpmm);
+	printf ("mask               = %s\n", mask);
+	printf ("\n");
+#endif
+
+	/*
+	 * Check whether the mask is either a red or blue IFU.
+	 * An empty mask won't be considered as an error.
+	 * Otherwise return input wavelength untouched.
+	 */
+	if (strcmp (mask, "IFU-R")    == 0 ||
+	    strcmp (mask, "IFU-NS-R") == 0) {
+	    wsign = 1;
+	} else if (strcmp (mask, "IFU-B")    == 0 ||
+		   strcmp (mask, "IFU-NS-B") == 0) {
+	    wsign = -1;
+	} else {
+	    return wavelen;
+	}
+
+#if 0
+	printf ("wsign              =%d\n", wsign);
+#endif
+
+	/*
+	 * Calculate the grating equation value and interpolate
+	 * the tilt value from the table.
+	 */
+	greq = (wavelen * lpmm) / 1.0e6;
+	if (gmSeqGratingEqLUTinterp (greq, &tilt) == ERROR)
+	    return wavelen;
+
+#if 0
+	printf ("greq               = %.15g\n", greq);
+	printf ("tilt (deg)         = %.15g\n", tilt);
+	printf ("\n");
+#endif
+
+	/*
+	 * The following algorithm was copied from Bryan's IRAF
+	 * script with minor modifications when ported to C.
+	 */
+	scale   = 0.073;
+	asecmm  = 1.611444;
+	tilt    = DEG2RAD(tilt);
+	a       = sin (tilt + 0.872665) / sin (tilt);
+	resol   = 206265.0 * greq / (0.31 * 80.0 * sin (tilt));
+	nmppx   = a * scale * wavelen / (resol * 0.31);
+	slitsep = 175.0 * asecmm / (scale * a);
+	greq    = (wavelen * lpmm) / 1.0e6;
+	wshift  = wsign * (slitsep / 2.0) * nmppx;
+
+#if 0
+	printf ("tilt (rad)         = %.15g\n", tilt);
+	printf ("a                  = %.15g\n", a);
+	printf ("resolution         = %.15g\n", resol);
+	printf ("nm/pix             = %.15g\n", nmppx);
+	printf ("slit separation    = %.15g\n", slitsep);
+	printf ("wavelength shift   = %.15g\n", wshift);
+#endif
+
+	return (wavelen + wshift);
+}
+
+/*+
+ * FUNCTION NAME:
+ * gmSeqGratingEqLUTinterp
+ *
+ * INVOCATION:
+ * gmSeqGratingEqLUTinterp (x, &y)
+ *
+ * PARAMETERS: (">" input, "!" modified, "<" output)  
+ * (>) x (double)	grating equation value
+ * (<) y (double *)	interpolated tilt value
+ *
+ * FUNCTION VALUE:
+ * (int)	OK if the interpolation was sucessfull
+ *		ERROR otherwise
+ *   
+ * PURPOSE
+ * Interpolate tilt value for a given grating equation value
+ * 
+ * DESCRIPTION
+ * This routine interpolates the tilt value for a given grating equation
+ * value using the grating table in memory, using a simple linear
+ * interpolation algorithm. It returns an error if the grating equation
+ * value is not found within the table boundaries, or if the slope is
+ * too small (division by zero).
+ * 
+ * EXTERNAL VARIABLES:
+ * gmSeqGratTblPtr
+ *
+ * PRIOR REQUIREMENTS:
+ * The gating equation table should have valid entries
+ *
+ * DEFICIENCIES:
+ * The algorithm does not extrapolate
+ *-
+ */
+int gmSeqGratingEqLUTinterp (double x, double *y)
+{
+	int	index;
+	double	x1, x2, y1, y2;
+	double	slope;
+
+	index = gmSeqGratingEqLUTsearch (x);
+	if (index < 0)
+	    return ERROR;
+
+	x2 = (gmSeqGratTblPtr + index    )->greq;
+	x1 = (gmSeqGratTblPtr + index - 1)->greq;
+	y2 = (gmSeqGratTblPtr + index    )->tilt;
+	y1 = (gmSeqGratTblPtr + index - 1)->tilt;
+
+	slope = (y2 - y1) / (x2 - x1);
+	if (fabs (slope) < 0.000001)
+	    return ERROR;
+
+	*y = y1 + (x - x1) * slope;
+
+	return OK;
+}
+
+/*+
+ * FUNCTION NAME:
+ * gmSeqGratingEqLUTsearch
+ *
+ * INVOCATION:
+ * gmSeqGratingEqLUTsearch (x)
+ *
+ * PARAMETERS: (">" input, "!" modified, "<" output)  
+ * (>) x (double)	value to look for
+ *
+ * FUNCTION VALUE:
+ * (int)	index to the closest value in the table less than 'x'
+ *		-1 if the value is not within the table boundaries, or
+ *		-1 if the table has less than two elements
+ *   
+ * PURPOSE
+ * Look for a value in the grating equation table
+ * 
+ * DESCRIPTION
+ * The routine will return the index to the x value in the table less
+ * than the value requested. It will return an error if the table has
+ * not been initialized, if the table has less than two elements or if
+ * the requested value is not within the table boundaries.
+ * 
+ * EXTERNAL VARIABLES:
+ * gmSeqGratTblCount, gmSeqGratTblPtr
+ *
+ * PRIOR REQUIREMENTS:
+ * 
+ *
+ * DEFICIENCIES:
+ * None
+ *-
+ */
+int gmSeqGratingEqLUTsearch (double x)
+{
+	int	dir;
+	int	index, lower, upper;
+	double	xi, xl, xu;
+
+	/*
+	 * Make sure the table contains at least two entries.
+	 * Return an error if that's not the case.
+	 */
+	if (gmSeqGratTblCount < 2)
+	    return -1;
+
+	/*
+	 * Initialize the lower and upper indices. These point
+	 * to the first and last table entries initially.
+	 */
+	lower = 0;
+	upper = gmSeqGratTblCount - 1;
+
+	/*
+	 * Determine table direction. A "1" means that the table has
+	 * increasing "greq" values and a "-1" decreasing values.
+	 */
+	dir = ((gmSeqGratTblPtr + upper)->greq -
+		gmSeqGratTblPtr->greq > 0) ? 1 : -1;
+
+#ifdef 0
+printf ("dir=%d, lower=%d, upper=%d\n", dir, lower, upper);
+#endif
+
+	/*
+	 * Check whether the value to search for is within the table
+	 * boundaries. Return an error if that's not the case.
+	 */
+	xl = (gmSeqGratTblPtr + lower)->greq;
+	xu = (gmSeqGratTblPtr + upper)->greq;
+	if ((x - xu) * dir > 0 || (xl - x) * dir > 0) {
+#ifdef VERBOSE
+printf ("Value out of range x=%g, xl=%g, xu=%g\n", x, xl, xu);
+#endif
+	    logMsg ("Grating value out of table boundaries %lg\n",
+		    (double) x, 0,0,0,0,0); 
+	    return (-1);
+	}
+
+	/*
+	 * Perform a binary search over the table.
+	 */
+	while (upper - lower > 1) {
+	    index = (lower + upper) / 2;
+	    xi = (gmSeqGratTblPtr + index)->greq;
+	    xl = (gmSeqGratTblPtr + lower)->greq;
+	    xu = (gmSeqGratTblPtr + upper)->greq;
+
+#ifdef 0
+fprintf (stderr, "index=%d, lower=%d, upper=%d, xi=%g, xu=%g, xl=%g x=%g\n",
+index, lower, upper, xi, xu, xl, x);
+#endif
+
+	    if ((xi - x) * dir > 0) {
+		upper = index;
+	    } else {
+		lower = index;
+	    }
+	}
+
+	/*
+	 * At this point the value to search for is between the lower
+	 * and upper entries found. Make sure to return the index of
+	 * the table entry containing a value less or equal than the
+	 * value requested.
+	 */
+	if (xl < x)
+	    index = lower;
+	else
+	    index = upper;
+
+printf ("found index=%d, x=%g\n", index, (gmSeqGratTblPtr + index)->greq);
+
+	return index;
+}
+
+/*+
+ * FUNCTION NAME:
+ * gmSeqGratingTableDump
+ *
+ * INVOCATION:
+ * gmSeqGratingTableDump ()
+ *
+ * PARAMETERS: (">" input, "!" modified, "<" output)  
+ * None
+ *
+ * FUNCTION VALUE:
+ * (int)	Number of entries in the table
+ *   
+ * PURPOSE
+ * Dump the grating table to the console
+ * 
+ * DESCRIPTION
+ * This routine dumps the contents of the grating table (grating and
+ * tilt pairs) on the console for debugging purposes.
+ * 
+ * EXTERNAL VARIABLES:
+ * gmSeqGratTblCount, gmSeqGratTblPtr
+ *
+ * PRIOR REQUIREMENTS:
+ * None
+ *
+ * DEFICIENCIES:
+ * None
+ *-
+ */
+int gmSeqGratingTableDump ()
+{
+	int	n, ret;
+
+	ret = gmSeqGratTblCount;
+
+	if (gmSeqGratTblPtr != NULL) {
+	    for (n = 0; n < gmSeqGratTblCount; n++) {
+		printf ("%3d: %-14g %-10g\n", n,
+			(gmSeqGratTblPtr + n)->greq,
+			(gmSeqGratTblPtr + n)->tilt);
+	    }
+	} else {
+	    printf ("Null table");
+	    ret = -1;
+	}
+
+	return ret;
+}
