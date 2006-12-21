@@ -1,3 +1,39 @@
+September 2006 pgigoux
+------------------
+Added automatic wavelength adjustment for IFU-1 (SCT-65)
+Fixed hard coded dependency on the IFU barcode
+Added mask name to the sequencer SAD
+Fixed minor bugs in the code and dm screens
+Files changed:
+    adl/gmSeqSad.adl
+    adl/gmosTop.adl
+    capfast/gmMaskSensors.sch
+    capfast/gmSeqCadCarE.sch
+    capfast/gmSeqGrating.sch
+    capfast/gmSeqLookupTables.sch
+    capfast/gmSeqMask.sch
+    capfast/gmSeqSad.sch
+    src/CP/lut/Makefile.Vx
+    src/CP/lut/aux_30000011gr.lut
+    src/CP/lut/filters.lut
+    src/CP/lut/flt.lut
+    src/CP/lut/gr.lut
+    src/CP/lut/gratings.lut
+    src/CP/lut/masks.lut
+    src/CP/lut/msk.lut
+    src/CP/pv/gmSeq.pv
+    src/CP/pv/gmosCc.pv
+    src/MK/pv/gmSeq.pv
+    src/MK/pv/gmosCc.pv
+    src/gmos/gmMaskGenSubs.c
+    src/iseq/gmSeqCadLib.c
+Files added:
+    src/CP/lut/aux_30000007gr.lut
+    src/CP/lut/gratingeq.lut
+    src/MK/lut/gratingeq.lut
+Files removed:
+    adl/gmos_logo.gif
+
 V6-6 April 2006 aebbers
 ------------------
 some final tweaking and a bug fix in the OIWFS probe mapping
