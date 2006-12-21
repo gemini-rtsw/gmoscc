@@ -14,5 +14,10 @@ long   $(top)cc:debug.DIR      =      0;    # MARK directive
 long   $(top)cc:debug.DIR      =      3;    # START directive - set debugging mode now
 
 #
+# IFU mask barcode
+#
+string $(top)cc:ifuSelection.C	= "10000004";
+
+#
 # No other general parameters need to be changed.
 #
