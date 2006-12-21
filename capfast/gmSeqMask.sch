@@ -17,8 +17,9 @@ w 1240 1122 100 0 n#46 ecad8.mskPos.VAL 256 1120 2272 1120 outhier.VAL.p
 w 1510 1028 100 0 n#9 ecad8.mskPos.MESS 256 1088 784 1088 784 1024 2272 1024 outhier.MESS.p
 w -242 1092 100 0 n#8 inhier.ICID.P -464 1024 -384 1024 -384 1088 -64 1088 ecad8.mskPos.ICID
 w -282 1122 100 0 n#7 inhier.DIR.P -464 1120 -64 1120 ecad8.mskPos.DIR
-s 1504 896 100 0 Left here "just in case"
-s 1504 944 100 0 This event is probably not used - SMB
+s 1504 896 100 0 Now being used to copy the mask name to the SAD - PG
+s 1504 928 100 0 Left here "just in case"
+s 1504 960 100 0 This event is probably not used - SMB
 s -480 944 100 0 Input attributes:
 s -480 896 100 0 A: Mask or IFU ID
 s -480 848 100 0 B: Mask/IFU location
@@ -30,9 +31,10 @@ s -448 816 100 0 [IN-BEAM | OUT-OF-BEAM]
 use estringouts 1120 583 100 0 mskNameToSad
 xform 0 1248 656
 p 1200 656 100 0 0 DESC:mask name output of cad
+p 1104 736 100 0 1 EVNT:$(event)
 p 1056 462 100 0 0 OMSL:closed_loop
-p 1056 590 100 0 0 SCAN:Event
-p 1088 90 100 0 0 def(OUT):$(sad)mskName
+p 1296 736 100 0 1 SCAN:Event
+p 1424 640 100 0 -1 def(OUT):$(sad)mskName
 p 1376 640 75 768 -1 pproc(OUT):PP
 use elongouts 1016 360 100 0 mskAssemblyMode
 xform 0 1120 448

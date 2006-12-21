@@ -1,13 +1,13 @@
 [schematic2]
-uniq 53
+uniq 55
 [tools]
 [detail]
-w 3864 1803 100 0 n#47 elongouts.dcDisabled.VAL 3792 1792 3984 1792 3984 2080 4080 2080 gmSeqState.gmSeqState#35.DC
-w 3984 1755 100 0 n#47 junction 3952 1792 3952 1744 4064 1744 gmSeqHealth.gmSeqHealth#36.DC
-w 3880 2155 100 0 n#46 elongouts.ccDisabled.VAL 3792 2144 4016 2144 4016 2192 4080 2192 gmSeqState.gmSeqState#35.CC
-w 3968 1867 100 0 n#46 junction 3920 2144 3920 1856 4064 1856 gmSeqHealth.gmSeqHealth#36.CC
-w 3540 1819 100 2 n#41 elongouts.dcDisabled.DOL 3536 1824 3536 1824 hwin.hwin#43.in
-w 3540 2171 100 2 n#40 hwin.hwin#39.in 3536 2176 3536 2176 elongouts.ccDisabled.DOL
+w 3848 2235 100 0 n#47 elongouts.dcDisabled.VAL 3776 2224 3968 2224 3968 2512 4064 2512 gmSeqState.gmSeqState#35.DC
+w 3968 2187 100 0 n#47 junction 3936 2224 3936 2176 4048 2176 gmSeqHealth.gmSeqHealth#36.DC
+w 3864 2587 100 0 n#46 elongouts.ccDisabled.VAL 3776 2576 4000 2576 4000 2624 4064 2624 gmSeqState.gmSeqState#35.CC
+w 3952 2299 100 0 n#46 junction 3904 2576 3904 2288 4048 2288 gmSeqHealth.gmSeqHealth#36.CC
+w 3524 2251 100 2 n#41 elongouts.dcDisabled.DOL 3520 2256 3520 2256 hwin.hwin#43.in
+w 3524 2603 100 2 n#40 hwin.hwin#39.in 3520 2608 3520 2608 elongouts.ccDisabled.DOL
 s 4368 2800 150 0 gmSeqSad.sch
 s 1808 2736 220 0 GMOS Status and Alarm Database
 [cell use]
@@ -41,14 +41,14 @@ p 1952 608 100 0 0 FDSC:X offset applied to detector translation
 p 2096 912 100 0 1 FTVL:DOUBLE
 p 2288 912 100 0 1 PREC:2
 p 2096 976 100 0 1 SCAN:Passive
-use esirs 2624 1255 100 0 grEffWavelen
-xform 0 2832 1408
-p 2656 1552 100 0 -1 DESC:Grating effective wavelength
-p 2704 1328 100 0 1 EGU:nanometres
-p 2560 992 100 0 0 FDSC:Grating effective wavelength
-p 2704 1296 100 0 1 FTVL:DOUBLE
-p 2896 1296 100 0 1 PREC:2
-p 2704 1360 100 0 1 SCAN:Passive
+use esirs 2624 1271 100 0 grEffWavelen
+xform 0 2832 1424
+p 2656 1568 100 0 -1 DESC:Grating effective wavelength
+p 2704 1344 100 0 1 EGU:nanometres
+p 2560 1008 100 0 0 FDSC:Grating effective wavelength
+p 2704 1312 100 0 1 FTVL:DOUBLE
+p 2896 1312 100 0 1 PREC:2
+p 2704 1376 100 0 1 SCAN:Passive
 use esirs 840 2088 100 0 health
 xform 0 1024 2240
 p 928 2398 100 0 -1 DESC:GMOS health record
@@ -105,14 +105,14 @@ p 1952 1472 100 0 0 EGU:order
 p 1952 1408 100 0 0 FDSC:Grating order
 p 2096 1712 100 0 1 FTVL:LONG
 p 2096 1760 100 0 1 SCAN:Passive
-use esirs 2624 1655 100 0 grWavelen
-xform 0 2832 1808
-p 2656 1952 100 0 -1 DESC:Grating central wavelength
-p 2704 1728 100 0 1 EGU:nanometres
-p 2560 1392 100 0 0 FDSC:Grating central wavelength
-p 2704 1696 100 0 1 FTVL:DOUBLE
-p 2896 1696 100 0 1 PREC:2
-p 2704 1760 100 0 1 SCAN:Passive
+use esirs 2624 1671 100 0 grWavelen
+xform 0 2832 1824
+p 2656 1968 100 0 -1 DESC:Grating central wavelength
+p 2704 1744 100 0 1 EGU:nanometres
+p 2560 1408 100 0 0 FDSC:Grating central wavelength
+p 2704 1712 100 0 1 FTVL:DOUBLE
+p 2896 1712 100 0 1 PREC:2
+p 2704 1776 100 0 1 SCAN:Passive
 use esirs 192 839 100 0 dtaZStart
 xform 0 400 992
 p 224 1136 100 0 -1 DESC:Z position at observation start
@@ -215,26 +215,42 @@ p 256 1312 100 0 1 EGU:lines/mm
 p 112 960 100 0 0 FDSC:Ruling density of grating
 p 256 1264 100 0 1 FTVL:LONG
 p 256 1360 100 0 1 SCAN:Passive
-use hwin 3344 1783 100 0 hwin#43
+use esirs 3232 1671 100 0 grAdjWavelen
 xform 0 3440 1824
-p 3216 1824 100 0 -1 val(in):$(gm)dcDisabled.VAL
-use hwin 3344 2135 100 0 hwin#39
-xform 0 3440 2176
-p 3216 2176 100 0 -1 val(in):$(gm)ccDisabled.VAL
-use elongouts 3536 1703 100 0 dcDisabled
-xform 0 3664 1792
-p 3376 1710 100 0 0 OMSL:closed_loop
-p 3584 1872 100 0 1 SCAN:1 second
-p 3312 1856 100 0 0 def(DOL):0.0
-use elongouts 3536 2055 100 0 ccDisabled
-xform 0 3664 2144
-p 3376 2062 100 0 0 OMSL:closed_loop
-p 3584 2224 100 0 1 SCAN:1 second
-p 3312 2208 100 0 0 def(DOL):0.0
-use gmSeqHealth 4064 1671 100 0 gmSeqHealth#36
-xform 0 4240 1808
-use gmSeqState 4080 2007 100 0 gmSeqState#35
-xform 0 4256 2144
+p 3264 1968 100 0 -1 DESC:Grating adjusted central wavelength
+p 3312 1744 100 0 1 EGU:nanometres
+p 3168 1408 100 0 0 FDSC:Grating adjusted central wavelength
+p 3312 1712 100 0 1 FTVL:DOUBLE
+p 3504 1712 100 0 1 PREC:2
+p 3312 1776 100 0 1 SCAN:Passive
+use esirs 3232 1287 100 0 grAdjEffWavelen
+xform 0 3440 1440
+p 3264 1584 100 0 -1 DESC:Grating adjusted effective wavelength
+p 3312 1360 100 0 1 EGU:nanometres
+p 3168 1024 100 0 0 FDSC:Grating adjusted effective wavelength
+p 3312 1328 100 0 1 FTVL:DOUBLE
+p 3504 1328 100 0 1 PREC:2
+p 3312 1392 100 0 1 SCAN:Passive
+use hwin 3328 2215 100 0 hwin#43
+xform 0 3424 2256
+p 3200 2256 100 0 -1 val(in):$(gm)dcDisabled.VAL
+use hwin 3328 2567 100 0 hwin#39
+xform 0 3424 2608
+p 3200 2608 100 0 -1 val(in):$(gm)ccDisabled.VAL
+use elongouts 3520 2135 100 0 dcDisabled
+xform 0 3648 2224
+p 3360 2142 100 0 0 OMSL:closed_loop
+p 3568 2304 100 0 1 SCAN:1 second
+p 3296 2288 100 0 0 def(DOL):0.0
+use elongouts 3520 2487 100 0 ccDisabled
+xform 0 3648 2576
+p 3360 2494 100 0 0 OMSL:closed_loop
+p 3568 2656 100 0 1 SCAN:1 second
+p 3296 2640 100 0 0 def(DOL):0.0
+use gmSeqHealth 4048 2103 100 0 gmSeqHealth#36
+xform 0 4224 2240
+use gmSeqState 4064 2439 100 0 gmSeqState#35
+xform 0 4240 2576
 use oslBorderD -400 -441 100 0 oslBorderD#26
 xform 0 2240 1264
 [comments]
