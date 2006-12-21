@@ -40,6 +40,8 @@ group {
    string $(top)grNamesLUT.VAL   = "gratings.lut" ;
    string $(top)grLUT.VAL        = "gr.lut" ;
 }
+string $(top)grEqLUT.VAL	= "gratingeq.lut" ;
+
 #
 #  Initialise filter and grating names in SAD:
 #  The fields set here are output to the SIR records
@@ -47,8 +49,4 @@ group {
    string $(top)fltPos.VALG   = "unknown" ;
    string $(top)fltPos.VALH   = "unknown" ;
    string $(top)grSelect.VALD = "unknown" ;
-
-
-
-
 
