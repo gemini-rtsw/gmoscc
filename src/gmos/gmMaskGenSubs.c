@@ -36,6 +36,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.3  2005/08/23 21:40:56  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.2  2005/03/09 19:46:14  gemvx
  * *** empty log message ***
  *
@@ -404,29 +407,32 @@ long mkIfuSelection
     struct genSubRecord *pgs /* (in) pointer to calling recored structure */
 )
 {
-   char ifuSelection[8] = "";
-   char barcode[8] = "";
+   char ifuSelection[9] = "";
+   char barcode[9] = "";
 
 /* Read in user IFU selection */
    strncpy (ifuSelection, (char *)pgs->b, 8);
+   ifuSelection[8] = '\0';
    printf("ifuSelection = %s\n",ifuSelection);
 /* Read in barcode */
    strncpy (barcode, (char *)pgs->a, 8);
+   barcode[8] = '\0';
    printf("barcode read = %s\n", (char *)barcode);
       
 /* Check to see if IFU  barcode is read */
-   if (strncmp (barcode,"10000004", 8) == 0)
+   /* if (strncmp (barcode,"10000002", 8) == 0) */
+   if (strncmp (barcode, (char *) pgs->c, 8) == 0)
       /* ifu barcode read then output the user selected barcode */
       {
        strncpy((char *)pgs->vala,ifuSelection,8); 
-       printf("barcode read is IFU, output is user selection: n");
+       printf("barcode read is IFU, output is user selection\n");
       }
    else
       /* the barcode does not correspond to the ifu */
       /* copy the original barcode to the output */
       {
        strncpy((char *)pgs->vala,barcode,8);
-       printf("barcode read is not IFU, output is original barcode \n");
+       printf("barcode read is not IFU, output is original barcode\n");
       }
 return(0);
 }
