@@ -1,4 +1,19 @@
 #!/bin/csh -f
+#
+# gmOiTest
+#
+# This script is used to move the OIWFS probe arm in a square trajectory
+# at a constant distance from the X & Y limits. The distance from the limits
+# can be entered by the user. The program prompts for all the input needed
+# as well as confirmation.
+#
+# This is a script intended for testing the OIWFS probe arm to check for
+# any type of errors that produce a lost of index. It should not be used
+# while observing or using the instrument for other activities.
+# 
+# 07/Feb/2007	Created (P Gigoux)
+#
+
 unalias *
 
 # OIWFS limits
