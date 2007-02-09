@@ -1,0 +1,34 @@
+#!/bin/csh -f
+#
+# Script to connect to GMOS VxWorks console through an annex.
+#
+# Invocation:
+#   gmosIOCAnnex annex-name port-code [vmeCrateAddress]
+#
+
+start:
+
+#
+# If a VME crate address has been provided wait until that crate
+# wakes up.
+#
+
+if ( $3 != "" ) then
+   while (1)
+
+      echo "Waiting for $3 ..."
+      if (`/usr/sbin/ping $1 10 | grep alive | wc -l` != 0) then
+         goto alive
+      endif
+
+      sleep 5
+   end
+endif
+
+alive:
+echo "Connecting to annex $1 port $2 ..."
+telnet $1 $2
+
+echo "Press Enter to repeat or CTRL/C to exit"
+head -1
+goto start

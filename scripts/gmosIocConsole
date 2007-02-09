@@ -1,0 +1,28 @@
+#!/bin/csh -f
+#
+# Script to connect to GMOS VxWorks console when it becomes
+# available.
+#
+# Invocation:
+#    gmosIocConsole vmeCrateAddress
+#
+
+start:
+
+while (1)
+
+   echo "Waiting for $1 ..."
+   if (`/usr/sbin/ping $1 10 | grep alive | wc -l` != 0) then
+      goto alive
+   endif
+
+   sleep 5
+end
+
+alive:
+echo "Connecting to $1 ..."
+rlogin $1
+
+echo "Press Enter to repeat or CTRL/C to exit"
+head -1
+goto start

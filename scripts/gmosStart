@@ -1,0 +1,68 @@
+#!/bin/csh
+#
+# Start the top level GMOS "dm" screens.
+#
+# Invocation:
+#   ./gmosStart
+#
+# Original Author: Steven M Beard
+#
+# $Id$
+#
+
+set arg = "$1"
+
+#
+# Only allow access to the MK hardware if the GMOS_MK_ACCESS environment
+# variable has been defined.
+#
+
+if (!("$arg" == "SS" || "$arg" == "SIM" || "$arg" == "SIM2" )) then
+
+    #
+    # Check for gmos safety
+    #
+
+    if (!($?GMOS_MK_ACCESS) && !($?GMOS_CP_ACCESS)) then
+	echo ""
+	echo "GMOS safety check failed."
+	echo ""
+	echo "Before starting these screens, which will allow control of real MK hardware,"
+	echo 'you must type "gmosMK or gmosCP" to confirm that it is safe to do so.'
+	echo ""
+	exit
+    else
+	echo "GMOS safety check passed."
+    endif
+cd ${GMOS_OP};
+
+if "$arg" == "CP" then
+   echo "Connecting to GMOS Cerro Pachon database"
+   gmosCP_dm.sh
+else if "$arg" == "RS" then
+   echo "Connecting to GMOS Mauna Kea database - simulated post focal-plane"
+   gmosStartMKRS
+else if "$arg" == "PRE" then
+   echo "Connecting to GMOS Mauna Kea database - simulated post focal-plane"
+   gmosStartMKRS
+else if "$arg" == "SR" then
+   echo "Connecting to GMOS Mauna Kea database - simulated pre focal-plane"
+   gmosStartMKSR
+else if "$arg" == "POST" then
+   echo "Connecting to GMOS Mauna Kea database - simulated pre focal-plane"
+   gmosStartMKSR
+else if "$arg" == "SS" then
+   echo "Connecting to GMOS Mauna Kea database - simulated"
+   gmosStartMKSS
+else if "$arg" == "SIM" then
+   echo "Connecting to GMOS Mauna Kea database - simulated"
+   gmosStartMKSS
+else if "$arg" == "SIM2" then
+   echo "Connecting to GMOS Mauna Kea database - simulated 2"
+   gmosStartMKSS2
+else
+   echo "Connecting to GMOS"
+   gmosMK_dm.sh
+endif
+
+

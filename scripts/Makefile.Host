@@ -1,0 +1,97 @@
+# Include file identifying the target architecture (defines the T_A
+# macro) and application configuration definitions
+
+include ../.applTop
+include $(APPLIC_TOP)/config/CONFIG
+
+# External libraries on which this directory is dependent.
+# DEPLIBS	=
+
+# User compiler and loader flags
+# USR_CFLAGS   =
+# USR_INCLUDES =
+# USR_LDFLAGS  =
+# USR_LDLIBS   =
+
+# Add the source code files to this variable. The default has all .c files 
+# SRCS.c	= $(wildcard ../*.c) 
+SRCS.c	=
+		      
+
+# Add the object files in one of these two variables. 
+# LIBOBJS += test.o
+OBJS	=  $(strip $(patsubst ../%.c,    %.o, $(SRCS.c)))
+
+# Standard macros for files which are to be built and installed.
+# PROD (products) and SCRIPTS are installed in INSTALL_BIN
+PROD	= $(patsubst %.o, %, $(OBJS))
+SCRIPTS	=   ../gmCcDoCommand		\
+	    ../gmEditFile		\
+	    ../gmEditFileField		\
+	    ../gmSeqApplyZPC		\
+	    ../gmSeqCcCommand		\
+	    ../gmSeqDoCommand		\
+	    ../gmSeqStart		\
+	    ../gmSeqStartMKRR		\
+	    ../gmosAlarm		\
+	    ../gmosCP_dm.sh		\
+	    ../gmosCcAlarm		\
+	    ../gmosCcStart		\
+	    ../gmosCcStartCP		\
+	    ../gmosCcStartMKRR		\
+	    ../gmosCcStartMKRS		\
+	    ../gmosCcStartMKSR		\
+	    ../gmosCcStartMKSS		\
+	    ../gmosCshrc		\
+	    ../gmosCshrcCP		\
+	    ../gmosCshrcMK		\
+	    ../gmosDcAlarm		\
+	    ../gmosHelp			\
+	    ../gmosIocAnnex		\
+	    ../gmosIocConsole		\
+	    ../gmosLog			\
+	    ../gmosLogin		\
+	    ../gmosMK_dm.sh		\
+	    ../gmosSetResetAliases	\
+	    ../gmosStart		\
+	    ../gmosStartMK		\
+	    ../gmosStartMKSS		\
+	    ../gmosStartMKSS2		\
+	    ../gmosTest			\
+	    ../gmosXterm		\
+	    ../gmosannex		\
+	    ../gmoscc			\
+	    ../gmosdc			\
+	    ../makeEverything		\
+	    ../sim2			\
+	    ../uaeSetup			\
+	    ../uaeTidy			\
+	    ../uaeUnsetup
+
+# LIBNAME is installed in INSTALL_LIB
+LIBNAME	=
+
+# INC is installed in INSTALL_INCLUDE
+INC	=
+
+# MAN1 is installed in INSTALL_MAN/man1
+MAN1	=
+
+# DOCS are installed in INSTALL_DOC
+DOCS	=
+
+# DATA are installed in INSTALL_DATA
+DATA	= 
+
+# Any extra targets can be placed in a TARGETS macro (the build target
+# builds only pre_build, LIBNAME, TARGETS and PROD, not SCRIPTS, INC etc)
+
+TARGETS =
+
+# Rules for building targets
+include $(APPLIC_TOP)/config/RULES.Build
+
+# There is no product rule, but one can be added or modified if required
+#$(PROD): $(OBJS) $(DEPLIBS)
+#	$(RM) $@
+#	$(LINK.c) -o $@ $(OBJS) $(LDLIBS)
