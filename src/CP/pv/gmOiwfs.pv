@@ -5,7 +5,7 @@
 #
 # Set name in SAD (this should be moved into the startup script)
 #
-string $(top)name = "GMOS-N OIWFS CC";
+string $(top)name = "GMOS-S OIWFS CC";
 
 # Set default deviceControl configuration parameters:
 #
@@ -119,10 +119,17 @@ group {
 # Load offsets for converting X/Y to angles and vice versa
 #
 group {
-   double $(top)probeBasOffset      = 175.175659; # Base offset angle
-   double $(top)probePkoOffset      = -13.080748; # Pickoff offset angle
-   double $(top)probeXOffset        =  -1.192702; # X offset
-   double $(top)probeYOffset        =   1.298186; # Y offset
+   #double $(top)probeBasOffset      = 175.175659; # Base offset angle
+   #double $(top)probePkoOffset      = -13.080748; # Pickoff offset angle
+   #double $(top)probeXOffset        =  -1.192702; # X offset
+   #double $(top)probeYOffset        =   1.298186; # Y offset
+   # New values added 30/Dec/04 PG
+   #double $(top)probeBasOffset      = 176.157; # Base offset angle
+   # New base angle value 17/Aug/06 PG
+   double $(top)probeBasOffset      = 175.05; # Base offset angle
+   double $(top)probePkoOffset      = -13.481; # Pickoff offset angle
+   double $(top)probeXOffset        =  -2.025; # X offset
+   double $(top)probeYOffset        =   3.578; # Y offset
 
 # Ideal Focal Surface
 #
@@ -156,6 +163,23 @@ group {
    double $(top)probeCosPko.EGUF    =  1.0;
    double $(top)probeSinPko.EGUL    = -1.0;
    double $(top)probeSinPko.EGUF    =  1.0;
+}
+
+# Probe Map Correction Coefficients
+
+group {
+    double $(top)probeMap.A	=  0.00000;	# A0
+    double $(top)probeMap.B	=  1.00000;	# A1
+    double $(top)probeMap.C	=  0.00000;	# A2
+    double $(top)probeMap.D	=  0.00000;	# A3
+    double $(top)probeMap.E	=  0.00000;	# A4
+    double $(top)probeMap.F	=  0.00000;	# A5
+    double $(top)probeMap.G	=  0.00000;	# B0
+    double $(top)probeMap.H	=  0.00000;	# B1
+    double $(top)probeMap.I	=  0.00000;	# B2
+    double $(top)probeMap.J	=  1.00000;	# B3
+    double $(top)probeMap.K	=  0.00000;	# B4
+    double $(top)probeMap.L	=  0.00000;	# B5
 }
 
 # Pre-load engineering targets
