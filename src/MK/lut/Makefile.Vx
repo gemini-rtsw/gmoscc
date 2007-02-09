@@ -60,6 +60,7 @@ DATA += ../msk.lut
 DATA += ../masks.lut
 DATA += ../lambdaFocus.lut
 DATA += ../grt.lut
+DATA += ../gratingeq.lut
 DATA += ../gratings.lut
 DATA += ../gr_TEST.lut
 DATA += ../grD.lut
