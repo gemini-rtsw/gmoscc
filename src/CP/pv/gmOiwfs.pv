@@ -126,7 +126,7 @@ group {
    # New values added 30/Dec/04 PG
    #double $(top)probeBasOffset      = 176.157; # Base offset angle
    # New base angle value 17/Aug/06 PG
-   double $(top)probeBasOffset      = 175.05; # Base offset angle
+   double $(top)probeBasOffset      = 176.157; # Base offset angle
    double $(top)probePkoOffset      = -13.481; # Pickoff offset angle
    #double $(top)probeXOffset        =  -2.025; # X offset
    #double $(top)probeYOffset        =   3.578; # Y offset
@@ -135,8 +135,10 @@ group {
    #double $(top)probeXOffset        =  -2.025; # X offset
    #double $(top)probeYOffset        =   3.578; # Y offset
    # New offsets 09/Feb/07 PG
-   double $(top)probeXOffset        =  -1.9; # X offset
-   double $(top)probeYOffset        =   0.2; # Y offset
+   #double $(top)probeXOffset        =  -1.9; # X offset
+   #double $(top)probeYOffset        =   0.2; # Y offset
+   double $(top)probeXOffset        =  -3.26; # X offset
+   double $(top)probeYOffset        =   8.65; # Y offset
 
 # Ideal Focal Surface
 #
