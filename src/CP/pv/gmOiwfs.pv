@@ -119,31 +119,43 @@ group {
 # Load offsets for converting X/Y to angles and vice versa
 #
 group {
-   #double $(top)probeBasOffset      = 175.175659; # Base offset angle
-   #double $(top)probePkoOffset      = -13.080748; # Pickoff offset angle
-   #double $(top)probeXOffset        =  -1.192702; # X offset
-   #double $(top)probeYOffset        =   1.298186; # Y offset
-   # New values added 30/Dec/04 PG
-   #double $(top)probeBasOffset      = 176.157; # Base offset angle
-   # New base angle value 17/Aug/06 PG
-   double $(top)probeBasOffset      = 176.157; # Base offset angle
-   double $(top)probePkoOffset      = -13.481; # Pickoff offset angle
-   #double $(top)probeXOffset        =  -2.025; # X offset
-   #double $(top)probeYOffset        =   3.578; # Y offset
-   #double $(top)probeXOffset        =  -1.192702; # X offset
-   #double $(top)probeYOffset        =   1.298186; # Y offset
-   #double $(top)probeXOffset        =  -2.025; # X offset
-   #double $(top)probeYOffset        =   3.578; # Y offset
-   # New offsets 09/Feb/07 PG
-   #double $(top)probeXOffset        =  -1.9; # X offset
-   #double $(top)probeYOffset        =   0.2; # Y offset
-   double $(top)probeXOffset        =  -3.26; # X offset
-   double $(top)probeYOffset        =   8.65; # Y offset
 
-# Ideal Focal Surface
-#
-# On-axis distance between slit plane and probe tip
-#
+   #
+   # Base and pickoff angles
+   #
+   #double $(top)probeBasOffset     = 175.175659; # Base offset angle
+   #double $(top)probePkoOffset     = -13.080748; # Pickoff offset angle
+   # New values added 30/Dec/04 PG
+   #double $(top)probeBasOffset     = 176.157; # Base offset angle
+   # New base angle value 17/Aug/06 PG
+   #double $(top)probeBasOffset     = 176.157; # Base offset angle
+   #double $(top)probePkoOffset     = -13.481; # Pickoff offset angle
+   # New angles 19/Feb/07 PG
+   double $(top)probeBasOffset      = 175.313; # Base offset angle
+   double $(top)probePkoOffset      = -13.251; # Pickoff offset angle
+
+   #
+   # X,Y offsets
+   #
+   #double $(top)probeXOffset       =  -2.025; # X offset
+   #double $(top)probeYOffset       =   3.578; # Y offset
+   #double $(top)probeXOffset       =  -1.192702; # X offset
+   #double $(top)probeYOffset       =   1.298186; # Y offset
+   #double $(top)probeXOffset       =  -2.025; # X offset
+   #double $(top)probeYOffset       =   3.578; # Y offset
+   # New offsets 09/Feb/07 PG
+   #double $(top)probeXOffset       =  -1.9; # X offset
+   #double $(top)probeYOffset       =   0.2; # Y offset
+   #double $(top)probeXOffset       =  -3.26; # X offset
+   #double $(top)probeYOffset       =   8.65; # Y offset
+   # New offsets 19/Feb/07 PG
+   double $(top)probeXOffset        =  -2.036; # X offset
+   double $(top)probeYOffset        =   6.574; # Y offset
+
+   # Ideal Focal Surface
+   #
+   # On-axis distance between slit plane and probe tip
+   #
    double $(top)probeZOffset        =  75.0;  # Z-offset
 }
 
