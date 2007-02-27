@@ -116,6 +116,12 @@ group {
    double $(top)probePatrolYLoLim   =  -21.7; # Y lower limit
 }
 
+# Buffer between limit and patrol area (mm). This is the tolerance used to
+# decide when to activate the software limits. A big number is equivalent
+# to disabling the software limits.
+#
+double $(top)probeLimitCheck.O      = 100.0;
+
 # Load offsets for converting X/Y to angles and vice versa
 #
 group {
