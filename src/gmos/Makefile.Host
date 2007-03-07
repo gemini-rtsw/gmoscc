@@ -11,24 +11,28 @@ include $(APPLIC_TOP)/config/CONFIG
 # USR_CFLAGS   =
 # USR_INCLUDES =
 # USR_LDFLAGS  =
-# USR_LDLIBS   =
+USR_LDLIBS   = libCalc
 
 # Add the source code files to this variable. The default has all .c files 
 # SRCS.c	= $(wildcard ../*.c) 
 SRCS.c	= ../add.c ../checktol.c ../mult.c ../tolower.c ../rand.c \
-	  ../twolines.c ../gmosLutLib.c
+	  ../twolines.c ../gmosLutLib.c ../gmOiwfsCalibrate.c
 
 # Add the object files in one of these two variables. 
-# LIBOBJS += test.o
-OBJS	=  $(strip $(patsubst ../%.c,    %.o, $(SRCS.c)))
+#OBJS	=  $(strip $(patsubst ../%.c,    %.o, $(SRCS.c)))
+LIBOBJS = gmOiwfsCalc.o
+OBJS	= add.o checktol.o mult.o tolower.o rand.o twolines.o \
+	  gmosLutLib.o gmOiwfsCalibrat.o
 
 # Standard macros for files which are to be built and installed.
 # PROD (products) and SCRIPTS are installed in INSTALL_BIN
-PROD	= $(patsubst %.o, %, $(OBJS))
+#PROD	= $(patsubst %.o, %, $(OBJS))
+PROD	= libCalc add checktol mult tolower rand twolines \
+	  gmosLutLib gmOiwfsCalibrate
 SCRIPTS	=
 
 # LIBNAME is installed in INSTALL_LIB
-LIBNAME	=
+LIBNAME	= libCalc
 
 # INC is installed in INSTALL_INCLUDE
 INC	=
