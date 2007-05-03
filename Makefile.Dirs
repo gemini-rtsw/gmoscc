@@ -2,5 +2,6 @@ DIRS += adl
 DIRS += alh
 DIRS += capfast
 DIRS += src
+DIRS += scripts
 DIRS += startup
 DIRS += db 
