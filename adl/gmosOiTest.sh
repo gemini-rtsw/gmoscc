@@ -70,22 +70,14 @@ if ("$xmin" == "" || "$xmax" == "" || "$ymin" == "" || "$ymax" == "") then
     exit
 endif
 
-# List of demands
-set xlist = (0 $xmin $xmin $xmax $xmax $xmin 0)
-set ylist = (0 $ymin $ymax $ymax $ymin $ymin 0)
-set nmax  = $#xlist
+# Calculate the center of the patrol field
+set xcen = `echo "$xmin $xmax" | awk -e '{print ($1 + $2) / 2}'`
+set ycen = `echo "$ymin $ymax" | awk -e '{print ($1 + $2) / 2}'`
 
 # Prompt user for confirmation
 echo ""
 echo "*** WARNING *** WARNING *** WARNING ***"
 echo "This program will move the OIWFS probe"
-echo ""
-echo -n "Are you sure you want to proceed (yes/no): "
-set ans = $<
-if ("$ans" != "yes") then
-    echo "Aborted"
-    exit
-endif
 echo ""
 
 # Get distance from limits (tolerance) from user
@@ -107,17 +99,36 @@ echo "Y min = $ymin"
 echo "Y max = $ymax"
 echo ""
 
-# Calculate min and max values based on the tolerance
+echo "Center of the field"
+echo "X center = $xcen"
+echo "Y center = $ycen"
+echo ""
+
+# Calculate corners for this test.
 set xmin = `echo $xmin $tol | awk -e '{print $1 + $2}'`
 set xmax = `echo $xmax $tol | awk -e '{print $1 - $2}'`
 set ymin = `echo $ymin $tol | awk -e '{print $1 + $2}'`
 set ymax = `echo $ymax $tol | awk -e '{print $1 - $2}'`
 
-echo "Motion limits for this test:"
+# List of demands
+set xlist = ($xmin $xmin $xmax $xmax $xmin $xcen)
+set ylist = ($ymin $ymax $ymax $ymin $ymin $ycen)
+set nmax  = $#xlist
+
+echo "Motion corners for this test:"
 echo "X min = $xmin"
 echo "X max = $xmax"
 echo "Y min = $ymin"
 echo "Y max = $ymax"
+echo ""
+
+# Prompt the user for confirmation
+echo -n "Are you sure you want to proceed (yes/no): "
+set ans = $<
+if ("$ans" != "yes") then
+    echo "Aborted"
+    exit
+endif
 echo ""
 
 # Loop over all demands
