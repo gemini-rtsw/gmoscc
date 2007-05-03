@@ -17,6 +17,7 @@ group {
    double $(top)grConfigFlash    =     0.037;    # Forwardlash parameter (degrees)
    double $(top)grAssembly.ACLL  =    -10.0;     # Minimum grating tilt in degrees
    double $(top)grAssembly.ACHL  =     90.0;     # Maximum grating tilt in degrees
+   long   $(top)grAssembly.SIN  =       0;       # Site code (MK=0)
 }
 
 #

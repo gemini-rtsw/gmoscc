@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.9  2005/02/23 01:50:03  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.8  2004/12/17 03:42:20  gemvx
  * *** empty log message ***
  *
@@ -362,7 +365,6 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 /*
  *  Local Defines
  */
-#define MK                                     /* Defined for different grating positons in GMOS-S */
 #define GR_LUT_FIRST_STRING     "grating"	/* The first line of the grating lookup		*/
 						/* table file must contain this string.		*/
 #define GR_AUX_LUT_FIRST_STRING "aux_grating"	/* The first line of the auxilliary lookup	*/
@@ -469,6 +471,7 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
 
 #define GR_TURRET_POWER         par->sou            /* Ptr. to turret power port.             */
 #define GR_TURRET_POWER_STATE   par->sim            /* Ptr. to turret power input port.       */
+#define GR_SITE_CODE		par->sin	    /* Ptr. to site code MK=0, CP=1 */
 
 #define GR_TILT_VALUE           par->sov            /* Ptr. to grating tilt output - for SAD. */
 #define GR_STEP_VALUE           *(double *)par->valc    /* Ptr. to grating tilt output - for SAD. */
@@ -680,7 +683,6 @@ static GR_TASK_LIST  grCharacterise[] = {				/* UPDATE */
      { GR_WRITE_CONFIG_BAK,  FALSE, FALSE, FALSE, FALSE, FALSE } ,
 };
 
-
 /*
  *  Device support function prototypes
  */
@@ -813,6 +815,12 @@ typedef struct {
 } GR_DEV_PRIVATE;
 
 #define GR_MAGIC  0x20206772            /* magic value for grating data structures.             */
+
+/*
+ * Site names
+ */
+#define	SITE_MK		0		/* Mauna Kea */
+#define SITE_CP		1		/* Cerro Pachon */
 
 
 /*
@@ -2315,6 +2323,8 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 
      double fsteps;
 
+     int site;
+
      pGrPriv = ( GR_DEV_PRIVATE *) assGetPrivateStruct( par );
      pDevConfig = pGrPriv->pGratingPriv;
 
@@ -3270,6 +3280,68 @@ static long grDoTask(ASSEMBLY_CONTROL_RECORD *par)
 
 	       pGrPriv->mode = DAR_MODE_MOVE;
 	       pGrPriv->velocity[TRT] = GR_VELOCITY_TURRET;     /* Correct turret move velocity */
+
+	       site = *((long *) GR_SITE_CODE);
+	       if (site != SITE_MK && site != SITE_CP) {
+printErr ("illegal site=%d\n", site);
+                    GRDEBUG(DAR_MSG_WARNING,
+			"grDoTask: Invalid site value=%d. Using MK.\n",
+			site);
+		    site = SITE_MK;
+	       }
+printErr ("site=%d\n", site);
+
+	       switch (pGrPriv->parkPosition)
+	       {
+	       case (GRA):
+                    (void) strncpy( pGrPriv->position[TRT],
+				GR_NAME_POS_POSLDA, MAX_STRING_SIZE-1 );
+		    if (site == SITE_MK)
+		        pDevConfig->newTurretPos = GRB;
+		    else
+		        pDevConfig->newTurretPos = GRD;
+		    break;
+
+	       case (GRB):
+                    (void) strncpy( pGrPriv->position[TRT],
+				GR_NAME_POS_POSLDB, MAX_STRING_SIZE-1 );
+		    if (site == SITE_MK)
+		        pDevConfig->newTurretPos = GRC;
+		    else
+		        pDevConfig->newTurretPos = GRA;
+		    break;
+
+	       case (GRC):
+                    (void) strncpy( pGrPriv->position[TRT],
+				GR_NAME_POS_POSLDC, MAX_STRING_SIZE-1 );
+		    if (site == SITE_MK)
+		        pDevConfig->newTurretPos = GRD;
+		    else
+		        pDevConfig->newTurretPos = GRB;
+		    break;
+
+	       case (GRD):
+                    (void) strncpy( pGrPriv->position[TRT],
+				GR_NAME_POS_POSLDD, MAX_STRING_SIZE-1 );
+		    if (site == SITE_MK)
+		        pDevConfig->newTurretPos = GRA;
+		    else
+		        pDevConfig->newTurretPos = GRC;
+		    break;
+
+	       default:
+                    /* If the grating number is not recognised use
+		     * the default parking position
+		     */
+                    GRDEBUG(DAR_MSG_WARNING,
+		    "grDoTask: Invalid parking position=%d. Using default.\n",
+                     pGrPriv->parkPosition );
+                    (void) strncpy( pGrPriv->position[TRT],
+			GR_NAME_POS_PARK, MAX_STRING_SIZE-1 );
+                    pDevConfig->newTurretPos = GRB;     /* Default is B */
+                    break;
+	       }
+#if 0
 #ifdef MK 
 	       switch (pGrPriv->parkPosition)
 	       {
@@ -3337,6 +3409,8 @@ switch (pGrPriv->parkPosition)
                     break;
                }
 #endif
+#endif
+
                semGive (pGrPriv->mutexSem);
                break;
 
@@ -5912,6 +5986,7 @@ static void grReadZPC(ASSEMBLY_CONTROL_RECORD *par)
      long         pixZpcb;                         /* zpc in pixels */
      long         pixZpcc;                         /* zpc in pixels */
      long         pixZpcd;                         /* zpc in pixels */
+     int	site;
         
 
 GRDEBUG(DAR_MSG_MAX, "grReadZPC: entry, sim=%d\n", assSimulateLevel(par) );	
@@ -5975,37 +6050,102 @@ GRDEBUG(DAR_MSG_MAX, "grReadZPC: entry, sim=%d\n", assSimulateLevel(par) );
           }
           else
           {
-                         pixZpca = tempLong[0];
-                         pixZpcb = tempLong[1];
-                         pixZpcc = tempLong[2];
-                         pixZpcd = tempLong[3];
+		pixZpca = tempLong[0];
+		pixZpcb = tempLong[1];
+		pixZpcc = tempLong[2];
+		pixZpcd = tempLong[3];
 
-                         printf("*** zero point correction in pixels received : %ld %ld %ld %ld ***\n", pixZpca,pixZpcb,pixZpcc,pixZpcd);
+		printf("*** zero point correction in pixels received : %ld %ld %ld %ld ***\n", pixZpca,pixZpcb,pixZpcc,pixZpcd);
+
+		 site = *((long *) GR_SITE_CODE);
+		 if (site != SITE_MK && site != SITE_CP) {
+printErr ("illegal site=%d\n", site);
+			GRDEBUG(DAR_MSG_WARNING,
+			    "grDoTask: Invalid site value=%d. Using MK.\n",
+			    site);
+			site = SITE_MK;
+		 }
+printErr ("site=%d\n", site);
+
+		 if (site == SITE_MK)
+		 {
+		     if (pixZpca >  0 ) {
+			    pDevConfig->zpc[GRA] = (pixZpca - 190.5)/12.0;
+		     }
+		     else {
+			    pDevConfig->zpc[GRA] = 0.0;
+		     }
+		     if (pixZpcb >  0) {
+			    pDevConfig->zpc[GRB] = (pixZpcb - 182.5)/12.0;
+		     }
+		     else {
+			    pDevConfig->zpc[GRB] = 0.0;
+		     }
+		     if (pixZpcc >  0) {
+			    pDevConfig->zpc[GRC] = (pixZpcc - 182.5)/12.0;
+		     }
+		     else {
+			    pDevConfig->zpc[GRC]= 0.0;
+		     }
+		     if (pixZpcd >  0) {
+			    pDevConfig->zpc[GRD] = (pixZpcd - 182.5)/12.0;
+		     }
+		     else {
+			    pDevConfig->zpc[GRD] = 0.0;
+		     }
+		 } else {
+		     if (pixZpca >  0) {
+			    pDevConfig->zpc[GRA] = (pixZpca - 151.0)/10.5;
+		     }
+		     else {
+			    pDevConfig->zpc[GRA] = 0.0;
+		     }
+		     if (pixZpcb >  0) {
+			    pDevConfig->zpc[GRB] = (pixZpcb - 151.0)/10.5;
+		     }
+		     else {
+			    pDevConfig->zpc[GRB] = 0.0;
+		     }
+		     if (pixZpcc >  0) {
+			    pDevConfig->zpc[GRC] = (pixZpcc - 151.0)/10.5;
+		     }
+		     else {
+			    pDevConfig->zpc[GRC] = 0.0;
+		     }
+		     if (pixZpcd >  0) {
+			    pDevConfig->zpc[GRD] = (pixZpcd - 151.0)/10.5;
+		     }
+		     else {
+			    pDevConfig->zpc[GRD] = 0.0;
+		     }
+		 }
+
+#if 0
 #ifdef MK
-                         if (pixZpca >  0 ) {
-                                pDevConfig->zpc[GRA] = (pixZpca - 190.5)/12.0;
-                         }
-                         else {
+			 if (pixZpca >  0 ) {
+				pDevConfig->zpc[GRA] = (pixZpca - 190.5)/12.0;
+			 }
+			 else {
 				pDevConfig->zpc[GRA] = 0.0;
-                         }
-                         if (pixZpcb >  0) {
-                                pDevConfig->zpc[GRB] = (pixZpcb - 182.5)/12.0;
-                         }
-                         else {
-                                pDevConfig->zpc[GRB] = 0.0;
-                         }
-                         if (pixZpcc >  0) {
-                                pDevConfig->zpc[GRC] = (pixZpcc - 182.5)/12.0;
-                         }
-                         else {
-                                pDevConfig->zpc[GRC]= 0.0;
-                         }
-                         if (pixZpcd >  0) {
-                                pDevConfig->zpc[GRD] = (pixZpcd - 182.5)/12.0;
-                         }
-                         else {
-                                pDevConfig->zpc[GRD] = 0.0;
-                         }
+			 }
+			 if (pixZpcb >  0) {
+				pDevConfig->zpc[GRB] = (pixZpcb - 182.5)/12.0;
+			 }
+			 else {
+				pDevConfig->zpc[GRB] = 0.0;
+			 }
+			 if (pixZpcc >  0) {
+				pDevConfig->zpc[GRC] = (pixZpcc - 182.5)/12.0;
+			 }
+			 else {
+				pDevConfig->zpc[GRC]= 0.0;
+			 }
+			 if (pixZpcd >  0) {
+				pDevConfig->zpc[GRD] = (pixZpcd - 182.5)/12.0;
+			 }
+			 else {
+				pDevConfig->zpc[GRD] = 0.0;
+			 }
 #else
 
                          if (pixZpca >  0) {
@@ -6032,9 +6172,8 @@ GRDEBUG(DAR_MSG_MAX, "grReadZPC: entry, sim=%d\n", assSimulateLevel(par) );
                          else {
                                 pDevConfig->zpc[GRD] = 0.0;
                          }
-
 #endif
-      
+#endif
 
                         printf(" ******** populating configuration structure : \n");
                         printf(" ******** pDevConfig->zpc[GRA] = %f \n", pDevConfig->zpc[GRA]);

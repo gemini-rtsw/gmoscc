@@ -19,6 +19,7 @@ group {
    double $(top)grConfigZpcGRD   =     0;        # Zero Point Correction GRC (pixels)
    double $(top)grAssembly.ACLL  =      2.0;     # Minimum grating tilt in degrees
    double $(top)grAssembly.ACHL  =     88.0;     # Maximum grating tilt in degrees
+   long   $(top)grAssembly.SIN  =       1;       # Site code (CP=1)
 }
 
 #
