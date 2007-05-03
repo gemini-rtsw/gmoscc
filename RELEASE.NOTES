@@ -1,5 +1,30 @@
-Febraury 2007 pgigoux
-------------------
+V6-8 April 2007 pgigoux
+-----------------------
+Improved OIWFS test script
+Removed compile time site dependency in grating code
+Updated CP lookup tables
+    Makefile.Dirs
+    RELEASE.NOTES
+    adl/gmosOiTest.sh
+    capfast/grating.sch
+    scripts/gmSeqApplyZPC
+    src/CP/lut/aux_30000011gr.lut
+    src/CP/lut/gr.lut
+    src/CP/lut/masks.lut
+    src/CP/lut/msk.lut
+    src/CP/pv/gmGrating.pv
+    src/CP/pv/gmGratingSim.pv
+    src/MK/pv/gmGrating.pv
+    src/MK/pv/gmGratingSim.pv
+    src/assemblyControl/devGratingAss.c
+    scripts/.cvsignore
+    startup/CP/.cvsignore
+    startup/MK/.cvsignore
+    startup/common/.cvsignore
+
+
+V6-7 February 2007 pgigoux
+--------------------------
 Added automatic wavelength adjustment for IFU-1 (SCT-65)
 Fixed hard coded dependency on the IFU barcode
 Added mask name to the sequencer SAD
