@@ -7,6 +7,7 @@
 # 26-AUG-04 pg  updated value of mask 8 in cassette 2 to 165.67
 # 09-SEP-04 pg  updated value of mask 7 (IFU) in cassette 1
 # 10-SEP-04 pg  updated all mask positions for cassetes 2 & 3
+# 01-AUG-07 pg  updated all mask positions (CR1177)
 #
 # name    target    index
 i4           0      4
@@ -22,25 +23,25 @@ c1s3        15      0
 c1s4        25      0
 c1s5        35      0
 c1s6        45      0
-c1s7        55.70   0
+c1s7        55.40   0
 c1s8        65      0
-c1s9        75      0
-c2s1        95.61   0
-c2s2       105.64   0
-c2s3       115.61   0
-c2s4       125.64   0
-c2s5       135.69   0
-c2s6       145.65   0
-c2s7       155.63   0
-c2s8       165.67   0
-c2s9       175.64   0
-c3s1       195.47   0
-c3s2       205.48   0
-c3s3       215.47   0
-c3s4       225.46   0
-c3s5       235.46   0
+c1s9        75.40   0
+c2s1        95.60   0
+c2s2       105.60   0
+c2s3       115.60   0
+c2s4       125.60   0
+c2s5       135.60   0
+c2s6       145.60   0
+c2s7       155.60   0
+c2s8       165.60   0
+c2s9       175.60   0
+c3s1       195.60   0
+c3s2       205.50   0
+c3s3       215.50   0
+c3s4       225.50   0
+c3s5       235.50   0
 c3s6       245.50   0
-c3s7       255.48   0
-c3s8       265.49   0
-c3s9       275.28   0
+c3s7       255.50   0
+c3s8       265.50   0
+c3s9       275.50   0
 
