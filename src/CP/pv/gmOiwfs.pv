@@ -137,8 +137,11 @@ group {
    #double $(top)probeBasOffset     = 176.157; # Base offset angle
    #double $(top)probePkoOffset     = -13.481; # Pickoff offset angle
    # New angles 19/Feb/07 PG
-   double $(top)probeBasOffset      = 175.313; # Base offset angle
-   double $(top)probePkoOffset      = -13.251; # Pickoff offset angle
+   #double $(top)probeBasOffset      = 175.313; # Base offset angle
+   #double $(top)probePkoOffset      = -13.251; # Pickoff offset angle
+   # New angles 03/Aug/07 PG (CR 1180)
+   double $(top)probeBasOffset      = 176.687; # Base offset angle
+   double $(top)probePkoOffset      = -13.200; # Pickoff offset angle
 
    #
    # X,Y offsets
@@ -155,8 +158,11 @@ group {
    #double $(top)probeXOffset       =  -3.26; # X offset
    #double $(top)probeYOffset       =   8.65; # Y offset
    # New offsets 19/Feb/07 PG
-   double $(top)probeXOffset        =  -2.036; # X offset
-   double $(top)probeYOffset        =   6.574; # Y offset
+   #double $(top)probeXOffset        =  -2.036; # X offset
+   #double $(top)probeYOffset        =   6.574; # Y offset
+   # New offsets 03/Aug/07 PG (CR 1180)
+   double $(top)probeXOffset        =  -0.229; # X offset
+   double $(top)probeYOffset        =   2.305; # Y offset
 
    # Ideal Focal Surface
    #
@@ -171,8 +177,11 @@ group {
 # following values:
 #
 group {
-   double $(top)probeBaseZero       =  -5.8;
-   double $(top)probePickoffZero    = -13.6;
+   #double $(top)probeBaseZero       =  -5.8;
+   #double $(top)probePickoffZero    = -13.6;
+   # New offsets 03/Aug/07 PG (CR 1180)
+   double $(top)probeBaseZero       =  -4.0;
+   double $(top)probePickoffZero    = -16.3;
 }
 
 # Sin/cos output corrections.  EGUL and EGUF determine the high and low 
