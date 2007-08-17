@@ -101,7 +101,7 @@ group {
    double $(top)mskExtDevice.MDBD =     0.0;
    double $(top)mskExtDevice.MRES =   200.0;
    double $(top)mskExtDevice.PHLM =     4.0;
-   double $(top)mskExtDevice.PLLM =  -448.2;
+   double $(top)mskExtDevice.PLLM =  -448.5;
    long   $(top)mskExtDevice.PREC =       4;
    long   $(top)mskExtDevice.UAPB =       1;
    long   $(top)mskExtDevice.UBSB =       0;
