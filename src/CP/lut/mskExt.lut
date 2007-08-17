@@ -20,6 +20,7 @@ clear      -350.0       0
 park          4.0       0
 #id         -419.0       0
 id         -409.0       0
-grip       -446.5       0
+grip       -446.7       0
+#grip       -446.5       0 2008/08/10
 #grip       -446.3       0
-release    -447.8       0
+release    -448.4       0
