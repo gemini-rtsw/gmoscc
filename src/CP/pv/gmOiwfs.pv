@@ -145,6 +145,10 @@ group {
    # New angles 05/Oct/07 PG (CR 1212) 
    double $(top)probeBasOffset      = 177.655; # Base offset angle
    double $(top)probePkoOffset      = -13.026; # Pickoff offset angle
+   # New angles 17/Oct/07 (not in use yet)
+   #double $(top)probeBasOffset      = 177.038; # Base offset angle
+   #double $(top)probePkoOffset      = -12.071; # Pickoff offset angle
+
 
    #
    # X,Y offsets
@@ -169,6 +173,9 @@ group {
    # New offsets 05/Oct/07 PG (CR 1212)
    double $(top)probeXOffset        =  -0.505; # X offset
    double $(top)probeYOffset        =   2.066; # Y offset
+   # New offsets 17/Oct/07 (not in use yet)
+   #double $(top)probeXOffset        =  -1.593; # X offset
+   #double $(top)probeYOffset        =   2.688; # Y offset
 
    # Ideal Focal Surface
    #
