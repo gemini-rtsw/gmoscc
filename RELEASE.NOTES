@@ -1,3 +1,27 @@
+V-80 October 2007
+Fixed setting up the ISS port for CP
+    - Added initialization in CP/pv/gmAtm.pv and gmAtmSim.pv, and removed
+      dbpf's in startup script
+    - PV files updated for MK, but the startup script was not modified.
+      Should be done at some point (not necessary since MK uses the default)
+    - Removed the "(default)" string in the mbbi record for SIDE-5 in the
+      capfast schematics since this information is misleading
+    - Added routine gmShowIssPort to print the value of port on the console
+    - Files modified/added
+	M capfast/gmSeqAtmTrack.sch
+	M src/CP/lut/flt.lut
+	M src/CP/lut/gr.lut
+	M src/CP/lut/masks.lut
+	M src/CP/lut/msk.lut
+	M src/CP/pv/gmAtm.pv
+	M src/CP/pv/gmAtmSim.pv
+	A src/MK/pv/gmAtm.pv
+	A src/MK/pv/gmAtmSim.pv
+	M src/iseq/gmSeqTracking.c
+	M startup/CP/gmStartupCP.vws
+Updated OIWFS base and pickoff angles and offsets (commented out for now)
+Updated CP lookup tables
+
 V6-8 April 2007 pgigoux
 -----------------------
 Improved OIWFS test script
