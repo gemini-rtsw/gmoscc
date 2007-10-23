@@ -82,6 +82,7 @@ pvload "$(version)/data/gmMask.pv","top=gm:cc:"
 pvload "$(version)/data/gmFilter.pv","top=gm:cc:"
 pvload "$(version)/data/gmGrating.pv","top=gm:cc:"
 pvload "$(version)/data/gmTranslation.pv","top=gm:cc:"
+pvload "$(version)/data/gmAtm.pv","top=gm:cc:"
 pvload "$(version)/data/gmTempCalibrate.pv","top=gm:cc:"
 pvload "$(version)/data/gmSeq.pv","top=gm:, sadtop=gm:sad:"
 pvload "$(version)/data/gmSeqTracking.pv","top=gm:, sadtop=gm:sad:"
@@ -124,9 +125,9 @@ dbpf "gm:sad:cc:historyLog","Master enable switched on"
 # Enable master enable on completion of startup script
 dbpf "gm:cc:msEnableEnable","1"
 
-#default issPort
-dbpf "gm:atmTrack:issPort","1"
-dbpf "gm:atmTrack:issPort.PROC","1"
+#default issPort (moved to gmAtm.pv)
+#dbpf "gm:atmTrack:issPort","1"
+#dbpf "gm:atmTrack:issPort.PROC","1"
 
 # Finally, display the startup time in UTC.
 timePrint "UTC"
