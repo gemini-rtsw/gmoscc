@@ -118,3 +118,7 @@ group {
    double $(top)atmExpDevice.VLLM =     10.0; # Minimum target velocity 
 }
 
+#
+# Set ISS port (0=SIDE-5, 1=UP-1, 2=SIDE-2, 3=SIDE-3, 4=SIDE-4)
+#
+long $(top)atmTrack:issPort	=	3;   # default for CP
