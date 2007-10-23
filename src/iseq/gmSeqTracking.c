@@ -22,6 +22,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.4  2004/12/17 03:45:18  gemvx
+ * *** empty log message ***
+ *
  * Revision 1.3  2003/07/21 21:37:20  gemvx
  * V4-2 follow in z only version
  *
@@ -1877,4 +1880,33 @@ void gmSeqGetRefParams (struct genSubRecord *pgsub, double *tempK,
    *refa    = *valjp++ ;
    *refb    = *valjp++ ;
 
+}
+
+/*+
+ *   Function name:
+ *   gmShowIssPort
+ *
+ *   Purpose:
+ *   Show current value of the ISS port
+ *
+ *   Description:
+ *   Print current value of the ISS port on the console. This routine is
+ *   provided for diagnostics purposes only.
+ *
+ *   Invocation:
+ *   gmShowIssPort ()
+ *
+ *   Function value:
+ *   (<) status (int)	always 0
+ * 
+ *   External variables:
+ *   (>) gmSeqIssPort (int)	ISS port (local to this module)
+ *
+ *-
+ */
+int gmShowIssPort (void)
+{
+    printf ("ISS Port = %ld\n", gmSeqIssPort);
+
+    return (0);
 }
