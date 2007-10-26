@@ -1,7 +1,8 @@
 [schematic2]
-uniq 163
+uniq 165
 [tools]
 [detail]
+w -444 219 100 2 n#164 hwin.hwin#163.in -448 224 -448 224 ecad20.grSelect.INPG
 w 1026 -1109 100 0 n#162 ecad20.grSelect.VALM -128 -128 -32 -128 -32 -1120 2144 -1120 2144 -224 2496 -224 eaos.grAdjEffWaveSad.DOL
 w 1010 -1077 100 0 n#161 ecad20.grSelect.VALL -128 -64 0 -64 0 -1088 2080 -1088 2080 160 2496 160 eaos.grAdjWaveSad.DOL
 w -444 283 100 2 n#157 hwin.hwin#155.in -448 288 -448 288 ecad20.grSelect.INPF
@@ -35,6 +36,7 @@ w 976 835 100 0 n#46 ecad20.grSelect.VAL -128 832 2128 832 outhier.VAL.p
 w 1438 739 100 0 n#9 ecad20.grSelect.MESS -128 800 784 800 784 736 2128 736 outhier.MESS.p
 w -626 804 100 0 n#8 inhier.ICID.P -848 736 -768 736 -768 800 -448 800 ecad20.grSelect.ICID
 w -666 834 100 0 n#7 inhier.DIR.P -848 832 -448 832 ecad20.grSelect.DIR
+s -928 384 100 0 G: Target wavelength from TCS
 s -976 -64 100 0 L: name of lamda vs focus LUT file
 s -976 -16 100 0 K: name of all gratings LUT file
 s 464 -112 100 0 Wavelength dependent focus offset
@@ -58,6 +60,24 @@ s 1184 -112 100 0 Grating focus offset
 s -928 416 100 0 F: Mask name
 s -928 448 100 0 E: Effective wavelength
 [cell use]
+use hwin 1096 -616 100 0 hwin#135
+xform 0 1168 -576
+p 1075 -584 100 0 -1 val(in):$(CAD_MARK)
+use hwin 3216 -809 100 0 hwin#80
+xform 0 3312 -768
+p 3219 -776 100 0 -1 val(in):$(event)
+use hwin 360 -616 100 0 hwin#51
+xform 0 432 -576
+p 339 -584 100 0 -1 val(in):$(MODE_MOVE)
+use hwin 2240 -585 100 0 hwin#128
+xform 0 2336 -544
+p 2240 -504 100 0 -1 val(in):$(cc)grC.VAL .CP .NMS
+use hwin -640 247 100 0 hwin#155
+xform 0 -544 288
+p -816 288 100 0 -1 val(in):$(top)mskPos.A
+use hwin -640 183 100 0 hwin#163
+xform 0 -544 224
+p -944 224 100 0 -1 val(in):tcs:sad:sourceAWavelength
 use eaos 2496 -345 100 0 grAdjEffWaveSad
 xform 0 2624 -256
 p 2560 -416 100 0 1 EGU:nanometers
@@ -120,21 +140,6 @@ p 2560 640 100 0 1 SCAN:Event
 p 2720 480 100 0 -1 def(OUT):$(sad)grEffWavelen
 p 2608 448 100 1024 0 name:$(top)$(I)
 p 2752 512 75 768 -1 pproc(OUT):PP
-use hwin 1096 -616 100 0 hwin#135
-xform 0 1168 -576
-p 1075 -584 100 0 -1 val(in):$(CAD_MARK)
-use hwin 3216 -809 100 0 hwin#80
-xform 0 3312 -768
-p 3219 -776 100 0 -1 val(in):$(event)
-use hwin 360 -616 100 0 hwin#51
-xform 0 432 -576
-p 339 -584 100 0 -1 val(in):$(MODE_MOVE)
-use hwin 2240 -585 100 0 hwin#128
-xform 0 2336 -544
-p 2240 -504 100 0 -1 val(in):$(cc)grC.VAL .CP .NMS
-use hwin -640 247 100 0 hwin#155
-xform 0 -544 288
-p -816 288 100 0 -1 val(in):$(top)mskPos.A
 use ecalcouts 2640 -889 100 0 ecalcouts#154
 xform 0 2800 -768
 p 2712 -856 100 0 -1 CALC:A

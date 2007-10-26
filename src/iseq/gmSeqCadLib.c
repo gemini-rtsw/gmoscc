@@ -41,6 +41,9 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.11  2006/12/21 00:31:01  pedro
+ * Added routines for the automatic wavelength adjustment of IFU-1 (SCT-65)
+ *
  * Revision 1.10  2005/09/01 23:22:56  gemvx
  * *** empty log message ***
  *
@@ -223,6 +226,13 @@ int gmSeqDbgLevel = DBG_NONE;                /* Global debug level flag, initial
 #define MAX_GR_TABLE	70
 
 /*
+ * gmCheckIfu return values
+ */
+#define IFU_NONE	0
+#define IFU_RED		1
+#define IFU_BLUE	2
+
+/*
  * Grating equation lookup table structure.
  */
 typedef struct GRTABLE {
@@ -235,13 +245,14 @@ static GRTABLE	*gmSeqGratTblPtr  = NULL;
 
 /* Function definitions */
 
-long	gmSeqMaskLUTread (char * lutfilename);
-long	gmSeqFilterLUTread (char * lutfilename);
-long	gmSeqGratingLUTread (char * lutfilename);
-int	gmSeqGratingEqLUTread (const char *);
-double	gmSeqAdjustedWavelength (double, double, char *);
-int	gmSeqGratingEqLUTinterp (double, double *);
-int	gmSeqGratingEqLUTsearch (double);
+long		gmSeqMaskLUTread (char * lutfilename);
+long		gmSeqFilterLUTread (char * lutfilename);
+long		gmSeqGratingLUTread (char * lutfilename);
+int		gmSeqGratingEqLUTread (const char *);
+double		gmSeqAdjustedWavelength (double, double, char *);
+int		gmSeqGratingEqLUTinterp (double, double *);
+int		gmSeqGratingEqLUTsearch (double);
+static int	gmIfuCheck (char *);
 
 /******************************************************************************/
 
@@ -946,6 +957,8 @@ long gmSeqCadInitGrating(struct cadRecord *pcad)
  *      c => Central wavelength (nanometres) (double)
  *      d => Grating order (integer)
  *      e => Effective wavelength for focus offset (nanometres) (double)
+ *      f => Mask name (string)
+ *      f => target wavelength from TCS (angstroms) (double)
  *
  *   EPICS output parameters:
  *      vala => Selection mode (long) :
@@ -989,6 +1002,7 @@ long gmSeqCadGrating(struct cadRecord *pcad)
     static char gratingName[MAX_STRING_SIZE] = "unknown";
     static double cenWavelength;        /* Central wavelength for grating tilt   */
     static double effWavelength;        /* Effective wavelength for focus offset */
+    static double targetWavelength;     /* Target wavelength from TCS */
     static double lambdaOffset;         /* Focus offset interpolated from LUT    */
     static double focusOffset;          /* Focus offset for this grating         */
     static long gratingOrder;           /* Grating order required                */
@@ -1092,12 +1106,19 @@ long gmSeqCadGrating(struct cadRecord *pcad)
 
           if (isMirror)
           {
-             status = CAD_ACCEPT;
+	    status = CAD_ACCEPT;
+
+	    strncpy (wavelengthString, (char *)pcad->g, MAX_STRING_SIZE-1);
+	    if (sscanf(wavelengthString, "%lf", &targetWavelength) == 1) {
+		cenWavelength = targetWavelength / 10.0; /* in nanomemeters */
+	    } else {
+		cenWavelength = 0;  /* TCS not responding or invalid input */
+	    }
 
 /* Set the wavelength related grating data to zero for mirror and specify order zero */
 
              gratingOrder  = 0;
-             cenWavelength = 0.0;
+             /* cenWavelength = 0.0; */
              effWavelength = 0.0;
              adjCenWavelength = 0.0;
              adjEffWavelength = 0.0;
@@ -3012,7 +3033,7 @@ double gmSeqAdjustedWavelength (double wavelen, double lpmm, char *mask)
 	double	greq, tilt;
 	double	scale, asecmm;
 	double	a, resol, nmppx, slitsep, wshift;
-	int	wsign;
+	int	mcode, wsign;
 
 #if 0
 	printf ("wavelength         = %.15g\n", wavelen);
@@ -3021,6 +3042,7 @@ double gmSeqAdjustedWavelength (double wavelen, double lpmm, char *mask)
 	printf ("\n");
 #endif
 
+#if 0
 	/*
 	 * Check whether the mask is either a red or blue IFU.
 	 * An empty mask won't be considered as an error.
@@ -3035,6 +3057,19 @@ double gmSeqAdjustedWavelength (double wavelen, double lpmm, char *mask)
 	} else {
 	    return wavelen;
 	}
+#endif
+
+	/*
+	 * Check whether the mask is either a red or blue IFU.
+	 * Otherwise return input wavelength untouched.
+	 */
+	mcode = gmIfuCheck (mask);
+	if (mcode == IFU_RED)
+	    wsign = 1;
+	else if (mcode == IFU_BLUE)
+	    wsign = -1;
+	else
+	    return wavelen;
 
 #if 0
 	printf ("wsign              =%d\n", wsign);
@@ -3304,4 +3339,55 @@ int gmSeqGratingTableDump ()
 	}
 
 	return ret;
+}
+
+/*+
+ * FUNCTION NAME:
+ * gmIfuCheck
+ *
+ * INVOCATION:
+ * gmIfuCheck (mask)
+ *
+ * PARAMETERS: (">" input, "!" modified, "<" output)  
+ * (>) mask (char *)	mask name
+ *
+ * FUNCTION VALUE:
+ * (int)	 1 if the mask is an IFU red mask
+ *		-1 if the mask is an IFU blue mask
+ *		 0 otherwise
+ *   
+ * PURPOSE
+ * Check whether the mask is an IFU mask
+ * 
+ * DESCRIPTION
+ * The routine checks whether the mask is an IFU red (IFU-, IFU-NS-R) or
+ * an IFU blue mask (IFU-B, IFU-NS-B). It returns an integer code than can
+ * be either be 0 (no IFU mask), 1 (IFU red) or -1 (IFU blue). An empty
+ * mask name is not considered as an error.
+ * 
+ * EXTERNAL VARIABLES:
+ * None
+ *
+ * PRIOR REQUIREMENTS:
+ * None
+ *
+ * DEFICIENCIES:
+ * None
+ *-
+ */
+static int gmIfuCheck (char *mask)
+{
+	int	ret;
+
+	if (strcmp (mask, "IFU-R")    == 0 ||
+	    strcmp (mask, "IFU-NS-R") == 0) {
+	    ret = IFU_RED;		/* red */
+	} else if (strcmp (mask, "IFU-B")    == 0 ||
+		   strcmp (mask, "IFU-NS-B") == 0) {
+	    ret = IFU_BLUE;		/* blue */
+	} else {
+	    ret = IFU_NONE;		/* none */
+	}
+
+	return (ret);
 }

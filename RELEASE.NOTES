@@ -1,4 +1,4 @@
-V-80 October 2007
+V6-9 October 2007
 Fixed setting up the ISS port for CP
     - Added initialization in CP/pv/gmAtm.pv and gmAtmSim.pv, and removed
       dbpf's in startup script
@@ -21,6 +21,10 @@ Fixed setting up the ISS port for CP
 	M startup/CP/gmStartupCP.vws
 Updated OIWFS base and pickoff angles and offsets (commented out for now)
 Updated CP lookup tables
+Fixed the problem reported on SCT-65
+    - Files modified
+	capfast/gmSeqGrating.sch
+	src/iseq/gmSeqCadLib.c
 
 V6-8 April 2007 pgigoux
 -----------------------
