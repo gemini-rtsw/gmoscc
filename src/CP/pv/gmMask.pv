@@ -177,7 +177,7 @@ group {
 }
 
 # Smoothing for LVDT analog record
-double $(top)mskLvdt.SMOO       =    0.5;
+double $(top)mskLvdt.SMOO       =    0.7;
 
 #
 #     This is a workaround.  For some reason this bit does not represent
