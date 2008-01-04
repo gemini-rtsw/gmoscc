@@ -65,6 +65,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.5  2006/04/12 02:51:48  gemvx
+ * make the ifu barcode available on SOV to be writtin to the ifuSelection record
+ *
  * Revision 1.4  2005/02/23 01:50:52  gemvx
  * *** empty log message ***
  *
@@ -371,7 +374,7 @@
 #define MK_BARCODE_MAX_SIM 59999999      /* Maximum simulated barcode   */
 #define MK_BARCODE_MIN_SIM 50000000      /* Minimum simulated barcode   */
 #define MK_NO_BARCODE          -1        /* Code for undefined barcode. */
-#define MK_BARCODE_READ_DELAY   2        /* seconds to wait for barcode */
+#define MK_BARCODE_READ_DELAY  10        /* seconds to wait for barcode */
 #define MK_SENSOR_DELAY         1        /* seconds to wait for power-up*/
 #define MK_VELOCITY_DISABLE     0.0      /* use this for zero velocities*/
                  /* either as a placeholder for devices that don't use  */
