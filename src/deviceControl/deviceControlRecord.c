@@ -62,6 +62,10 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.3  2006/03/23 00:40:55  gemvx
+ * update the timestamp when the value of MPOS changes
+ * this improves GEA logging
+ *
  * Revision 1.2  2005/03/09 19:46:13  gemvx
  * *** empty log message ***
  *
@@ -1514,7 +1518,9 @@ static long depoweringState
      */
     
     if (pdr->upsb && !pdr->psta)
-    {       
+    {   
+        /* raise monitor for Power Status */
+        MONITOR(RECORD_PSTA);
         (*pdset->setDelay) (pPriv, 0);
         return idleState (pdr);
     }
@@ -1565,6 +1571,8 @@ static long depoweringState
 
         else                   
         {
+	    /* raise monitor for Power Status */
+	    MONITOR(RECORD_PSTA);
             DEBUG(DDR_MSG_ERROR,
                   "<%ld> %s:depoweringState, power still on after timeout%c\n",
                   ' ');
@@ -4055,11 +4063,24 @@ static long movingState
                  *  apparent limit but the omsScanTask did not read a limit).
                  */
 
-                if ( pPriv->target != pPriv->position )
+                if ( ( pPriv->mode != DDR_MODE_TRACK ) && (pPriv->target != pPriv->position ))
                 {
                     SET_ERR_MSG("Motor didn't reach target");
                     DEBUG(DDR_MSG_ERROR, "<%ld> %s:movingState:motor didn't reach target (limit switch bounce?)%c\n", ' ');
+		    DEBUG(DDR_MSG_ERROR, "<%ld> %s:position is %f\n",pPriv->position );
+		    DEBUG(DDR_MSG_ERROR, "<%ld> %s:target is %f\n",pPriv->target );
+
                     return abortingState(pdr);
+                }
+		/*
+		 * The following is just for monitoring how often this fault occurs.  It will be removed eventually
+		 */
+
+               if ( ( pPriv->mode == DDR_MODE_TRACK ) && (pPriv->target != pPriv->position ))
+                {
+                    DEBUG(DDR_MSG_ERROR, "<%ld> %s:movingState:motor didn't reach target Ignoring because we're tracking%c\n", ' ');
+		    DEBUG(DDR_MSG_ERROR, "<%ld> %s:position is %f\n",pPriv->position );
+		    DEBUG(DDR_MSG_ERROR, "<%ld> %s:target is %f\n",pPriv->target );
                 }
 
                 /* 
@@ -4441,6 +4462,8 @@ static long poweringState
     
     if ( pdr->psta )
     {        
+        /* raise monitor for Power Status */
+        MONITOR(RECORD_PSTA);
         (*pdset->setDelay) (pPriv, 0);
         return( unlockingState (pdr) );
     }
@@ -4452,6 +4475,9 @@ static long poweringState
       
     if (pPriv->timeout)
     {
+        /* raise monitor for Power Status */
+        MONITOR(RECORD_PSTA);
+
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         pPriv->timeout = FALSE;
         semGive (pPriv->mutexSem);
