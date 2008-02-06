@@ -62,6 +62,10 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.4  2008/01/30 22:08:36  gemvx
+ * troubleshoot device failures: added a tracking comment and raise monitors for
+ * power status changes
+ *
  * Revision 1.3  2006/03/23 00:40:55  gemvx
  * update the timestamp when the value of MPOS changes
  * this improves GEA logging
@@ -3638,7 +3642,12 @@ static void monitor
     if (MONITORED(RECORD_VELO)) db_post_events(pdr, &pdr->velo, DBE_VALUE|DBE_LOG);
     if (MONITORED(RECORD_ACCL)) db_post_events(pdr, &pdr->accl, DBE_VALUE|DBE_LOG);
     if (MONITORED(RECORD_IALG)) db_post_events(pdr, &pdr->ialg, DBE_VALUE|DBE_LOG);
-    if (MONITORED(RECORD_PSTA)) db_post_events(pdr, &pdr->psta, DBE_VALUE|DBE_LOG);
+/*     if (MONITORED(RECORD_PSTA)) db_post_events(pdr, &pdr->psta, DBE_VALUE|DBE_LOG); */
+    if (MONITORED(RECORD_PSTA)) {
+      recGblGetTimeStamp( pdr );
+      db_post_events(pdr, &pdr->psta, DBE_VALUE|DBE_LOG);
+    }
+
     if (MONITORED(RECORD_BSTA)) db_post_events(pdr, &pdr->bsta, DBE_VALUE|DBE_LOG);
     if (MONITORED(RECORD_FLT))  db_post_events(pdr, &pdr->flt,  DBE_VALUE|DBE_LOG);
     if (MONITORED(RECORD_DBUG)) db_post_events(pdr, &pdr->dbug, DBE_VALUE|DBE_LOG);
@@ -3656,7 +3665,11 @@ static void monitor
      */
 
     if (MONITORED(RECORD_ACK))  db_post_events(pdr, &pdr->ack, DBE_VALUE|DBE_LOG);
-    if (MONITORED(RECORD_PWR))  db_post_events(pdr, &pdr->pwr, DBE_VALUE|DBE_LOG);
+/*     if (MONITORED(RECORD_PWR))  db_post_events(pdr, &pdr->pwr, DBE_VALUE|DBE_LOG); */
+    if (MONITORED(RECORD_PWR))  {
+      recGblGetTimeStamp( pdr );
+      db_post_events(pdr, &pdr->pwr, DBE_VALUE|DBE_LOG);
+    }
     if (MONITORED(RECORD_BRK))  db_post_events(pdr, &pdr->brk, DBE_VALUE|DBE_LOG);
 
     if (MONITORED(RECORD_MIP))  db_post_events(pdr, &pdr->mip, DBE_VALUE|DBE_LOG);
