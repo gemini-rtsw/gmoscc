@@ -506,7 +506,7 @@ static long     processState (DEVICE_CONTROL_RECORD *);
  *  Prototypes for local state machine state functions
  */
 
-static long     abortingState (DEVICE_CONTROL_RECORD *);
+static long     abortingState (DEVICE_CONTROL_RECORD *, int);
 static long     depoweringState (DEVICE_CONTROL_RECORD *);
 static long     holdingState (DEVICE_CONTROL_RECORD *);
 static long     idleState (DEVICE_CONTROL_RECORD *);
@@ -701,13 +701,15 @@ typedef struct {
 
 static long abortingState
 (
-    DEVICE_CONTROL_RECORD    *pdr   /* (in)  Ptr. to device rec.            */
+    DEVICE_CONTROL_RECORD    *pdr,   /* (in)  Ptr. to device rec.            */
+    int                  keep_index  /* when true and servo motor, keep index */
 )
 {
     DEVICE_CONTROL_PRIVATE          /* internal control structure           */
         *pPriv = pdr->dpvt;
     DEVICE_CONTROL_DSET             /* device support function structure    */
         *pdset = (DEVICE_CONTROL_DSET *) (pdr->dset);
+    DEV_CTL_OMS_PRIVATE *pMotor = pPriv->pPrivate; /* axis control struct */
     long delay = 0;                 /* delay time in 0.1s units             */
     long status = 0;                /* function status return               */
 
@@ -725,6 +727,42 @@ static long abortingState
         DEBUG(DDR_MSG_FULL,
                  "<%ld> %s: abortingState: from osta:%d\n", pdr->osta);
         pdr->osta = DDR_FAILING;
+
+	/*
+	 *  If it's a servo motor hitting a limit, don't loose index ... just 
+	 *  stop the motion cleanly with the target set equal to the current position
+	 */
+
+	if ((pMotor->type == 44) && (pPriv->highLimit || pPriv->lowLimit )) {
+
+	  DEBUG(DDR_MSG_MIN,
+                 "<%ld> %s: abortingState: detected limit for a servomotor, recovering...%c\n", ' ');
+	  pdr->lswa = 0;
+	  MONITOR(RECORD_LSWA);
+
+	  semTake (pPriv->mutexSem, WAIT_FOREVER);
+	  pPriv->target = pPriv->position;
+	  semGive (pPriv->mutexSem);
+
+	  return ( lockingState(pdr) );
+	}
+
+	/*
+	 *  If it's a servo motor and the keep_index flag is true, don't loose index ... just 
+	 *  stop the motion cleanly with the target set equal to the current position
+	 */
+
+	if ((pMotor->type == 44) && keep_index) {
+
+	  DEBUG(DDR_MSG_MIN,
+                 "<%ld> %s: abortingState: keep_index is true for a servomotor, recovering...%c\n", ' ');
+
+	  semTake (pPriv->mutexSem, WAIT_FOREVER);
+	  pPriv->target = pPriv->position;
+	  semGive (pPriv->mutexSem);
+
+	  return ( lockingState(pdr) );
+	}
 
         /*
          *  Abort any motion in progress by sending an abort command
@@ -1451,7 +1489,7 @@ static long depoweringState
 
             pdr->pwr = FALSE;
             MONITOR(RECORD_PWR);
-                    
+   
             if (!pPriv->simulation)
             {
                 TRIGGER(RECORD_PWR);
@@ -1473,7 +1511,7 @@ static long depoweringState
                           "<%ld> %s:depoweringState: Power control fault%c\n",
                           ' ');
                     SET_ERR_MSG( pPriv->errorMessage);
-                    return abortingState (pdr);  /* command fails here      */
+                    return abortingState (pdr, 0);  /* command fails here      */
                 }
             }
 
@@ -1510,7 +1548,7 @@ static long depoweringState
         SET_ERR_MSG("Unexpected motion while depowering");
         DEBUG(DDR_MSG_ERROR, 
               "<%ld> %s:depoweringState:moving flag set after powering down%c\n", ' ');
-        return abortingState (pdr);
+        return abortingState (pdr, 0);
     }
 
 
@@ -1523,6 +1561,8 @@ static long depoweringState
     
     if (pdr->upsb && !pdr->psta)
     {   
+        DEBUG(DDR_MSG_FULL,
+              "<%ld> %s:depoweringState: power status off%c\n", ' ');
         /* raise monitor for Power Status */
         MONITOR(RECORD_PSTA);
         (*pdset->setDelay) (pPriv, 0);
@@ -1581,7 +1621,7 @@ static long depoweringState
                   "<%ld> %s:depoweringState, power still on after timeout%c\n",
                   ' ');
             SET_ERR_MSG( "motor did not power off in time");
-            return abortingState (pdr);
+            return abortingState (pdr, 0);
         }
     }
 
@@ -3153,7 +3193,7 @@ static long initState
             DEBUG(DDR_MSG_ERROR, "<%ld> %s:initState: Power control fault%c\n",
                   ' ');
             SET_ERR_MSG( pPriv->errorMessage);
-            return abortingState (pdr);
+            return abortingState (pdr, 0);
         }
     }
 
@@ -3471,7 +3511,7 @@ static long lockingState
         SET_ERR_MSG("Unexpected motion while braking");
         DEBUG(DDR_MSG_ERROR, 
               "<%ld> %s:lockingState:moving flag set after brakes applied%c\n", ' ');
-        return abortingState (pdr);
+        return abortingState (pdr, 0);
     }
 
     /*
@@ -3535,7 +3575,7 @@ static long lockingState
             DEBUG(DDR_MSG_ERROR,
                   "<%ld> %s:lockingState: brake did not engage in time%c\n",
                   ' ');
-            status = abortingState (pdr);
+            status = abortingState (pdr, 0);
         }
     }
 
@@ -3642,11 +3682,13 @@ static void monitor
     if (MONITORED(RECORD_VELO)) db_post_events(pdr, &pdr->velo, DBE_VALUE|DBE_LOG);
     if (MONITORED(RECORD_ACCL)) db_post_events(pdr, &pdr->accl, DBE_VALUE|DBE_LOG);
     if (MONITORED(RECORD_IALG)) db_post_events(pdr, &pdr->ialg, DBE_VALUE|DBE_LOG);
+
 /*     if (MONITORED(RECORD_PSTA)) db_post_events(pdr, &pdr->psta, DBE_VALUE|DBE_LOG); */
     if (MONITORED(RECORD_PSTA)) {
       recGblGetTimeStamp( pdr );
       db_post_events(pdr, &pdr->psta, DBE_VALUE|DBE_LOG);
     }
+
 
     if (MONITORED(RECORD_BSTA)) db_post_events(pdr, &pdr->bsta, DBE_VALUE|DBE_LOG);
     if (MONITORED(RECORD_FLT))  db_post_events(pdr, &pdr->flt,  DBE_VALUE|DBE_LOG);
@@ -3665,11 +3707,13 @@ static void monitor
      */
 
     if (MONITORED(RECORD_ACK))  db_post_events(pdr, &pdr->ack, DBE_VALUE|DBE_LOG);
+
 /*     if (MONITORED(RECORD_PWR))  db_post_events(pdr, &pdr->pwr, DBE_VALUE|DBE_LOG); */
     if (MONITORED(RECORD_PWR))  {
       recGblGetTimeStamp( pdr );
       db_post_events(pdr, &pdr->pwr, DBE_VALUE|DBE_LOG);
     }
+
     if (MONITORED(RECORD_BRK))  db_post_events(pdr, &pdr->brk, DBE_VALUE|DBE_LOG);
 
     if (MONITORED(RECORD_MIP))  db_post_events(pdr, &pdr->mip, DBE_VALUE|DBE_LOG);
@@ -3677,6 +3721,8 @@ static void monitor
       db_post_events(pdr, &pdr->mpos, DBE_VALUE|DBE_LOG);
       recGblGetTimeStamp( pdr );
     }
+/*     if (MONITORED(RECORD_MPOS)) db_post_events(pdr, &pdr->mpos, DBE_VALUE|DBE_LOG); */
+
     if (MONITORED(RECORD_RPOS)) db_post_events(pdr, &pdr->rpos, DBE_VALUE|DBE_LOG);
     if (MONITORED(RECORD_RRBV)) db_post_events(pdr, &pdr->rrbv, DBE_VALUE|DBE_LOG);
     if (MONITORED(RECORD_RVEL)) db_post_events(pdr, &pdr->rvel, DBE_VALUE|DBE_LOG);
@@ -3975,7 +4021,7 @@ static long movingState
                   "<%ld> %s:movingState: controlMotion call failed%c\n",
                   ' ');
             SET_ERR_MSG( pPriv->errorMessage);
-            return abortingState (pdr);
+            return abortingState (pdr, 0);
         }
         (*pdset->setDelay) (pPriv, 0);   /* cancel the timeout */
 
@@ -4017,7 +4063,7 @@ static long movingState
                         "<%ld> %s:movingState: setPosition call failed%c\n",
                         ' ');
                     SET_ERR_MSG( pPriv->errorMessage);
-                    return abortingState (pdr);
+                    return abortingState (pdr, 0);
                 }
                 pdr->hpvl = TRUE;
                 MONITOR(RECORD_HPVL);
@@ -4036,7 +4082,7 @@ static long movingState
                 SET_ERR_MSG( "Device hit a soft limit");
                 DEBUG(DDR_MSG_ERROR,
                       "<%ld> %s: movingState: device hit a soft limit%c\n", ' ');
-                return( abortingState(pdr) );
+                return( abortingState(pdr, 0) );
             }
 
         }   /* End of motion stopped by a limit switch */
@@ -4083,7 +4129,7 @@ static long movingState
 		    DEBUG(DDR_MSG_ERROR, "<%ld> %s:position is %f\n",pPriv->position );
 		    DEBUG(DDR_MSG_ERROR, "<%ld> %s:target is %f\n",pPriv->target );
 
-                    return abortingState(pdr);
+                    return abortingState(pdr, 1);
                 }
 		/*
 		 * The following is just for monitoring how often this fault occurs.  It will be removed eventually
@@ -4116,7 +4162,7 @@ static long movingState
                     {
                         SET_ERR_MSG("Encoder doesn't agree with motor count");
                         DEBUG(DDR_MSG_ERROR, "<%ld> %s:movingState: encoder & position disagree by more than encoder deadband (EDBD=%ld)\n", pdr->edbd);
-                        return abortingState(pdr);
+                        return abortingState(pdr, 0);
                     }
                 }
             }
@@ -4194,7 +4240,7 @@ static long movingState
             semTake (pPriv->mutexSem, WAIT_FOREVER);
             pPriv->stalled_times = 0;
             semGive (pPriv->mutexSem);
-            return abortingState (pdr);
+            return abortingState (pdr, 0);
         }
 
 
@@ -4237,7 +4283,7 @@ static long movingState
         DEBUG(DDR_MSG_ERROR, 
               "<%ld> %s:movingState:Power failed while moving, hard limit?%c\n",
               ' ');
-        return abortingState (pdr);
+        return abortingState (pdr, 1);
     }
 
 
@@ -4254,7 +4300,7 @@ static long movingState
         DEBUG(DDR_MSG_ERROR,
               "<%ld> %s:movingState: Motor did not get there in time, moving=%d \n",
               pPriv->moving );
-        return ( abortingState (pdr) );
+        return ( abortingState (pdr, 0) );
     }
 
 
@@ -4428,7 +4474,7 @@ static long poweringState
                     DEBUG(DDR_MSG_ERROR, 
                           "<%ld> %s:poweringState:Power control fault%c\n",' ');
                     SET_ERR_MSG( pPriv->errorMessage);
-                    return abortingState (pdr);
+                    return abortingState (pdr, 0);
                 }
             }
 
@@ -4475,6 +4521,8 @@ static long poweringState
     
     if ( pdr->psta )
     {        
+        DEBUG(DDR_MSG_FULL,
+              "<%ld> %s:poweringState: power status on%c\n", ' ');
         /* raise monitor for Power Status */
         MONITOR(RECORD_PSTA);
         (*pdset->setDelay) (pPriv, 0);
@@ -4533,7 +4581,7 @@ static long poweringState
             DEBUG(DDR_MSG_ERROR,
                   "<%ld> %s: poweringState: No motor power, interlock?%c\n",
                   ' ');
-            return( abortingState (pdr) );
+            return( abortingState (pdr, 0) );
         }
     }
        
@@ -4713,7 +4761,6 @@ static long process
         return (0);
     }
 
-
     /*
      *  Set the processing active flag to indicate that the record is being
      *  processed.
@@ -4722,7 +4769,6 @@ static long process
     DEBUG(DDR_MSG_MAX,
             "<%ld> %s: process: normal record processing begins .....%c\n", ' ');
     pdr->pact = TRUE;
-
 
     /*
      *  If the private fault flag has been set then the interlock (FLT) field
@@ -4752,7 +4798,7 @@ static long process
                       "<%ld> %s:process: aborting command in progress%c\n",
                       ' ');
                 SET_ERR_MSG("Interlock Detected");
-                status = abortingState (pdr);
+                status = abortingState (pdr, 0);
             }
 
             /*
@@ -5072,7 +5118,7 @@ static long process
         DEBUG(DDR_MSG_MAX, "<%ld> %s:process: post process entry%c\n", ' ');
         pdr->pp = FALSE;
         recGblFwdLink( pdr );
-        recGblGetTimeStamp( pdr );
+	recGblGetTimeStamp( pdr );
     }
 
 
@@ -5739,7 +5785,7 @@ static long processState
         DEBUG(DDR_MSG_ERROR,
               "<%ld> %s:processState: device layer failure, status = %ld\n",
               pPriv->status);
-        status = abortingState (pdr);   /* indicate the motion failed */
+        status = abortingState (pdr, 0);   /* indicate the motion failed */
     }
 
 
@@ -5786,7 +5832,7 @@ static long processState
             case DDR_FAILING:
                 DEBUG(DDR_MSG_LOG,
                       "<%ld> %s:processState: aborting%c\n", ' ');
-                status = abortingState (pdr);
+                status = abortingState (pdr, 0);
                 break;
         }                         
     }
@@ -6032,7 +6078,6 @@ static long special
     {
         return (0);
     }
-   
 
     /*
      *  Trap writes to the fault line here.   Since the fault field is
@@ -6044,10 +6089,11 @@ static long special
      *  continuously writing a "0" to clear the fault, this will cause
      *  the record to process each time.
      */
-    
+
+
     if (paddr->pfield == (void *) &pdr->flt)
     {
-        DEBUG(DDR_MSG_MAX, "<%ld> %s:special: fault <%ld>\n", pdr->flt);
+/*         DEBUG(DDR_MSG_MAX, "<%ld> %s:special: fault <%ld>\n", pdr->flt); */
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         if (pPriv->fault != pdr->flt)
         {
@@ -6278,7 +6324,7 @@ static long startingState
                   "<%ld> %s:startingState: configureDrive call failed%c\n",
                   ' ');
             SET_ERR_MSG( pPriv->errorMessage);
-            return abortingState (pdr);
+            return abortingState (pdr, 0);
         }
 
         /*
@@ -6365,7 +6411,7 @@ static long startingState
                   "<%ld> %s:startingState: controlMotion call failed%c\n",
                   ' ');
             SET_ERR_MSG( pPriv->errorMessage);
-            return abortingState (pdr);
+            return abortingState (pdr, 0);
         }
 
 
@@ -6462,7 +6508,7 @@ static long startingState
                       "<%ld> %s:startingState: setPosition call failed%c\n",
                       ' ');
                 SET_ERR_MSG( pPriv->errorMessage);
-                return abortingState (pdr);
+                return abortingState (pdr, 0);
             }
 
             pdr->hpvl = TRUE;
@@ -6481,7 +6527,7 @@ static long startingState
             SET_ERR_MSG( "Can not move into a soft limit");
             DEBUG(DDR_MSG_ERROR, 
                   "<%ld> %s: startingState: can't move into a limit%c\n", ' ');
-            return ( abortingState (pdr) );
+            return ( abortingState (pdr, 0) );
         }
     }
 
@@ -6504,7 +6550,7 @@ static long startingState
         SET_ERR_MSG( "Motion did not start in time");
         DEBUG(DDR_MSG_ERROR,
                "<%ld> %s: startingState: Motion did not start in time%c\n", ' ');
-        return ( abortingState (pdr) );
+        return ( abortingState (pdr, 0) );
     }
         
 
@@ -6620,7 +6666,7 @@ static long stoppingState
                   "<%ld> %s:stoppingState: controlMotion call failed%c\n",
                   ' ');
             SET_ERR_MSG( pPriv->errorMessage);
-            return abortingState (pdr);
+            return abortingState (pdr, 0);
         }
 
 
@@ -6662,7 +6708,7 @@ static long stoppingState
             SET_ERR_MSG( "Device hit a soft limit");
             DEBUG(DDR_MSG_ERROR,
                   "<%ld> %s: stoppingState: Device hit a soft limit%c\n", ' ');
-            return ( abortingState(pdr) );
+            return ( abortingState(pdr, 0) );
         }
       
         return ( lockingState (pdr) );
@@ -6679,7 +6725,7 @@ static long stoppingState
         SET_ERR_MSG( "motion did not stop in time");
         DEBUG(DDR_MSG_ERROR,
               "<%ld> %s: stoppingState: Motion did not stop in time%c\n", ' ');
-        return ( abortingState (pdr) );
+        return ( abortingState (pdr, 0) );
     }
 
 
@@ -6920,7 +6966,7 @@ static long unlockingState
             DEBUG(DDR_MSG_ERROR,
                  "<%ld> %s: unlockingState: Brake did not release in time%c\n",
                  ' ');
-            return ( abortingState (pdr) );
+            return ( abortingState (pdr, 0) );
         }
     }
        
