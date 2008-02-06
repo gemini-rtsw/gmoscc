@@ -45,6 +45,10 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.5  2006/03/07 20:50:35  gemvx
+ * implemented badRead to ignore spikes in encoder position caused by interference
+ * which last for no more than one scan cycle.
+ *
  * Revision 1.4  2006/01/04 01:09:29  gemvx
  * fixed motion timeout bug
  *
@@ -249,7 +253,6 @@
 
 #include    <deviceControlRecord.h>
 #include    <boRecord.h>
-#include    <deviceControl.h>
 #include    <devDcOms844.h>
 #include    <drvOmsVme844.h>
 #include    <ddrMessageLevels.h>      /* Device record message level definitions. */
@@ -328,29 +331,6 @@ DEVICE_BO_OMS_DAO_DSET devBoOms844 = {
     devBoControlPower,
     };
 
-
-/*
- *  Define the private control structure used to keep current information
- *  on the state of each motor. This structure is defined in devDeviceControl.h
- */
-
-typedef struct {
-    ELLNODE             node;              /* motor scan list node struct   */
-    SEM_ID              mutexSem;          /* mutual exclusion semaphore    */
-    DEVICE_CONTROL_PRIVATE  *pDevice;      /* calling record private struct */
-    DEVICE_CONTROL_RECORD   *pRecord;      /* calling record structure      */
-    int                 card;              /* interface card number         */   
-    int                 type;              /* card type (8 or 44)           */
-    int                 exists;            /* interface card exists         */
-    int                 axis;              /* axis on the interface card    */
-    int                 updateState;       /* state update request flag     */
-    int                 earlyDone;         /* done interrupt before moving  */
-    long                simVelocity;       /* simulated velocity            */
-    long                scansLeft;         /* timeout timer oms scans left  */
-    long                stoppedCntr;       /* #scans motor has been stopped */
-    char                errorMessage[MAX_STRING_SIZE];  /* root message     */
-    long                status;            /* motor status flag             */
-    } DEV_CTL_OMS_PRIVATE;
 
 
 static ELLLIST deviceControlScanList;      /* record scan list              */

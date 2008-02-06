@@ -34,6 +34,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2002/04/24 05:18:13  ajf
+ * Changes for epics3.13.4GEM8.4.
+ *
  * Revision 1.1  2001/11/28 20:15:07  mbec
  * *** empty log message ***
  *
@@ -79,6 +82,7 @@
 #ifndef DEV_DEVICE_CONTROL_INC
 #define DEV_DEVICE_CONTROL_INC
 
+#include    <deviceControl.h>
 
 /* 
  * Define the epics deviceControl record device support access structure.
@@ -110,6 +114,30 @@ typedef struct {
     DEVSUPFUN       getIointInfo;
     DEVSUPFUN       writeBo;
 } DEVICE_BO_OMS_DAO_DSET;
+
+/*
+ *  Define the private control structure used to keep current information
+ *  on the state of each motor. This structure is defined in devDeviceControl.h
+ */
+
+typedef struct {
+  ELLNODE             node;              /* motor scan list node struct   */
+  SEM_ID              mutexSem;          /* mutual exclusion semaphore    */
+  DEVICE_CONTROL_PRIVATE  *pDevice;      /* calling record private struct */
+  DEVICE_CONTROL_RECORD   *pRecord;      /* calling record structure      */
+  int                 card;              /* interface card number         */   
+  int                 type;              /* card type (8 or 44)           */
+  int                 exists;            /* interface card exists         */
+  int                 axis;              /* axis on the interface card    */
+  int                 updateState;       /* state update request flag     */
+  int                 earlyDone;         /* done interrupt before moving  */
+  long                simVelocity;       /* simulated velocity            */
+  long                scansLeft;         /* timeout timer oms scans left  */
+  long                stoppedCntr;       /* #scans motor has been stopped */
+  char                errorMessage[MAX_STRING_SIZE];  /* root message     */
+  long                status;            /* motor status flag             */
+} DEV_CTL_OMS_PRIVATE;
+
 
 #endif
 
