@@ -49,6 +49,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2002/04/24 05:24:56  ajf
+ * New directory for port to epics3.13.4GEM8.4.
+ *
  * Revision 1.2  2002/01/15 21:06:06  mbec
  * *** empty log message ***
  *
@@ -269,7 +272,12 @@
 #define D2R                 (M_PI/180.0)    /* degrees to radians           */
 #define R2D                 (1.0/D2R)       /* radians to degrees           */
 
+/*
+ *  Channels to read Index State for the Base and Pickoff
+ */
 
+#define OI_BAS_HPVL   "gm:wfs:probeBasDevice.HPVL"
+#define OI_PKO_HPVL   "gm:wfs:probePkoDevice.HPVL"
           
 /*
  *  Device support function prototypes
@@ -361,6 +369,12 @@ typedef struct {
     double      Ytarget;           /* final Y target (for intermediate move)*/
 } OI_DEV_CONTROL_PRIVATE;
 
+/*
+ *  Globals
+ */
+
+struct dbAddr basHPVL, pkoHPVL;
+static short basIndex, pkoIndex;
 
 /*
  *  Debugging macro to send the system time, error string and one
@@ -485,6 +499,9 @@ static long oiBusyStateChange
     long nRequest = 1;                  /* Number of items to send on link. */
     long status = DAR_S_SUCCESS;        /* Function status return value.    */
     long runTimeout;                    /* Maximum motion time              */
+    long    options, no_elements;
+    short  buffer[100];
+    short  *pbuffer=&buffer[0];
 
     DEBUG(DAR_MSG_FULL, "<%ld> %s:oiBusyStateChange: entry%c\n", ' ');
 
@@ -738,14 +755,8 @@ static long oiBusyStateChange
 
             indexType = 0;
 
-            /*CHECKSTAT( (status = recGblPutLinkValue (&(par->sor), 
-                    (void *) par, DBR_SHORT,& (indexType), &nRequest)),
-                    return(oiCancelCommand (par)) );*/
-           CHECKSTAT((status = dbPutLink(&(par->sor),DBR_SHORT, &(indexType), nRequest)),return(oiCancelCommand(par)) );
+	    CHECKSTAT((status = dbPutLink(&(par->sor),DBR_SHORT, &(indexType), nRequest)),return(oiCancelCommand(par)) );
 
-            /*CHECKSTAT( (status = recGblPutLinkValue (&(par->sot), 
-                    (void *) par, DBR_SHORT, &(indexType), &nRequest)),
-                    return(oiCancelCommand (par)) );*/
 	    CHECKSTAT((status = dbPutLink(&(par->sot),DBR_SHORT, &(indexType), nRequest)),return(oiCancelCommand(par)) );
 
             /*
@@ -787,23 +798,6 @@ static long oiBusyStateChange
             DEBUG(DAR_MSG_FULL, 
                   "<%ld> %s:oiBusyStateChange: pickoff velocity:%f\n", pkoIndexVel);
 
-            /*CHECKSTAT( (status = recGblPutLinkValue (&(par->pos1), 
-                    (void *) par, DBR_DOUBLE, &(baseTarget), &nRequest)),
-                    return(oiCancelCommand (par)) );
-
-            CHECKSTAT( (status = recGblPutLinkValue (&(par->pos2), 
-                    (void *) par, DBR_DOUBLE, &(pickoffTarget), &nRequest)),
-                    return(oiCancelCommand (par)) );
-
-            CHECKSTAT( (status = recGblPutLinkValue (&(par->vel1), 
-                    (void *) par, DBR_DOUBLE, &(basIndexVel), &nRequest)),
-                    return(oiCancelCommand (par)) );
-
-            CHECKSTAT( (status = recGblPutLinkValue (&(par->vel2), 
-                    (void *) par, DBR_DOUBLE, &(pkoIndexVel), &nRequest)),
-                    return(oiCancelCommand (par)) );
-	    */
-
             CHECKSTAT ( (status = dbPutLink (&(par->pos1),DBR_DOUBLE,&(baseTarget) ,nRequest)) ,return(oiCancelCommand(par)));
             CHECKSTAT ((status = dbPutLink(&(par->pos2),DBR_DOUBLE,&(pickoffTarget),nRequest)),return(oiCancelCommand(par)));
             CHECKSTAT ((status = dbPutLink(&(par->vel1),DBR_DOUBLE,&(basIndexVel),nRequest)),return(oiCancelCommand(par)));
@@ -841,16 +835,8 @@ static long oiBusyStateChange
              */
 
             indexType = 2;
-            /*CHECKSTAT( (status = recGblPutLinkValue (&(par->sor), 
-                    (void *) par, DBR_SHORT, &(indexType), &nRequest)),
-                    return(oiCancelCommand (par)) );*/
  	    CHECKSTAT((status = dbPutLink(&(par->sor),DBR_SHORT,&(indexType),nRequest)),return(oiCancelCommand (par)));
-
-            /*CHECKSTAT( (status = recGblPutLinkValue (&(par->sot), 
-                    (void *) par, DBR_SHORT, &(indexType), &nRequest)),
-                    return(oiCancelCommand (par)) );
-	     */
-	     CHECKSTAT((status = dbPutLink(&(par->sot),DBR_SHORT,&(indexType),nRequest)),return(oiCancelCommand (par)));
+	    CHECKSTAT((status = dbPutLink(&(par->sot),DBR_SHORT,&(indexType),nRequest)),return(oiCancelCommand (par)));
             /*
              *  Reset velocities to max since this is a very short motion
              *  and send them to the device control records.  No angluar
@@ -863,18 +849,7 @@ static long oiBusyStateChange
             pDevPvt->pickoffVelocity = OI_VELOCITY;
             semGive (pDevPvt->mutexSem);
 
-            /*CHECKSTAT( (status = recGblPutLinkValue (&(par->vel1), 
-                    (void *) par, DBR_DOUBLE, 
-                    &(pDevPvt->baseVelocity), &nRequest)),
-                    return(oiCancelCommand (par)) );
-	     */
-            CHECKSTAT( (status = dbPutLink(&(par->vel1),DBR_DOUBLE,&(pDevPvt->baseVelocity),nRequest)) ,return(oiCancelCommand(par)) );
-            
-	    /*CHECKSTAT( (status = recGblPutLinkValue (&(par->vel2), 
-                    (void *) par, DBR_DOUBLE, 
-                    &(pDevPvt->pickoffVelocity), &nRequest)),
-                    return(oiCancelCommand (par)) );*/
-
+            CHECKSTAT((status = dbPutLink(&(par->vel1),DBR_DOUBLE,&(pDevPvt->baseVelocity),nRequest)) ,return(oiCancelCommand(par)));
 	    CHECKSTAT((status = dbPutLink(&(par->vel2),DBR_DOUBLE,&(pDevPvt->pickoffVelocity),nRequest)),return(oiCancelCommand(par)));
 
             return (oiExecuteCommand (par));
@@ -943,33 +918,12 @@ static long oiBusyStateChange
             DEBUG(DAR_MSG_FULL, 
                   "<%ld> %s:oiBusyStateChange: pickoff velocity:%f\n", 
                   pDevPvt->pickoffVelocity);
-/*
-            CHECKSTAT( (status = recGblPutLinkValue (&(par->pos1), 
-                    (void *) par, DBR_DOUBLE, 
-                    &(pDevPvt->baseAngle), &nRequest)),
-                    return(oiCancelCommand (par)) );
 
-            CHECKSTAT( (status = recGblPutLinkValue (&(par->pos2), 
-                    (void *) par, DBR_DOUBLE,
-                    &(pDevPvt->pickoffAngle), &nRequest)),
-                    return(oiCancelCommand (par)) );
-
-            CHECKSTAT( (status = recGblPutLinkValue (&(par->vel1), 
-                    (void *) par, DBR_DOUBLE,
-                    &(pDevPvt->baseVelocity), &nRequest)),
-                    return(oiCancelCommand (par)) );
-
-            CHECKSTAT( (status = recGblPutLinkValue (&(par->vel2), 
-                    (void *) par, DBR_DOUBLE,
-                    &(pDevPvt->pickoffVelocity), &nRequest)),
-                    return(oiCancelCommand (par)) );
-*/
-
-CHECKSTAT((status = dbPutLink(&(par->pos1),DBR_DOUBLE, &(pDevPvt->baseAngle), nRequest)),return(oiCancelCommand(par)) );
-CHECKSTAT((status = dbPutLink(&(par->pos2),DBR_DOUBLE, &(pDevPvt->pickoffAngle), nRequest)),return(oiCancelCommand(par)) );
-CHECKSTAT((status = dbPutLink(&(par->vel1),DBR_DOUBLE, &(pDevPvt->baseVelocity), nRequest)),return(oiCancelCommand(par)) );
-CHECKSTAT((status = dbPutLink(&(par->vel2),DBR_DOUBLE, &(pDevPvt->pickoffVelocity), nRequest)),return(oiCancelCommand(par)) );
-
+	    CHECKSTAT((status = dbPutLink(&(par->pos1),DBR_DOUBLE, &(pDevPvt->baseAngle), nRequest)),return(oiCancelCommand(par)) );
+	    CHECKSTAT((status = dbPutLink(&(par->pos2),DBR_DOUBLE, &(pDevPvt->pickoffAngle), nRequest)),return(oiCancelCommand(par)) );
+	    CHECKSTAT((status = dbPutLink(&(par->vel1),DBR_DOUBLE, &(pDevPvt->baseVelocity), nRequest)),return(oiCancelCommand(par)) );
+	    CHECKSTAT((status = dbPutLink(&(par->vel2),DBR_DOUBLE, &(pDevPvt->pickoffVelocity), nRequest)),return(oiCancelCommand(par)) );
+	    
             return (oiExecuteCommand (par));
 
         }
@@ -1009,8 +963,33 @@ CHECKSTAT((status = dbPutLink(&(par->vel2),DBR_DOUBLE, &(pDevPvt->pickoffVelocit
         pDevPvt->preIndexMove = FALSE;
         pDevPvt->pre2IndexMove = FALSE;
 
-        assCommandFinish (par, status, pDevPvt->errorMessage);
-        CLEAR_ERR_MSG;
+	/*
+	 *  AWE: don't loose index unless one of the devices has lost index.
+	 */
+
+	DEBUG(DAR_MSG_FULL, "<%ld> %s:oiBusyStateChange: checking hpvl for devices%c\n", ' ');
+	no_elements = basHPVL.no_elements;
+	options = 0;
+	
+	dbGetField(&basHPVL, basHPVL.dbr_field_type, pbuffer, &options, &no_elements, NULL);
+	basIndex = buffer[0];
+	dbGetField(&pkoHPVL, pkoHPVL.dbr_field_type, pbuffer, &options, &no_elements, NULL);
+	pkoIndex = buffer[0];
+	DEBUG(DAR_MSG_FULL, "<%ld> %s:oiBusyStateChange: bas HPVL: %d\n", basIndex);
+	DEBUG(DAR_MSG_FULL, "<%ld> %s:oiBusyStateChange: pko HPVL: %d\n", pkoIndex);
+	
+        if (basIndex && pkoIndex)
+	  {
+	    assCommandFinish(par, DAR_S_SUCCESS, "");
+	    assAddErrorMessage(par, pDevPvt->errorMessage);
+	    CLEAR_ERR_MSG;
+	  }
+	else
+	  {
+	    assCommandFinish (par, status, pDevPvt->errorMessage);
+	    CLEAR_ERR_MSG;
+	  }
+
         semGive (pDevPvt->mutexSem);
     }
 
@@ -1064,6 +1043,9 @@ static long oiCancelCommand
     unsigned short dir = DAR_DEV_DIR_STOP; /* deviceControl stop directive  */
     long nRequest = 1;                  /* Number of items to send on link  */
     long status = DAR_S_SUCCESS;        /* Function return status           */
+    long    options, no_elements;
+    short  buffer[100];
+    short  *pbuffer=&buffer[0];
 
 
     DEBUG(DAR_MSG_FULL, "<%ld> %s:oiCancelCommand: entry%c\n", ' ');
@@ -1085,18 +1067,54 @@ static long oiCancelCommand
     /*
      *  If neither device is currently active then we are finished and it is
      *  safe to tell the assemblyControl record that we have cancelled the 
-     *  command (unless it's a TRACK mode command). 
+     *  command (unless it's a TRACK mode command).
+     *  AWE: don't loose index unless one of the devices has lost index.
+     *  I've kept the previous code because it doesn't make sense to handle the
+     *  track mode differently here so I have a record of how this was done before 
+     *  if future problems occur. Note The OIWFS doesn't actually use TRACK mode: 
+     *  following is handled by a GenSub which issues move demands to the assembly.
+     *  By setting the error message with assAddErrorMessage rather than assCommandFinish, 
+     *  we can set the error message without loosing Index (HPVL)
      */
 
-    if ( pDevPvt->baseActive == OI_CMD_IDLE && 
-         pDevPvt->pickoffActive == OI_CMD_IDLE &&
-         par->mode != DAR_MODE_TRACK )
-    {
-        assCommandFinish (par, status, pDevPvt->errorMessage);
-        CLEAR_ERR_MSG;
-        return status;
-    }
+/*     if ( pDevPvt->baseActive == OI_CMD_IDLE &&  */
+/*          pDevPvt->pickoffActive == OI_CMD_IDLE && */
+/*          par->mode != DAR_MODE_TRACK ) */
+/*     { */
+/*         assCommandFinish (par, status, pDevPvt->errorMessage); */
+/*         CLEAR_ERR_MSG; */
+/*         return status; */
+/*     } */
 
+    DEBUG(DAR_MSG_FULL, "<%ld> %s:oiCancelCommand: checking hpvl for devices%c\n", ' ');
+    no_elements = basHPVL.no_elements;
+    options = 0;
+
+    dbGetField(&basHPVL, basHPVL.dbr_field_type, pbuffer, &options, &no_elements, NULL);
+    basIndex = buffer[0];
+    dbGetField(&pkoHPVL, pkoHPVL.dbr_field_type, pbuffer, &options, &no_elements, NULL);
+    pkoIndex = buffer[0];
+    DEBUG(DAR_MSG_FULL, "<%ld> %s:oiCancelCommand: bas HPVL: %d\n", basIndex);
+    DEBUG(DAR_MSG_FULL, "<%ld> %s:oiCancelCommand: pko HPVL: %d\n", pkoIndex);
+
+
+    if ( pDevPvt->baseActive == OI_CMD_IDLE && 
+         pDevPvt->pickoffActive == OI_CMD_IDLE )
+    {
+        if (basIndex && pkoIndex)
+	  {
+	    assCommandFinish(par, DAR_S_SUCCESS, "");
+	    assAddErrorMessage(par, pDevPvt->errorMessage);
+	    CLEAR_ERR_MSG;
+	    return status;
+	  }
+	else
+	  {
+	    assCommandFinish (par, status, pDevPvt->errorMessage);
+	    CLEAR_ERR_MSG;
+	    return status;
+	  }
+    }
 
     /*
      *  Otherwise one or both stages are active so issue the stop command to 
@@ -1111,9 +1129,6 @@ static long oiCancelCommand
     {
         DEBUG(DAR_MSG_FULL, 
               "<%ld> %s:oiCancelCommand: stopping base stage %c\n", ' ');
-        /*CHECKSTAT( (status = recGblPutLinkValue (&(par->odr1), 
-                (void *) par, DBR_SHORT, &dir, &nRequest)),
-                return(status) );*/
         CHECKSTAT((status = dbPutLink(&(par->odr1),DBR_SHORT, &dir, nRequest)),return(status) ); 
 	semTake (pDevPvt->mutexSem, WAIT_FOREVER);
         pDevPvt->baseActive = OI_CMD_STOPPING;
@@ -1127,9 +1142,6 @@ static long oiCancelCommand
     {
         DEBUG(DAR_MSG_FULL, 
               "<%ld> %s:oiCancelCommand: stopping pickoff stage %c\n", ' ');
-        /*CHECKSTAT( (status = recGblPutLinkValue (&(par->odr2), 
-                (void *) par, DBR_SHORT, &dir, &nRequest)),
-                return(status) );*/
         CHECKSTAT((status = dbPutLink(&(par->odr2),DBR_SHORT, &dir, nRequest)),return(status) );
         semTake (pDevPvt->mutexSem, WAIT_FOREVER);
         pDevPvt->pickoffActive = OI_CMD_STOPPING;
@@ -1220,8 +1232,8 @@ static long oiCheckAttributes
     {
        OI_X_TARGET = OI_X_PARK_POS;
        OI_Y_TARGET = OI_Y_PARK_POS;
-       db_post_events(par, &OI_X_TARGET, DBE_VALUE);
-       db_post_events(par, &OI_Y_TARGET, DBE_VALUE);
+       db_post_events(par, &OI_X_TARGET, DBE_VALUE|DBE_LOG);
+       db_post_events(par, &OI_Y_TARGET, DBE_VALUE|DBE_LOG);
     }
 
 
@@ -1285,41 +1297,23 @@ static long oiCheckAttributes
               "<%ld> %s:oiCheckAttributes: base target:%f\n", 
               pDevPvt->baseAngle);
 
-        /*CHECKSTAT( (status = recGblPutLinkValue (&(par->pos1), 
-                (void *) par, DBR_DOUBLE,
-                &(pDevPvt->baseAngle), &nRequest)),
-                return DAR_ACK_VAL_REJECT);
-	*/
 	CHECKSTAT((status = dbPutLink(&(par->pos1),DBR_DOUBLE,&(pDevPvt->baseAngle), nRequest)),return DAR_ACK_VAL_REJECT );
         DEBUG(DAR_MSG_FULL, 
               "<%ld> %s:oiCheckAttributes: pickoff target:%f\n", 
               pDevPvt->pickoffAngle);
 
-        /*CHECKSTAT( (status = recGblPutLinkValue (&(par->pos2), 
-                (void *) par, DBR_DOUBLE,
-                &(pDevPvt->pickoffAngle), &nRequest)),
-                return DAR_ACK_VAL_REJECT);*/
         CHECKSTAT((status = dbPutLink(&(par->pos2),DBR_DOUBLE,&(pDevPvt->pickoffAngle), nRequest)),return DAR_ACK_VAL_REJECT );
 
         DEBUG(DAR_MSG_FULL, 
               "<%ld> %s:oiCheckAttributes: base velocity:%f\n", 
               pDevPvt->baseVelocity);
 
-        /*CHECKSTAT( (status = recGblPutLinkValue (&(par->vel1), 
-                (void *) par, DBR_DOUBLE,
-                &(pDevPvt->baseVelocity), &nRequest)),
-                return DAR_ACK_VAL_REJECT);*/
         CHECKSTAT((status = dbPutLink(&(par->vel1),DBR_DOUBLE,&(pDevPvt->baseVelocity), nRequest)),return DAR_ACK_VAL_REJECT );
 
         DEBUG(DAR_MSG_FULL, 
               "<%ld> %s:oiCheckAttributes: pickoff velocity:%f\n", 
               pDevPvt->pickoffVelocity);
 
-        /*CHECKSTAT( (status = recGblPutLinkValue (&(par->vel2), 
-                (void *) par, DBR_DOUBLE,
-                &(pDevPvt->pickoffVelocity), &nRequest)),
-                return DAR_ACK_VAL_REJECT);
-	*/
         CHECKSTAT((status = dbPutLink(&(par->vel2),DBR_DOUBLE,&(pDevPvt->pickoffVelocity), nRequest)),return DAR_ACK_VAL_REJECT );
     }
 
@@ -1339,17 +1333,9 @@ static long oiCheckAttributes
         mode = par->mode;
     }
 
-    /*CHECKSTAT( (status = recGblPutLinkValue (&(par->mod1), 
-            (void *) par, DBR_SHORT,
-            &mode, &nRequest)),
-            return DAR_ACK_VAL_REJECT);*/
     CHECKSTAT((status = dbPutLink(&(par->mod1),DBR_SHORT,&mode, nRequest)),return DAR_ACK_VAL_REJECT );
 
-    /*CHECKSTAT( (status = recGblPutLinkValue (&(par->mod2), 
-            (void *) par, DBR_SHORT,
-            &mode, &nRequest)),
-            return DAR_ACK_VAL_REJECT);*/
-      CHECKSTAT((status = dbPutLink(&(par->mod2),DBR_SHORT,&mode, nRequest)),return DAR_ACK_VAL_REJECT );
+    CHECKSTAT((status = dbPutLink(&(par->mod2),DBR_SHORT,&mode, nRequest)),return DAR_ACK_VAL_REJECT );
 
 
     /*
@@ -1656,15 +1642,8 @@ static long oiExecuteCommand
     semTake (pDevPvt->mutexSem, WAIT_FOREVER);
 
     dir = DAR_DEV_DIR_GO;
-    /*CHECKSTAT( (status = recGblPutLinkValue (&(par->odr1), 
-            (void *) par, DBR_SHORT, &dir, &nRequest)),
-            return (oiCancelCommand (par)) );*/
     CHECKSTAT((status = dbPutLink(&(par->odr1),DBR_SHORT, &dir, nRequest)),return(oiCancelCommand(par)) );
-
-    /*CHECKSTAT( (status = recGblPutLinkValue (&(par->odr2), 
-            (void *) par, DBR_SHORT, &dir, &nRequest)),
-            return (oiCancelCommand (par)) );*/
-     CHECKSTAT((status = dbPutLink(&(par->odr2),DBR_SHORT, &dir, nRequest)),return(oiCancelCommand(par)) );
+    CHECKSTAT((status = dbPutLink(&(par->odr2),DBR_SHORT, &dir, nRequest)),return(oiCancelCommand(par)) );
 
 
     /*
@@ -1678,10 +1657,7 @@ static long oiExecuteCommand
      *  then return.
      */
 
-    /*CHECKSTAT( (status = recGblGetFastLink (&(par->ack1), 
-            (void *) par, &returnedAck)),
-            return (oiCancelCommand (par)) );*/
-     CHECKSTAT((status = dbGetLink(&(par->ack1),DBR_USHORT,&returnedAck,0,0)),return (oiCancelCommand (par)));
+    CHECKSTAT((status = dbGetLink(&(par->ack1),DBR_USHORT,&returnedAck,0,0)),return (oiCancelCommand (par)));
 
     if (returnedAck != DAR_DEV_VAL_ACCEPT )
     {
@@ -1694,9 +1670,6 @@ static long oiExecuteCommand
 
     pDevPvt->baseActive = OI_CMD_STARTING;
 
-    /*CHECKSTAT( (status = recGblGetFastLink (&(par->ack2), 
-            (void *) par, &returnedAck)),
-            return (oiCancelCommand (par)) );*/
     CHECKSTAT((status = dbGetLink(&(par->ack2),DBR_USHORT,&returnedAck,0,0)),return (oiCancelCommand (par)));
     if (returnedAck != DAR_DEV_VAL_ACCEPT )
     {
@@ -1868,17 +1841,8 @@ static long oiIndexMode
      */
 
     indexType = 0;
-    /*CHECKSTAT( (status = recGblPutLinkValue (&(par->sor), 
-            (void *) par, DBR_SHORT,
-            &(indexType), &nRequest)),
-            return(oiCancelCommand (par)) );*/
     CHECKSTAT((status = dbPutLink(&(par->sor),DBR_SHORT, &(indexType), nRequest)),return(oiCancelCommand(par)) );
-
-    /*CHECKSTAT( (status = recGblPutLinkValue (&(par->sot), 
-            (void *) par, DBR_SHORT,
-            &(indexType), &nRequest)),
-            return(oiCancelCommand (par)) );*/
-     CHECKSTAT((status = dbPutLink(&(par->sot),DBR_SHORT, &(indexType), nRequest)),return(oiCancelCommand(par)) );
+    CHECKSTAT((status = dbPutLink(&(par->sot),DBR_SHORT, &(indexType), nRequest)),return(oiCancelCommand(par)) );
 
     /*
      *  In simulation mode we do not have to worry about hitting the limits
@@ -2134,28 +2098,10 @@ static long oiIndexMode
     DEBUG(DAR_MSG_FULL, 
           "<%ld> %s:oiIndexMode: pickoff velocity:%f\n", pkoVel);
 
-    /*CHECKSTAT( (status = recGblPutLinkValue (&(par->pos1), 
-            (void *) par, DBR_DOUBLE,
-            &(baseTarget), &nRequest)),
-            return(oiCancelCommand (par)) );*/
     CHECKSTAT((status = dbPutLink(&(par->pos1),DBR_DOUBLE, &(baseTarget), nRequest)),return(oiCancelCommand(par)) );
-
-    /*CHECKSTAT( (status = recGblPutLinkValue (&(par->pos2), 
-            (void *) par, DBR_DOUBLE,
-            &(pickoffTarget), &nRequest)),
-            return(oiCancelCommand (par)) );*/
     CHECKSTAT((status = dbPutLink(&(par->pos2),DBR_DOUBLE, &(pickoffTarget), nRequest)),return(oiCancelCommand(par)) );
 
-    /*CHECKSTAT( (status = recGblPutLinkValue (&(par->vel1), 
-            (void *) par, DBR_DOUBLE,
-            &(basVel), &nRequest)),
-            return(oiCancelCommand (par)) );*/
     CHECKSTAT((status = dbPutLink(&(par->vel1),DBR_DOUBLE, &(basVel), nRequest)),return(oiCancelCommand(par)) );
-
-    /*CHECKSTAT( (status = recGblPutLinkValue (&(par->vel2), 
-            (void *) par, DBR_DOUBLE,
-            &(pkoVel), &nRequest)),
-            return(oiCancelCommand (par)) );*/
     CHECKSTAT((status = dbPutLink(&(par->vel2),DBR_DOUBLE, &(pkoVel), nRequest)),return(oiCancelCommand(par)) );
 
     return (oiExecuteCommand (par));
@@ -2240,6 +2186,10 @@ static long oiInitDeviceSupport
         return( status );
     }
 
+    /* get addresses of required channel access links */
+
+    dbNameToAddr(OI_BAS_HPVL, &basHPVL);
+    dbNameToAddr(OI_PKO_HPVL, &pkoHPVL);
 
     /*
      *  Initialize the stage active and motion modifier flags
@@ -2426,16 +2376,7 @@ static long oiMoveMode
          *  Write intermediate move positions to target devices
          */
 
-        /*CHECKSTAT( (status = recGblPutLinkValue (&(par->pos1), 
-                (void *) par, DBR_DOUBLE,
-                &(basMid), &nRequest)),
-                return(oiCancelCommand (par)) );*/
         CHECKSTAT((status = dbPutLink(&(par->pos1),DBR_DOUBLE, &(basMid), nRequest)),return(oiCancelCommand(par)) );
-
-        /*CHECKSTAT( (status = recGblPutLinkValue (&(par->pos2), 
-                (void *) par, DBR_DOUBLE,
-                &(pkoMid), &nRequest)),
-                return(oiCancelCommand (par)) );*/
         CHECKSTAT((status = dbPutLink(&(par->pos2),DBR_DOUBLE, &(pkoMid), nRequest)),return(oiCancelCommand(par)) );
 
         /*
@@ -2460,16 +2401,7 @@ static long oiMoveMode
          *  Write intermediate move velocities to target devices
          */
 
-        /*CHECKSTAT( (status = recGblPutLinkValue (&(par->vel1), 
-                (void *) par, DBR_DOUBLE,
-                &(basVel), &nRequest)),
-                return(oiCancelCommand (par)) );*/
         CHECKSTAT((status = dbPutLink(&(par->vel1),DBR_DOUBLE, &(basVel), nRequest)),return(oiCancelCommand(par)) );
-
-        /*CHECKSTAT( (status = recGblPutLinkValue (&(par->vel2), 
-                (void *) par, DBR_DOUBLE,
-                &(pkoVel), &nRequest)),
-                return(oiCancelCommand (par)) );*/
         CHECKSTAT((status = dbPutLink(&(par->vel2),DBR_DOUBLE, &(pkoVel), nRequest)),return(oiCancelCommand(par)) );
 
         DEBUG(DAR_MSG_FULL, 
