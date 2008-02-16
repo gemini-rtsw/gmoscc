@@ -15,7 +15,7 @@ group {
    double $(top)dtaAssembly.ABLL  =   -19.0;  # Minimum Y axis position in microns
    double $(top)dtaAssembly.ABHL  =   235.0;  # Maximum Y axis position in microns
    double $(top)dtaAssembly.ACLL  =     0.0;  # Minimum Z axis position in microns
-   double $(top)dtaAssembly.ACHL  =  4740.0;  # Maximum Z axis position in microns
+   double $(top)dtaAssembly.ACHL  =  4683.0;  # Maximum Z axis position in microns
 }
 
 #
@@ -79,7 +79,7 @@ group {
    double $(top)dta3Device.FIVL =     402.0;  # Final indexing velocity
    long   $(top)dta3Device.IALG =         4;  # Index algorithm
    double $(top)dta3Device.MRES =       0.5;  # Motor resolution in motor steps per micron
-   double $(top)dta3Device.PHLM =    4740.0;  # Upper limit of travel in microns
+   double $(top)dta3Device.PHLM =    4683.0;  # Upper limit of travel in microns
    double $(top)dta3Device.PLLM =       0.0;  # Lower limit of travel in microns
    long   $(top)dta3Device.PREC =         1;  # Display precision for motor position
    long   $(top)dta3Device.PTMO =        30;  # Power control timeout in 0.1 seconds
