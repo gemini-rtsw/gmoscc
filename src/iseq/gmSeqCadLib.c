@@ -41,6 +41,20 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.13  2008/03/10 17:41:51  gemvx
+ *
+ * Modified Files:
+ *      capfast/gmSeqGrating.sch:  Removed the "(default)" string in the
+ *      mbbi record for SIDE-5 in the
+ *      capfast schematics since this information is misleading`
+ *      src/iseq/gmSeqCadLib.c: commented out code related to SCT-65 (bug
+ *      fix pending).
+ *      previously commited, without tag:
+ *      src/deviceControl/deviceControlRecord.c
+ *      src/deviceControl/devDcOms844.c
+ *      src/deviceControl/devDcOms844.h
+ *      src/assemblyControl/devOiwfsControl.c
+ *
  * Revision 1.12  2007/10/26 21:19:55  pedro
  * Fixed imaging bug reported while testing SCT-67 (GMOS IFU 1-slit support for
  * automatic wavelength adjustment). Gmos now sets the central wavelength to
@@ -1115,8 +1129,8 @@ long gmSeqCadGrating(struct cadRecord *pcad)
 
 	    /* strncpy (wavelengthString, (char *)pcad->g, MAX_STRING_SIZE-1);
 	    if (sscanf(wavelengthString, "%lf", &targetWavelength) == 1) {
-		cenWavelength = targetWavelength / 10.0; /* in nanomemeters */
-	    } else {
+		cenWavelength = targetWavelength / 10.0;*/ /* in nanomemeters */
+	    /* } else {
 		cenWavelength = 0; */ /* TCS not responding or invalid input */
 	    /*} */ /* comment to be removed in the next release */
 
