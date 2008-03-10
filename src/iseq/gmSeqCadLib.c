@@ -41,6 +41,11 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  */
 /*
  * $Log$
+ * Revision 1.12  2007/10/26 21:19:55  pedro
+ * Fixed imaging bug reported while testing SCT-67 (GMOS IFU 1-slit support for
+ * automatic wavelength adjustment). Gmos now sets the central wavelength to
+ * the target wavelength from the TCS when the grating is set to mirror.
+ *
  * Revision 1.11  2006/12/21 00:31:01  pedro
  * Added routines for the automatic wavelength adjustment of IFU-1 (SCT-65)
  *
@@ -958,7 +963,7 @@ long gmSeqCadInitGrating(struct cadRecord *pcad)
  *      d => Grating order (integer)
  *      e => Effective wavelength for focus offset (nanometres) (double)
  *      f => Mask name (string)
- *      f => target wavelength from TCS (angstroms) (double)
+ *      g => target wavelength from TCS (angstroms) (double)
  *
  *   EPICS output parameters:
  *      vala => Selection mode (long) :
@@ -1108,17 +1113,17 @@ long gmSeqCadGrating(struct cadRecord *pcad)
           {
 	    status = CAD_ACCEPT;
 
-	    strncpy (wavelengthString, (char *)pcad->g, MAX_STRING_SIZE-1);
+	    /* strncpy (wavelengthString, (char *)pcad->g, MAX_STRING_SIZE-1);
 	    if (sscanf(wavelengthString, "%lf", &targetWavelength) == 1) {
 		cenWavelength = targetWavelength / 10.0; /* in nanomemeters */
 	    } else {
-		cenWavelength = 0;  /* TCS not responding or invalid input */
-	    }
+		cenWavelength = 0; */ /* TCS not responding or invalid input */
+	    /*} */ /* comment to be removed in the next release */
 
 /* Set the wavelength related grating data to zero for mirror and specify order zero */
 
              gratingOrder  = 0;
-             /* cenWavelength = 0.0; */
+             cenWavelength = 0.0;  /* to be commented in the next release */
              effWavelength = 0.0;
              adjCenWavelength = 0.0;
              adjEffWavelength = 0.0;
@@ -3033,7 +3038,7 @@ double gmSeqAdjustedWavelength (double wavelen, double lpmm, char *mask)
 	double	greq, tilt;
 	double	scale, asecmm;
 	double	a, resol, nmppx, slitsep, wshift;
-	int	mcode, wsign;
+	int	wsign; /* mcode to be added in next release */
 
 #if 0
 	printf ("wavelength         = %.15g\n", wavelen);
@@ -3042,7 +3047,7 @@ double gmSeqAdjustedWavelength (double wavelen, double lpmm, char *mask)
 	printf ("\n");
 #endif
 
-#if 0
+
 	/*
 	 * Check whether the mask is either a red or blue IFU.
 	 * An empty mask won't be considered as an error.
@@ -3057,19 +3062,19 @@ double gmSeqAdjustedWavelength (double wavelen, double lpmm, char *mask)
 	} else {
 	    return wavelen;
 	}
-#endif
+
 
 	/*
 	 * Check whether the mask is either a red or blue IFU.
 	 * Otherwise return input wavelength untouched.
 	 */
-	mcode = gmIfuCheck (mask);
+	/* mcode = gmIfuCheck (mask);
 	if (mcode == IFU_RED)
 	    wsign = 1;
 	else if (mcode == IFU_BLUE)
 	    wsign = -1;
 	else
-	    return wavelen;
+	    return wavelen; */ /* to be uncommented in next release */
 
 #if 0
 	printf ("wsign              =%d\n", wsign);

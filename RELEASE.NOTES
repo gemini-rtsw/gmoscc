@@ -26,6 +26,13 @@ Fixed the problem reported on SCT-65
 	capfast/gmSeqGrating.sch
 	src/iseq/gmSeqCadLib.c
 
+Fixed OIWFS code to recover from limits  without indexing.
+Files modified
+src/deviceControl/deviceControlRecord.c
+src/deviceControl/devDcOms844.c
+src/deviceControl/devDcOms844.h
+src/assemblyControl/devOiwfsControl.c
+
 V6-8 April 2007 pgigoux
 -----------------------
 Improved OIWFS test script
