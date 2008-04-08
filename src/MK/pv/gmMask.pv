@@ -177,7 +177,8 @@ group {
 #     values changed after tuning due to gripper problem 2/27/2004
 #
    double $(top)mskExtAtGrpLo   =    2.85; # Extractor at Grip position lo limit
-   double $(top)mskExtAtGrpHi   =    3.20; # Extractor at Grip position hi limit
+# AWE 12/21/06 temporarily change the ExtAtGrpHi limit from 3.20 to 3.25 because Grip position is at this limit
+   double $(top)mskExtAtGrpHi   =    3.25; # Extractor at Grip position hi limit
 #
 #     release position is 3.80 adjust for +-0.15
 #     15/12/01 release position changed to 3.85 +-0.15 after maintenance
