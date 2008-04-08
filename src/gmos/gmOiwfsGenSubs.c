@@ -39,6 +39,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.6  2006/07/25 03:43:38  gemvx
+ * added filtering to the input sin and cos potentiometers as well as a software limit check which stops the motors by trigering an interlock
+ *
  * Revision 1.5  2006/04/12 02:57:53  gemvx
  * implemented OIWFS probe mapping
  *
@@ -856,7 +859,7 @@ long oiInitLimitCheck
     genSubRecord *pgs               /* calling record structure             */
 )
 {
-  IN_BUFFER = 3.0; /* some buffer btw patrol area and limit ... 3mm is a guess */
+  IN_BUFFER = 30.0; /* some buffer btw patrol area and limit ... 3mm is a guess */
   limitState = 0;
   OUT_SDIS = 1; /* disable ILOCK Out */
   OUT_ILOCK = 0; /* No Interlock */
