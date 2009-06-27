@@ -21,24 +21,21 @@
 # Added CaT GMOS-S, narrow band GMOS-N filters, IJ, 2002nov20
 # Commented out CaT GMOS-S, added CaT GMOS-N, u' GMOS-N and GMOS-S, IJ, 2003jan14
 #
+# Added OIII, OIIIC, SII, HeII and HeIIC GMOS-N filters
+# Commented out the rest of the GMOS-S filters, there were duplicated barcodes
+# Edited the Empty filter cells so the barcodes matched the instrument and
+# deleted the confusing commented out open slots with the wrong barcodes
+#    - Kathy Roth 2009 June 03
+#
 #                                 surface curvature
 # name            barcodeId       focusOffset (microns)   effWavelength (nm)
 #
 # Empty filter cells - to be filled and barcodes reused
-open1-0           20000024          0.0                    0.0
-open1-5           20000017          0.0                    0.0
+# open1-6 and open2-8 must not be filled as seqexec assumes these slots are open.
 open1-6           20000018          0.0                    0.0
-#open1-7           20000019          0.0                    0.0
-#open1-8           20000020          0.0                    0.0
-#open1-9           20000021          0.0                    0.0
-open2-7           20000021          0.0                    0.0
-open1-10          20000022          0.0                    0.0
-open1-11          20000023          0.0                    0.0
-#open2-0           20000012          0.0                    0.0
 open2-8           20000008          0.0                    0.0
-#open2-9           20000009          0.0                    0.0
-#open2-10          20000010          0.0                    0.0
-#open2-11          20000011          0.0                    0.0
+open2-9           20000022          0.0                    0.0
+open2-5           20000019          0.0                    0.0
 #
 # GMOS North Hartmann masks
 HartmannA_G0313   20000013          0.0                    0.0
@@ -47,24 +44,24 @@ HartmannC_G0315   20000015          0.0                    0.0
 HartmannD_G0316   20000016          0.0                    0.0
 #
 # GMOS North science filters
-u_G0308           20000019        339.0                  365.0
+# u_G0308           20000019        339.0                  365.0
 g_G0301           20000001         93.0                  480.0
 i_G0302           20000002         14.1                  770.0
 r_G0303           20000003         10.6                  625.0
 z_G0304           20000004        -19.2                  910.0
 #
 # GMOS South Hartmann masks
-HartmannA_G0337   20000037          0.0                    0.0
-HartmannB_G0338   20000038          0.0                    0.0
-HartmannC_G0339   20000039          0.0                    0.0
-HartmannD_G0340   20000040          0.0                    0.0
+#HartmannA_G0337   20000037          0.0                    0.0
+#HartmannB_G0338   20000038          0.0                    0.0
+#HartmannC_G0339   20000039          0.0                    0.0
+#HartmannD_G0340   20000040          0.0                    0.0
 #
 # GMOS South science filters
-u_G0332           20000020        429.0                  365.0
-g_G0325           20000025          0.0                  480.0
-i_G0326           20000026          0.0                  770.0
-r_G0327           20000027          0.0                  625.0
-z_G0328           20000028          0.0                  910.0
+#u_G0332           20000020        429.0                  365.0
+#g_G0325           20000025          0.0                  480.0
+#i_G0326           20000026          0.0                  770.0
+#r_G0327           20000027          0.0                  625.0
+#z_G0328           20000028          0.0                  910.0
 #
 # GMOS North order sorting filters
 GG455_G0305       20000005        -20.0                  650.0 
@@ -75,6 +72,11 @@ RG610_G0307       20000007        -27.0                  650.0
 Ha_G0310           20000010         82.5                  655.0
 HaC_G0311          20000011        109.0                  662.0
 DS920_G0312        20000012        116.0                  918.0
+SII_G0317          20000017          0.0                  672.0
+OIII_G0318         20000023          0.0                  499.0
+OIIIC_G0319        20000024          0.0                  514.0
+HeII_G0320         20000020          0.0                  468.0
+HeIIC_G0321        20000021          0.0                  478.0
 
 # GMOS South CaTriplet filter
 # CaT_G0333          20000009        181.0                  860.0
