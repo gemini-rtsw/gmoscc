@@ -1,0 +1,29 @@
+aux_grating
+# NOTE: These figures are based on Marc's orientation A measurement
+# corrected using the offset measured by Rick Murowinski on 24 May 2000
+# corrected again using the offset measured by Stephanie Juneau on 28 June 2000
+# corrected again using the offset reported by Isobel Hook on 17 January 2001
+# corrected again using the offset measured by Stephanie Juneau on 13 Feb 2001
+#
+# Grating B600:
+# Values for B600 in position 4 are
+# Based on measurement of only the 65deg point, July 10, 2001  (IJ, IMH)
+# The rest are offset 6984-6953=31 relative to R831 in cell 4 (D); (0,0) is left
+# in place
+#
+# Copy of original B600 aux file for replacement B600 grating.
+#    KR, AF 18Mar2009
+
+# Cell  Tilt    Steps
+
+ 4 0.0000000 158.801
+ 4 7.755 977
+ 4 26.025 2906.5
+ 4 40.231 4405
+ 4 47.423 5164.2
+ 4 50.618 5501.2
+ 4 53.482 5804.9
+ 4 55.925 6062.2
+ 4 65.000 7019.5
+ 4 77.069 8293.5
+ 4 89.745 9631.5
