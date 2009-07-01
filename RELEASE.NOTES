@@ -1,3 +1,7 @@
+V7-0 June 2009 aebbers
+    - output scantask slow warnings with debugging set to NONE
+    - make the scantask rate visible on the console
+
 V6-9 October 2007
 Fixed setting up the ISS port for CP
     - Added initialization in CP/pv/gmAtm.pv and gmAtmSim.pv, and removed
