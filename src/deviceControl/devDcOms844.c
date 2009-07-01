@@ -45,6 +45,10 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.6  2008/02/06 23:27:21  gemvx
+ * moved definition of the private structure to the ".h" file so that the
+ * record layer can use it.
+ *
  * Revision 1.5  2006/03/07 20:50:35  gemvx
  * implemented badRead to ignore spikes in encoder position caused by interference
  * which last for no more than one scan cycle.
@@ -270,6 +274,7 @@
 #define DDR_OMS_SCAN_TASK_OPTIONS      VX_FP_TASK /* Allow floating point         */
 
 
+
 /*
  *  Device support function prototypes
  */
@@ -334,7 +339,7 @@ DEVICE_BO_OMS_DAO_DSET devBoOms844 = {
 
 
 static ELLLIST deviceControlScanList;      /* record scan list              */
-static int scanTaskPeriod;                 /* system ticks between scans    */
+int scanTaskPeriod=6;                 /* system ticks between scans    */
                                            /*   (period of omsScanTask)     */
 
 /*
@@ -2585,7 +2590,7 @@ static int omsScanTask
         }
         else
         {
-            DEBUG(DDR_MSG_MIN,
+            DEBUG(DDR_MSG_WARNING,
                    "<%ld> c:%d s:%d omsScanTask:Slow by %d ticks!\n",taskTime);
         }
 
