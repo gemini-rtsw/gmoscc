@@ -11,7 +11,7 @@ aux_grating
 
 # Cell  Tilt    Steps
 
-2   0.0000000       0
+2   0.0000000      58.0874 
 2   7.755         877
 2  26.016        2804
 2  40.226        4304
@@ -26,7 +26,7 @@ aux_grating
 # Other positions offset, zero kept at zero, IJ 2002nov21
 # Cell  Tilt    Steps
 
-3   0.0000000       0
+3   0.0000000      62.8970 
 3   7.760         882
 3  26.016        2809
 3  40.226        4309
@@ -34,6 +34,7 @@ aux_grating
 3  65.000        6924
 3  77.074        8198.5
 3  89.741        9535.5
+
 # Grating D translation table (based on Marc Dubbeldam's report).
 # NOTE: These figures are based on Marc's orientation A measurement
 # corrected using the offset measured by Rick Murowinski on 24 May 2000
@@ -43,12 +44,12 @@ aux_grating
 # Grating R831
 # Cell  Tilt    Steps
 
-4   0.0000000       0
-4   7.755         941.5
-4  26.025        2871
-4  40.231        4359.5
-4  52.912        5708
-4  65.000        6984
-4  77.069        8258
-4  89.745        9596
+4   0.0000000     121.7410 
+4   7.755         942.5
+4  26.025        2872
+4  40.231        4360.5
+4  52.912        5709
+4  65.000        6985
+4  77.069        8259
+4  89.745        9597
 

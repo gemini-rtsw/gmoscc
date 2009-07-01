@@ -5,7 +5,7 @@ aux_grating
 # ( added 53 steps (6939-6886) to all motor step values)
 # Cell  Tilt    Steps
 
-3   0.0000000       0
+3   0.0000000     77.8970  
 3   7.760         897
 3  26.016        2824
 3  40.226        4324

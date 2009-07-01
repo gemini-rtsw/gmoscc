@@ -7,7 +7,7 @@ aux_grating
 # Partial fine wavelength calibration put in place April 7, 2004, PI
 # Cell  Tilt    Steps
 
-2 0.0000 00.0
+2 0.0000      39.3833 
 2    7.755   848.49
 2   26.025  2777.99
 2   40.231  4276.49
@@ -113,7 +113,7 @@ aux_grating
 
 # Cell  Tilt    Steps
 
-3   0.0000000       0
+3   0.0000000      34.6740 
 3   7.755         862.5
 3  26.025        2792
 3  40.231        4290.5
@@ -134,7 +134,7 @@ aux_grating
 
 # Cell  Tilt    Steps
 
-4   0.0000000       0
+4   0.0000000   96.5310 
 4   7.755      914.73
 4  26.025     2844.23
 4  40.231     4342.73
