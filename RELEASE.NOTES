@@ -1,3 +1,10 @@
+V7-1 September 2009 aebbers
+    - Tweak the implementation of the motion deadband in the device control record to be >=mdbd
+    - Add a valid mdbd to the pvload file for all stepper motors (based on step resolution)
+      (this apples to dta1, dta2, dta3, flt1, flt2, gra, grb, grc, grd, grt, mskCas, mskExt, mskGrp, mskRel)
+    - Update and apply a simulated pvload file for the ADC.
+      The simulated assembly now starts up initialized, indexed, parked and healthy.
+
 V7-0 June 2009 aebbers
     - output scantask slow warnings with debugging set to NONE
     - make the scantask rate visible on the console
