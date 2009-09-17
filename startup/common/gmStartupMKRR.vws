@@ -82,6 +82,7 @@ dbpf "gm:sad:cc:name.VAL","GMOS-N (V6-5)"
 
 # Load initialization files
 pvload "$(version)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"
+pvload "$(version)/data/gmAtmSim.pv","top=gm:cc:"
 pvload "$(version)/data/gmOiwfs.pv","top=gm:wfs:"
 pvload "$(version)/data/gmMask.pv","top=gm:cc:"
 pvload "$(version)/data/gmFilter.pv","top=gm:cc:"
