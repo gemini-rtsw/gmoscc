@@ -53,6 +53,7 @@ DOCS	=
 DATA  = ../ssrOn.pv
 DATA += ../ssrOff.pv
 DATA += ../gmosCc.pv
+DATA += ../gmAtmSim.pv
 DATA += ../gmTranslationSim.pv
 DATA += ../gmMaskSim.pv
 DATA += ../gmLifterSim.pv
