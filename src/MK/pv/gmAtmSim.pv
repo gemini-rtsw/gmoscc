@@ -61,10 +61,8 @@
 #
 group {
    double $(top)atmAssembly.C     =     20.0; # Prism velocity
-   long   $(top)atmAssembly.SIMM  =        3; # Set simulation level to FULL
+   long   $(top)atmAssembly.SIMM  =        1; # Set simulation level to VSM
    long   $(top)atmAssembly.DBUG  =        1; # Set debug level to NONE
-   double $(top)atmPosition.D     =    -15.0; # Entrance prism homing offset
-   double $(top)atmPosition.E     =     15.0; # Exit prism homing offset
 }
 # deviceControl configuration
 #
@@ -82,7 +80,7 @@ group {
    double $(top)atmEnpDevice.MRES =  22.2222; # Motor steps per EGU
    double $(top)atmEnpDevice.PHLM =  36000.0; # Device level high limit
    double $(top)atmEnpDevice.PLLM = -36000.0; # Device level low limit
-   long   $(top)atmEnpDevice.SIMM =        3; # FULL simulation
+   long   $(top)atmEnpDevice.SIMM =        1; # VSM simulation
    long   $(top)atmEnpDevice.UEIP =        1; # Use encoder if present
    long   $(top)atmEnpDevice.UPSB =        0; # DO NOT use power status (simulation mode)
    double $(top)atmEnpDevice.VBAS =     3.00; # Base velocity
@@ -105,7 +103,7 @@ group {
    double $(top)atmExpDevice.MRES =  22.2222; # Motor steps per EGU
    double $(top)atmExpDevice.PHLM =  36000.0; # Device level high limit
    double $(top)atmExpDevice.PLLM = -36000.0; # Device level low limit
-   long   $(top)atmExpDevice.SIMM =        3; # FULL simulation
+   long   $(top)atmExpDevice.SIMM =        1; # VSM simulation
    long   $(top)atmExpDevice.UEIP =        1; # Use encoder if present
    long   $(top)atmExpDevice.UPSB =        0; # DO NOT use power status (simulation mode)
    double $(top)atmExpDevice.VBAS =     3.00; # Base velocity
@@ -117,4 +115,14 @@ group {
 #
 # Set ISS port (0=SIDE-5, 1=UP-1, 2=SIDE-2, 3=SIDE-3, 4=SIDE-4)
 #
-long $(top)atmTrack:issPort	=	0;   # default for MK
+#long $(top)atmTrack:issPort	=	0;   # default for MK
+
+#
+# Set init/index/park status since it's simulated anyway
+#
+short  $(top)atmAssembly.INIT  =        1;
+short  $(top)atmAssembly.INDX  =        1;
+short  $(top)atmAssembly.PARK  =        1;
+long   $(top)atmAssembly.HLTH  =        0;
+short  $(top)atmEnpDevice.HPVL =        1;
+short  $(top)atmExpDevice.HPVL =        1;
