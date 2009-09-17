@@ -33,6 +33,7 @@ group {
    double $(top)grADevice.FIVL =         126.0;  # Final indexing velocity
    long   $(top)grADevice.IALG =             4;  # Index algorithm
    double $(top)grADevice.MRES =           2.0;  # Motor resolution in motor steps per whole step
+   double $(top)grADevice.MDBD =           0.5;  # Motion Deadband
    double $(top)grADevice.MRND =             1;  # Move to nearest whole step if 2
    double $(top)grADevice.PHLM =        9800.0;  # Upper limit of travel in whole steps
    double $(top)grADevice.PLLM =           0.0;  # Lower limit of travel in whole steps
@@ -60,6 +61,7 @@ group {
    double $(top)grBDevice.FIVL =         126.0;  # Final indexing velocity
    long   $(top)grBDevice.IALG =             4;  # Index algorithm
    double $(top)grBDevice.MRES =           2.0;  # Motor resolution in motor steps per whole step
+   double $(top)grBDevice.MDBD =           0.5;  # Motion Deadband
    double $(top)grBDevice.MRND =             1;  # Move to nearest whole step if 2
    double $(top)grBDevice.PHLM =        9800.0;  # Upper limit of travel in whole steps
    double $(top)grBDevice.PLLM =           0.0;  # Lower limit of travel in whole steps
@@ -87,6 +89,7 @@ group {
    double $(top)grCDevice.FIVL =         126.0;  # Final indexing velocity
    long   $(top)grCDevice.IALG =             4;  # Index algorithm
    double $(top)grCDevice.MRES =           2.0;  # Motor resolution in motor steps per whole step
+   double $(top)grCDevice.MDBD =           0.5;  # Motion Deadband
    double $(top)grCDevice.MRND =             1;  # Move to nearest whole step if 2
    double $(top)grCDevice.PHLM =        9800.0;  # Upper limit of travel in whole steps
    double $(top)grCDevice.PLLM =           0.0;  # Lower limit of travel in whole steps
@@ -114,6 +117,7 @@ group {
    double $(top)grDDevice.FIVL =         126.0;  # Final indexing velocity
    long   $(top)grDDevice.IALG =             4;  # Index algorithm
    double $(top)grDDevice.MRES =           2.0;  # Motor resolution in motor steps per whole step
+   double $(top)grDDevice.MDBD =           0.5;  # Motion Deadband
    double $(top)grDDevice.MRND =             1;  # Move to nearest whole step if 2
    double $(top)grDDevice.PHLM =        9800.0;  # Upper limit of travel in whole steps
    double $(top)grDDevice.PLLM =           0.0;  # Lower limit of travel in whole steps
@@ -141,6 +145,7 @@ group {
    double $(top)grtDevice.FIVL =           2.5;  # Final indexing velocity
    long   $(top)grtDevice.IALG =             4;  # Index algorithm
    double $(top)grtDevice.MRES =         400.0;  # Motor resolution in motor steps per tooth
+   double $(top)grtDevice.MDBD =        0.0025;  # Motion Deadband
    double $(top)grtDevice.MRND =             2;  # Move to nearest whole step if 2
    double $(top)grtDevice.PHLM =         120.0;  # Upper limit of travel in teeth
    double $(top)grtDevice.PLLM =           0.0;  # Lower limit of travel in teeth

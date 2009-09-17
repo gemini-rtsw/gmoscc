@@ -29,6 +29,7 @@ group {
    double $(top)dta1Device.FIVL =      80.4;  # Final indexing velocity
    long   $(top)dta1Device.IALG =         2;  # Index algorithm
    double $(top)dta1Device.MRES =       2.5;  # Motor resolution in motor steps per micron
+   double $(top)dta1Device.MDBD =       0.4;  # Motion deadband
    double $(top)dta1Device.PHLM =     230.0;  # Upper limit of travel in microns
    double $(top)dta1Device.PLLM =     -31.0;  # Lower limit of travel in microns
    long   $(top)dta1Device.PREC =         1;  # Display precision for motor position
@@ -54,6 +55,7 @@ group {
    double $(top)dta2Device.FIVL =      32.2;  # Final indexing velocity
    long   $(top)dta2Device.IALG =         2;  # Index algorithm
    double $(top)dta2Device.MRES =      6.25;  # Motor resolution in motor steps per micron
+   double $(top)dta2Device.MDBD =      0.16;  # Motion deadband
    double $(top)dta2Device.PHLM =     235.0;  # Upper limit of travel in microns
    double $(top)dta2Device.PLLM =     -19.0;  # Lower limit of travel in microns
    long   $(top)dta2Device.PREC =         1;  # Display precision for motor position
@@ -79,6 +81,7 @@ group {
    double $(top)dta3Device.FIVL =     402.0;  # Final indexing velocity
    long   $(top)dta3Device.IALG =         4;  # Index algorithm
    double $(top)dta3Device.MRES =       0.5;  # Motor resolution in motor steps per micron
+   double $(top)dta3Device.MDBD =       2.0;  # Motion deadband
    double $(top)dta3Device.PHLM =    4683.0;  # Upper limit of travel in microns
    double $(top)dta3Device.PLLM =       0.0;  # Lower limit of travel in microns
    long   $(top)dta3Device.PREC =         1;  # Display precision for motor position

@@ -77,7 +77,7 @@ group {
    string $(top)mskCasDevice.EGU  =    "mm";
    double $(top)mskCasDevice.FIVL =     2.5;
    long   $(top)mskCasDevice.IALG =       1;
-   double $(top)mskCasDevice.MDBD =     0.0;
+   double $(top)mskCasDevice.MDBD =  0.0025;
    double $(top)mskCasDevice.MRES =   400.0;
    double $(top)mskCasDevice.PHLM =   275.0;
    double $(top)mskCasDevice.PLLM =   -10.0;
@@ -101,7 +101,7 @@ group {
    string $(top)mskExtDevice.EGU  =    "mm";
    double $(top)mskExtDevice.FIVL =     5.0;
    long   $(top)mskExtDevice.IALG =       2;
-   double $(top)mskExtDevice.MDBD =     0.0;
+   double $(top)mskExtDevice.MDBD =   0.005;
    double $(top)mskExtDevice.MRES =   200.0;
    double $(top)mskExtDevice.PHLM =     4.0;
    double $(top)mskExtDevice.PLLM =  -447.5;
@@ -125,7 +125,7 @@ group {
    double $(top)mskGrpDevice.BTMO =     0.0;
    string $(top)mskGrpDevice.EGU  =   "EGU";
    long   $(top)mskGrpDevice.IALG =       5;
-   double $(top)mskGrpDevice.MDBD =     0.0;
+   double $(top)mskGrpDevice.MDBD =   0.005;
    double $(top)mskGrpDevice.MRES =   200.0;
    double $(top)mskGrpDevice.PHLM =    50.0;
    double $(top)mskGrpDevice.PLLM =   -50.0;
@@ -149,7 +149,7 @@ group {
    double $(top)mskRelDevice.BTMO =     0.0;
    string $(top)mskRelDevice.EGU  =   "EGU";
    long   $(top)mskRelDevice.IALG =       5;
-   double $(top)mskRelDevice.MDBD =     0.0;
+   double $(top)mskRelDevice.MDBD =   0.005;
    double $(top)mskRelDevice.MRES =   200.0;
    double $(top)mskRelDevice.PHLM =    60.0;
    double $(top)mskRelDevice.PLLM =   -60.0;

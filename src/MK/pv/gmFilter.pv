@@ -22,6 +22,7 @@ group {
    double $(top)flt1Device.FIVL =      0.25;  # Final indexing velocity
    long   $(top)flt1Device.IALG =         3;  # Index algorithm
    double $(top)flt1Device.MRES =     200.0;  # Motor resolution in motor steps per revolution
+   double $(top)flt1Device.MDBD =     0.005;  # Motion deadband
    double $(top)flt1Device.MRND =         2;  # Move to nearest whole step if 2
    double $(top)flt1Device.PHLM =      15.0;  # Upper limit of travel in revs
    double $(top)flt1Device.PLLM =     -15.0;  # Lower limit of travel in revs
@@ -49,6 +50,7 @@ group {
    double $(top)flt2Device.FIVL =      0.25;  # Final indexing velocity
    long   $(top)flt2Device.IALG =         3;  # Index algorithm
    double $(top)flt2Device.MRES =     200.0;  # Motor resolution in motor steps per revolution
+   double $(top)flt2Device.MDBD =     0.005;  # Motion Deadband
    double $(top)flt2Device.MRND =         2;  # Move to nearest whole step if 2
    double $(top)flt2Device.PHLM =      15.0;  # Upper limit of travel in revs
    double $(top)flt2Device.PLLM =     -15.0;  # Lower limit of travel in revs
