@@ -62,6 +62,12 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.6  2008/02/06 23:29:38  gemvx
+ * changed so that servo motors do not loose index when a limit is detected.  This
+ * is for the OIWFS.  Also added a keep_index flag to abortingState to handle the
+ * case where motor power is cut before the limit signal is detected.  This flag
+ * will also allow future tweaking of which errors trigger a loss of INDEX.
+ *
  * Revision 1.4  2008/01/30 22:08:36  gemvx
  * troubleshoot device failures: added a tracking comment and raise monitors for
  * power status changes
@@ -2200,8 +2206,8 @@ static long holdingState
          *  from responding to changes in the VAL field until the GO
          *  directive is issued again.
          */
-
-        if (fabs(pdr->val - pdr->mpos) > pdr->mdbd)
+       
+        if (fabs(pdr->val - pdr->mpos) >= pdr->mdbd)
         {
             pdr->dir = DDR_DIR_CHECK;
             status = startingState (pdr);    
@@ -2524,9 +2530,9 @@ static long idleState
 
         if ((pPriv->mode == DDR_MODE_INDEX) ||
             (pPriv->mode == DDR_MODE_MOVE &&
-             fabs(pdr->val - pdr->mpos) > pdr->mdbd) ||
+             fabs(pdr->val - pdr->mpos) >= pdr->mdbd) ||
             (pPriv->mode == DDR_MODE_TRACK &&
-             fabs(pdr->val - pdr->mpos) > pdr->mdbd))
+             fabs(pdr->val - pdr->mpos) >= pdr->mdbd))
         {
             DEBUG(DDR_MSG_FULL, 
                   "<%ld> %s:idleState:DIR=Go, motion required in mode=%ld\n",
@@ -5597,7 +5603,7 @@ static long processDirective
 
             if ( (pdr->dir == DDR_DIR_GO) &&
                 (pdr->osta != DDR_IDLE) &&
-                ( (fabs (position - (double)(pPriv->target / pdr->mres)) >
+                ( (fabs (position - (double)(pPriv->target / pdr->mres)) >=
                   pdr->mdbd) ||
                 (pPriv->velocity != (long)(pdr->velo * pdr->mres)) ) )
             {
