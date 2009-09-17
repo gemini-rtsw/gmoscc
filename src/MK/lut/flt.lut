@@ -2,7 +2,7 @@ filter
 #
 # Database of current GMOS filter installation
 
-# Time : 2008/12/20 00:05:19.114 (UTC)
+# Time : 2009/07/31 20:22:58.903 (UTC)
 # Barcode  Wheel Pos
 
   20000018  1 pos6
@@ -12,7 +12,7 @@ filter
   20000006  1 pos8
   20000008  2 pos8
   20000007  1 pos9
-  20000022  2 pos9
+  20000016  2 pos9
   20000009  1 pos10
   20000010  2 pos10
   20000023  1 pos11
@@ -23,9 +23,9 @@ filter
   20000001  2 pos1
   20000014  1 pos2
   20000002  2 pos2
-  20000015  1 pos3
+  20000019  1 pos3
   20000003  2 pos3
-  20000016  1 pos4
+  20000022  1 pos4
   20000004  2 pos4
   20000017  1 pos5
-  20000019  2 pos5
+  20000015  2 pos5
