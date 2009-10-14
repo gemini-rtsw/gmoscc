@@ -177,8 +177,15 @@ group {
    #double $(top)probeXOffset        =  -1.593; # X offset
    #double $(top)probeYOffset        =   2.688; # Y offset
    # New offsets 31/Oct/07 PG (CR 1222)
-   double $(top)probeXOffset        =  -0.505; # X offset
-   double $(top)probeYOffset        =   2.471; # Y offset
+   #double $(top)probeXOffset        =  -0.505; # X offset
+   #double $(top)probeYOffset        =   2.471; # Y offset
+   # New offsets 25/Apr/08 CUR (CR 1309)
+   #double $(top)probeXOffset        =  -0.800; # X offset
+   #double $(top)probeYOffset        =   2.986; # Y offset
+   # New offsets 14/Oct/09 CUR (CR-09 0250)
+   double $(top)probeXOffset        =  -0.616; # X offset
+   double $(top)probeYOffset        =   2.929; # Y offset
+
 
    # Ideal Focal Surface
    #
