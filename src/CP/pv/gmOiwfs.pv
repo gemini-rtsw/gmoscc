@@ -171,8 +171,8 @@ group {
    #double $(top)probeXOffset        =  -0.229; # X offset
    #double $(top)probeYOffset        =   2.305; # Y offset
    # New offsets 05/Oct/07 PG (CR 1212)
-   double $(top)probeXOffset        =  -0.505; # X offset
-   double $(top)probeYOffset        =   2.066; # Y offset
+   #double $(top)probeXOffset        =  -0.505; # X offset
+   #double $(top)probeYOffset        =   2.066; # Y offset
    # New offsets 17/Oct/07 (never used)
    #double $(top)probeXOffset        =  -1.593; # X offset
    #double $(top)probeYOffset        =   2.688; # Y offset
