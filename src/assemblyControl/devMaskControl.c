@@ -65,6 +65,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.6  2008/01/04 23:12:23  gemvx
+ * changed the barcode read timeout to 10 seconds (see FR 7484 and CR 1254)
+ *
  * Revision 1.5  2006/04/12 02:51:48  gemvx
  * make the ifu barcode available on SOV to be writtin to the ifuSelection record
  *
@@ -6717,7 +6720,7 @@ static long mkTaskPreCheck
                 {
                     DEBUG(DAR_MSG_ERROR,
                           "<%ld> %s:mkTaskPreCheck: No mask in slot before MK_EXT_TO_GRP%c\n", ' ');
-                    SET_ERR_MSG("Mask not in current slot, use UPDATE");
+                    SET_ERR_MSG("Mask not in current slot, use INIT or UPDATE");
                     status = MK_TASK_FAILED;
 
                     /* make sure the assembly record doesn't lose it's index */
