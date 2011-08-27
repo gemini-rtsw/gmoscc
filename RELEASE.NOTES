@@ -1,3 +1,7 @@
+V7-1-1 August 2011 aebbers
+    - changed the displayed error message when the Mask in slot sensor fails to:
+      "Mask not in current slot, use INIT or UPDATE"
+
 V7-1 September 2009 aebbers
     - Tweak the implementation of the motion deadband in the device control record to be >=mdbd
     - Add a valid mdbd to the pvload file for all stepper motors (based on step resolution)
