@@ -13,6 +13,9 @@
 */
 /*
  * $Log$
+ * Revision 1.2  2003/01/31 14:12:46  gemvx
+ * Merged gmos-south
+ *
  * Revision 1.1  2002/04/24 05:26:18  ajf
  * Added for epics3.13.4GEM8.4.
  *
@@ -110,7 +113,7 @@
 
 /* Min. and Max acceptable wavelengths (nanometres) */
 #define MIN_WAVELENGTH  300.0
-#define MAX_WAVELENGTH 1100.0
+#define MAX_WAVELENGTH 1300.0
 
 /*
  * Tracking modes for atmospheric dispersion compensator and detector
