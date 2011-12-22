@@ -1,5 +1,7 @@
-V7-1-1 August 2011 aebbers
-    - changed the displayed error message when the Mask in slot sensor fails to:
+V7-2 December 2011 mrippa/aebbers
+    - (MR) SCI-0513: Relax 1100nm wavelength limit (now 1300nm)
+    - (MR) REQ11-0603: Remove 32 pixel overscan from ZPC for GN E2V Arrays.
+    - (AE) August 2011: Changed the displayed error message when the Mask in slot sensor fails to:
       "Mask not in current slot, use INIT or UPDATE"
 
 V7-1 September 2009 aebbers
