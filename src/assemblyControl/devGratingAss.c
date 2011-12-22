@@ -41,6 +41,10 @@ static struct {void *v; char *c;} rcsid = {&rcsid,
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.10  2007/05/03 15:54:44  pedro
+ * Modified files to get rid of the (hard coded) compile time site
+ * dependency of the grating code.
+ *
  * Revision 1.9  2005/02/23 01:50:03  gemvx
  * *** empty log message ***
  *
@@ -6070,25 +6074,25 @@ printErr ("site=%d\n", site);
 		 if (site == SITE_MK)
 		 {
 		     if (pixZpca >  0 ) {
-			    pDevConfig->zpc[GRA] = (pixZpca - 190.5)/12.0;
+			    pDevConfig->zpc[GRA] = (pixZpca - 158.5)/12.0;
 		     }
 		     else {
 			    pDevConfig->zpc[GRA] = 0.0;
 		     }
 		     if (pixZpcb >  0) {
-			    pDevConfig->zpc[GRB] = (pixZpcb - 182.5)/12.0;
+			    pDevConfig->zpc[GRB] = (pixZpcb - 150.5)/12.0;
 		     }
 		     else {
 			    pDevConfig->zpc[GRB] = 0.0;
 		     }
 		     if (pixZpcc >  0) {
-			    pDevConfig->zpc[GRC] = (pixZpcc - 182.5)/12.0;
+			    pDevConfig->zpc[GRC] = (pixZpcc - 150.5)/12.0;
 		     }
 		     else {
 			    pDevConfig->zpc[GRC]= 0.0;
 		     }
 		     if (pixZpcd >  0) {
-			    pDevConfig->zpc[GRD] = (pixZpcd - 182.5)/12.0;
+			    pDevConfig->zpc[GRD] = (pixZpcd - 150.5)/12.0;
 		     }
 		     else {
 			    pDevConfig->zpc[GRD] = 0.0;
@@ -6120,60 +6124,6 @@ printErr ("site=%d\n", site);
 		     }
 		 }
 
-#if 0
-#ifdef MK
-			 if (pixZpca >  0 ) {
-				pDevConfig->zpc[GRA] = (pixZpca - 190.5)/12.0;
-			 }
-			 else {
-				pDevConfig->zpc[GRA] = 0.0;
-			 }
-			 if (pixZpcb >  0) {
-				pDevConfig->zpc[GRB] = (pixZpcb - 182.5)/12.0;
-			 }
-			 else {
-				pDevConfig->zpc[GRB] = 0.0;
-			 }
-			 if (pixZpcc >  0) {
-				pDevConfig->zpc[GRC] = (pixZpcc - 182.5)/12.0;
-			 }
-			 else {
-				pDevConfig->zpc[GRC]= 0.0;
-			 }
-			 if (pixZpcd >  0) {
-				pDevConfig->zpc[GRD] = (pixZpcd - 182.5)/12.0;
-			 }
-			 else {
-				pDevConfig->zpc[GRD] = 0.0;
-			 }
-#else
-
-                         if (pixZpca >  0) {
-                                pDevConfig->zpc[GRA] = (pixZpca - 151.0)/10.5;
-                         }
-                         else {
-                                pDevConfig->zpc[GRA] = 0.0;
-                         }
-                         if (pixZpcb >  0) {
-                                pDevConfig->zpc[GRB] = (pixZpcb - 151.0)/10.5;
-                         }
-                         else {
-                                pDevConfig->zpc[GRB] = 0.0;
-                         }
-                         if (pixZpcc >  0) {
-                                pDevConfig->zpc[GRC] = (pixZpcc - 151.0)/10.5;
-                         }
-                         else {
-                                pDevConfig->zpc[GRC] = 0.0;
-                         }
-                         if (pixZpcd >  0) {
-                                pDevConfig->zpc[GRD] = (pixZpcd - 151.0)/10.5;
-                         }
-                         else {
-                                pDevConfig->zpc[GRD] = 0.0;
-                         }
-#endif
-#endif
 
                         printf(" ******** populating configuration structure : \n");
                         printf(" ******** pDevConfig->zpc[GRA] = %f \n", pDevConfig->zpc[GRA]);
