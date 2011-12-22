@@ -31,6 +31,8 @@
 # to filter wheel 2 so filters in wheel 1 can be focused
 #    - Kathy Roth 2009 July 31
 #
+# Added Z, Y GMOS-N filters - Kathy Roth 2010 May 11
+#
 #                                 surface curvature
 # name            barcodeId       focusOffset (microns)   effWavelength (nm)
 #
@@ -38,8 +40,6 @@
 # open1-6 and open2-8 must not be filled as seqexec assumes these slots are open.
 open1-6           20000018          0.0                    0.0
 open2-8           20000008          0.0                    0.0
-open1-3           20000019          0.0                    0.0
-open1-4           20000022          0.0                    0.0
 #
 # GMOS North Hartmann masks
 HartmannA_G0313   20000013          0.0                    0.0
@@ -53,6 +53,8 @@ g_G0301           20000001         93.0                  480.0
 i_G0302           20000002         14.1                  770.0
 r_G0303           20000003         10.6                  625.0
 z_G0304           20000004        -19.2                  910.0
+Z_G0322           20000019          0.0                  876.0
+Y_G0323           20000022          0.0                 1010.0
 #
 # GMOS South Hartmann masks
 #HartmannA_G0337   20000037          0.0                    0.0

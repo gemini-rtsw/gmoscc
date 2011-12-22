@@ -6,6 +6,37 @@ aux_grating
 # corrected again using the offset measured by Stephanie Juneau on 13 Feb 2001
 #
 # Grating B600:
+#
+# Values for B600 in position 2 are
+# copied from position 3 below and then ZPC corrected.
+# -- k.roth, b.walp 21 Dec. 2010
+#
+# Cell  Tilt    Steps
+
+2   0.0000        82.7817
+2   7.7550       900.9817
+2  26.0250      2830.4817
+2  40.2310      4328.9817
+2  52.9120      5667.4817
+2  65.0000      6943.4817
+2  77.0690      8217.4817
+2  89.7450      9555.4817
+
+# Values for B600 in position 3 are
+# copied from the aux_30000019gr.lut file.
+# -- k.roth, b.walp 20 Dec. 2010
+#
+# Cell  Tilt    Steps
+
+3   0.0000       100.9200
+3   7.7550       919.1200
+3  26.0250      2848.6200
+3  40.2310      4347.1200
+3  52.9120      5685.6200
+3  65.0000      6961.6200
+3  77.0690      8235.6200
+3  89.7450      9573.6200
+
 # Values for B600 in position 4 are
 # Based on measurement of only the 65deg point, July 10, 2001  (IJ, IMH)
 # The rest are offset 6984-6953=31 relative to R831 in cell 4 (D); (0,0) is left
@@ -13,17 +44,18 @@ aux_grating
 #
 # Copy of original B600 aux file for replacement B600 grating.
 #    KR, AF 18Mar2009
+# ZPC adjusted 22 Dec. '10 --b.walp
 
 # Cell  Tilt    Steps
 
- 4 0.0000000 158.801
- 4 7.755 977
- 4 26.025 2906.5
- 4 40.231 4405
- 4 47.423 5164.2
- 4 50.618 5501.2
- 4 53.482 5804.9
- 4 55.925 6062.2
- 4 65.000 7019.5
- 4 77.069 8293.5
- 4 89.745 9631.5
+4   0.0000       159.6868
+4   7.7550       977.8858
+4  26.0250      2907.3858
+4  40.2310      4405.8858
+4  47.4230      5165.0858
+4  50.6180      5502.0858
+4  53.4820      5805.7858
+4  55.9250      6063.0858
+4  65.0000      7020.3858
+4  77.0690      8294.3858
+4  89.7450      9632.3858
