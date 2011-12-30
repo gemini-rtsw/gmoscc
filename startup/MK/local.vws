@@ -9,10 +9,7 @@ routeAdd "0.0.0.0" , "10.1.2.1"
 routeAdd "0.0.0.0" , "10.1.5.1"
 
 hostAdd ("pisces","10.2.2.57")
-hostAdd ("manta","10.1.5.10")
-
 nfsMount "pisces", "/export/gemini", "/gemini"
-nfsMount "manta", "/export/astro",  "/usr/astro"
 
 # Tell VxWorks the unix user ID and group ID of "gemvx",
 # so that file access over NFS works.
