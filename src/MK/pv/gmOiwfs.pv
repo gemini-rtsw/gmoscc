@@ -131,8 +131,8 @@ double $(top)probeLimitCheck.O      = 30.0;
 group {
    double $(top)probeBasOffset      = 167.295; # Base offset angle
    double $(top)probePkoOffset      = -13.393; # Pickoff offset angle
-   double $(top)probeXOffset        = -0.172; # X offset
-   double $(top)probeYOffset        = -0.366; # Y offset
+   double $(top)probeXOffset        = -0.237; # X offset
+   double $(top)probeYOffset        = -0.300; # Y offset
 
 # Ideal Focal Surface
 #
