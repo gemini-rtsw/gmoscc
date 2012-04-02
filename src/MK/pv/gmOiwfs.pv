@@ -129,10 +129,10 @@ double $(top)probeLimitCheck.O      = 30.0;
 # Load offsets for converting X/Y to angles and vice versa
 #
 group {
-   double $(top)probeBasOffset      = 167.295; # Base offset angle
-   double $(top)probePkoOffset      = -13.393; # Pickoff offset angle
-   double $(top)probeXOffset        = -0.237; # X offset
-   double $(top)probeYOffset        = -0.300; # Y offset
+   double $(top)probeBasOffset      = 167.919; # Base offset angle
+   double $(top)probePkoOffset      = -13.342; # Pickoff offset angle
+   double $(top)probeXOffset        = -0.338; # X offset
+   double $(top)probeYOffset        = -0.552; # Y offset
 
 # Ideal Focal Surface
 #
