@@ -59,14 +59,16 @@
 # Mask Assembly
 #
 group {
-   double $(top)mskAssembly.D     =    35.0; # normal extractor velocity
-   double $(top)mskAssembly.ADHL  =    40.0; # hi lim for normal extr velo
-   double $(top)mskAssembly.ADLL  =    20.0; # lo lim for normal extr velo
-   double $(top)mskAssembly.E     =    15.0; # slow (indexing) extractor velo
-   double $(top)mskAssembly.AEHL  =    20.0; # hi lim for slow (indexing) extr velo
-   double $(top)mskAssembly.AELL  =     5.0; # lo lim for slow (indexing) extr velo
-   long   $(top)mskAssembly.SIL   =       0; # makes barcodeID in SAD happy
+group {
+   long $(top)mskAssembly.D     =    1; # casette number for single update
+   long $(top)mskAssembly.ADHL  =    3; # hi lim for cassette number
+   long $(top)mskAssembly.ADLL  =    1; # lo lim for cassette number
+   long $(top)mskAssembly.E     =    1; # slot number for single update
+   long $(top)mskAssembly.AEHL  =    9; # hi lim for slot number
+   long $(top)mskAssembly.AELL  =    1; # lo lim for slot number
+   long $(top)mskAssembly.SIL   =    0; # makes barcodeID in SAD happy
    string $(top)ifuSelection.B = "10000004"; # default ifu mode
+   long   $(top)mskAssembly.SIM   =       -1; # default to Single Update Mode
    long   $(top)mskAssembly.SIN   =       0; # barcode reader error ignore is FALSE
 }
 #
