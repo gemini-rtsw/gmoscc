@@ -65,6 +65,10 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.7  2011/08/27 16:29:40  gemvx
+ * changed error message for a failure of the mask in slot sensor to:
+ * Mask not in current slot, use INIT or UPDATE
+ *
  * Revision 1.6  2008/01/04 23:12:23  gemvx
  * changed the barcode read timeout to 10 seconds (see FR 7484 and CR 1254)
  *
@@ -464,8 +468,8 @@
 #define MK_BARCODE_ID_IN        *(long *)  par->a   /* Mask id.         */
 #define MK_MASK_IFU_LOC         *(long *)  par->b   /* Mask location.   */
 #define MK_PARK_POSITION_IN     *(long *)  par->c   /* Park mode.       */
-#define MK_EXT_VEL_FAST         *(double *)par->d   /* Running velocity.*/
-#define MK_EXT_VEL_SLOW         *(double *)par->e   /* Indexing velocity*/
+#define MK_UPDATE_SINGLE_C      *(long *)  par->d   /* Single Update Cassette Number */
+#define MK_UPDATE_SINGLE_S      *(long *)  par->e   /* Single Update Slot Number */
 
 #define MK_MASK_IN_BEAM         *(long *) par->vala /* In-Beam Mask ID  */
 #define MK_EXT_MASK_POS         *(long *) par->valb /* Current Mask Posn*/
@@ -473,12 +477,21 @@
 #define MK_SENSOR_WORD          *(long *) par->sij  /* Ptr. to Monitor word.*/
 #define MK_EXT_POSITION         *(long *) par->sik  /* Ptr. to extractor pos*/
 #define MK_BARCODE_READ         (char *)  par->sil  /* Ptr. to barcode read.*/
-#define MK_QUICK_UPDATE         *(long *) par->sim  /* Quick Update Flag    */
+#define MK_QUICK_UPDATE         *(long *) par->sim  /* Quick or Single Update Flag (0: normal, 1: Quick, -1: Single) */
 #define MK_IGNORE_BARCODE       *(long *) par->sin  /* Ignore barcode reader failures Flag */
 
 #define MK_BARCODE_TRIGGER      par->sot            /* Ptr. to barcode link.*/
 #define MK_SENSOR_POWER         par->sor     /* Ptr. to control sensor power*/
 #define MK_IFU_BARCODE          par->sov     /* Expected IFU barcode from lut */
+
+/*
+ * Change the extractor fast and slow velocities into global variables rather than inputs
+ * these weren't available as inputs on a dm screen and haven't been changed in a long time.
+ * This allows the values to remain dynamic while freeing up Assembly inputs for a new update mode.
+ */
+
+long  MK_EXT_VEL_FAST = 35.0;         /* Running velocity. */
+long  MK_EXT_VEL_SLOW = 15.0;         /* Indexing velocity */
 
 
 /*
@@ -1049,6 +1062,7 @@ typedef struct {
     int         optoDelayOn;        /* Waiting for optosensor powerup  */
     int         optoDelayMode;      /* Mode following sensor powerup   */
     long        quickUpdate;        /* Quick Update Flag               */
+    long        singleUpdate;       /* Single Mask Update Flag         */
     int         askBarCode;         /* Asked for a barcode.            */
     int         mode;               /* Mode to execute.                */
     int         busyMode;           /* Current busy mode.              */
@@ -1667,7 +1681,8 @@ static long mkBuildNewList
     int      numConfig;                 /* Deduced assy configuration.  */
     MK_DEV_PRIVATE *pMkPriv;            /* Ptr to private dev. struct.  */
     int      i;                         /* Generic counter variable.    */
-
+    int      nodeToUpdate;              /* Single Mask Node to update   */
+    int      barCount;                  /* Counter into bar list.        */
 
     DEBUG(DAR_MSG_FULL, "<%ld> %s:mkBuildNewList: entry%c\n", ' ');
 
@@ -1959,59 +1974,107 @@ static long mkBuildNewList
             }
         }
 
-        /*
-         *  Now add the sequence to cycle through the storage slots
-         *  and record whatever is found.   See the definition of
-         *  updateSeq for details of the tasks added to do this.
-         */
+	/*
+	 *  Check the Update Mode.  Could be Quick or Single
+	 */
+	if (MK_QUICK_UPDATE == TRUE)
+	  {
+	    /* Set the quick update flag */
+	    semTake (pMkPriv->mutexSem, WAIT_FOREVER);
+	    pMkPriv->singleUpdate = FALSE;
+	    pMkPriv->quickUpdate = TRUE;
+	    semGive (pMkPriv->mutexSem);
+	    
+	    DEBUG(DAR_MSG_WARNING, 
+		  "<%ld> %s:mkBuildNewList: WARNING! Performing QUICK UPDATE - this does NOT clear the existing barcode list!%c\n", ' ');
 
-        for ( i = 0; 
-              i < (sizeof( mkUpdateSeq)/ sizeof( MK_TASK_LIST ));
-              i++ )
-        {     
-            MK_CHECK_NULL( newTask = malloc( sizeof ( MK_LIST ) ), 
-                          MK_MALLOC_ERROR );
-            newTask->item = (void *) &(mkUpdateSeq[i]);
-            ellAdd( (ELLLIST *) &(pMkPriv->taskList), &(newTask->node));
-        }
+	    /*
+	     *  Initialize the barcode list node number to zero so that we
+	     *  overwrite the current list.
+	     */
+	    
+	    pMkPriv->barNodeNum = 0;
+	  }
+	else if (MK_QUICK_UPDATE == -1)
+	  {
+	    /* Set the Single Update flag, Clear the quick update flag */
+	    semTake (pMkPriv->mutexSem, WAIT_FOREVER);
+	    pMkPriv->singleUpdate = TRUE;
+	    pMkPriv->quickUpdate = FALSE;
+	    semGive (pMkPriv->mutexSem);
+	    
 
+	    DEBUG(DAR_MSG_WARNING, 
+		  "<%ld> %s:mkBuildNewList: WARNING! Performing SINGLE UPDATE - this does NOT clear the existing barcode list!%c\n", ' ');
 
-        /*
-         *  Initialize the barcode list node number to zero so that we
-         *  overwrite the current list.
-         */
-   
-        pMkPriv->barNodeNum = 0;
+	    /* figure out the node to use for the given cassette and slot */
+	    nodeToUpdate = -1;
+	    for ( barCount = 0; barCount < MK_MAX_SLOTS; barCount++ )
+	      {
+		if ((pMkPriv->barCodeList[barCount].casNum == MK_UPDATE_SINGLE_C)&&(pMkPriv->barCodeList[barCount].slotNum == MK_UPDATE_SINGLE_S))
+		  {
+		    nodeToUpdate=barCount;
+		    break;
+		  }
+	      }
 
-        /*
-         *  Check the Quick Update Attribute
-         */
-        if (MK_QUICK_UPDATE == TRUE)
-        {
-            /* Set the quick update flag */
-            semTake (pMkPriv->mutexSem, WAIT_FOREVER);
-            pMkPriv->quickUpdate = TRUE;
-            semGive (pMkPriv->mutexSem);
+	    if (nodeToUpdate > 0) 
+	      {
+		semTake (pMkPriv->mutexSem, WAIT_FOREVER);
+		pMkPriv->barNodeNum = nodeToUpdate;
+		semGive (pMkPriv->mutexSem);
+		
+		DEBUG4(DAR_MSG_LOG, 
+		      "<%ld> %s:mkBuildNewList: SINGLE UPDATE C:%i S:%i using node: %i%c\n", pMkPriv->barCodeList[nodeToUpdate].casNum, pMkPriv->barCodeList[nodeToUpdate].slotNum, nodeToUpdate, ' ');
+	      }
+	    else 
+	      {
+		/* Node not found .. raise an error. Shouldn't happen because of limit checking on C and S inputs. */
+		DEBUG(DAR_MSG_ERROR, 
+		      "<%ld> %s:mkBuildNewList: Single Update, Node not found%c\n", ' ');
+		SET_ERR_MSG("Single Update failed, (C,S) not found!");
+		break;
+	      } 
+	  }
+	else
+	  {
+	    /* Clear the quick/single update flags */
+	    semTake (pMkPriv->mutexSem, WAIT_FOREVER);
+	    pMkPriv->singleUpdate = FALSE;
+	    pMkPriv->quickUpdate = FALSE;
+	    semGive (pMkPriv->mutexSem);
+	    
+	    /* Clear the barcode list if it's a normal UPDATE (not a quickie or single). */
+	    mkClearBarList( par );
+	    DEBUG(DAR_MSG_LOG, 
+		  "<%ld> %s:mkBuildNewList: FULL UPDATE - old list cleared.%c\n", ' ');
 
-            /* Clear the quick update input */
-            MK_QUICK_UPDATE = FALSE;
-            db_post_events(par, par->sim, DBE_VALUE);
-            DEBUG(DAR_MSG_WARNING, 
-                  "<%ld> %s:mkBuildNewList: WARNING! Performing QUICK UPDATE - this does NOT clear the existing barcode list!%c\n", ' ');
-        }
-        else
-        {
-            /* Clear the quick update flag */
-            semTake (pMkPriv->mutexSem, WAIT_FOREVER);
-            pMkPriv->quickUpdate = FALSE;
-            semGive (pMkPriv->mutexSem);
+	    /*
+	     *  Initialize the barcode list node number to zero so that we
+	     *  overwrite the current list.
+	     */
+	    
+	    pMkPriv->barNodeNum = 0;
 
-            /* Clear the barcode list if it's a normal UPDATE (not a quickie). */
-            mkClearBarList( par );
-            DEBUG(DAR_MSG_LOG, 
-                  "<%ld> %s:mkBuildNewList: FULL UPDATE - old list cleared.%c\n", ' ');
-        }
+	  }
 
+	/*
+	 *  Now add the sequence to cycle through the storage slots
+	 *  and record whatever is found.   See the definition of
+	 *  updateSeq for details of the tasks added to do this.
+	 *  For the Single Update mode, this will go to the configured node.
+	 */
+	
+	for ( i = 0; 
+	      i < (sizeof( mkUpdateSeq)/ sizeof( MK_TASK_LIST ));
+	      i++ )
+	  {     
+	    MK_CHECK_NULL( newTask = malloc( sizeof ( MK_LIST ) ), 
+			       MK_MALLOC_ERROR );
+	    newTask->item = (void *) &(mkUpdateSeq[i]);
+	    ellAdd( (ELLLIST *) &(pMkPriv->taskList), &(newTask->node));
+	  }
+	
         break;
 
 
@@ -2162,8 +2225,7 @@ static long mkCheckAttributes
         assAddErrorMessage (par, "Error, mask assembly is BUSY");
         return status;
     }
-
-
+    
     /*
      *  Check requests to insert or remove masks.
      */
@@ -2328,49 +2390,68 @@ static long mkCheckAttributes
         }
     }/* else if Park */
 
+    /*
+     *  Request to update.  Make sure Cassette and Slot are valid in case this is a Single Mask Update.
+     */
+
+    else if ((par->dir == DAR_DIR_PRESET || par->dir == DAR_DIR_START) &&
+                  par->mode == DAR_MODE_UPDATE )
+    {
+
+        if ( MK_UPDATE_SINGLE_C < 1 || MK_UPDATE_SINGLE_C > 3 )
+        {
+            DEBUG(DAR_MSG_ERROR,
+                  "<%ld> %s:mkCheckAttributes: MK_UPDATE_SINGLE_C out of range%c\n",
+                  ' ' );
+            status = MK_INVALID;
+            assAddErrorMessage( par, "Global var MK_UPDATE_SINGLE_C out of range(1:3)");
+            return status;
+        }
+
+        if ( MK_UPDATE_SINGLE_S < 1 || MK_UPDATE_SINGLE_S > 9 )
+        {
+            DEBUG(DAR_MSG_ERROR,
+                  "<%ld> %s:mkCheckAttributes:MK_UPDATE_SINGLE_S out of range(1:9)%c\n",
+                  ' ' );
+            status = MK_INVALID;
+            assAddErrorMessage( par, "Global var MK_UPDATE_SINGLE_S out of range");
+            return status;
+        }
+
+        
+    }/* else if Update */
+
 
     /*
      *  Get the extractor fast/slow velocities.  These are checked regardless
      *  of MODE since these attributes don't form part of the command interface.
+     *  These used to be assemby input and are now global variables.
      */
 
     if (par->dir == DAR_DIR_PRESET || par->dir == DAR_DIR_START)
     {
 
         /*
-         *  Ensure that extractor velocities have the right data type.
-         */
-
-        if ( par->ftd != DBF_DOUBLE || par->fte != DBF_DOUBLE )
-        {
-            DEBUG(DAR_MSG_ERROR,
-                  "<%ld> %s:mkCheckAttributes:invalid data type, attr D/E%c\n",' ' );
-            status = MK_INVALID;
-            assAddErrorMessage( par, "Error, Invalid attributes type: D/E");
-            return status;
-        }
-
-        /*
          *  Ensure that extractor velocities are within attribute limits.
          */
 
-        if ( MK_EXT_VEL_FAST < par->adll || MK_EXT_VEL_FAST > par->adhl )
+        if ( MK_EXT_VEL_FAST < 20.0 || MK_EXT_VEL_FAST > 40.0 )
         {
             DEBUG(DAR_MSG_ERROR,
-                  "<%ld> %s:mkCheckAttributes:attribute D out of range (normal extractor velocity)%c\n",
+                  "<%ld> %s:mkCheckAttributes: MK_EXT_VEL_FAST out of range (normal extractor velocity)%c\n",
                   ' ' );
             status = MK_INVALID;
-            assAddErrorMessage( par, "Error, attribute D out of range");
+            assAddErrorMessage( par, "Global var MK_EXT_VEL_FAST out of range");
             return status;
         }
 
-        if ( MK_EXT_VEL_SLOW < par->aell || MK_EXT_VEL_SLOW > par->aehl )
+        if ( MK_EXT_VEL_SLOW < 5.0 || MK_EXT_VEL_SLOW > 20.0 )
         {
             DEBUG(DAR_MSG_ERROR,
-                  "<%ld> %s:mkCheckAttributes:attribute E out of range (extractor indexing velocity)%c\n",
+                  "<%ld> %s:mkCheckAttributes:MK_EXT_VEL_SLOW out of range (extractor indexing velocity)%c\n",
                   ' ' );
             status = MK_INVALID;
-            assAddErrorMessage( par, "Error, attribute E out of range");
+            assAddErrorMessage( par, "Global var MK_EXT_VEL_SLOW out of range");
             return status;
         }
 
@@ -2380,8 +2461,8 @@ static long mkCheckAttributes
          */
 
         semTake (pMkPriv->mutexSem, WAIT_FOREVER);
-        pMkPriv->veloExtFast = MK_EXT_VEL_FAST;
-        pMkPriv->veloExtSlow = MK_EXT_VEL_SLOW;
+        pMkPriv->veloExtFast = (double)MK_EXT_VEL_FAST;
+        pMkPriv->veloExtSlow = (double)MK_EXT_VEL_SLOW;
         semGive (pMkPriv->mutexSem);
 
     } /* else if PRESET or START */
@@ -2727,7 +2808,7 @@ static long mkCheckBarcodeId
  *              If not there for any but the first slot this indicates a
  *                  sensor failure so abort the command immediately.
  *              If it is there then look for a mask:
- *                  If there is a mas then request that it be read.
+ *                  If there is a mask then request that it be read.
  *                  If there is no mask request that we skip to the next slot.
  *
  *      
@@ -2844,7 +2925,12 @@ static long    mkCheckCassette
                   "<%ld> %s:mkCheckCassette: Last cas empty, done%c\n",' ');
         
         }
-
+	else if (pMkPriv->singleUpdate == TRUE)
+	{
+	  /* We're done, even if the cassette wasn't found */
+	  DEBUG(DAR_MSG_ERROR, 
+		"<%ld> %s:mkCheckCassette: Single Update failed, Cassette not found!%c\n",' ');  
+	}
 
         /*
          * Add tasks to skip to the first slot of the next cassette.
@@ -2907,12 +2993,25 @@ static long    mkCheckCassette
 
             }
 
+	    else if (pMkPriv->singleUpdate == TRUE)
+	      {
+		/* We're done, even if the slot was empty .. need to clear the old barcode for this slot (if any) */
+		DEBUG(DAR_MSG_LOG, 
+		      "<%ld> %s:mkCheckCassette: Single Update, Slot empty! clearing barcode%c\n",' ');
+
+		semTake (pMkPriv->mutexSem, WAIT_FOREVER);
+		pMkPriv->barCodeList[ pMkPriv->barNodeNum].barCodeNum = MK_NO_ENTRY;
+		pMkPriv->barCodeList[ pMkPriv->barNodeNum].barCode[0] = '\0';
+		semGive (pMkPriv->mutexSem);		
+	      }
+
+
             /*
              * Otherwise request that we just go onto the next slot.
              */
 
             else
-            {    
+            {   
                 goToNextSlot = TRUE;
                 DEBUG(DAR_MSG_MAX, 
                       "<%ld> %s:mkCheckCassette: Slot empty%c\n", ' ');
@@ -2961,10 +3060,10 @@ static long    mkCheckCassette
         }
 
         /*
-         * Then add tasks to select the next slot.
+         * Then add tasks to select the next slot, except when performing a single mask update.
          */
 
-        if ( pMkPriv->barNodeNum < ( MK_MAX_SLOTS - 1 ) )
+        if ( pMkPriv->barNodeNum < ( MK_MAX_SLOTS - 1 ) && (pMkPriv->singleUpdate != TRUE))
         {
             for ( i = 0; 
                   i < (sizeof( mkUpdateSeq)/ sizeof( MK_TASK_LIST ));
@@ -2976,18 +3075,17 @@ static long    mkCheckCassette
                 ellAdd( (ELLLIST *) &(pMkPriv->taskList), &(newTask->node));
             }
         }
-
-
-        /*
-         * Increment the barcode node number so that the ID will be
-         * written into the next slot.
-         */
-
-        semTake (pMkPriv->mutexSem, WAIT_FOREVER);
-        pMkPriv->barNodeNum++;
-        semGive (pMkPriv->mutexSem);
     }
 
+    /*
+     * Increment the barcode node number so that the ID will be
+     * written into the next slot.
+     */
+    
+    semTake (pMkPriv->mutexSem, WAIT_FOREVER);
+    pMkPriv->barNodeNum++;
+    semGive (pMkPriv->mutexSem);
+    
     return ( status );
 }
 
@@ -4163,11 +4261,11 @@ static long mkDoTask
 
                     /*if ( recGblPutLinkValue (&(MK_SENSOR_POWER), 
                            (void *) par, DBR_LONG, &sensor, &nRequest) != 
-                                DAR_S_SUCCESS )*/
-                     if (
-				dbPutLink(&(MK_SENSOR_POWER),DBR_LONG,&sensor,nRequest)!= DAR_S_SUCCESS
-			)
-                    {
+			   DAR_S_SUCCESS )*/
+		    /* AWE: if simulating, the link to optsensorEnable is invalid (no hardware) resulting in an error here .. working around it */
+
+		    if ((assSimulateLevel(par) == DAR_SIM_NONE) && dbPutLink(&(MK_SENSOR_POWER),DBR_LONG,&sensor,nRequest) != DAR_S_SUCCESS)
+		      {
                         status = MK_NO_POWER;
                         DEBUG(DAR_MSG_ERROR, 
                          "<%ld> %s:mkDoTask:** Sensor power control failed%c\n",' ');
@@ -4557,6 +4655,9 @@ static long mkInitDeviceSupport
     pMkPriv->barCodeList = mkBarList;      /* Save the barcode list ptr  */
     pMkPriv->barListEmpty = TRUE;          /* Set the list empty flag    */
     pMkPriv->quickUpdate = FALSE;          /* Configure for normal UPDATE*/
+    pMkPriv->singleUpdate = FALSE;         /* Configure for normal UPDATE*/
+    pMkPriv->veloExtFast = 35.0;           /* Normal Extractor Velocity  */
+    pMkPriv->veloExtSlow = 15.0;           /* Index Extractor Velocity   */
 
 
     /*
@@ -7021,9 +7122,10 @@ static void mkTerminateTasks
      /*if ( recGblPutLinkValue (&(MK_SENSOR_POWER), 
              (void *) par, DBR_LONG, &sensor, &nRequest) != 
              DAR_S_SUCCESS )*/
-       if (
-	    dbPutLink(&(MK_SENSOR_POWER),DBR_LONG,&sensor,nRequest) != DAR_S_SUCCESS
-          )
+
+     /* AWE: if simulating, the link to optsensorEnable is invalid (no hardware) resulting in an error here .. working around it */
+
+     if ((assSimulateLevel(par) == DAR_SIM_NONE) && dbPutLink(&(MK_SENSOR_POWER),DBR_LONG,&sensor,nRequest) != DAR_S_SUCCESS)
      {
          /*  Don't overwite any existing error status codes  */
          if (status == DAR_S_SUCCESS && pMkPriv->status == DAR_S_SUCCESS)
@@ -7668,8 +7770,10 @@ static long mkUpdateMode
         sprintf (scratchBuf, "%s/%s", par->tdir, par->tfil);
         DEBUG(DAR_MSG_MIN, 
               "<%ld> %s:mkUpdateMode:opening file: %s\n", par->tfil);
+        DEBUG(DAR_MSG_MIN, 
+              "<%ld> %s:mkUpdateMode:opening file: %s\n", scratchBuf);
 
-        if ( (fp = fopen(scratchBuf, "w")) == NULL)
+        if ( (fp = fopen(scratchBuf, "a")) == NULL)
         {
             DEBUG(DAR_MSG_ERROR, 
                   "<%ld> %s:mkUpdateMode: cannot open file %s\n", scratchBuf);
@@ -7703,6 +7807,8 @@ static long mkUpdateMode
          *  The lookup table file couldn't be opened so abort the update,
          *  but ensure the Mask Assembly doesn't lose it's index.
          */
+        DEBUG(DAR_MSG_MIN, 
+              "<%ld> %s:mkUpdateMode:opening file failed: %s\n", par->tfil);
         pPriv->keepIndex = TRUE;
 
         mkTerminateTasks (par, status);
