@@ -1,3 +1,16 @@
+V7-3 January 2013 aebbers
+    - Implemented a new Single Mask Update mode for the Mask Assembly.  
+      The user can specify a mask slot and only read a single barcode and update a single entry in the LUT (and internal data structures).
+    - In order to free up assembly inputs, the Extractor fast and slow speeds have been moved to global variables.
+    - Fixed a bug where checking that the mask lut was writable before starting an update was emptying the file.
+
+    - Changes:
+	M capfast/gmMask.sch		"retasked assembly inputs D and E for the Single Update Mode"
+	M capfast/gmMaskSensors.sch  	"removed some hardcoded top level name references"
+	M src/MK/pv/gmMask.pv		"define new defaults for inputs D and E, set the single update mode as default"
+	M src/MK/pv/gmMaskSim.pv	"define new defaults for inputs D and E, set the single update mode as default"
+	M src/assemblyControl/devMaskControl.c  "implement Single Mask Update, redefine the extractor velocities to be configured using global variables on the console"
+
 V7-2 December 2011 mrippa/aebbers
     - (MR) SCI-0513: Relax 1100nm wavelength limit (now 1300nm)
     - (MR) REQ11-0603: Remove 32 pixel overscan from ZPC for GN E2V Arrays.
