@@ -57,10 +57,10 @@ w 2256 1771 100 0 ext_velo easscontj.Assembly.VEL1 1760 1760 2848 1760 devctlpbv
 w 2262 1803 100 0 ext_pos easscontj.Assembly.POS1 1760 1792 2848 1792 devctlpbvs.devctlpbvs#15.vals
 w 2256 1835 100 0 ext_mode easscontj.Assembly.MOD1 1760 1824 2848 1824 devctlpbvs.devctlpbvs#15.mode
 w 2262 1867 100 0 ext_dir easscontj.Assembly.ODR1 1760 1856 2848 1856 devctlpbvs.devctlpbvs#15.dir
+s 1104 1920 100 0 Single Mask Update Slot
+s 1088 1952 100 0 Single Mask Update Cassette
 s 1072 1040 100 0 Ignore Barcode Reader Failure
-s 1433 1950 100 2048 EXT Normal VELO
-s 1433 1918 100 2048 EXT Index VELO
-s 1433 1086 100 2048 quickUpdate
+s 1433 1086 100 2048 Update Mode
 [cell use]
 use outhier 3248 384 100 0 FLNK
 xform 0 3216 384
@@ -161,6 +161,8 @@ p 1552 1040 70 0 1 DTYP:$(dtyp)
 p 1616 2048 80 256 -1 FTA:LONG
 p 1616 2016 80 256 -1 FTB:LONG
 p 1616 1984 80 256 -1 FTC:LONG
+p 1616 1952 80 256 -1 FTD:LONG
+p 1616 1920 80 256 -1 FTE:LONG
 p 1520 1120 70 0 -1 FTSL:STRING
 p 1552 912 70 0 1 PREC:4
 p 1552 944 70 0 1 SCAN:Passive
