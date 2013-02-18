@@ -104,4 +104,5 @@ empty_12          20000047          0.0                    0.0
 empty_14          20000036          0.0                    0.0
 empty-15          20000017          0.0                    0.0
 empty-16          20000018          0.0                    0.0
-
+# Added NB filter requested in REL-1096
+Lya395_G0342      20000036          0.0                  395.5
