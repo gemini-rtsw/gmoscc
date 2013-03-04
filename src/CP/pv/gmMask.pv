@@ -161,19 +161,27 @@ group {
 # Load hi and lo limits for verifying extractor position with LVDT
 #
 group {
-   double $(top)mskExtAtLvdtLo  =   -2.50; # Extractor in lvdt when > limit
+   #double $(top)mskExtAtLvdtLo  =   -2.50; # Extractor in lvdt when > limit
+   # Modified to get rid of the LVDT limit problem (PG 15/Jul/09)
+   double $(top)mskExtAtLvdtLo  =   -2.40; # Extractor in lvdt when > limit
 #
 #     grip position is 3.175 adjust for +-0.2
 #
 # 18 Nov 2002 Changed because of failures! LVDT moved?
-   double $(top)mskExtAtGrpLo   =    2.975; # Extractor at Grip position lo limit
-   double $(top)mskExtAtGrpHi   =    3.375; # Extractor at Grip position hi limit
+#   double $(top)mskExtAtGrpLo   =    2.975; # Extractor at Grip position lo limit
+#   double $(top)mskExtAtGrpHi   =    3.375; # Extractor at Grip position hi limit
+# 26 Oct 2009 Change because of LVDT maintenance
+   double $(top)mskExtAtGrpLo   =    2.800; # Extractor at Grip position lo limit
+   double $(top)mskExtAtGrpHi   =    3.750; # Extractor at Grip position hi limit
 #
 #     release position is 3.700 adjust for +-0.2
 #
 # 18 Nov 2002 Change because of failures! LVDT moved?
-   double $(top)mskExtAtRelLo   =    3.5; # Extractor at Release position lo limit
-   double $(top)mskExtAtRelHi   =    3.9; # Extractor at Release position hi limit
+#   double $(top)mskExtAtRelLo   =    3.5; # Extractor at Release position lo limit
+#   double $(top)mskExtAtRelHi   =    4.1; # Extractor at Release position hi limit
+# 26 Oct 2009 Change because of LVDT maintenance
+   double $(top)mskExtAtRelLo   =    3.85; # Extractor at Release position lo limit
+   double $(top)mskExtAtRelHi   =    4.25; # Extractor at Release position hi limit
 }
 
 # Smoothing for LVDT analog record

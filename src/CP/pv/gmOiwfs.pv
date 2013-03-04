@@ -185,6 +185,10 @@ group {
    # New offsets Aug 31 2011 GG (CR-11 1091)
    double $(top)probeXOffset        =  -0.766; # X offset
    double $(top)probeYOffset        =   2.744; # Y offset
+   # New offsets Aug 28 2012 GG (CR-12 1415)
+   double $(top)probeXOffset        =  -0.502; # X offset
+   double $(top)probeYOffset        =   2.962; # Y offset
+   
 
    # Ideal Focal Surface
    #

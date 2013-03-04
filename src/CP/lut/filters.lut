@@ -11,38 +11,39 @@
 # Allington-Smith, Isobel Hook and Stephanie Juneau on 7 July 2000.
 # Effective wavelengths supplied by Isobel Hook on 24 January 2001.
 # Names suggested by Inger Jorgensen on 31 January 2001.
+# 
+# GMOS-N filter table updated with information sent by
+# Kathy Roth. Commented out all GMOS-N filters.
+# New GMOS-N filters added: OIII, OIIIC, SII, HeII and HeIIC
+# R. Carrasco - 2009 June 08
 #
-
+# GMOS-S filter lut re-organized.  Removed old GMOS-S focus
+# offsets from Acceptance Test. Also removed all commented empty
+# slots from filter cells. Only one slot is available for a future
+# filter in filter wheel #2. 
+# R. Carrasco - 2009jun08
+#
 #                                 surface curvature
 # name            barcodeId       focusOffset (microns)   effWavelength (nm)
-
-# GMOS North empty filter cells - to be filled and barcodes reused
-open1-0           20000024          0.0                    0.0
-open1-7           20000019          0.0                    0.0
-open1-8           20000020          0.0                    0.0
-open1-9           20000021          0.0                    0.0
-open1-10          20000022          0.0                    0.0
-open1-11          20000023          0.0                    0.0
-open2-0           20000012          0.0                    0.0
-open2-5           20000005          0.0                    0.0
-open2-6           20000006          0.0                    0.0
-open2-7           20000007          0.0                    0.0
-#open2-8           20000008          0.0                    0.0
-open2-9           20000009          0.0                    0.0
-open2-10          20000010          0.0                    0.0
-open2-11          20000011          0.0                    0.0
+# GMOS South Empty filter cells - to be filled and barcodes reused
+# Bar code 20000047 for emty_11 does not exist. The correct bar code is
+# 20000036 (from flt.lut). R. Carrasco - 2009jun08
+open1-6           20000033          0.0                    0.0
+open2-8           20000041          0.0                    0.0
+# open2-11          20000036          0.0                    0.0
 
 # GMOS North Hartmann masks
-HartmannA_G0313   20000013          0.0                    0.0
-HartmannB_G0314   20000014          0.0                    0.0
-HartmannC_G0315   20000015          0.0                    0.0
-HartmannD_G0316   20000016          0.0                    0.0
+#HartmannA_G0313   20000013          0.0                    0.0
+#HartmannB_G0314   20000014          0.0                    0.0
+#HartmannC_G0315   20000015          0.0                    0.0
+#HartmannD_G0316   20000016          0.0                    0.0
 
 # GMOS North science filters
-g_G0301           20000001         93.0                  480.0
-r_G0303           20000003         10.6                  625.0
-i_G0302           20000002         14.1                  770.0
-z_G0304           20000004        -19.2                  910.0
+#u_G0308           20000019        339.0                  365.0
+#g_G0301           20000001         93.0                  480.0
+#i_G0302           20000002         14.1                  770.0
+#r_G0303           20000003         10.6                  625.0
+#z_G0304           20000004        -19.2                  910.0
 
 # GMOS South Hartmann masks
 HartmannA_G0337   20000037          0.0                    0.0
@@ -51,21 +52,20 @@ HartmannC_G0339   20000039          0.0                    0.0
 HartmannD_G0340   20000040          0.0                    0.0
 
 # GMOS South SLOAN filters
-#u_G0332           20000030        429.0                  365.0
-u_G0332           20000030        343.0                  365.0
-g_G0325           20000026        118.2                  480.0
+# i-filter focus is off by 38.9um. Add 38.9um
+# Adding 38.9 to 11.2 --> 50.1um - RC 2009aug17
+# Adding -74 to g' --> 44.2 - GG,2012sep03
+g_G0325           20000026         44.2                  480.0
 r_G0326           20000027         -5.9                  625.0
-i_G0327           20000028         11.2                  770.0
+i_G0327           20000028         50.1                  770.0
 z_G0328           20000029         -5.2                  910.0
-#'old' focus offsets from ATC can be removed once we are on the telescope, MAH
-#g_G0325           20000026        128.8                  480.0
-#r_G0326           20000027          2.4                  625.0
-#i_G0327           20000028         -1.7                  770.0
-#z_G0328           20000029        -21.6                  910.0
+u_G0332           20000030        343.0                  365.0
 
 # GMOS South CaTriplet filter
-#CaT_G0333          20000031        181.0                  860.0
-CaT_G0333          20000031        154.0                  860.0
+CaT_G0333         20000031        154.0                  860.0
+
+# GMOS North CaTriplet filter
+#CaT_G0309         20000009          184.0                  860.0
 
 # GMOS South order sorting filters 
 GG455_G0329       20000044       -139.0                  650.0
@@ -73,36 +73,27 @@ OG515_G0330       20000045       -230.0                  650.0
 RG610_G0331       20000046       -238.0                  650.0
 RG780_G0334       20000049        390.0                  860.0
 
-#GMOS South narrow band filters [SII] (Feb 20 2005), Ha, HaCont (Feb 28, 2005)
-# [OIII], [OIII]cont - 2005may27
-# HaC - no focus differences.
-SII_G0335         20000050        69.0                  672.0
-Ha_G0336          20000032        56.0                  656.0
-HaC_G0337         20000048         0.0                  662.0
-OIII_G0338        20000042        76.0                  499.0
-OIIIC_G0339        20000043      128.1                  514.0
+# GMOS North order sorting filters
+#GG455_G0305       20000005        -20.0                  650.0
+#OG515_G0306       20000006         +8.5                  650.0
+#RG610_G0307       20000007        -27.0                  650.0
 
-# GMOS South Empty filter cells - to be filled and barcodes reused
-# Emtpy filter cells 11,13,and 02 commented. Replaced by SII, Ha and
-# HaC - 2005feb28 - RC
-#empty_00          20000030          0.0                    0.0
-#empty_01          20000031          0.0                    0.0
-#empty_02          20000032          0.0                    0.0
-open1-6           20000033          0.0                    0.0
-empty_04          20000034          0.0                    0.0
-empty_05          20000035          0.0                    0.0
-#empty_06          20000042          0.0                    0.0
-#open1-6            20000043          0.0                    0.0
-#empty_07          20000043          0.0                    0.0
-open2-8           20000041          0.0                    0.0
-#empty_08          20000041          0.0                    0.0
-#empty_09          20000044          0.0                    0.0
-#empty_10          20000045          0.0                    0.0
-#empty_11          20000050          0.0                    0.0
-empty_12          20000047          0.0                    0.0
-#empty_13          20000048          0.0                    0.0
-empty_14          20000036          0.0                    0.0
-empty-15          20000017          0.0                    0.0
-empty-16          20000018          0.0                    0.0
+# GMOS South narrow band filters [SII] (Feb 20 2005), 
+# Ha, HaCont (Feb 28, 2005), [OIII], [OIII]cont - 2005may27
+# HaC - no focus differences.
+#
+# Added HeII and HeIIC. Filters not yet here. will be send from GN
+# soon. Focus offset is 0.0, waiting for the new filtersi to be 
+# installed. HeII_G0340 - FW#1, pos8, HeIIC_G0341 - FW#1, pos9
+# R. Carrasco - 2009jun08
+# Focus offset for HeII_G0340 (FW1): -99.2um - R.C. 2009aug17
+# Focus offset for HeIIC_G0341 (FW1): 57.3 - RC 2009aug21
+Ha_G0336          20000032        56.0                  656.0
+HeII_G0340        20000034       -99.2                  468.0
+HeIIC_G0341       20000035        57.3                  478.0
+OIII_G0338        20000042        76.0                  499.0
+OIIIC_G0339       20000043       128.1                  514.0
+HaC_G0337         20000048         0.0                  662.0
+SII_G0335         20000050        69.0                  672.0
 # Added NB filter requested in REL-1096
-Lya395_G0342      20000036          0.0                  395.5
+Lya395_G0342	20000036	427.16			395.5 
