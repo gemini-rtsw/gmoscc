@@ -124,15 +124,15 @@ group {
 # decide when to activate the software limits. A big number is equivalent
 # to disabling the software limits.
 #
-double $(top)probeLimitCheck.O      = 30.0;
+double $(top)probeLimitCheck.O      = 40.0;
 
 # Load offsets for converting X/Y to angles and vice versa
 #
 group {
-   double $(top)probeBasOffset      = 167.953; # Base offset angle
-   double $(top)probePkoOffset      = -13.273; # Pickoff offset angle
-   double $(top)probeXOffset        = 0.014; # X offset
-   double $(top)probeYOffset        = -0.226; # Y offset
+   double $(top)probeBasOffset      = 166.900; # Base offset angle
+   double $(top)probePkoOffset      = -13.239; # Pickoff offset angle
+   double $(top)probeXOffset        = -0.255; # X offset
+   double $(top)probeYOffset        = -0.311; # Y offset
 
 # Ideal Focal Surface
 #
@@ -147,8 +147,8 @@ group {
 # following values:
 #
 group {
-   double $(top)probeBaseZero       = -13.4;
-   double $(top)probePickoffZero    = -14.2;
+   double $(top)probeBaseZero       = -12.7;
+   double $(top)probePickoffZero    = -15.3;
 }
 
 # Sin/cos output corrections.  EGUL and EGUF determine the high and low 
