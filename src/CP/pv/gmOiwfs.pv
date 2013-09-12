@@ -183,12 +183,14 @@ group {
    #double $(top)probeXOffset        =  -0.721; # X offset
    #double $(top)probeYOffset        =   2.965; # Y offset
    # New offsets Aug 31 2011 GG (CR-11 1091)
-   double $(top)probeXOffset        =  -0.766; # X offset
-   double $(top)probeYOffset        =   2.744; # Y offset
+   #double $(top)probeXOffset        =  -0.766; # X offset
+   #double $(top)probeYOffset        =   2.744; # Y offset
    # New offsets Aug 28 2012 GG (CR-12 1415)
-   double $(top)probeXOffset        =  -0.502; # X offset
-   double $(top)probeYOffset        =   2.962; # Y offset
-   
+   #double $(top)probeXOffset        =  -0.502; # X offset
+   #double $(top)probeYOffset        =   2.962; # Y offset
+   # New offsets Sep 13 2013 PG (CR-13 1758)
+   double $(top)probeXOffset        =  -0.550; # X offset
+   double $(top)probeYOffset        =   2.750; # Y offset
 
    # Ideal Focal Surface
    #
