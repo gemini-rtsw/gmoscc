@@ -62,6 +62,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.7  2009/09/17 01:45:43  gemvx
+ * made all mdbd checks >=
+ *
  * Revision 1.6  2008/02/06 23:29:38  gemvx
  * changed so that servo motors do not loose index when a limit is detected.  This
  * is for the OIWFS.  Also added a keep_index flag to abortingState to handle the
@@ -394,7 +397,7 @@
 #define DDR_LUT_MAX_NAME         16   /* maximum length of name string      */
 #define DDR_MAX_INDEX_VEL    1023.0   /* maximum final index velo., st/sec  */
 #define DDR_MIN_INDEX_VEL       1.0   /* minimum final index velo., st/sec  */
-#define DDR_MOTION_OVERHEAD_TIME 25   /* motion setup overhead, x0.1 sec    */
+#define DDR_MOTION_OVERHEAD_TIME 35   /* motion setup overhead, x0.1 sec    */
 #define DDR_INDEX_OVERHEAD_TIME  25   /* indexing overhead, x0.1 sec        */
 
 /*
@@ -1177,10 +1180,8 @@ static long calculateTimeout
     {
         timeout = (long)(ceil (10.0 * (rampTime + (2.0 * rampTime) * 
                      sqrt( fabs(end - start) / (2 * rampDistance)))));
-/*
-        logMsg("deviceControlRecord:calculateTimeout: short move timeout=%d\n", 
-               timeout,0,0,0,0,0 );
-*/
+
+
     }
 
     /*
@@ -1194,10 +1195,7 @@ static long calculateTimeout
     {
         timeout = (long) (ceil (10.0 * ((3.0 * rampTime) + 
                   ((fabs (end - start) - (2 * rampDistance) ) / velo))));
-/*
-        logMsg("deviceControlRecord:calculateTimeout: long move timeout=%d\n", 
-               timeout ,0,0,0,0,0);
-*/
+
     }
 
     return timeout;
