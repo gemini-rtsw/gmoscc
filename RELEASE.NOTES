@@ -1,3 +1,9 @@
+V7-4 December 2013 rrojas
+    - The motion setup overhead update from 25 to 35. This value is just for test. We will continue cheking the DTA bahavior for a final decision.
+
+    - Changes:
+        M src/deviceControl/deviceControlRecord.c	#define DDR_MOTION_OVERHEAD_TIME   35
+
 V7-3 January 2013 aebbers
     - Implemented a new Single Mask Update mode for the Mask Assembly.  
       The user can specify a mask slot and only read a single barcode and update a single entry in the LUT (and internal data structures).
