@@ -155,6 +155,7 @@ group {
    double $(top)mskRelDevice.VELO =     5.0;
    double $(top)mskRelDevice.VHLM =    15.0;
    double $(top)mskRelDevice.VLLM =     5.0;
+   long   $(top)mskRelDevice.PTMO =      20;
 }
 
 
