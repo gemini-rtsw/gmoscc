@@ -129,10 +129,10 @@ double $(top)probeLimitCheck.O      = 40.0;
 # Load offsets for converting X/Y to angles and vice versa
 #
 group {
-   double $(top)probeBasOffset      = 178.894; # Base offset angle
-   double $(top)probePkoOffset      = -13.221; # Pickoff offset angle
-   double $(top)probeXOffset        = -0.108; # X offset
-   double $(top)probeYOffset        = -0.334; # Y offset
+   double $(top)probeBasOffset      = -172.661; # Base offset angle
+   double $(top)probePkoOffset      = -13.697; # Pickoff offset angle
+   double $(top)probeXOffset        = -0.164; # X offset
+   double $(top)probeYOffset        = -0.618; # Y offset
 
 # Ideal Focal Surface
 #
@@ -147,8 +147,8 @@ group {
 # following values:
 #
 group {
-   double $(top)probeBaseZero       = -1.9;
-   double $(top)probePickoffZero    = -15.3;
+   double $(top)probeBaseZero       = 6.94;
+   double $(top)probePickoffZero    = -13.19;
 }
 
 # Sin/cos output corrections.  EGUL and EGUF determine the high and low 
