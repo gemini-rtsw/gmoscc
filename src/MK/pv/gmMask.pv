@@ -59,7 +59,6 @@
 # Mask Assembly
 #
 group {
-group {
    long $(top)mskAssembly.D     =    1; # casette number for single update
    long $(top)mskAssembly.ADHL  =    3; # hi lim for cassette number
    long $(top)mskAssembly.ADLL  =    1; # lo lim for cassette number
