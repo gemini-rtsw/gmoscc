@@ -97,6 +97,3 @@ HaC_G0337         20000048         0.0                  662.0
 SII_G0335         20000050        69.0                  672.0
 # Added NB filter requested in REL-1096
 Lya395_G0342	20000036	427.16			395.5 
-# Added Z and Y filters, requested in REL-1726
-Z_G0343           20000051         0.0                  876.0
-Y_G0344           20000052         0.0                 1010.0
