@@ -19,7 +19,7 @@ group {
    double $(top)dtaTrack.D = 0.0 ;             # Default Z offset (microns)
    double $(top)dtaTrack.E = 115.0 ;           # X nominal centre position (microns)
    double $(top)dtaTrack.F = 122.0 ;           # Y nominal centre position (microns)
-   double $(top)dtaTrack.G = 2524.0 ;          # Z nominal best focus position (microns)
+   double $(top)dtaTrack.G = 1017.4 ;          # Z nominal best focus position (microns)
 }
 long $(top)dtaTrack.DIR = 1;                   # CLEAR the dtaTrack CAD record
 group {
