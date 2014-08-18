@@ -37,7 +37,7 @@ group {
    double $(top)dta1Device.PHLM =     248.0;  # Upper limit of travel in microns
    double $(top)dta1Device.PLLM =     -18.0;  # Lower limit of travel in microns
    long   $(top)dta1Device.PREC =         1;  # Display precision for motor position
-   long   $(top)dta1Device.PTMO =         5;  # Power control timeout in 0.1 seconds
+   long   $(top)dta1Device.PTMO =        10;  # Power control timeout in 0.1 seconds
    long   $(top)dta1Device.UAPB =         1;  # Control power with auxilliary power bit (0/1)?
    long   $(top)dta1Device.UBSB =         0;  # Monitor brake status bit (0/1)?
    long   $(top)dta1Device.UEIP =         0;  # Use encoders if present (0/1)?
@@ -46,7 +46,7 @@ group {
    double $(top)dta1Device.VELO =     110.0;  # Default velocity in microns/sec
    double $(top)dta1Device.VHLM =     800.0;  # Absolute maximum velocity in microns/sec
    double $(top)dta1Device.VLLM =       5.0;  # Absolute minimum velocity in microns/sec
-   double $(top)dta1Device.EDBD =       3.0;  # Encoder Dead Band
+   double $(top)dta1Device.MDBD =       2.0;  # Motor Dead Band
 }
 
 #
@@ -63,7 +63,7 @@ group {
    double $(top)dta2Device.PHLM =     258.0;  # Upper limit of travel in microns
    double $(top)dta2Device.PLLM =     -14.0;  # Lower limit of travel in microns
    long   $(top)dta2Device.PREC =         1;  # Display precision for motor position
-   long   $(top)dta2Device.PTMO =         5;  # Power control timeout in 0.1 seconds
+   long   $(top)dta2Device.PTMO =        10;  # Power control timeout in 0.1 seconds
    long   $(top)dta2Device.UAPB =         1;  # Control power with auxilliary power bit (0/1)?
    long   $(top)dta2Device.UBSB =         0;  # Monitor brake status bit (0/1)?
    long   $(top)dta2Device.UEIP =         0;  # Use encoders if present (0/1)?
@@ -72,7 +72,7 @@ group {
    double $(top)dta2Device.VELO =      40.0;  # Default velocity in microns/sec
    double $(top)dta2Device.VHLM =     320.0;  # Absolute maximum velocity in microns/sec
    double $(top)dta2Device.VLLM =       2.0;  # Absolute minimum velocity in microns/sec
-   double $(top)dta2Device.EDBD =       3.0;  # Encoder Dead Band
+   double $(top)dta2Device.MDBD =       2.0;  # Motor Dead Band
 }
 
 #
@@ -89,7 +89,7 @@ group {
    double $(top)dta3Device.PHLM =    4950.0;  # Upper limit of travel in microns
    double $(top)dta3Device.PLLM =      30.0;  # Lower limit of travel in microns
    long   $(top)dta3Device.PREC =         1;  # Display precision for motor position
-   long   $(top)dta3Device.PTMO =         5;  # Power control timeout in 0.1 seconds
+   long   $(top)dta3Device.PTMO =        10;  # Power control timeout in 0.1 seconds
    long   $(top)dta3Device.UAPB =         1;  # Control power with auxilliary power bit (0/1)?
    long   $(top)dta3Device.UBSB =         0;  # Monitor brake status bit (0/1)?
    long   $(top)dta3Device.UEIP =         0;  # Use encoders if present (0/1)?
@@ -98,5 +98,5 @@ group {
    double $(top)dta3Device.VELO =    1200.0;  # Default velocity in microns/sec
    double $(top)dta3Device.VHLM =    8000.0;  # Absolute maximum velocity in microns/sec
    double $(top)dta3Device.VLLM =      40.0;  # Absolute minimum velocity in microns/sec
-   double $(top)dta3Device.EDBD =       3.0;  # Encoder Dead Band
+   double $(top)dta3Device.MDBD =       2.0;  # Motor Dead Band
 }

@@ -111,9 +111,9 @@ group {
 #
 group {
    double $(top)probePatrolXHiLim   =  125.0; # X upper limit
-   double $(top)probePatrolXLoLim   =   -7.1; # X lower limit
+   double $(top)probePatrolXLoLim   =   -1.0; # X lower limit
    double $(top)probePatrolYHiLim   =  133.3; # Y upper limit
-   double $(top)probePatrolYLoLim   =  -21.7; # Y lower limit
+   double $(top)probePatrolYLoLim   =  -18.0; # Y lower limit
 }
 
 # Buffer between limit and patrol area (mm). This is the tolerance used to
@@ -257,11 +257,11 @@ group {
 }
 group {
    double $(top)probeMoveX2Target    = 125.0;
-   double $(top)probeMoveY2Target    = -21.7;
+   double $(top)probeMoveY2Target    = -18.0;
 }
 group {
-   double $(top)probeMoveX3Target    =  -7.1;
-   double $(top)probeMoveY3Target    = -21.7;
+   double $(top)probeMoveX3Target    =  -1.0;
+   double $(top)probeMoveY3Target    = -18.0;
 }
 
 # assemblyControl attribute limits, which may or may not be the
@@ -270,12 +270,12 @@ group {
 #   X limits
 #
 group {
-   double $(top)probeAssembly.AALL   =  -7.1;  # X low
+   double $(top)probeAssembly.AALL   =  -1.0;  # X low
    double $(top)probeAssembly.AAHL   = 125.0;  # X high
 #
 #   Y limits
 #
-   double $(top)probeAssembly.ABLL   = -21.7;  # Y low
+   double $(top)probeAssembly.ABLL   = -18.0;  # Y low
    double $(top)probeAssembly.ABHL   = 133.3;  # Y high
 #
 #   Base & Pickoff velocity limits
