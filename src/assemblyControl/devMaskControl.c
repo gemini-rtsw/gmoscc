@@ -65,6 +65,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.8  2013/01/10 01:48:42  gemvx
+ * implement Single Mask Update, redefine the extractor velocities to be configured using global variables on the console
+ *
  * Revision 1.7  2011/08/27 16:29:40  gemvx
  * changed error message for a failure of the mask in slot sensor to:
  * Mask not in current slot, use INIT or UPDATE
@@ -1260,7 +1263,7 @@ static long mkAckReceived
 
     else if ( pMkPriv->optoDelayOn && assCommandTimedOut( par ) )
     {
-        DEBUG(DAR_MSG_FULL, "<%ld> %s:mkAckReceived:optoDelayOn timeout%c\n", 
+        DEBUG(DAR_MSG_MIN, "<%ld> %s:mkAckReceived:optoDelayOn timeout%c\n", 
               ' ');
         status = mkTaskFinished( par );
     }
@@ -1297,7 +1300,7 @@ static long mkAckReceived
         if (bus1) switch (par->bus1)
         {
             case DAR_DEV_BUSY_IDLE:
-                DEBUG(DAR_MSG_FULL, "<%ld> %s:mkAckReceived:Ext finished%c\n",
+                DEBUG(DAR_MSG_MIN, "<%ld> %s:mkAckReceived:Ext finished%c\n",
                       ' ');
                 semTake (pMkPriv->mutexSem, WAIT_FOREVER);
                 pMkPriv->extFinished = TRUE;
@@ -1311,7 +1314,7 @@ static long mkAckReceived
              */
 
             case DAR_DEV_BUSY_BUSY:
-                DEBUG(DAR_MSG_FULL, "<%ld> %s:mkAckReceived:Ext started%c\n",
+                DEBUG(DAR_MSG_MIN, "<%ld> %s:mkAckReceived:Ext started%c\n",
                     ' ');
                 break;
 
@@ -1342,7 +1345,7 @@ static long mkAckReceived
              */
 
             case DAR_DEV_BUSY_IDLE:
-                DEBUG(DAR_MSG_FULL, "<%ld> %s:mkAckReceived:Grp finished%c\n", 
+                DEBUG(DAR_MSG_MIN, "<%ld> %s:mkAckReceived:Grp finished%c\n", 
                       ' ');
                 semTake (pMkPriv->mutexSem, WAIT_FOREVER);
                 pMkPriv->grpFinished = TRUE;
@@ -1356,7 +1359,7 @@ static long mkAckReceived
              */
 
             case DAR_DEV_BUSY_BUSY:
-                DEBUG(DAR_MSG_FULL, "<%ld> %s:mkAckReceived: Grp started%c\n",
+                DEBUG(DAR_MSG_MIN, "<%ld> %s:mkAckReceived: Grp started%c\n",
                   ' ');
                 break;
 
@@ -1387,7 +1390,7 @@ static long mkAckReceived
              */
 
             case DAR_DEV_BUSY_IDLE:
-                DEBUG(DAR_MSG_FULL, "<%ld> %s:mkAckReceived: Cas finished%c\n",
+                DEBUG(DAR_MSG_MIN, "<%ld> %s:mkAckReceived: Cas finished%c\n",
                       ' ');
                 semTake (pMkPriv->mutexSem, WAIT_FOREVER);
                 pMkPriv->casFinished = TRUE;
@@ -1401,7 +1404,7 @@ static long mkAckReceived
              */
 
             case DAR_DEV_BUSY_BUSY:
-                DEBUG(DAR_MSG_FULL, "<%ld> %s:mkAckReceived: Cas started%c\n",
+                DEBUG(DAR_MSG_MIN, "<%ld> %s:mkAckReceived: Cas started%c\n",
                       ' ');
                 break;
 
@@ -1432,7 +1435,7 @@ static long mkAckReceived
              */
 
             case DAR_DEV_BUSY_IDLE:
-                DEBUG(DAR_MSG_FULL, "<%ld> %s:mkAckReceived: Rel finished%c\n", 
+                DEBUG(DAR_MSG_MIN, "<%ld> %s:mkAckReceived: Rel finished%c\n", 
                       ' ');
                 semTake (pMkPriv->mutexSem, WAIT_FOREVER);
                 pMkPriv->relFinished = TRUE;
@@ -1447,7 +1450,7 @@ static long mkAckReceived
              */
 
             case DAR_DEV_BUSY_BUSY:
-                DEBUG(DAR_MSG_FULL, "<%ld> %s:mkAckReceived: Rel started%c\n",
+                DEBUG(DAR_MSG_MIN, "<%ld> %s:mkAckReceived: Rel started%c\n",
                   ' ');
                 break;
 
@@ -1574,7 +1577,7 @@ static long mkBuildList
 
     newTask = ( MK_LIST *) ellFirst( &(pMkPriv->taskList) );
 
-    DEBUG(DAR_MSG_FULL, 
+    DEBUG(DAR_MSG_MIN, 
           "<%ld> %s:mkBuildList: put opto sensor power up on list%c\n", ' ');
 
     for (i=0; i<(sizeof(mkOptoSensorsOn)/sizeof(MK_TASK_LIST )); i++)
@@ -1884,7 +1887,7 @@ static long mkBuildNewList
         if (numConfig ==  MK_WRONG_MASK_IN_FP ||
             numConfig == MK_NEW_FP_IN ) 
         {
-            DEBUG(DAR_MSG_FULL,
+            DEBUG(DAR_MSG_MIN,
                   "<%ld> %s:mkBuildNewList: Moving into fp%c\n", ' ');
             for (i = 0; 
                  i < (sizeof (mkMoveConfig2)/ sizeof (MK_TASK_LIST));
@@ -1961,7 +1964,7 @@ static long mkBuildNewList
 
         if ( numConfig == MK_MASK_OUT_FP ) 
         {
-            DEBUG(DAR_MSG_FULL, 
+            DEBUG(DAR_MSG_MIN, 
                   "<%ld> %s:mkBuildNewList: Move out mask%c\n", ' ');
             for ( i = 0; 
                   i < (sizeof( mkMoveConfig1)/ sizeof( MK_TASK_LIST ));
@@ -3185,7 +3188,7 @@ static long    mkCheckFocalPlane
          !( MK_SENSOR_WORD & MK_MON_MASKNOTIN ) ||  
          !( MK_SENSOR_WORD & MK_MON_IFUNOTIN )  )
     {
-        DEBUG(DAR_MSG_FULL, 
+        DEBUG(DAR_MSG_MIN, 
               "<%ld> %s:mkCheckFocalPlane:Something in focal plane%c\n",' ');
         for ( i = 0; 
               i < (sizeof( mkInFocalPlane)/ sizeof( MK_TASK_LIST ));
@@ -3206,7 +3209,7 @@ static long    mkCheckFocalPlane
 
     else
     {
-        DEBUG(DAR_MSG_FULL, 
+        DEBUG(DAR_MSG_MIN, 
               "<%ld> %s:mkCheckFocalPlane: Nothing in focal plane%c\n",' ');
         for ( i = 0; 
               i < (sizeof( mkOutFocalPlane)/ sizeof( MK_TASK_LIST ));
@@ -3792,7 +3795,7 @@ static long mkDoTask
              */
 
             case MK_EXT_TO_MASK:
-                DEBUG(DAR_MSG_FULL, 
+                DEBUG(DAR_MSG_MIN, 
                       "<%ld> %s:mkDoTask:** Move extr to mask posn%c\n", ' ');
                 status = mkCommandDevice (par, 
                                           &(pMkPriv->extDevice), 
@@ -4936,7 +4939,7 @@ static long mkMoveConfig
     long status = DAR_S_SUCCESS;    /* Return function status.        */
 
 
-    DEBUG(DAR_MSG_FULL, "<%ld> %s:mkMoveConfig: entry%c\n", ' ');
+    DEBUG(DAR_MSG_MIN , "<%ld> %s:mkMoveConfig: entry%c\n", ' ');
 
     pMkPriv = ( MK_DEV_PRIVATE *) assGetPrivateStruct( par );
 
@@ -4968,7 +4971,7 @@ static long mkMoveConfig
 
     if ( !( MK_SENSOR_WORD & MK_MON_NOTINFP ) )
     {
-        DEBUG(DAR_MSG_FULL, 
+        DEBUG(DAR_MSG_MIN, 
               "<%ld> %s:mkMoveConfig: mask or IFU is in FP%c\n", ' ');
 
         /*
@@ -5022,7 +5025,7 @@ static long mkMoveConfig
 
     else
     {
-        DEBUG(DAR_MSG_FULL, 
+        DEBUG(DAR_MSG_MIN, 
               "<%ld> %s:mkMoveConfig: No mask in FP%c\n", ' ');
 
         /*
@@ -5031,7 +5034,7 @@ static long mkMoveConfig
 
         if ( mode == DAR_MODE_MOVE && pMkPriv->currentLoc == MK_CMD_INBEAM )
         {
-            DEBUG(DAR_MSG_FULL, 
+            DEBUG(DAR_MSG_MIN, 
                   "<%ld> %s:mkMoveConfig: no mask in, one is needed%c\n", ' ');
             *numConfig = MK_NEW_FP_IN;
         }
@@ -5042,7 +5045,7 @@ static long mkMoveConfig
 
         else
         {
-            DEBUG(DAR_MSG_FULL, 
+            DEBUG(DAR_MSG_MIN, 
                   "<%ld> %s:mkMoveConfig: No mask in, none needed%c\n", ' ');
                  *numConfig = MK_NOTHING;
         }
@@ -5693,7 +5696,7 @@ static long mkTaskFinished
 
     pTask = (MK_LIST *) ellFirst( &(pMkPriv->taskList) );
     currentTask = ( MK_TASK_LIST *) pTask->item;
-    DEBUG(DAR_MSG_MAX, 
+    DEBUG(DAR_MSG_FULL, 
           "<%ld> %s:mkTaskFinished: current task = %d\n", 
           currentTask->task);
 
@@ -5772,7 +5775,7 @@ static long mkTaskFinished
 
         else if ( ( mkEmptyList( par, FALSE ) == MK_EMPTY_LIST ) )
         {
-            DEBUG(DAR_MSG_FULL, 
+            DEBUG(DAR_MSG_MIN, 
                   "<%ld> %s:mkTaskFinished, all tasks done%c\n", ' ');
             semTake (pMkPriv->mutexSem, WAIT_FOREVER);
 
@@ -6004,7 +6007,7 @@ static long mkTaskPostCheck
             MONITOR_VALA;
             MK_EXT_MASK_POS = MK_MASK_LOC_UNKNOWN;
             MONITOR_VALB;
-            DEBUG(DAR_MSG_FULL, 
+            DEBUG(DAR_MSG_MIN, 
                   "<%ld> %s:mkTaskPostCheck: set MASK_LOC to: %ld\n", 
                   MK_EXT_MASK_POS);
         } 
@@ -6012,7 +6015,7 @@ static long mkTaskPostCheck
         {
             MK_EXT_MASK_POS = MK_MASK_LOC_IN_CASSETTE;
             MONITOR_VALB;
-            DEBUG(DAR_MSG_FULL, 
+            DEBUG(DAR_MSG_MIN, 
                   "<%ld> %s:mkTaskPostCheck: set MASK_LOC to: %ld\n", 
                   MK_EXT_MASK_POS);
         }
@@ -6030,7 +6033,7 @@ static long mkTaskPostCheck
             MONITOR_VALA;
             MK_EXT_MASK_POS = MK_MASK_LOC_IN_BEAM;
             MONITOR_VALB;
-            DEBUG(DAR_MSG_FULL, 
+            DEBUG(DAR_MSG_MIN, 
                   "<%ld> %s:mkTaskPostCheck: set MASK_LOC to: %ld\n", 
                   MK_EXT_MASK_POS);
         }
@@ -6251,6 +6254,9 @@ static long mkTaskPostCheck
          */
 
         case MK_EXT_TO_MASK:
+             DEBUG(DAR_MSG_MIN, 
+                  "<%ld> %s:mkTaskPostCheck: wait for Mask switch%c\n", ' ');
+	    taskDelay(sysClkRateGet() * 2.0);       /* wait for 2.0 seconds */
             if ( MK_SENSOR_WORD & MK_MON_NOTINFP )
             {
                 DEBUG(DAR_MSG_ERROR,
@@ -6265,7 +6271,7 @@ static long mkTaskPostCheck
                 {
                     DEBUG(DAR_MSG_ERROR, 
                           "<%ld> %s:mkTaskPostCheck:Mask switch fault - cannot be both IFU and Mask%c\n",' ');
-                    SET_ERR_MSG("Mask type switch failure");
+                    SET_ERR_MSG("Mask type switch failure (1)");
                     status = MK_TASK_FAILED;
                 }
                 else
@@ -6282,7 +6288,7 @@ static long mkTaskPostCheck
             {
                 DEBUG(DAR_MSG_ERROR, 
                       "<%ld> %s:mkTaskPostCheck:Mask switch fault - must be either IFU or mask%c\n", ' ');
-                SET_ERR_MSG("Mask type switch failure");
+                SET_ERR_MSG("Mask type switch failure (2)");
                 status = MK_TASK_FAILED;
             }
 
@@ -6292,7 +6298,7 @@ static long mkTaskPostCheck
                 MONITOR_VALA;
                 MK_EXT_MASK_POS = MK_MASK_LOC_IN_BEAM;
                 MONITOR_VALB;
-                DEBUG(DAR_MSG_FULL, 
+                DEBUG(DAR_MSG_MIN, 
                       "<%ld> %s:mkTaskPostCheck: Mask in beam%c\n", ' ');
             }
             break;
