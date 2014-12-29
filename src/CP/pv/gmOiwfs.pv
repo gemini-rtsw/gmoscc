@@ -192,9 +192,15 @@ group {
    # double $(top)probeXOffset        =  -0.550; # X offset
    # double $(top)probeYOffset        =   2.750; # Y offset
    # New offsets Jun 25 2014 RR (CR-14 2071)
-   double $(top)probeXOffset        =  -0.825; # X offset
-   double $(top)probeYOffset        =   4.051; # Y offset
-
+   #double $(top)probeXOffset        =  -0.825; # X offset
+   #double $(top)probeYOffset        =   4.051; # Y offset
+   # New offsets Aug 21 2014 GG
+   #double $(top)probeXOffset        =  -0.520; # X offset
+   #double $(top)probeYOffset        =   3.655; # Y offset
+   # New offsets Dec 19 2014 GG
+   double $(top)probeXOffset        =  -0.780; # X offset
+   double $(top)probeYOffset        =   3.780; # Y offset
+   
    # Ideal Focal Surface
    #
    # On-axis distance between slit plane and probe tip
