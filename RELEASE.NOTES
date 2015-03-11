@@ -1,3 +1,7 @@
+V7-11 February 2015 rrojas
+	- src/CP/pv/gmOiwfs.pv: probeXOffset/probeYOffset updated (CR-15 2231)
+	- capfast/gmMaskSensors.sch: optical sensors SCAn option changed to "I/O intr"
+
 V7-4 December 2013 rrojas
     - The motion setup overhead update from 25 to 35. This value is just for test. We will continue cheking the DTA bahavior for a final decision.
 

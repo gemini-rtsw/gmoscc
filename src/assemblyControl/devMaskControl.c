@@ -65,6 +65,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.9  2014/08/18 15:37:21  rrojas
+ * Added a 2 seconds delay to read the Mask switch.
+ *
  * Revision 1.8  2013/01/10 01:48:42  gemvx
  * implement Single Mask Update, redefine the extractor velocities to be configured using global variables on the console
  *
@@ -6254,9 +6257,7 @@ static long mkTaskPostCheck
          */
 
         case MK_EXT_TO_MASK:
-             DEBUG(DAR_MSG_MIN, 
-                  "<%ld> %s:mkTaskPostCheck: wait for Mask switch%c\n", ' ');
-	    taskDelay(sysClkRateGet() * 2.0);       /* wait for 2.0 seconds */
+
             if ( MK_SENSOR_WORD & MK_MON_NOTINFP )
             {
                 DEBUG(DAR_MSG_ERROR,
@@ -6284,22 +6285,29 @@ static long mkTaskPostCheck
                 }
             }
 
-            else if (MK_SENSOR_WORD & MK_MON_MASKNOTIN)
-            {
-                DEBUG(DAR_MSG_ERROR, 
-                      "<%ld> %s:mkTaskPostCheck:Mask switch fault - must be either IFU or mask%c\n", ' ');
-                SET_ERR_MSG("Mask type switch failure (2)");
-                status = MK_TASK_FAILED;
-            }
-
-            if (status == DAR_S_SUCCESS)
-            {
-                MK_MASK_IN_BEAM = pMkPriv->currentCode;
-                MONITOR_VALA;
-                MK_EXT_MASK_POS = MK_MASK_LOC_IN_BEAM;
-                MONITOR_VALB;
+            else 
+	    { 
                 DEBUG(DAR_MSG_MIN, 
-                      "<%ld> %s:mkTaskPostCheck: Mask in beam%c\n", ' ');
+                     "<%ld> %s:mkTaskPostCheck: wait for Mask switch%c\n", ' ');
+	        taskDelay(sysClkRateGet() * 2.0);       /* wait for 2.0 seconds */
+
+		if (MK_SENSOR_WORD & MK_MON_MASKNOTIN)
+                {
+                   DEBUG(DAR_MSG_ERROR, 
+                      "<%ld> %s:mkTaskPostCheck:Mask switch fault - must be either IFU or mask%c\n", ' ');
+                   SET_ERR_MSG("Mask type switch failure (2)");
+                   status = MK_TASK_FAILED;
+                 }
+
+                 if (status == DAR_S_SUCCESS)
+                 {
+                   MK_MASK_IN_BEAM = pMkPriv->currentCode;
+                   MONITOR_VALA;
+                   MK_EXT_MASK_POS = MK_MASK_LOC_IN_BEAM;
+                   MONITOR_VALB;
+                   DEBUG(DAR_MSG_MIN, 
+                        "<%ld> %s:mkTaskPostCheck: Mask in beam%c\n", ' ');
+                 }
             }
             break;
 
