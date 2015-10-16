@@ -169,20 +169,41 @@ group {
 }
 
 # Probe Map Correction Coefficients
-
+#
+# Values prior to 2014-11-19
+#
+#group {
+#   double $(top)probeMap.A      =  2.00000E-01;     # A0
+#   double $(top)probeMap.B      =  1.00000E+00;     # A1
+#   double $(top)probeMap.C      =  0.00000E+00;     # A2
+#   double $(top)probeMap.D      =  0.00000E+00;     # A3
+#   double $(top)probeMap.E      =  0.00000E+00;     # A4
+#   double $(top)probeMap.F      =  0.00000E+00;     # A5
+#   double $(top)probeMap.G      =  4.00000E-01;     # B0
+#   double $(top)probeMap.H      =  0.00000E+00;     # B1
+#   double $(top)probeMap.I      =  0.00000E+00;     # B2
+#   double $(top)probeMap.J      =  1.00000E+00;     # B3
+#   double $(top)probeMap.K      =  0.00000E+00;     # B4
+#   double $(top)probeMap.L      =  0.00000E+00;     # B5
+#}
+#
+# 
+# 2015 Oct 06 A0 3.21563e-1 -> 4.925190e-1
+# 2015 OCt 06 B0 2.65627e-1 -> 2.185610e-1
+#
 group {
-   double $(top)probeMap.A      =  0.00000E+00;     # A0
-   double $(top)probeMap.B      =  1.00000E+00;     # A1
-   double $(top)probeMap.C      =  0.00000E+00;     # A2
-   double $(top)probeMap.D      =  0.00000E+00;     # A3
-   double $(top)probeMap.E      =  0.00000E+00;     # A4
-   double $(top)probeMap.F      =  0.00000E+00;     # A5
-   double $(top)probeMap.G      =  0.00000E+00;     # B0
-   double $(top)probeMap.H      =  0.00000E+00;     # B1
-   double $(top)probeMap.I      =  0.00000E+00;     # B2
-   double $(top)probeMap.J      =  1.00000E+00;     # B3
-   double $(top)probeMap.K      =  0.00000E+00;     # B4
-   double $(top)probeMap.L      =  0.00000E+00;     # B5
+   double $(top)probeMap.A      =  4.92519E-01;     # A0
+   double $(top)probeMap.B      =  9.91903E-01;     # A1
+   double $(top)probeMap.C      =  3.40861E-05;     # A2
+   double $(top)probeMap.D      =  1.83929E-03;     # A3
+   double $(top)probeMap.E      = -1.03048E-05;     # A4
+   double $(top)probeMap.F      =  2.99252E-05;     # A5
+   double $(top)probeMap.G      =  2.18561E-01;     # B0
+   double $(top)probeMap.H      =  1.19578E-02;     # B1
+   double $(top)probeMap.I      = -5.65277E-05;     # B2
+   double $(top)probeMap.J      =  9.97900E-01;     # B3
+   double $(top)probeMap.K      = -1.93812E-05;     # B4
+   double $(top)probeMap.L      = -3.62874E-05;     # B5
 }
 
 # Pre-load engineering targets
