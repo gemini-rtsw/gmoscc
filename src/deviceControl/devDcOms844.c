@@ -45,6 +45,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.7  2009/07/01 00:04:37  gemvx
+ * changed debug level for scantask slow and make scantask rate visible
+ *
  * Revision 1.6  2008/02/06 23:27:21  gemvx
  * moved definition of the private structure to the ".h" file so that the
  * record layer can use it.
@@ -2117,70 +2120,139 @@ static int omsScanTask
                     semGive (pDevice->mutexSem);               
                 }
 
-                /* 
-                 *  This check detects invalid encoder counts and ignores 
-		 *  them as long as the following read is successfull.  
-		 *  Only perform this check if we know that we are indexed
-		 *  and are not in the middle of an index.  Also, don't check
-		 *  if we're in a limit.
+		/*
+		 * AWE: Expanding the badRead check for each motor to also
+		 * attempt to detect bad reads for motors without encoders (ueip = FALSE)
 		 */
-		  
-		if ( (pdr->ueip) && (pDevice->mode != DDR_MODE_INDEX) &&
-		     (abs((position/pdr->mres - encoder/pdr->eres) / 
-                        (position/pdr->mres)) > 0.1) &&
-                     (position/pdr->mres != 0) )
-		{
-		    if (pDevice->badRead)
-		    {
-                        if (pdr->hpvl && !(pdr->lswa) )
-			{
-			    /*
-			     *  Another bad encoder value read, dump the 
-			     *  debug buffer.
-			     */
+		if (pdr->ueip)
+		  {
 
-		            DEBUG(DDR_MSG_MIN, 
-				"<%ld> c:%d s:%d omsScanTask: another bad encoder \
-				value ... not ignoring!%c\n",' ');
-                            drvOmsVmeGetErrorMessage (pDevice->errorMessage);
-                        }
-		    } 
-		    else
-		    {
-		        DEBUG(DDR_MSG_MIN, 
-                            "<%ld> c:%d s:%d scanTask: bad encoder value%c\n",
-                            ' ');
-                        drvOmsVmeGetErrorMessage( pDevice->errorMessage );
-		        DEBUG(DDR_MSG_FULL, 
-                            "<%ld> c:%d s:%d scanTask: prev encoder: %ld \n", 
-                            pDevice->encoder);
-		        DEBUG(DDR_MSG_FULL, 
-                            "<%ld> c:%d s:%d scanTask: prev position: %ld \n",
-                            pDevice->position);
-		        DEBUG(DDR_MSG_FULL, 
-                            "<%ld> c:%d s:%d scanTask: new encoder: %ld \n",
-                            encoder);
-		        DEBUG(DDR_MSG_FULL, 
-                            "<%ld> c:%d s:%d scanTask: new position: %ld \n",
-                            position);
-			encoder = pDevice->encoder;
+		    /* 
+		     *  This check detects invalid encoder counts and ignores 
+		     *  them as long as the following read is successfull.  
+		     *  Only perform this check if we know that we are indexed
+		     *  and are not in the middle of an index.  Also, don't check
+		     *  if we're in a limit.
+		     */
+		    
+		    if ( (pDevice->mode != DDR_MODE_INDEX) &&
+			 (abs((position/pdr->mres - encoder/pdr->eres) / 
+			      (position/pdr->mres)) > 0.1) &&
+			 (position/pdr->mres != 0) )
+		      {
+			if (pDevice->badRead)
+			  {
+			    if (pdr->hpvl && !(pdr->lswa) )
+			      {
+				/*
+				 *  Another bad encoder value read, dump the 
+				 *  debug buffer.
+				 */
+				
+				DEBUG(DDR_MSG_MIN, 
+				      "<%ld> c:%d s:%d omsScanTask: another bad encoder value ... not ignoring!%c\n",' ');
+				SET_ERR_MSG("omsScanTask bad Encoder value returned by OMS card");
+				drvOmsVmeGetErrorMessage (pDevice->errorMessage);
+				DEBUG(DDR_MSG_ERROR, 
+				      "<%ld> c:%d s:%d OMSscanTask: %s\n", pDevice->errorMessage);
+
+			      }
+			  } 
+			else
+			  {
+			    DEBUG(DDR_MSG_MIN, 
+				  "<%ld> c:%d s:%d scanTask: bad encoder value%c\n",
+				  ' ');
+			    DEBUG(DDR_MSG_FULL, 
+				  "<%ld> c:%d s:%d scanTask: prev encoder: %ld \n", 
+				  pDevice->encoder);
+			    DEBUG(DDR_MSG_FULL, 
+				  "<%ld> c:%d s:%d scanTask: prev position: %ld \n",
+				  pDevice->position);
+			    DEBUG(DDR_MSG_FULL, 
+				  "<%ld> c:%d s:%d scanTask: new encoder: %ld \n",
+				  encoder);
+			    DEBUG(DDR_MSG_FULL, 
+				  "<%ld> c:%d s:%d scanTask: new position: %ld \n",
+				  position);
+			    encoder = pDevice->encoder;
+			    semTake (pDevice->mutexSem, WAIT_FOREVER);
+			    pDevice->badRead = TRUE;
+			    semGive (pDevice->mutexSem);                
+			  }
+		      } 
+		    else 
+		      {
+			/*
+			 *  Else it was a good read.
+			 */
+			
 			semTake (pDevice->mutexSem, WAIT_FOREVER);
-			pDevice->badRead = TRUE;
+			pDevice->badRead = FALSE;
 			semGive (pDevice->mutexSem);                
-		    }
-		} 
-		else 
-		{
-		    /*
-		     *  Else it was a good read.
+			
+		      } /* end of test for bad read of position/encoders when ueip is TRUE */
+		    
+		  } 
+		else
+		  {
+		    /* 
+		     * We are not using an encoder and are only reading motor position.
+		     * Check that the motion is possible based on the configured velocity.
+		     * Many bad reads shift the returned value by a large unrealistic amount and this should detect them.
+		     * Don't use this check if we're indexing as the index will set the position explicitly and potentially introduce a large shift
 		     */
 
-		    semTake (pDevice->mutexSem, WAIT_FOREVER);
-		    pDevice->badRead = FALSE;
-		    semGive (pDevice->mutexSem);                
+		    if ( (pDevice->mode != DDR_MODE_INDEX) &&
+			 (abs(position - pDevice->position) > pDevice->velocity ) )
+		      {
+			if (pDevice->badRead)
+			  {
+			    if (pdr->hpvl && !(pdr->lswa) )
+			      {
+				/*
+				 *  Another bad position value read, dump the 
+				 *  debug buffer.
+				 */
+				
+				DEBUG(DDR_MSG_MIN, 
+				      "<%ld> c:%d s:%d omsScanTask: another bad position value ... not ignoring!%c\n",' ');
+				SET_ERR_MSG("omsScanTask bad Position value returned by OMS card");
+				drvOmsVmeGetErrorMessage (pDevice->errorMessage);
+				DEBUG(DDR_MSG_ERROR, 
+				      "<%ld> c:%d s:%d OMSscanTask: %s\n", pDevice->errorMessage);
+			      }
+			  } 
+			else
+			  {
+			    DEBUG(DDR_MSG_MIN, 
+				  "<%ld> c:%d s:%d scanTask: bad position value%c\n",
+				  ' ');
+			    DEBUG(DDR_MSG_FULL, 
+				  "<%ld> c:%d s:%d scanTask: prev position: %ld \n",
+				  pDevice->position);
+			    DEBUG(DDR_MSG_FULL, 
+				  "<%ld> c:%d s:%d scanTask: new position: %ld \n",
+				  position);
+			    position = pDevice->position;
+			    semTake (pDevice->mutexSem, WAIT_FOREVER);
+			    pDevice->badRead = TRUE;
+			    semGive (pDevice->mutexSem);                
+			  }
+		      } 
+		    else 
+		      {
+			/*
+			 *  Else it was a good read.
+			 */
+			
+			semTake (pDevice->mutexSem, WAIT_FOREVER);
+			pDevice->badRead = FALSE;
+			semGive (pDevice->mutexSem);                
+			
+		      }
 
-		} /* end of test for bad read of position/encoders */
-
+		  } /* end of test for bad read of position when ueip is FALSE */
 
             }   /* end of things to do if the motor exists */
 
