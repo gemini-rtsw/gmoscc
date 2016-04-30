@@ -62,6 +62,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.8  2013/12/11 18:00:47  gemvx
+ * The DDR_MOTION_OVERHEAD_TIME constant changed from 25 to 35 (it is a test)
+ *
  * Revision 1.7  2009/09/17 01:45:43  gemvx
  * made all mdbd checks >=
  *
@@ -2571,6 +2574,8 @@ static long idleState
             DEBUG(DDR_MSG_FULL,
                   "<%ld> %s:idleState:DIR=GO no motion required, mode=%ld\n",
                   pPriv->mode );
+	    /* AWE unset the directive now so that we don't try to move due to a callback from the scantask when a bad position read occurs */
+	    pdr->dir = DDR_DIR_CHECK;
         }
     }
 
