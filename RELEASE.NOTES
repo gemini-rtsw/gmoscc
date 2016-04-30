@@ -1,3 +1,10 @@
+V7-12 April 2015 aebbers
+    - Implement a solution for REL-1337 .. filter out Bad Position Reads from the oms card and prevent errors.   
+	M src/deviceControl/devDcOms844.c          "implemented filter to detect and avoid bad position reads from the oms card"
+	M src/deviceControl/deviceControlRecord.c  "fix a case where the directive was left GO after a rejected motion"
+    - restored the ONAM named positions that were changed in V7-11 as the change broke the gmosISD display of Mask status (REL-2031)
+	M capfast/gmMaskSensors.sch                "restored original sensor named positions (ONAM)"
+
 V7-11 February 2015 rrojas
 	- src/CP/pv/gmOiwfs.pv: probeXOffset/probeYOffset updated (CR-15 2231)
 	- capfast/gmMaskSensors.sch: optical sensors SCAn option changed to "I/O intr"
