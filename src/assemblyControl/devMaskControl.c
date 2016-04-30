@@ -65,6 +65,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.10  2015/03/11 13:05:27  rrojas
+ * Optical sensors SCAN attr. changed to "I/O intr". plus some pv's and lut's files
+ *
  * Revision 1.9  2014/08/18 15:37:21  rrojas
  * Added a 2 seconds delay to read the Mask switch.
  *
@@ -2684,6 +2687,7 @@ static long mkCheckBarcodeId
                         "<%ld> %s:mkCheckBarcodeId: Duplicate%c\n",' ');
                     SET_ERR_MSG("Duplicate mask found in this slot");
                     status = MK_DUPLICATE_BARCODE;
+
                     break; /* no need to check any more */
                 }
             }
@@ -6211,8 +6215,8 @@ static long mkTaskPostCheck
                 SET_ERR_MSG("Extractor not at grip position");
                 status = MK_TASK_FAILED;
             }
-
-            if ( MK_SENSOR_WORD & MK_MON_NOTOCCUPIED )
+	    /* AWE in single update mode, this could happen deliberately, allow it */
+            if ( (MK_SENSOR_WORD & MK_MON_NOTOCCUPIED) && !(pMkPriv->currentCmd == DAR_MODE_UPDATE && pMkPriv->singleUpdate == TRUE ))
             {
                 DEBUG(DAR_MSG_ERROR, "<%ld> %s:mkTaskPostCheck: No mask in slot after MK_EXT_TO_I4_GRP or MK_EXT_TO_GRP%c\n",  ' ');
                 SET_ERR_MSG("No mask found in current cassette slot");
