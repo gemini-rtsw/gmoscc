@@ -204,8 +204,11 @@ group {
    #double $(top)probeXOffset        =  -0.550; # X offset
    #double $(top)probeYOffset        =   4.100; # Y offset
    # New offsets Nov 06 2015 RRO (CR-15 2416)
-   double $(top)probeXOffset        =  -0.528; # X offset
-   double $(top)probeYOffset        =   3.643; # Y offset
+   #double $(top)probeXOffset        =  -0.528; # X offset
+   #double $(top)probeYOffset        =   3.643; # Y offset
+   # New offsets Sep 12 2016 CUR (CR-16 2596)
+   double $(top)probeXOffset        =  -0.460; # X offset
+   double $(top)probeYOffset        =   3.620; # Y offset
    
    # Ideal Focal Surface
    #
