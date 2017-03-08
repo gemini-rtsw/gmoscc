@@ -1,3 +1,5 @@
+V7-13 March 2017 mrippa
+    - Update resource.def file to add EPICS_CA_ADDR_LIST which includes GMOS DC IP. 
 V7-12 April 2015 aebbers
     - Implement a solution for REL-1337 .. filter out Bad Position Reads from the oms card and prevent errors.   
 	M src/deviceControl/devDcOms844.c          "implemented filter to detect and avoid bad position reads from the oms card"
