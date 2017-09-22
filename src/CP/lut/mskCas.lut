@@ -8,6 +8,7 @@
 # 09-SEP-04 pg  updated value of mask 7 (IFU) in cassette 1
 # 10-SEP-04 pg  updated all mask positions for cassetes 2 & 3
 # 01-AUG-07 pg  updated all mask positions (CR1177)
+# 22-SEP-07 pgx updated cl2 from 175 to 175.12 (CR-17 2829)
 #
 # name    target    index
 i4           0      4
@@ -15,7 +16,7 @@ i5           0      5
 park       275      0
 index        0      1
 cl1         75      0
-cl2        175      0
+cl2        175.12   0
 cl3        275      0
 c1s1        -5      0
 c1s2         5      0
@@ -23,9 +24,9 @@ c1s3        15      0
 c1s4        25      0
 c1s5        35      0
 c1s6        45      0
-c1s7        55.40   0
+c1s7        55.90   0
 c1s8        65      0
-c1s9        75.40   0
+c1s9        75.90   0
 c2s1        95.65   0
 c2s2       105.60   0
 c2s3       115.60   0
