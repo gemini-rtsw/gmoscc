@@ -14,15 +14,11 @@ i5            0.0       5
 i4release     1.90       0
 #i4gripper     2.5       0
 i4gripper     3.28       0
-ifu           2.83      0
+ifu           4.00      0
 mask         -0.37      0
 clear      -350.0       0
 park          4.0       0
 #id         -419.0       0
 id         -409.0       0
-grip       -446.30       0
-#grip       -446.10       0
-#grip       -446.7       0
-#grip       -446.5       0 2008/08/10
-#grip       -446.3       0
+grip       -446.80       0
 release    -448.4       0
