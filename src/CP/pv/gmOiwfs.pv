@@ -206,15 +206,18 @@ group {
    # New offsets Nov 06 2015 RRO (CR-15 2416)
    #double $(top)probeXOffset        =  -0.528; # X offset
    #double $(top)probeYOffset        =   3.643; # Y offset
-   # New offsets Sep 12 2016 CUR (CR-16 2596)
+   # New offsets Sep 01 2016 GG (CR-16 2596)
    #double $(top)probeXOffset        =  -0.460; # X offset
    #double $(top)probeYOffset        =   3.620; # Y offset
    # New offsets 15 Sep 2017 PGX (CR-17 2815)
    #double $(top)probeXOffset        =  -0.460; # X offset
    #double $(top)probeYOffset        =   3.220; # Y offset
-# New offsets 20 Jun 2019 RRO (CR-19 3247)
-   double $(top)probeXOffset        =  -0.490; # X offset
-   double $(top)probeYOffset        =   2.270; # Y offset
+   # New offsets 22 Jun 2019 GG (CR-19 3247)
+   #double $(top)probeXOffset        =  -0.490; # X offset
+   #double $(top)probeYOffset        =   2.270; # Y offset
+   # New offsets 28 Aug 2019 GG (CR-19 3272)
+   double $(top)probeXOffset        =  -0.700; # X offset
+   double $(top)probeYOffset        =   2.450; # Y offset
    
    # Ideal Focal Surface
    #
