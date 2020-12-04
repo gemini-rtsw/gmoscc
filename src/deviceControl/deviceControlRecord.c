@@ -62,6 +62,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.9  2016/04/30 00:53:34  gemvx
+ * fix a case where the directive was left GO after a rejected motion
+ *
  * Revision 1.8  2013/12/11 18:00:47  gemvx
  * The DDR_MOTION_OVERHEAD_TIME constant changed from 25 to 35 (it is a test)
  *
@@ -395,7 +398,7 @@
 #define DDR_FAILING         10        /* aborting motion                    */
 
 #define DDR_ACKNOWLEDGE_TIME      5   /* BUSY time for acknowledgement 0.1s */
-#define DDR_START_TIMEOUT        15   /* max time for motion to start  0.1s */
+#define DDR_START_TIMEOUT        60   /* max time for motion to start  0.1s AWE: changed from 15 (REL-3838)*/
 #define DDR_INIT_HOLDOFF         10   /* record initialization holdoff 0.1s */
 #define DDR_LUT_MAX_NAME         16   /* maximum length of name string      */
 #define DDR_MAX_INDEX_VEL    1023.0   /* maximum final index velo., st/sec  */
