@@ -1,3 +1,7 @@
+V7-14 December 2020 aebbers
+    - Implement REL-3838 Increase GMOS CC DTA start timeout (this will change the start timeout for all motors)
+M src/deviceControl/deviceControlRecord.c   #define DDR_START_TIMEOUT        60
+
 V7-13 March 2017 mrippa
     - Update resource.def file to add EPICS_CA_ADDR_LIST which includes GMOS DC IP. 
 V7-12 April 2015 aebbers
