@@ -191,15 +191,17 @@ group {
 # 2015 Oct 06 A0 3.21563e-1 -> 4.925190e-1
 # 2015 OCt 06 B0 2.65627e-1 -> 2.185610e-1
 # 2018 Nov 13 zero fine probemapping -> new solution, JS
+# 2020 Dec 04 A0 0.0 -> 8.29000E-02
+# 2020 Dec 04 B0 0.0 -> -1.73000E-01
 #
 group {
-   double $(top)probeMap.A      =  0.00000E+00;     # A0
+   double $(top)probeMap.A      =  8.29000E-02;     # A0
    double $(top)probeMap.B      =  9.90564E-01;     # A1
    double $(top)probeMap.C      =  4.09126E-05;     # A2
    double $(top)probeMap.D      =  2.28512E-03;     # A3
    double $(top)probeMap.E      = -1.55337E-05;     # A4
    double $(top)probeMap.F      =  3.15447E-05;     # A5
-   double $(top)probeMap.G      =  0.00000E+00;     # B0
+   double $(top)probeMap.G      = -1.73000E-01;     # B0
    double $(top)probeMap.H      =  1.09423E-02;     # B1
    double $(top)probeMap.I      = -4.94846E-05;     # B2
    double $(top)probeMap.J      =  9.96641E-01;     # B3
