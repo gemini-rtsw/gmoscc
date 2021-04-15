@@ -183,8 +183,8 @@ group {
 #
 #     release position is 3.80 adjust for +-0.15
 #     15/12/01 release position changed to 3.85 +-0.15 after maintenance
-#
-   double $(top)mskExtAtRelLo   =    3.85; # Extractor at Release position lo limit
+#     09/04/21 release low limit changed to 3.83 (FR-71800)
+   double $(top)mskExtAtRelLo   =    3.83; # Extractor at Release position lo limit
    double $(top)mskExtAtRelHi   =    4.15; # Extractor at Release position hi limit
 }
 
