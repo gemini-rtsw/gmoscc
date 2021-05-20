@@ -139,7 +139,7 @@ group {
 #   long   $(top)mskGrpDevice.UPSB =       0;
    double $(top)mskGrpDevice.VBAS =     0.1;
    double $(top)mskGrpDevice.VELO =    10.0;
-   double $(top)mskGrpDevice.VHLM =    15.0;
+   double $(top)mskGrpDevice.VHLM =    10.0;
    double $(top)mskGrpDevice.VLLM =     5.0;
 }
 #
