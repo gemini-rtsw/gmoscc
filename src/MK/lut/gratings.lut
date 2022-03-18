@@ -25,6 +25,8 @@
 # mirror and mirror_spare.  KR 04/03/04
 #
 # Added entry for replacement B600 grating.  KR 18Mar2009
+#
+# Added entry for replacement R150 grating.  KR 05Nov2015
 
 # name            barcodeId     linesPerMm     blazeDir   focusOffset (microns)
 
@@ -42,9 +44,11 @@ R600-_G5304        30000016            600          -1        0.0
 R600+_G5304        30000017            600          +1        0.0
 B600+_G5307        30000018            600          +1        0.0
 B600-_G5307        30000019            600          -1        0.0
+R150+_G5308        30000020            150          +1        0.0
+R150-_G5308        30000021            150          -1        0.0
+B480+_G5309        30000022            480          +1        0.0
+B480-_G5309        30000023            480          -1        0.0
 Dummy1             30000012              0           0       10.0
 Dummy2             30000015              0           0      -10.0
 mirror             30000008              0           0        0.0
 mirror_spare       30000007              0           0        0.0
-B480+_G5309        30000022            480          +1        0.0
-B480-_G5309        30000023            480          -1        0.0

@@ -33,6 +33,18 @@
 #
 # Added Z, Y GMOS-N filters - Kathy Roth 2010 May 11
 #
+# Added place holder for new Raman OVI 683.0 nm and corresponding 
+# continuum filter under narrow-band filters and updated (commented)
+# GMOS South information - Julia Scharwaechter 2017 Oct 11
+#
+# Added OVI and OVIC, Hartmann C and D are commented out 
+# Eff. wavelength taken from lamda_0 measured in Test report_GMOS_S filter 20000035.docx
+# - Julia Scharwaecher 2018 May 17
+#
+# Updated surface focus offset for OVI and OVIC - Julia Scharwaechter 2018 May 29
+#
+# Added user-supplied r+i filter 2018 Nov 7, surface curvature offsets still needs to be determined - Julia Scharwaechter
+#
 #                                 surface curvature
 # name            barcodeId       focusOffset (microns)   effWavelength (nm)
 #
@@ -44,8 +56,8 @@ open2-8           20000008          0.0                    0.0
 # GMOS North Hartmann masks
 HartmannA_G0313   20000013          0.0                    0.0
 HartmannB_G0314   20000014          0.0                    0.0
-HartmannC_G0315   20000015          0.0                    0.0
-HartmannD_G0316   20000016          0.0                    0.0
+#HartmannC_G0315   20000015          0.0                    0.0
+#HartmannD_G0316   20000016          0.0                    0.0
 #
 # GMOS North science filters
 #u_G0308           20000019        339.0                  365.0
@@ -56,6 +68,10 @@ z_G0304           20000004        -19.2                  910.0
 Z_G0322           20000019         102.3                 876.0
 Y_G0323           20000022         362.2               1010.0
 #
+# GMOS South open slots
+#open1-6           20000033          0.0                    0.0
+#open2-8           20000041          0.0                    0.0
+#
 # GMOS South Hartmann masks
 #HartmannA_G0337   20000037          0.0                    0.0
 #HartmannB_G0338   20000038          0.0                    0.0
@@ -63,11 +79,13 @@ Y_G0323           20000022         362.2               1010.0
 #HartmannD_G0340   20000040          0.0                    0.0
 #
 # GMOS South science filters
-#u_G0332           20000020        429.0                  365.0
-#g_G0325           20000025          0.0                  480.0
-#i_G0326           20000026          0.0                  770.0
-#r_G0327           20000027          0.0                  625.0
-#z_G0328           20000028          0.0                  910.0
+#u_G0332           20000030        343.0                  365.0
+#g_G0325           20000026         44.2                  480.0
+#r_G0326           20000027         -5.9                  625.0
+#i_G0327           20000028         50.1                  770.0
+#z_G0328           20000029         -5.2                  910.0
+#Z_G0343           20000051         0.0                  876.0
+#Y_G0344           20000052         0.0                 1010.0
 #
 # GMOS North order sorting filters
 GG455_G0305       20000005        -20.0                  650.0 
@@ -83,14 +101,32 @@ OIII_G0318         20000023        133.5                  499.0
 OIIIC_G0319        20000024        112.0                  514.0
 HeII_G0320         20000020        128.8                  468.0
 HeIIC_G0321        20000021        351.1                  478.0
+OVI_G0345          20000053        106.9                  683.8
+OVIC_G0346         20000054        106.1                  679.0
 
 # GMOS South CaTriplet filter
-#CaT_G0333          20000009        181.0                  860.0
+#CaT_G0333         20000031        154.0                  860.0
 
 # GMOS North CaTriplet filter
-CaT_G0309          20000009          184.0                  860.0
+CaT_G0309          20000009          184.0                860.0
+
+# GMOS North user-supplied r+i filter
+ri_G0349           20000057            21.9                700.0
 
 # GMOS South order sorting filters 
-#GG455_G0329       20000009        -39.0                  650.0
-#OG515_G0330       20000010        -30.0                  650.0
-#RG610_G0331       20000011        -53.0                  650.0
+#GG455_G0329       20000044       -139.0                  650.0
+#OG515_G0330       20000045       -230.0                  650.0
+#RG610_G0331       20000046       -238.0                  650.0
+#RG780_G0334       20000049        390.0                  860.0
+#
+#GMOS South narrow band filters
+#Ha_G0336          20000032        56.0                  656.0
+#HeII_G0340        20000034       -99.2                  468.0
+#HeIIC_G0341       20000035        57.3                  478.0
+#OIII_G0338        20000042        76.0                  499.0
+#OIIIC_G0339       20000043       128.1                  514.0
+#HaC_G0337         20000048         0.0                  662.0
+#SII_G0335         20000050        69.0                  672.0
+#Lya395_G0342      20000036       427.16                 395.5 
+#OVI_G0347         20000055
+#OVIC_G0348        20000056
