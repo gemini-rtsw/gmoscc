@@ -62,6 +62,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.10  2020/12/04 00:59:59  gemvx
+ * REL-3838 increase DDR_START_TIMEOUT
+ *
  * Revision 1.9  2016/04/30 00:53:34  gemvx
  * fix a case where the directive was left GO after a rejected motion
  *
@@ -398,7 +401,7 @@
 #define DDR_FAILING         10        /* aborting motion                    */
 
 #define DDR_ACKNOWLEDGE_TIME      5   /* BUSY time for acknowledgement 0.1s */
-#define DDR_START_TIMEOUT        60   /* max time for motion to start  0.1s AWE: changed from 15 (REL-3838)*/
+#define DDR_START_TIMEOUT       100   /* max time for motion to start effective 1s hstecher: changed from 60 (REL-3974)*/
 #define DDR_INIT_HOLDOFF         10   /* record initialization holdoff 0.1s */
 #define DDR_LUT_MAX_NAME         16   /* maximum length of name string      */
 #define DDR_MAX_INDEX_VEL    1023.0   /* maximum final index velo., st/sec  */
@@ -2972,6 +2975,7 @@ static long initRecord
     pPriv->homeSwitch = 0;
     pPriv->index = pdr->ialg;
     pPriv->stalled_times= 0;
+    pPriv->early_power_off= 0;
     pPriv->rejectAck = TRUE;
     semGive (pPriv->mutexSem);
 
@@ -4047,6 +4051,19 @@ static long movingState
     if (!pPriv->moving)
     {
 
+
+        /*
+         * hstecher REL-3974
+         *
+         * Clear early_power_off if motion done 
+         *
+         */
+
+        semTake (pPriv->mutexSem, WAIT_FOREVER);
+        pPriv->early_power_off = 0;
+        semGive (pPriv->mutexSem);
+
+
         /*
          *  If we hit a soft limit switch then check to see if this
          *  is a bad thing.
@@ -4288,14 +4305,35 @@ static long movingState
      *  we have either hit a limit or an interlock was triggered.  Generate
      *  an error message and abort the motion immediately!
      */
-         
+
+    /*
+     * hstecher REL-3974
+     *
+     * early_power_off wait extra two update for  
+     * scanTask to report moving done before reporting  error
+     *
+     */
+
     if (pdr->upsb && !pdr->psta)
     {        
-        SET_ERR_MSG( "Power failed while moving, hard limit?");
-        DEBUG(DDR_MSG_ERROR, 
-              "<%ld> %s:movingState:Power failed while moving, hard limit?%c\n",
-              ' ');
-        return abortingState (pdr, 1);
+        if (pPriv->early_power_off >= 2)
+        {   
+            SET_ERR_MSG( "Power failed while moving, hard limit?");
+            DEBUG(DDR_MSG_ERROR, 
+                  "<%ld> %s:movingState:Power failed while moving, hard limit?%c\n",
+                  ' ');
+            return abortingState (pdr, 1);
+        }
+        else
+        {
+            
+            semTake (pPriv->mutexSem, WAIT_FOREVER);
+            pPriv->early_power_off ++;
+            semGive (pPriv->mutexSem);
+            DEBUG(DDR_MSG_WARNING, 
+                  "<%ld> %s:movingState:Power failed while moving, waiting for scanTask to set done. Count=%i\n",
+                  pPriv->early_power_off);
+        }
     }
 
 

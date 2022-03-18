@@ -33,6 +33,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.1  2002/04/24 05:18:14  ajf
+ * Changes for epics3.13.4GEM8.4.
+ *
  * Revision 1.2  2002/03/25 19:44:49  mbec
  * epics 3.13 debugging
  *
@@ -242,6 +245,7 @@ typedef struct
     short       simmHpvl;           /* index valid state entering simulation*/
     int         simulation;         /* current simulation mode              */
     int         stalled_times;      /* # of identical positions before stall*/
+    int         early_power_off;    /* # of scans to wait for done after psta drops */
     long        status;             /* motion status                        */
     long        target;             /* target position in steps             */
     long        timeout;            /* timeout processing (T/F) flag        */

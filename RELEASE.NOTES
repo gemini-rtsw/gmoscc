@@ -1,3 +1,16 @@
+V7-15 March 2022 hstecher
+    - Implement REL-3974 Increase GMOS CC DTA start timeout (this will change the start timeout for all motors)
+M src/deviceControl/deviceControlRecord.c   #define DDR_START_TIMEOUT        100
+
+    - Implement REL-3974 Add early_power_off counter to give scanTask time to update motor done
+M src/deviceControl/deviceControl.h
+M src/deviceControl/deviceControlRecord.c
+
+    - Implement REL3974 ppdr->ueip && pDevice->encoder != encoder check in omsScanTask 
+M src/deviceControl/devDcOms844.c
+
+    - Pulled in a bunch of luts and pvs that were not checked in to the repo
+
 V7-14 December 2020 aebbers
     - Implement REL-3838 Increase GMOS CC DTA start timeout (this will change the start timeout for all motors)
 M src/deviceControl/deviceControlRecord.c   #define DDR_START_TIMEOUT        60

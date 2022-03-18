@@ -45,6 +45,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.8  2016/04/30 00:53:06  gemvx
+ * REL-1337 implemented filter to detect and avoid bad position reads from the oms card
+ *
  * Revision 1.7  2009/07/01 00:04:37  gemvx
  * changed debug level for scantask slow and make scantask rate visible
  *
@@ -91,6 +94,9 @@
  * indexing timeouts.
  *
  * THESE CHANGES NEED TO BE THOROUGHLY TESTED ON REAL HARDWARE.
+ *
+ * Revision 7-15  2022/3/17  05:30 hstecher
+ * Added ppdr->ueip check
  *
  * Revision 1.24  2001/03/27 11:03:52  gmos
  * devDeviceControl.c
@@ -2324,135 +2330,153 @@ static int omsScanTask
                  *  card has also not changed, then we may have stopped.
                  */
 
-                if ( pDevice->moving == TRUE       &&
-                     position == pDevice->position    )
+
+                if ( pDevice->moving == TRUE && position == pDevice->position)
                 {
 
-                    if ( (pMotor->earlyDone == TRUE) && (axisDone == 0) )         
+                /*
+                 * hstecher (REL-3974):
+                 * Added ppdr->ueip check
+                 * if moving true and pdr->ueip is set, use encoder otherwise use position check above
+                 * we suspect there are cases where the encoder position is still moving after position is stopped
+                 */
+                    if (pdr->ueip && pDevice->encoder != encoder)
                     {
-                        DEBUG(DDR_MSG_FULL,
-                           "<%ld> c:%d s:%d omsScanTask:motion & done flag detected in the same scan%c\n", ' ');
-                        axisDone = 1;
-                        pMotor->earlyDone = FALSE;
-                    }
-                    /*  
-                     *  If the axis motion is done or axis is simulated, clear the
-                     *  moving flag and leave done set.  Set local rescan flag
-                     *  to indicate that the record needs to see this. Then clear 
-                     *  the motion stopped counter for the next move.
-                     */
-
-                    if ( axisDone || pDevice->simulation )
-                    {
-                        DEBUG(DDR_MSG_MIN,
-                           "<%ld> c:%d s:%d omsScanTask:device motion stopped%c\n",
+                        DEBUG(DDR_MSG_WARNING,
+                           "<%ld> c:%d s:%d omsScanTask: position stopped encoder still moving - setting not done %c\n",
                            ' ');
-                        pDevice->moving = FALSE;
-                        rescan = TRUE;
-                        semTake (pMotor->mutexSem, WAIT_FOREVER);
-                        pMotor->stoppedCntr = 0;
-                        semGive (pMotor->mutexSem);
+                    
                     }
-
-                    /*
-                     *  If we're in a limit then we may not yet be stopped.
-                     */
-
-                    else if ( highLimit || lowLimit )
+                    else 
                     {
-                        /*
-                         *  The moving flag is still set, we're still in a limit
-                         *  and the position remains unchanged.  Let it settle
-                         *  in this condition for five scans.
-                         */
-
-                        if (pMotor->stoppedCntr > 5)
+                        if ( (pMotor->earlyDone == TRUE) && (axisDone == 0) )         
                         {
-                            DEBUG(DDR_MSG_MIN,"<%ld> c:%d s:%d omsScanTask:device motion stopped in limit - issuing EF ID string%c\n",' ');
-
-                            /*  
-                             *  We've stopped and given the limits time to settle.
-                             *  Now we need to send an "ID" command to set up
-                             *  the interrupt when done flag. 
-                             */
-
-                            semTake (pMotor->mutexSem, WAIT_FOREVER);
-
-                            pMotor->status = drvOmsVmeWriteMotor (pMotor->card,
-                                                                  pMotor->axis,
-                                                                  "EF ID ");
-
-                            semGive (pMotor->mutexSem);
-
-                            /*
-                             *  If there was a problem reading the motor state  
-                             *  recover the status message that describes what 
-                             *  went wrong.
-                             */
-
-                            if (pMotor->status)
-                            {
-                                drvOmsVmeGetErrorMessage (pDevice->errorMessage);
-                                DEBUG(DDR_MSG_ERROR,
-                                  "<%ld> c:%d s:%d Write motor stop status = %ld\n",
-                                  pMotor->status);
-                            }
+                            DEBUG(DDR_MSG_FULL,
+                               "<%ld> c:%d s:%d omsScanTask:motion & done flag detected in the same scan%c\n", ' ');
+                            axisDone = 1;
+                            pMotor->earlyDone = FALSE;
                         }
-                        else
-                        {
-                            /*
-                             *  Increment motion stopped counter.
-                             */
-
-                            semTake (pMotor->mutexSem, WAIT_FOREVER);
-                            pMotor->stoppedCntr++;
-                            semGive (pMotor->mutexSem);
-
-                            /*
-                             *  Set the checkLimits flag so that the motor state
-                             *  is checked again next scan.
-                             */
-			    /*
-                            pDevice->checkLimits = 1;
-			    */
-                        }
-                    }
-                    else
-                    {
-                        /*
-                         *  This kludge has to stay until I figure out how to 
-                         *  handle bootup initialization where the moving flag
-                         *  gets set without an ID setting up the done interrupt.
-                         *  The position gets initialized to 0 steps but if the
-                         *  happens to have been left at anything non-zero (very
-                         *  likely but not for sure if the IOC is rebooted but
-                         *  not power cycled) then the change in position will
-                         *  cause the moving flag to get set.  However there is no
-                         *  done interrupt to cause moving to get cleared.
+                        /*  
+                         *  If the axis motion is done or axis is simulated, clear the
+                         *  moving flag and leave done set.  Set local rescan flag
+                         *  to indicate that the record needs to see this. Then clear 
+                         *  the motion stopped counter for the next move.
                          */
-
-                        if (pMotor->stoppedCntr > 20)
+    
+                        if ( axisDone || pDevice->simulation )
                         {
- 
-                            DEBUG(DDR_MSG_WARNING,
-                               "<%ld> c:%d s:%d omsScanTask:device motion stopped without done flag%c\n",' ');
+                            DEBUG(DDR_MSG_MIN,
+                               "<%ld> c:%d s:%d omsScanTask:device motion stopped%c\n",
+                               ' ');
                             pDevice->moving = FALSE;
                             rescan = TRUE;
                             semTake (pMotor->mutexSem, WAIT_FOREVER);
                             pMotor->stoppedCntr = 0;
                             semGive (pMotor->mutexSem);
                         }
+    
+                        /*
+                         *  If we're in a limit then we may not yet be stopped.
+                         */
+    
+                        else if ( highLimit || lowLimit )
+                        {
+                            /*
+                             *  The moving flag is still set, we're still in a limit
+                             *  and the position remains unchanged.  Let it settle
+                             *  in this condition for five scans.
+                             */
+    
+                            if (pMotor->stoppedCntr > 5)
+                            {
+                                DEBUG(DDR_MSG_MIN,"<%ld> c:%d s:%d omsScanTask:device motion stopped in limit - issuing EF ID string%c\n",' ');
+    
+                                /*  
+                                 *  We've stopped and given the limits time to settle.
+                                 *  Now we need to send an "ID" command to set up
+                                 *  the interrupt when done flag. 
+                                 */
+    
+                                semTake (pMotor->mutexSem, WAIT_FOREVER);
+    
+                                pMotor->status = drvOmsVmeWriteMotor (pMotor->card,
+                                                                      pMotor->axis,
+                                                                      "EF ID ");
+    
+                                semGive (pMotor->mutexSem);
+    
+                                /*
+                                 *  If there was a problem reading the motor state  
+                                 *  recover the status message that describes what 
+                                 *  went wrong.
+                                 */
+    
+                                if (pMotor->status)
+                                {
+                                    drvOmsVmeGetErrorMessage (pDevice->errorMessage);
+                                    DEBUG(DDR_MSG_ERROR,
+                                      "<%ld> c:%d s:%d Write motor stop status = %ld\n",
+                                      pMotor->status);
+                                }
+                            }
+                            else
+                            {
+                                /*
+                                 *  Increment motion stopped counter.
+                                 */
+    
+                                semTake (pMotor->mutexSem, WAIT_FOREVER);
+                                pMotor->stoppedCntr++;
+                                semGive (pMotor->mutexSem);
+    
+                                /*
+                                 *  Set the checkLimits flag so that the motor state
+                                 *  is checked again next scan.
+                                 */
+    			    /*
+                                pDevice->checkLimits = 1;
+    			    */
+                            }
+                        }
                         else
                         {
                             /*
-                             *  Increment motion stopped counter.
+                             *  This kludge has to stay until I figure out how to 
+                             *  handle bootup initialization where the moving flag
+                             *  gets set without an ID setting up the done interrupt.
+                             *  The position gets initialized to 0 steps but if the
+                             *  happens to have been left at anything non-zero (very
+                             *  likely but not for sure if the IOC is rebooted but
+                             *  not power cycled) then the change in position will
+                             *  cause the moving flag to get set.  However there is no
+                             *  done interrupt to cause moving to get cleared.
                              */
+    
+                            if (pMotor->stoppedCntr > 20)
+                            {
+     
+                                DEBUG(DDR_MSG_WARNING,
+                                   "<%ld> c:%d s:%d omsScanTask:device motion stopped without done flag%c\n",' ');
+                                pDevice->moving = FALSE;
+                                rescan = TRUE;
+                                semTake (pMotor->mutexSem, WAIT_FOREVER);
+                                pMotor->stoppedCntr = 0;
+                                semGive (pMotor->mutexSem);
+                            }
+                            else
+                            {
+                                /*
+                                 *  Increment motion stopped counter.
+                                 */
+    
+                                semTake (pMotor->mutexSem, WAIT_FOREVER);
+                                pMotor->stoppedCntr++;
+                                semGive (pMotor->mutexSem);
+                            }
 
-                            semTake (pMotor->mutexSem, WAIT_FOREVER);
-                            pMotor->stoppedCntr++;
-                            semGive (pMotor->mutexSem);
-                        }
-                    }
+                        } 
+
+                    } 
     
                 }
                 else if ( position != pDevice->position ) 
