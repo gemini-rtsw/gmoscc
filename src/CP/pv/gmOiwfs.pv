@@ -216,8 +216,11 @@ group {
    #double $(top)probeXOffset        =  -0.490; # X offset
    #double $(top)probeYOffset        =   2.270; # Y offset
    # New offsets 28 Aug 2019 GG (CR-19 3272)
+   #double $(top)probeXOffset        =  -0.700; # X offset
+   #double $(top)probeYOffset        =   2.450; # Y offset
+   # New offsets 05 Sep 2022 RC (CR-22 3845)
    double $(top)probeXOffset        =  -0.700; # X offset
-   double $(top)probeYOffset        =   2.450; # Y offset
+   double $(top)probeYOffset        =   1.360; # Y offset
    
    # Ideal Focal Surface
    #
