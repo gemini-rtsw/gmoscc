@@ -194,15 +194,17 @@ group {
 # 2020 Dec 04 A0 0.0 -> 8.29000E-02
 # 2020 Dec 04 B0 0.0 -> -1.73000E-01
 # 2021 Oct 05 A0 8.29000E-02 -> -9.89780E-02, JS
+# 2023 Jun 05 A0 -9.8978e-02 -> 2.10727E-01 
+# 2023 Jun 05 B0 -1.73e-01 -> -1.54495E-01, CMV 
 #
 group {
-   double $(top)probeMap.A      = -9.89780E-02;     # A0
+   double $(top)probeMap.A      =  2.10727E-01;     # A0
    double $(top)probeMap.B      =  9.90564E-01;     # A1
    double $(top)probeMap.C      =  4.09126E-05;     # A2
    double $(top)probeMap.D      =  2.28512E-03;     # A3
    double $(top)probeMap.E      = -1.55337E-05;     # A4
    double $(top)probeMap.F      =  3.15447E-05;     # A5
-   double $(top)probeMap.G      = -1.73000E-01;     # B0
+   double $(top)probeMap.G      = -1.54495E-01;     # B0
    double $(top)probeMap.H      =  1.09423E-02;     # B1
    double $(top)probeMap.I      = -4.94846E-05;     # B2
    double $(top)probeMap.J      =  9.96641E-01;     # B3
