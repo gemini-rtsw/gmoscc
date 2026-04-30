@@ -946,6 +946,7 @@ static long abortingState
     {
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         pPriv->timeout = FALSE;
+        pPriv->TOCounter = 0;
         semGive (pPriv->mutexSem);
 
         /*
@@ -1594,12 +1595,13 @@ static long depoweringState
     {
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         pPriv->timeout = FALSE;
+        pPriv->TOCounter = 0;
         semGive (pPriv->mutexSem);
 
 
         /*
-         *  If we do not have power status feedback (use power status bit 
-         *  has not been set) then there is nothing to check.  Command is 
+         *  If we do not have power status feedback (use power status bit
+         *  has not been set) then there is nothing to check.  Command is
          *  finished, move on to idle state.
          */
 
@@ -2445,6 +2447,7 @@ static long idleState
         {
             semTake (pPriv->mutexSem, WAIT_FOREVER);
             pPriv->timeout = FALSE;
+            pPriv->TOCounter = 0;
             semGive (pPriv->mutexSem);
         }
 
@@ -2516,10 +2519,11 @@ static long idleState
          *  has completed processing.
          */
  
-        DEBUG(DDR_MSG_MAX, 
+        DEBUG(DDR_MSG_MAX,
               "<%ld> %s:idleState:timeout true, setting PP%c\n", ' ');
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         pPriv->timeout = FALSE;
+        pPriv->TOCounter = 0;
         semGive (pPriv->mutexSem);
         pdr->pp = TRUE;
         return status;
@@ -2964,6 +2968,7 @@ static long initRecord
     pPriv->faultChange = FALSE;
     pPriv->callback = FALSE;
     pPriv->timeout = FALSE;
+    pPriv->TOCounter = 0;
     pPriv->encoder = 0;
     pPriv->badRead = FALSE;
     pPriv->encoderDeadband = 1;
@@ -3551,11 +3556,12 @@ static long lockingState
     /*
      *  If the timeout flag is set then this is the callback requested above.
      */
-    
+
     if (pPriv->timeout)
     {
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         pPriv->timeout = FALSE;
+        pPriv->TOCounter = 0;
         semGive (pPriv->mutexSem);
 
 
@@ -4603,6 +4609,7 @@ static long poweringState
 
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         pPriv->timeout = FALSE;
+        pPriv->TOCounter = 0;
         semGive (pPriv->mutexSem);
 
 
@@ -6602,17 +6609,30 @@ static long startingState
     
     if ( pPriv->timeout )
     {
-        if ( pPriv->checkLimits )
+        pPriv->TOCounter++;
+        if ( pPriv->TOCounter < 5 )
         {
-            DEBUG(DDR_MSG_MIN,
-                  "<%ld> %s:startingState: scanTask did not check limits!%c\n",
-                  ' ');
+            semTake (pPriv->mutexSem, WAIT_FOREVER);
+            pPriv->timeout = FALSE;
+            semGive (pPriv->mutexSem);
+            printf("startingState: TOCounter : %ld \n", pPriv->TOCounter);
+            (*pdset->setDelay) (pPriv, DDR_START_TIMEOUT);
         }
+        else
+        {
+            if ( pPriv->checkLimits )
+            {
+                DEBUG(DDR_MSG_MIN,
+                      "<%ld> %s:startingState: scanTask did not check limits!%c\n",
+                      ' ');
+            }
+            pPriv->TOCounter = 0;
 
-        SET_ERR_MSG( "Motion did not start in time");
-        DEBUG(DDR_MSG_ERROR,
-               "<%ld> %s: startingState: Motion did not start in time%c\n", ' ');
-        return ( abortingState (pdr, 0) );
+            SET_ERR_MSG( "Motion did not start in time");
+            DEBUG(DDR_MSG_ERROR,
+                   "<%ld> %s: startingState: Motion did not start in time%c\n", ' ');
+            return ( abortingState (pdr, 0) );
+        }
     }
         
 
@@ -6985,11 +7005,12 @@ static long unlockingState
      *  If the timeout flag is set then this is the callback requested
      *  above.
      */
-    
+
     if (pPriv->timeout)
     {
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         pPriv->timeout = FALSE;
+        pPriv->TOCounter = 0;
         semGive (pPriv->mutexSem);
 
         /*

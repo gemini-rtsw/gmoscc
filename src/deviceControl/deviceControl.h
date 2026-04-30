@@ -249,6 +249,7 @@ typedef struct
     long        status;             /* motion status                        */
     long        target;             /* target position in steps             */
     long        timeout;            /* timeout processing (T/F) flag        */
+    long        TOCounter;          /* timeout events counter               */
     long        velocity;           /* motion velocity in steps/sec         */
 }  DEVICE_CONTROL_PRIVATE;
 
