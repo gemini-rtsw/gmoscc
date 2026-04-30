@@ -45,6 +45,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.9  2022/03/18 02:12:55  gemvx
+ * REL-3974 see RELEASE notes
+ *
  * Revision 1.8  2016/04/30 00:53:06  gemvx
  * REL-1337 implemented filter to detect and avoid bad position reads from the oms card
  *
@@ -2345,6 +2348,8 @@ static int omsScanTask
                         DEBUG(DDR_MSG_WARNING,
                            "<%ld> c:%d s:%d omsScanTask: position stopped encoder still moving - setting not done %c\n",
                            ' ');
+
+			printf("omsScanTask: position stopped encoder still moving - setting not done. Encoder: %d : %d\n", encoder, pDevice->encoder);
                     
                     }
                     else 

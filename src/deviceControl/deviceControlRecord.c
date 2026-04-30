@@ -62,6 +62,9 @@
  *
  *INDENT-OFF*
  * $Log$
+ * Revision 1.11  2022/03/18 02:12:55  gemvx
+ * REL-3974 see RELEASE notes
+ *
  * Revision 1.10  2020/12/04 00:59:59  gemvx
  * REL-3838 increase DDR_START_TIMEOUT
  *
@@ -4059,6 +4062,8 @@ static long movingState
          *
          */
 
+	    printf("movingState: mutex take 1\n");
+
         semTake (pPriv->mutexSem, WAIT_FOREVER);
         pPriv->early_power_off = 0;
         semGive (pPriv->mutexSem);
@@ -4322,17 +4327,24 @@ static long movingState
             DEBUG(DDR_MSG_ERROR, 
                   "<%ld> %s:movingState:Power failed while moving, hard limit?%c\n",
                   ' ');
+
+	    printf("movingState:Power failed while moving, hard limit?\n");
+
             return abortingState (pdr, 1);
         }
         else
         {
             
+	    printf("movingState: mutex take 2\n");
+
             semTake (pPriv->mutexSem, WAIT_FOREVER);
             pPriv->early_power_off ++;
             semGive (pPriv->mutexSem);
             DEBUG(DDR_MSG_WARNING, 
                   "<%ld> %s:movingState:Power failed while moving, waiting for scanTask to set done. Count=%i\n",
                   pPriv->early_power_off);
+
+	    printf("movingState:Power failed while moving, waiting for scanTask to set done. \n");
         }
     }
 
