@@ -1,0 +1,19 @@
+aux_grating
+# New grating R400 (G5310) in position C
+# corrected using the offset measured by Isobel Hook on July 13 2001
+# (for grating R400 in position C, 65 degrees corresponds to 6939steps)
+# ( added 53 steps (6939-6886) to all motor step values)
+#
+# Created draft table using copy of old R400 (G5305) - jscharwaechter, 20250218
+#
+# Cell  Tilt    Steps
+
+3   0.0000000     77.8970  
+3   7.760         897
+3  26.016        2824
+3  40.226        4324
+3  52.888        5660.5
+3  65.000        6939
+3  77.074        8213.5
+3  89.741        9550.5
+

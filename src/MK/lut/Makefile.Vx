@@ -99,6 +99,11 @@ DATA += ../aux_30000016gr.lut
 DATA += ../aux_30000017gr.lut
 DATA += ../aux_30000018gr.lut
 DATA += ../aux_30000019gr.lut
+DATA += ../aux_30000020gr.lut
+DATA += ../aux_30000021gr.lut
+DATA += ../aux_30000022gr.lut
+DATA += ../aux_30000026gr.lut
+DATA += ../aux_30000027gr.lut
 
 # Any extra targets can be placed in a TARGETS macro (the build target
 # builds only pre_build, LIBNAME, TARGETS and PROD, not SCRIPTS, INC etc)
