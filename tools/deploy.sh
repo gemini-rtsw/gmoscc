@@ -21,11 +21,13 @@ if [ ! -f "$DISTFILE" ]; then
     exit 1
 fi
 
-# Pull the first source and destination out of the Distfile. rdist supports
-# many src/dst pairs; we only report the first as a sanity check for the
-# operator -- they're all under the same version dir in our builds.
-SRC=`sed -n '/^FILES1/{s|.*= *( *||;s| *).*||;p;q;}' "$DISTFILE"`
-DST=`sed -n '/install -R/{s|.*install -R *||;s|/bin/mv167;.*||;s|/bin/mv167.*||;p;q;}' "$DISTFILE"`
+# Pull the first source and destination out of the Distfile. The GMOS
+# Distfile has the format:
+#   (src/path) -> host
+#       install -R /gemini/GEM8.6/gmos/<version>/subdir;
+# All pairs share the same version dir so we report that as the destination.
+SRC=`sed -n 's|^(\(.*\)) ->.*|\1|p' "$DISTFILE" | head -1`
+DST=`sed -n 's|.*install -R \(/gemini/GEM8\.6/gmos/[^/]*\).*|\1|p' "$DISTFILE" | head -1`
 
 if [ -z "$SRC" ] || [ -z "$DST" ]; then
     echo "ERROR: could not parse Distfile (SRC='$SRC' DST='$DST')." >&2
