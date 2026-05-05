@@ -12,6 +12,9 @@
 # Usage: ./tools/deploy.sh   (run from the CC repo root)
 #
 
+PATH=/usr/bin:/bin:$PATH
+export PATH
+
 set -e
 
 DISTFILE=./Distfile
