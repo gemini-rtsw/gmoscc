@@ -1,0 +1,156 @@
+#
+# GMOS mask assembly initialization for simulation mode.
+#
+# File history:
+#
+# 06-MAY-99 bmw Copied existing file from gmTest and removed non-mask stuff
+# 31-MAY-99 bmw changed lim's and ialg for cas and ext because motor direction
+#                 has changed.
+#               changed all Device names to include msk (i.e. ext to mskExt)
+#               changed LVDT position assignments
+#               reduced mskRel VELO to 5 from 10
+# 02-JUN-99 bmw changed cas mres from 200 to 400 then cut velo & **lm's in half
+#                
+#
+
+# Set default deviceControl configuration parameters:
+#
+#    ACCL  Acceleration from VBAS to VELO in EGUs/sec/sec
+#    BTMO  Brake status check timeout in 0.1 second units
+#    EDBD  Encoder change within range of EDBD is considered acceptable noise
+#    EGU   Engineering units for target position
+#    ERES  Encoder res., num. of encoder counts per EGU (not actually used!)
+#    IALG  Indexing algorithm 
+#    MDBD  Moves within the range of MDBD will show as completed w/o moving
+#    MRES  Motor resolution, number of steps per EGU
+#    PHLM  Target position high limit in EGUs
+#    PLLM  Target position low limit in EGUs
+#    PTMO  Power status check timeout in 0.1 second units
+#    UAPB  Use auxilliary power bit
+#    UBSB  Use brake status check
+#    UEIP  Use encoder if one is detected
+#    UPSB  Use power status check (NOT USED IN SIMULATION MODE)
+#    VBAS  Minimum velocity (see ACCL)
+#    FIVL  Final indexing velocity
+#    VELO  Target velocity (or at least the default at startup)
+#    VHLM  Velocity high limit in EGUs/sec
+#    VLLM  Velocity low limit in EGUs/sec
+#
+# Mask Assembly
+#
+group {
+   long $(top)mskAssembly.D     =    1; # casette number for single update
+   long $(top)mskAssembly.ADHL  =    3; # hi lim for cassette number
+   long $(top)mskAssembly.ADLL  =    1; # lo lim for cassette number
+   long $(top)mskAssembly.E     =    1; # slot number for single update
+   long $(top)mskAssembly.AEHL  =    9; # hi lim for slot number
+   long $(top)mskAssembly.AELL  =    1; # lo lim for slot number
+   long $(top)mskAssembly.SIL   =    0; # makes barcodeID in SAD happy
+   string $(top)ifuSelection.B = "10000004"; # default ifu mode
+   long   $(top)mskAssembly.SIM   =       -1; # default to Single Update Mode
+   long   $(top)mskAssembly.SIN   =       0; # barcode reader error ignore is FALSE
+}
+#
+# Mask Cassette Device
+#
+group {
+   double $(top)mskCasDevice.ACCL =   100.0;
+   string $(top)mskCasDevice.EGU  =    "mm";
+   double $(top)mskCasDevice.FIVL =     2.5;
+   long   $(top)mskCasDevice.IALG =       1;
+   double $(top)mskCasDevice.MDBD =     0.0;
+   double $(top)mskCasDevice.MRES =   400.0;
+   double $(top)mskCasDevice.PHLM =   275.0;
+   double $(top)mskCasDevice.PLLM =   -10.0;
+   long   $(top)mskCasDevice.PREC =       4;
+   long   $(top)mskCasDevice.UAPB =       1;
+   long   $(top)mskCasDevice.UBSB =       0;
+   long   $(top)mskCasDevice.UEIP =       0;
+   long   $(top)mskCasDevice.UPSB =       0;
+   double $(top)mskCasDevice.VBAS =     0.5;
+   double $(top)mskCasDevice.VELO =    20.0;
+   double $(top)mskCasDevice.VHLM =    25.0;
+   double $(top)mskCasDevice.VLLM =     5.0;
+}
+#
+# Mask Extractor Device
+#
+group {
+   double $(top)mskExtDevice.ACCL =   150.0;
+   string $(top)mskExtDevice.EGU  =    "mm";
+   double $(top)mskExtDevice.FIVL =     5.0;
+   long   $(top)mskExtDevice.IALG =       2;
+   double $(top)mskExtDevice.MDBD =     0.0;
+   double $(top)mskExtDevice.MRES =   200.0;
+   double $(top)mskExtDevice.PHLM =     4.0;
+   double $(top)mskExtDevice.PLLM =  -447.5;
+   long   $(top)mskExtDevice.PREC =       4;
+   long   $(top)mskExtDevice.UAPB =       1;
+   long   $(top)mskExtDevice.UBSB =       0;
+   long   $(top)mskExtDevice.UEIP =       0;
+   long   $(top)mskExtDevice.UPSB =       0;
+   double $(top)mskExtDevice.VBAS =     2.0;
+   double $(top)mskExtDevice.VELO =    35.0;
+   double $(top)mskExtDevice.VHLM =    40.0;
+   double $(top)mskExtDevice.VLLM =     5.0;
+}
+#
+# Mask Gripper Device
+#
+group {
+   double $(top)mskGrpDevice.ACCL =   100.0;
+   double $(top)mskGrpDevice.BTMO =     0.0;
+   string $(top)mskGrpDevice.EGU  =   "EGU";
+   long   $(top)mskGrpDevice.IALG =       5;
+   double $(top)mskGrpDevice.MDBD =     0.0;
+   double $(top)mskGrpDevice.MRES =   200.0;
+   double $(top)mskGrpDevice.PHLM =    50.0;
+   double $(top)mskGrpDevice.PLLM =   -50.0;
+   long   $(top)mskGrpDevice.PREC =       4;
+   long   $(top)mskGrpDevice.UAPB =       1;
+   long   $(top)mskGrpDevice.UBSB =       0;
+   long   $(top)mskGrpDevice.UEIP =       0;
+   long   $(top)mskGrpDevice.UPSB =       0;
+   double $(top)mskGrpDevice.VBAS =     0.1;
+   double $(top)mskGrpDevice.VELO =    10.0;
+   double $(top)mskGrpDevice.VHLM =    15.0;
+   double $(top)mskGrpDevice.VLLM =     5.0;
+}
+#
+# Mask Release Device
+#
+group {
+   double $(top)mskRelDevice.ACCL =   100.0;
+   double $(top)mskRelDevice.BTMO =     0.0;
+   string $(top)mskRelDevice.EGU  =   "EGU";
+   long   $(top)mskRelDevice.IALG =       5;
+   double $(top)mskRelDevice.MDBD =     0.0;
+   double $(top)mskRelDevice.MRES =   200.0;
+   double $(top)mskRelDevice.PHLM =    60.0;
+   double $(top)mskRelDevice.PLLM =   -60.0;
+   long   $(top)mskRelDevice.PREC =       4;
+   long   $(top)mskRelDevice.UAPB =       1;
+   long   $(top)mskRelDevice.UBSB =       0;
+   long   $(top)mskRelDevice.UEIP =       0;
+   long   $(top)mskRelDevice.UPSB =       0;
+   double $(top)mskRelDevice.VBAS =     0.1;
+   double $(top)mskRelDevice.VELO =     5.0;
+   double $(top)mskRelDevice.VHLM =    15.0;
+   double $(top)mskRelDevice.VLLM =     5.0;
+}
+
+# Load hi and lo limits for verifying extractor position with LVDT
+#
+group {
+   double $(top)mskExtAtLvdtLo  =   -2.50; # Extractor in lvdt when > limit
+#
+#     grip position is 3.15 adjust for +-0.15
+#
+   double $(top)mskExtAtGrpLo   =    3.00; # Extractor at Grip position lo limit
+   double $(top)mskExtAtGrpHi   =    3.30; # Extractor at Grip position hi limit
+#
+#     release position is 3.80 adjust for +-0.15
+#
+   double $(top)mskExtAtRelLo   =    3.65; # Extractor at Release position lo limit
+   double $(top)mskExtAtRelHi   =    3.95; # Extractor at Release position hi limit
+}

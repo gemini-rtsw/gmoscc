@@ -1,0 +1,39 @@
+#
+# Change GMOS lookup table directory for simulation mode
+#
+# This pvload script changes the directory used by the GMOS
+# assemblies to maintain lookup tables, and ensures that a
+# different set of lookup tables is used in simulation mode.
+#
+# NOTE: This script should only be executed when running in simulation mode.
+#
+
+string $(top)cc:atmAssembly.TDIR   = "/gemini/GEM8.6/gmos/gmos/data" ;
+#string $(top)cc:atmEnpDevice.TDIR = "/gemini/GEM8.6/gmos/gmos/data" ;
+#string $(top)cc:atmExpDevice.TDIR = "/gemini/GEM8.6/gmos/gmos/data" ;
+
+string $(top)cc:mskAssembly.TDIR  = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:mskCasDevice.TDIR = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:mskExtDevice.TDIR = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:mskGrpDevice.TDIR = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:mskRelDevice.TDIR = "/gemini/GEM8.6/gmos/gmos/data" ;
+
+string $(top)cc:fltAssembly.TDIR = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:flt1Device.TDIR  = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:flt2Device.TDIR  = "/gemini/GEM8.6/gmos/gmos/data" ;
+
+string $(top)cc:grAssembly.TDIR  = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:grADevice.TDIR   = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:grBDevice.TDIR   = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:grCDevice.TDIR   = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:grDDevice.TDIR   = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:grtDevice.TDIR   = "/gemini/GEM8.6/gmos/gmos/data" ;
+
+string $(top)cc:dtaAssembly.TDIR = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:dta1Device.TDIR  = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:dta2Device.TDIR  = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)cc:dta3Device.TDIR  = "/gemini/GEM8.6/gmos/gmos/data" ;
+
+string $(top)wfs:probeAssembly.TDIR  = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)wfs:probeBasDevice.TDIR = "/gemini/GEM8.6/gmos/gmos/data" ;
+string $(top)wfs:probePkoDevice.TDIR = "/gemini/GEM8.6/gmos/gmos/data" ;

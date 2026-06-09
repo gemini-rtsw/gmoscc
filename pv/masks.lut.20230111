@@ -1,0 +1,64 @@
+#
+# File: masks.lut
+#
+# Database of available GMOS masks.
+#
+# This file contains a list of all the NAMED masks known to GMOS.
+# This includes MOS masks. The file is updated frequently during runs
+# DO NOT REPLACE WITH VERSION FROM CVS
+#
+# name                 barcodeId        offset
+diffuser               69               0
+IFU                    10000004         250
+IFU-2                  10000007         250
+IFU-B                  10000008         250
+IFU-R                  10000009         250
+IFU-NS-2               10000010         250
+IFU-NS-B               10000011         250
+IFU-NS-R               10000012         250
+focus_array_2005       10000005         0
+0.75arcsec_2005        10000006         0
+focus_array_new        10005360         0
+focus_array_2009       10005370         0
+focus_array_GS         10005371         0
+eng_new_2006           10005361         0
+GN2006BE001-01         10005362         0
+GN2006BE001-02         10005363         0
+eng_wyman1_2009        10005372         0
+0.25arcsec             10005351         0
+0.5arcsec              10005352         0
+0.75arcsec             10005353         0
+1.0arcsec              10005354         0
+1.5arcsec              10005355         0
+2.0arcsec              10005356         0
+5.0arcsec              10005357         0
+0.15arcsec             10005365         0
+0.3arcsec              10005366         0
+NS0.5arcsec            10005367         0
+NS0.75arcsec           10005368         0
+NS1.0arcsec            10005369         0
+NS1.5arcsec            10005358         0
+NS2.0arcsec            10005359         0
+GN2016BQ028-01         11002801         0
+GN2018ASV051-01        10805101         0
+GN2017ASV051-07        10805107         0
+GN2018ASV051-02        10805102         0
+GN2020AQ231-01         10023101         0
+GN2021AQ222-01         10022201         0
+GN2021AQ222-02         10022202         0
+GN2021BQ107-01         11010701         0
+GN2021BQ315-01         11031501         0
+GN2021BQ219-01         11021901         0
+GN2021BQ219-02         11021902         0
+GN2021BQ219-03         11021903         0
+GN2021BQ219-04         11021904         0
+GN2021BQ315-02         11031502         0
+GN2021BQ107-02         11010702         0
+GN2022AQ308-01         10030801         0
+GN2022AQ309-01         10030901         0
+GN2022AQ309-02         10030902         0
+GN2022AQ309-03         10030903         0
+GN2022AQ222-10         10022210         0
+GN2022AQ222-11         10022211         0
+GN2022BQ113-02         11011302         0
+GN2022BQ113-01         11011301         0

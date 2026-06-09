@@ -1,0 +1,23 @@
+#
+# GMOS Components Controller Solid State Relays - ON
+#
+# Useage:
+#	pvload "$(version)/data/interlockTest.pv","top=gm:, ssr=0"
+#
+#
+long $(top)wfs:probePkoBrake     = 0; # SSR -  0
+long $(top)wfs:probeBasBrake     = 0; # SSR -  1
+long $(top)cc:mskCasBrake        = 0; # SSR -  2
+long $(top)cc:mskExtBrake        = 0; # SSR -  3
+long $(top)cc:atmEnpBrake        = 0; # SSR -  4
+long $(top)cc:atmExpBrake        = 0; # SSR -  5
+long $(top)cc:grUpValve          = 0; # SSR -  6
+long $(top)cc:grDownValve        = 0; # SSR -  7
+long $(top)cc:ap5b0              = 0; # SSR -  8
+long $(top)cc:ap5b1              = 0; # SSR -  9
+long $(top)cc:ap5b2              = 0; # SSR - 10
+long $(top)cc:ap5b3              = 0; # SSR - 11
+long $(top)cc:ap5b4              = 0; # SSR - 12
+long $(top)cc:ap5b5              = 0; # SSR - 13
+long $(top)cc:optsensorEnable    = 0; # SSR - 14
+long $(top)cc:sensorEnable       = 0; # SSR - 15

@@ -1,0 +1,10 @@
+#
+# Named positions for the GMOS mask gripper device.
+#
+#
+# name    target     index
+i4          0.0        4
+i5          0.0        5
+index       0.0        5
+grip        0.0        4
+release     0.0        5

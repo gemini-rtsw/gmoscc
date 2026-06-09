@@ -1,0 +1,54 @@
+#
+# File: gratings.lut
+#
+# Database of available GMOS gratings.
+#
+# This file contains a list of all the gratings known to GMOS,
+# whether fitted or not. Each time a new grating is purchased
+# it should be assigned two barcodes (one for each possible
+# orientation) and added to this list.
+#
+# Gratings whose barcodes start with 5000... in this table still
+# need to have a barcode assigned.
+#
+# Grating focus offsets have not been measured and are assumed
+# to be zero, as of 30 January 2001.
+#
+# New names suggested by Inger Jorgensen adopted on 22 Feb 2001.
+# Added new barcodes for B1200 and R600, IJ 2003may06
+#
+# Changed barcode for oldmirror, changed for spare mirror.
+# For seqexec purposes mirror has been renamed mirror_org and
+# the spare mirror has been renamed mirror.
+#
+# Original mirror re-installed, barcode names edited back to
+# mirror and mirror_spare.  KR 04/03/04
+#
+# Added entry for replacement B600 grating.  KR 18Mar2009
+#
+# Added entry for replacement R150 grating.  KR 05Nov2015
+
+# name            barcodeId     linesPerMm     blazeDir   focusOffset (microns)
+
+B1200+_G5301       30000013           1200          +1        0.0
+B1200-_G5301       30000014           1200          -1        0.0
+R831+_G5302        30000004            831          +1        0.0
+R831-_G5302        30000003            831          -1        0.0
+B600+_G5303        30000009            600          +1        0.0
+B600-_G5303        30000010            600          -1        0.0
+R400+_G5305        30000006            400          +1        0.0
+R400-_G5305        30000005            400          -1        0.0
+R150+_G5306        30000002            150          +1        0.0
+R150-_G5306        30000001            150          -1        0.0
+R600-_G5304        30000016            600          -1        0.0
+R600+_G5304        30000017            600          +1        0.0
+B600+_G5307        30000018            600          +1        0.0
+B600-_G5307        30000019            600          -1        0.0
+R150+_G5308        30000020            150          +1        0.0
+R150-_G5308        30000021            150          -1        0.0
+B480+_G5309        30000022            480          +1        0.0
+B480-_G5309        30000023            480          -1        0.0
+Dummy1             30000012              0           0       10.0
+Dummy2             30000015              0           0      -10.0
+mirror             30000008              0           0        0.0
+mirror_spare       30000007              0           0        0.0

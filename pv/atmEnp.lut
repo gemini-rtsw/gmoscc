@@ -1,0 +1,7 @@
+#
+# Named positions for the GMOS AtmDC entrance prism device
+#
+# name    target    index
+index       0.0      3
+park        0.0      0
+rotated   360.0      0

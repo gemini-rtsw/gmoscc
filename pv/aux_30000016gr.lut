@@ -1,0 +1,15 @@
+aux_grating
+# Grating B1200:
+# Stole these from B600 position 4 for now
+
+# Cell  Tilt    Steps
+
+2   0.0000000      92.3010 
+2   7.755         910.5
+2  26.025        2840
+2  40.231        4338.5
+2  52.912        5677
+2  65.000        6953
+2  77.069        8227
+2  89.745        9565
+

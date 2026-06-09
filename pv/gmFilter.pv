@@ -1,0 +1,68 @@
+#
+# GMOS filter assembly initialization
+#
+# This file is used by pvload to initialise the main filter assembly
+# parameters on startup. Any minor parameters not initialised here are
+# initialised in the devFilter.sch Capfast schematic.
+#
+
+#
+# Filter Assembly
+#
+long $(top)fltAssembly.E  =   0;  # In position switches are not broken
+
+#
+# Filter wheel 1
+#
+group {
+   double $(top)flt1Device.ACCL =       0.5;  # Acceleration in revs/sec/sec
+   double $(top)flt1Device.BLCO =     -0.25;  # Backlash compensation (0.0 for none)
+   long   $(top)flt1Device.BTMO =         0;  # Brake control timeout in 0.1 seconds (0=no brakes)
+   string $(top)flt1Device.EGU  =    "revs";  # Device units
+   double $(top)flt1Device.FIVL =      0.25;  # Final indexing velocity
+   long   $(top)flt1Device.IALG =         3;  # Index algorithm
+   double $(top)flt1Device.MRES =     200.0;  # Motor resolution in motor steps per revolution
+   double $(top)flt1Device.MDBD =     0.005;  # Motion deadband
+   double $(top)flt1Device.MRND =         2;  # Move to nearest whole step if 2
+   double $(top)flt1Device.PHLM =      15.0;  # Upper limit of travel in revs
+   double $(top)flt1Device.PLLM =     -15.0;  # Lower limit of travel in revs
+   long   $(top)flt1Device.PREC =         4;  # Display precision for motor position
+   long   $(top)flt1Device.PTMO =        30;  # Power control timeout in 0.1 seconds
+   long   $(top)flt1Device.UAPB =         1;  # Control power with auxilliary power bit (0/1)?
+   long   $(top)flt1Device.UBSB =         0;  # Monitor brake status bit (0/1)?
+   long   $(top)flt1Device.UEIP =         0;  # Use encoders if present (0/1)?
+# DISABLE POWER STATUS CHECK UNTIL FILTER ELECTRONICS PROBLEM FIXED
+   long   $(top)flt1Device.UPSB =         1;  # Monitor power status bit (0/1)?
+   double $(top)flt1Device.VBAS =      0.10;  # Base velocity in revs/sec
+   double $(top)flt1Device.VELO =      0.75;  # Default velocity in revs/sec
+   double $(top)flt1Device.VHLM =       2.0;  # Absolute maximum velocity in revs/sec
+   double $(top)flt1Device.VLLM =       0.1;  # Absolute minimum velocity in revs/sec
+}
+
+#
+# Filter wheel 2
+#
+group {
+   double $(top)flt2Device.ACCL =       0.5;  # Acceleration in revs/sec/sec
+   double $(top)flt2Device.BLCO =     -0.25;  # Backlash compensation (0.0 for none)
+   long   $(top)flt2Device.BTMO =         0;  # Brake control timeout in 0.1 seconds (0=no brakes)
+   string $(top)flt2Device.EGU  =    "revs";  # Device units
+   double $(top)flt2Device.FIVL =      0.25;  # Final indexing velocity
+   long   $(top)flt2Device.IALG =         3;  # Index algorithm
+   double $(top)flt2Device.MRES =     200.0;  # Motor resolution in motor steps per revolution
+   double $(top)flt2Device.MDBD =     0.005;  # Motion Deadband
+   double $(top)flt2Device.MRND =         2;  # Move to nearest whole step if 2
+   double $(top)flt2Device.PHLM =      15.0;  # Upper limit of travel in revs
+   double $(top)flt2Device.PLLM =     -15.0;  # Lower limit of travel in revs
+   long   $(top)flt2Device.PREC =         4;  # Display precision for motor position
+   long   $(top)flt2Device.PTMO =        30;  # Power control timeout in 0.1 seconds
+   long   $(top)flt2Device.UAPB =         1;  # Control power with auxilliary power bit (0/1)?
+   long   $(top)flt2Device.UBSB =         0;  # Monitor brake status bit (0/1)?
+   long   $(top)flt2Device.UEIP =         0;  # Use encoders if present (0/1)?
+# DISABLE POWER STATUS CHECK UNTIL FILTER ELECTRONICS PROBLEM FIXED
+   long   $(top)flt2Device.UPSB =         1;  # Monitor power status bit (0/1)?
+   double $(top)flt2Device.VBAS =      0.10;  # Base velocity in revs/sec
+   double $(top)flt2Device.VELO =      0.75;  # Default velocity in revs/sec
+   double $(top)flt2Device.VHLM =       2.0;  # Absolute maximum velocity in revs/sec
+   double $(top)flt2Device.VLLM =       0.1;  # Absolute minimum velocity in revs/sec
+}

@@ -1,0 +1,73 @@
+#
+# File: masks.lut
+#
+# Database of available GMOS masks.
+#
+# This file contains a list of all the NAMED masks known to GMOS.
+# This includes MOS masks. The file is updated frequently during runs
+# DO NOT REPLACE WITH VERSION FROM CVS
+#
+# name                 barcodeId        offset
+diffuser               69               0
+IFU                    10000004         250
+IFU-2                  10000007         250
+IFU-B                  10000008         250
+IFU-R                  10000009         250
+IFU-NS-2               10000010         250
+IFU-NS-B               10000011         250
+IFU-NS-R               10000012         250
+focus_array_2005       10000005         0
+0.75arcsec_2005        10000006         0
+focus_array_new        10005360         0
+focus_array_2009       10005370         0
+focus_array_GS         10005371         0
+eng_new_2006           10005361         0
+GN2006BE001-01         10005362         0
+GN2006BE001-02         10005363         0
+eng_wyman1_2009        10005372         0
+0.25arcsec             10005351         0
+0.5arcsec              10005352         0
+0.75arcsec             10005353         0
+1.0arcsec              10005354         0
+1.5arcsec              10005355         0
+2.0arcsec              10005356         0
+5.0arcsec              10005357         0
+0.15arcsec             10005365         0
+0.3arcsec              10005366         0
+NS0.5arcsec            10005367         0
+NS0.75arcsec           10005368         0
+NS1.0arcsec            10005369         0
+NS1.5arcsec            10005358         0
+NS2.0arcsec            10005359         0
+GN2018ASV051-01        10805101         0
+GN2017ASV051-07        10805107         0
+GN2018ASV051-02        10805102         0
+GN2023AQ327-09         10032709         0
+GN2023AQ327-10         10032710         0
+GN2023AQ327-12         10032712         0
+GN2023AQ327-13         10032713         0
+GN2023AQ327-14         10032714         0
+GN2023AQ327-15         10032715         0
+GN2023AQ327-16         10032716         0
+GN2023AQ327-17         10032717         0
+GN2023AQ327-06         10032706         0
+GN2023AQ327-07         10032707         0
+GN2023AQ327-08         10032708         0
+GN2023AQ327-18         10032718         0
+GN2023AQ327-19         10032719         0
+GN2023AQ327-20         10032720         0
+GN2023AQ117-01         10011701         0
+GN2023BQ118-02         11011802         0
+GN2024ALP207-01        10220701         0
+GN2024AQ324-01         10032401         0
+GN2024AQ324-02         10032402         0
+GN2024AQ324-03         10032403         0
+GN2024AQ324-04         10032404         0
+GN2024AQ324-05         10032405         0
+GN2024AQ324-06         10032406         0
+GN2024ALP207-03        10220703         0
+GN2024ALP207-02        10220702         0
+GN2024AFT212-02        10321202         0
+GN2024BQ208-01         11020801         0
+GN2024BQ306-01         11030601         0
+GN2024BQ234-01         11023401         0

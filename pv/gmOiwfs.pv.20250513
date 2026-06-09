@@ -198,7 +198,6 @@ group {
 # 2023 Jun 05 B0 -1.73e-01 -> -1.54495E-01, CMV 
 # 2024 Nov 15 Changed A0 2.10727E-01 -> 1.98061E-01 
 # 2024 Nov 15 Changed B0 -1.54495E-01 -> -7.08907E-02
-# 2025 May 13 Updated fine probemapping
 #
 #group {
 #   double $(top)probeMap.A      =  1.98061E-01;     # A0
@@ -216,18 +215,18 @@ group {
 #}
 
 group {
-   double $(top)probeMap.A      =  9.12704E-02;     # A0
-   double $(top)probeMap.B      =  9.92174E-01;     # A1
-   double $(top)probeMap.C      =  3.40141E-05;     # A2
-   double $(top)probeMap.D      =  4.31717E-03;     # A3
-   double $(top)probeMap.E      = -3.80004E-05;     # A4
-   double $(top)probeMap.F      =  2.46414E-05;     # A5
-   double $(top)probeMap.G      =  7.07817E-02;     # B0
-   double $(top)probeMap.H      =  9.97294E-03;     # B1
-   double $(top)probeMap.I      = -4.59260E-05;     # B2
-   double $(top)probeMap.J      =  9.96916E-01;     # B3
-   double $(top)probeMap.K      = -1.57950E-05;     # B4
-   double $(top)probeMap.L      = -3.05106E-05;     # B5
+   double $(top)probeMap.A      =  0.00000E+00;     # A0
+   double $(top)probeMap.B      =  1.00000E+00;     # A1
+   double $(top)probeMap.C      =  0.00000E+00;     # A2
+   double $(top)probeMap.D      =  0.00000E+00;     # A3
+   double $(top)probeMap.E      =  0.00000E+00;     # A4
+   double $(top)probeMap.F      =  0.00000E+00;     # A5
+   double $(top)probeMap.G      =  0.00000E+00;     # B0
+   double $(top)probeMap.H      =  0.00000E+00;     # B1
+   double $(top)probeMap.I      =  0.00000E+00;     # B2
+   double $(top)probeMap.J      =  1.00000E+00;     # B3
+   double $(top)probeMap.K      =  0.00000E+00;     # B4
+   double $(top)probeMap.L      =  0.00000E+00;     # B5
 }
 
 # Pre-load engineering targets

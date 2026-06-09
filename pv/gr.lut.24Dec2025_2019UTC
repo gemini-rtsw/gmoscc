@@ -1,0 +1,11 @@
+grating
+#
+# Database of current GMOS grating installation
+
+# Time : 2025/12/24 20:19:48.007 (UTC)
+# Barcode  Turret Pos  Tilt
+
+  30000008         0   65.00
+  30000026         1   53.80
+  30000022         2   55.09
+  30000013         3   44.89
