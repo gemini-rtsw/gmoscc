@@ -25,26 +25,39 @@ the produced objects/libraries byte-for-byte.
 - `polaris/` — (not in git) files copied from the Solaris host: the GEM8.6
   tree pieces, VxWorks target headers, generated `config/`, etc.
 
+## polaris inventory (July 2026)
+
+- Tornado 2.2 at `WIND_BASE=/usr/software/dev/packages/vxworks/tornado2.2/ppc`,
+  host arches `sun4-solaris2` and `x86-win32`.
+- `ccppc -v`: `gcc version gcc-2.96 (2.96+) 19990621 AltiVec VxWorks 5.5`.
+  Same toolchain generation as the ANL Linux rebuild, but the ANL build
+  carries Wind River's cumulative patches (Jan 2012 sources, banner
+  `2.96+ MW/LM` + patch list) while polaris appears to be unpatched GA.
+  The byte-compare below decides whether that matters.
+- EPICS base 3.13.9 GEM8.6 at
+  `/usr/software/dev/packages/epics/epics3.13.9GEM8.6` (`HOST_ARCH=solaris`);
+  `applSetup.pl`, `snc`, `dbExpand` live in `base/bin/solaris`.
+- `e2db` is an EPICS **extension** (`extensions/bin/solaris/e2db`) —
+  rebuildable from source. The only commercial Solaris-only tool is
+  Capfast's `sch2edif` (`/home/p3/wcs/bin/sch2edif`).
+- `adl2dl2.4` is not installed on polaris — already out of the build.
+- `GEM8.6` is `alias GEM8.6 source ~/.gem8.6`.
+- `/gemini/external/GEM8.6` (slalib/timelib/astlib) is only ~100 MB.
+
 ## Status / open items
 
 - [x] ANL Linux `ccppc` toolchain obtained; `PPC604gnu/libgcc.a` present.
 - [x] Toolchain smoke-tested in the container.
-- [ ] **Confirm Tornado version on polaris.** The ANL binaries are
-  Tornado 2.2 / gcc 2.96. If polaris runs an older Tornado (gcc 2.7.2),
-  codegen will differ and we must rebuild that exact gcc from WRS sources
-  instead.
-- [ ] Copy VxWorks target headers (`$WIND_BASE/target/h`) from polaris —
-  required for compiling anything that includes vxWorks headers.
-- [ ] Copy / port the GEM8.6 tree (EPICS base + config templates +
-  `applSetup.pl` + gemini dbd files + slalib/timelib/astlib).
-- [ ] Rebuild EPICS host tools (`snc`, `dbExpand`, `dbst`, ...) for a Linux
-  HOST_ARCH — needs EPICS base sources from the GEM8.6 tree.
-- [ ] Capfast (`e2db`/`sch2edif`): commercial Solaris binary, compiles the
-  170 `capfast/*.sch` schematics to `.db` at build time. Plan: generate the
-  `.db` files once on polaris, commit them, and make the Linux build treat
-  them as sources.
-- [ ] `adl2dl2.4`: same idea (generate-and-commit) unless a Linux binary
-  exists.
+- [x] Confirm Tornado version on polaris — Tornado 2.2 / gcc 2.96 (see
+  patch-level caveat above).
+- [ ] Copy from polaris: `~/.gem8.6`, generated `config/` from a build dir,
+  `$WIND_BASE/target/h` (+ `target/config`), the epics3.13.9GEM8.6 tree
+  (base + extensions), `/gemini/external/GEM8.6`.
+- [ ] Rebuild EPICS host tools (`snc`, `dbExpand`, `e2db`, ...) for a Linux
+  HOST_ARCH — needs the EPICS base/extensions sources from polaris.
+- [ ] Capfast `sch2edif` (commercial, Solaris-only): generate the `.edif`
+  (or `.db`) from the 170 `capfast/*.sch` once on polaris, commit them, and
+  make the Linux build treat them as sources.
 - [ ] Byte-compare a polaris build vs a container build of the same tag.
 
 ## Usage (so far)
