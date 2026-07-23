@@ -223,10 +223,10 @@
 #include <stdio.h>
 #include <math.h>
 
-#ifdef SOLARIS
-#define logMsg(fmt,a,b,c,d,e,f)  printf(fmt, a, b, c, d, e, f)
-#else
+#ifdef vxWorks
 #include <logLib.h>
+#else
+#define logMsg(fmt,a,b,c,d,e,f)  printf(fmt, a, b, c, d, e, f)
 #endif
 
 #include "gmOiwfsCalc.h"
