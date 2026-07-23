@@ -11,7 +11,11 @@ set -e
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 TOP="$(cd "$HERE/../.." && pwd)"
-POLARIS="${GMOSCC_BUILDENV:-$HERE/polaris}"
+# The polaris trees live OUTSIDE the repo by default so local runs of the CI
+# scripts (which tarball the whole checkout) stay small. GMOSCC_BUILDENV
+# overrides; a repo-local polaris/ (gitignored) also works.
+POLARIS="${GMOSCC_BUILDENV:-$HOME/work/gmoscc-buildenv/polaris}"
+[ -d "$POLARIS" ] || POLARIS="$HERE/polaris"
 
 IMAGE_FLAVOR=el9
 MODE=build
@@ -31,13 +35,11 @@ case "$IMAGE_FLAVOR" in
     *) echo "unknown --image '$IMAGE_FLAVOR' (el9 or debian)" >&2; exit 1 ;;
 esac
 
-for d in "$POLARIS/usr/software" "$POLARIS/gemini/GEM8.6/slalib"; do
-    if [ ! -d "$d" ]; then
-        echo "ERROR: build environment tree missing: $d" >&2
-        echo "Unpack the polaris tarballs first — see tools/linux-build/README.md" >&2
-        exit 1
-    fi
-done
+if [ ! -d "$POLARIS/usr/software" ]; then
+    echo "ERROR: build environment tree missing: $POLARIS/usr/software" >&2
+    echo "Unpack the polaris tarballs first — see tools/linux-build/README.md" >&2
+    exit 1
+fi
 
 if ! docker image inspect "$IMAGE" > /dev/null 2>&1; then
     echo "Building Docker image $IMAGE..."
@@ -50,17 +52,13 @@ if [ "$CLEAN" = yes ]; then
         && find . -type d -name 'O.*' -prune -exec rm -rf {} +)
 fi
 
-# Until the capfast .db outputs are committed to the repo, seed them from the
-# polaris reference build (sch2edif is Solaris-only; see README.md).
+# Seed the capfast build dir with the committed .db files (generated on
+# polaris by the licensed Capfast sch2edif; see README.md). make's
+# chained-intermediate logic then treats them as up to date.
 if [ ! -f "$TOP/capfast/O.Linux/gmosCcTop.db" ]; then
-    SEED="$POLARIS/home/gemvx/hstecher/gmoscc-V7-16/capfast/O.solaris"
-    if [ -d "$SEED" ]; then
-        echo "Seeding capfast/O.Linux with polaris-built .db files..."
-        mkdir -p "$TOP/capfast/O.Linux"
-        cp "$SEED"/*.db "$TOP/capfast/O.Linux/" && touch "$TOP/capfast/O.Linux"/*.db
-    else
-        echo "WARNING: no capfast .db seed found; the capfast dir will fail" >&2
-    fi
+    echo "Seeding capfast/O.Linux from committed capfast/db/..."
+    mkdir -p "$TOP/capfast/O.Linux"
+    cp "$TOP/capfast/db"/*.db "$TOP/capfast/O.Linux/" && touch "$TOP/capfast/O.Linux"/*.db
 fi
 
 TTY=()

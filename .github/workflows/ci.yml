@@ -1,0 +1,28 @@
+name: Build
+on:
+  push:
+    branches: [main, REL-4693]
+  pull_request:
+    branches: [main]
+  # Manual runs (Actions tab -> Build -> Run workflow), any branch
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        # gmoscc cross-compiles for vxWorks; the host EL only needs to run the
+        # 32-bit Tornado tools and the GEM8.6 host tools — EL9 only.
+        el: ['9']
+    uses: gemini-rtsw/gemini-rtsw-ci/.github/workflows/ci.yml@main
+    with:
+      scripts_dir: gemini-rtsw-ci
+      el_version: ${{ matrix.el }}
+
+  # Rebuilds rpm-repo:latest ONCE after all EL legs have pushed their
+  # scratch tags. Without this job the RPM never lands in the served repo.
+  publish:
+    needs: build
+    uses: gemini-rtsw/gemini-rtsw-ci/.github/workflows/publish.yml@main
+    secrets: inherit

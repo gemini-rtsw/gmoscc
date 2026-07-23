@@ -1,0 +1,10 @@
+--- a/usr/software/dev/packages/epics/epics3.13.9GEM8.6/base/config/CONFIG_SITE.Host.Linux
++++ b/usr/software/dev/packages/epics/epics3.13.9GEM8.6/base/config/CONFIG_SITE.Host.Linux
+@@ -4,5 +4,5 @@
+ # Site Specific Configuration Information
+ # Only the local epics system manager should modify this file
+ 
+-GCC = /usr/local/bin/gcc
+-G++ = /usr/local/bin/g++
++# Use gcc/g++ from PATH (CONFIG.Host.Linux defaults); the old hardcoded
++# /usr/local/bin/gcc predates modern distros.

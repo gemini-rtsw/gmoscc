@@ -1,19 +1,21 @@
 # Build products (mirrors .cvsignore; the UAE build installs into the
-# checkout itself: APPLIC_INSTALL = APPLIC_TOP)
+# checkout itself: APPLIC_INSTALL = APPLIC_TOP). Anchored to the repo top —
+# tools/linux-build/gemlibs deliberately contains committed bin/lib/include
+# trees.
 .applTop
-config/
-bin/
-lib/
-include/
-dbd/
-data/
-javalib/
+/config/
+/bin/
+/lib/
+/include/
+/dbd/
+/data/
+/javalib/
 O.*/
 *.log
 Distfile
 cad.rc
-local.vws
-resource.def
+/local.vws
+/resource.def
 UAE.dist
 *%
 *~

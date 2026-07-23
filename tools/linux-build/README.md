@@ -27,18 +27,23 @@ builds the Docker image automatically. A full build takes a few minutes.
 
 ### One-time setup of the build environment
 
-The build needs ~450 MB of trees copied from polaris (proprietary — not in
-git). The tarballs currently live in `~/work/gmoscc-polaris/`; unpack them:
+The build needs the EPICS/Tornado/gem-libs trees copied from polaris
+(proprietary — not in git). The tarballs live in `~/work/gmoscc-polaris/`;
+unpack them **outside the repo** (default location
+`~/work/gmoscc-buildenv/polaris`, override with `GMOSCC_BUILDENV`):
 
 ```sh
-cd tools/linux-build && mkdir -p polaris && cd polaris
-for f in epics3139gem86 wind-target gem-libs gem-config gemini-external; do
+mkdir -p ~/work/gmoscc-buildenv/polaris && cd ~/work/gmoscc-buildenv/polaris
+for f in epics3139gem86 wind-target gem-libs gem-config; do
     tar xzf ~/work/gmoscc-polaris/$f.tar.gz
 done
-cd .. && ./fetch-gnu-tools.sh
+cd <repo>/tools/linux-build && ./fetch-gnu-tools.sh
 tar xzf gnu-tools.tor2_2-ppc-rhel5.tgz \
-    -C polaris/usr/software/dev/packages/vxworks/tornado2.2/ppc
+    -C ~/work/gmoscc-buildenv/polaris/usr/software/dev/packages/vxworks/tornado2.2/ppc
 ```
+
+(Alternatively skip all of this and install the two rpm-repo packages —
+see the CI section.)
 
 Then apply the local modifications listed under
 [Modifications to the polaris copy](#modifications-to-the-polaris-copy),
@@ -165,38 +170,54 @@ deltas. If bit-exactness is ever required, Wind River's GA-2002 GCC sources
 (available to vxWorks licensees) can be rebuilt for Linux with ANL's build
 scripts.
 
-## CI integration (gemini-rtsw-ci) — plan
+## CI integration (gemini-rtsw-ci)
 
-The gemini-rtsw-ci pipeline builds a `.spec` inside `rockylinux:<el>` with
-dependencies pulled from the `ghcr.io/gemini-rtsw/rpm-repo` image, publishes
-the RPM back to rpm-repo, and uploads it as an Actions artifact. gmoscc fits
-this natively once the build environment is packaged as RPMs; the EL9 image
-in this directory proves the build works on the pipeline's OS.
+gmoscc is wired into the standard pipeline: the `gemini-rtsw-ci` submodule +
+`.github/workflows/ci.yml` (matrix `el: ['9']`) build `gmoscc.spec` inside
+`rockylinux:9` on every push, publish the RPM to rpm-repo, and upload it as
+an Actions artifact.
 
-Plan (in order):
+How the pieces fit:
 
-1. **Commit the 9 capfast `.db` files** to the repo (after the V7-17
-   comparison confirms them) so CI needs no polaris seed.
-2. **Package the build environment as three dependency RPMs** (specs can
-   live in this directory; built once from the polaris tarballs, published
-   to rpm-repo via `upload-rpm.sh` — they essentially never change):
-   - `gem-tornado22-linux` (~90 MB): ANL cross-tools + `$WIND_BASE/target/{h,config}`
-     → `/usr/software/dev/packages/vxworks/tornado2.2/ppc`
-   - `gem-epics3.13.9GEM8.6` (~300 MB): the EPICS tree with `bin/Linux` host
-     tools prebuilt → `/usr/software/dev/packages/epics/epics3.13.9GEM8.6`
-   - `gem86-deplibs` (~100 MB): astlib/slalib/timelib → `/gemini/GEM8.6`
-3. **Add `gmoscc.spec`**: `BuildRequires` the three; `%build` = `.applTop` +
-   `applSetup.pl` + `gmake`; `%install` packages the IOC tree
-   (`bin/ppc604_long`, `dbd`, `data`, startup) under a versioned prefix.
-   Then the standard submodule + `ci.yml` (matrix `el: ['9']`) works
-   unchanged, and every push produces a downloadable build.
-4. **Deploy story** (later): today's deploy is rdist-over-NFS from pisces.
-   Either install the RPM on pisces and keep `setgmos` symlinks, or teach
-   `deploy.sh` to take a CI artifact. Needs the `APPLIC_INSTALL` re-homing
-   question answered (the IOC reads that path at boot).
+- **Dependency RPMs** (in rpm-repo, built once by `rpm/build-dep-rpms.sh`
+  from the polaris trees — they essentially never change, and any sibling
+  GEM8.6 system can BuildRequire them):
+  - `gem-tornado22-linux`: ANL cross-tools + `$WIND_BASE/target/{h,config}`
+    → `/usr/software/dev/packages/vxworks/tornado2.2/ppc`
+  - `gem-epics3139gem86`: the EPICS tree (config/rules, headers, dbd,
+    templates, ppc604_long artifacts, Linux host tools; sources trimmed —
+    they stay in the escrow tarballs)
+    → `/usr/software/dev/packages/epics/epics3.13.9GEM8.6`
+  - `gem86-deplibs`: astlib/slalib/timelib → `/gemini/GEM8.6`
+
+  **Versioning convention**: Gemini runs several GEM software-tree
+  generations in parallel. Packages tied to one carry it in their NAME
+  (`gem86-*`, `...gem86`; a future GEM8.4 set would be `gem84-*`) and
+  install under generation-specific paths (`/gemini/GEM8.6`,
+  `epics3.13.9GEM8.6`), so different generations are distinct packages
+  that co-install without conflicts. Tornado is generation-neutral and
+  stays `gem-tornado22-linux`.
+- **Committed in this repo**: the 9 capfast `.db` files (`capfast/db/`),
+  so CI needs nothing from polaris.
+- **`gmoscc.spec`** (repo root): `%build` = `.applTop` + `applSetup.pl`
+  (without `adl`) + `gmake`; `%install` mirrors the classic rdist payload
+  (`bin/ppc604_long` minus Distfile, `bin/Linux`, `include`, `dbd`, `data`,
+  `RELEASE.NOTES`, `test`) under `/gemini/GEM8.6/gmos/V7-xx` — the same
+  tree rdist used to ship to pisces, ready for the `setgmos` symlink flip.
+
+Still open:
+
+- **GHCR package access**: the gmoscc repo needs Write on the `rpm-repo`
+  package (github.com/orgs/gemini-rtsw/packages/container/rpm-repo/settings
+  → Manage Actions access) or the pipeline fails pulling/pushing.
+- **Deploy story**: install the RPM on pisces and keep `setgmos`, or teach
+  `deploy.sh` to take a CI artifact. Needs the `APPLIC_INSTALL` re-homing
+  question answered (the IOC reads that path at boot; a CI build bakes the
+  rpmbuild path, so a deployed CI RPM is not yet bootable — verification
+  builds only for now).
 
 The proprietary trees can't be rebuilt from public sources, so the dep RPMs
-in rpm-repo (org-private GHCR) become their canonical home; the original
+in rpm-repo (org-private GHCR) are their canonical home; the original
 tarballs and the QEMU-Solaris image are the escrow copies.
 
 ## Files
@@ -205,6 +226,8 @@ tarballs and the QEMU-Solaris image are the escrow copies.
 - `Dockerfile.el9` / `Dockerfile` — build images (EL9 canonical, Debian alt)
 - `gem-env.sh` — build environment variables (sourced in the container)
 - `fetch-gnu-tools.sh` — downloads the ANL cross-toolchain (checksum-pinned)
+- `rpm/` — specs + builder for the three dependency RPMs
 - `patches/` — patches applied to the polaris tree copy
-- `polaris/` (git-ignored) — the copied Solaris trees
-- `polaris-v716/`, `work/` (git-ignored) — comparison reference / scratch
+- `../../gmoscc.spec`, `../../.github/workflows/ci.yml` — pipeline wiring
+- `~/work/gmoscc-buildenv/` (outside the repo) — the copied Solaris trees,
+  V7-16 comparison objects, and build scratch
