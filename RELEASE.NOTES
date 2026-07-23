@@ -1,3 +1,24 @@
+V7-17 July 2026 hstecher
+    - Implement REL-4969 Tolerate transient moving flag in depoweringState (fixes DTA lost index on stop, GNFR-75447/75464)
+M src/deviceControl/deviceControl.h         "add MVCounter to DEVICE_CONTROL_PRIVATE"
+M src/deviceControl/deviceControlRecord.c   "tolerate transient moving flag during the power-off window"
+
+    - REL-4693 Linux cross-build pilot (build gmoscc on Linux instead of Solaris/polaris)
+M src/gmos/gmOiwfsCalc.c                    "key host/target ifdef on vxWorks instead of SOLARIS"
+A tools/linux-build/                        "Dockerized Linux build environment, see its README"
+
+V7-16 June 2026 hstecher
+    - Implement REL-4876 Add TOCounter to track device timeout events, abort after 5
+M src/deviceControl/deviceControl.h
+M src/deviceControl/deviceControlRecord.c
+
+    - Debug logging for encoder state in OMS scan task and movingState mutex/power-fail paths
+M src/deviceControl/devDcOms844.c
+M src/deviceControl/deviceControlRecord.c
+
+    - REL-4944 Commit all GMOS CC lut and pv files from V7-16/data to the github repo
+    - Added README build/deploy instructions and hardened tools/deploy.sh
+
 V7-15 March 2022 hstecher
     - Implement REL-3974 Increase GMOS CC DTA start timeout (this will change the start timeout for all motors)
 M src/deviceControl/deviceControlRecord.c   #define DDR_START_TIMEOUT        100
