@@ -1,0 +1,12 @@
+--- a/usr/software/dev/packages/epics/epics3.13.9GEM8.6/extensions/src/edif/e2cDefParse.y
++++ b/usr/software/dev/packages/epics/epics3.13.9GEM8.6/extensions/src/edif/e2cDefParse.y
+@@ -10,6 +10,9 @@
+ #include "e2c.h"
+ #include "e2cDefScan.h"
+ 
++extern int yylineno;
++extern int erroryy(int line, char *string);
++
+ #define BIG_TOKEN(typ) \
+ 	(big = (struct small_token *) newToken(BIG, (typ)))
+ #define SMALL_TOKEN(typ) \

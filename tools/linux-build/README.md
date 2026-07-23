@@ -50,15 +50,43 @@ the produced objects/libraries byte-for-byte.
 - [x] Toolchain smoke-tested in the container.
 - [x] Confirm Tornado version on polaris — Tornado 2.2 / gcc 2.96 (see
   patch-level caveat above).
-- [ ] Copy from polaris: `~/.gem8.6`, generated `config/` from a build dir,
-  `$WIND_BASE/target/h` (+ `target/config`), the epics3.13.9GEM8.6 tree
-  (base + extensions), `/gemini/external/GEM8.6`.
-- [ ] Rebuild EPICS host tools (`snc`, `dbExpand`, `e2db`, ...) for a Linux
-  HOST_ARCH — needs the EPICS base/extensions sources from polaris.
-- [ ] Capfast `sch2edif` (commercial, Solaris-only): generate the `.edif`
-  (or `.db`) from the 170 `capfast/*.sch` once on polaris, commit them, and
-  make the Linux build treat them as sources.
+- [x] polaris trees copied and unpacked under `polaris/` (EPICS
+  3.13.9GEM8.6, `$WIND_BASE/target/{h,config}`, `/gemini/external/GEM8.6`,
+  `~/.gem8.6`, a generated `config/`).
+- [x] EPICS host tools rebuilt for HOST_ARCH=Linux: `dbExpand`, `snc`,
+  `macTest`, `antelope`, `e_flex`, `e2db` (+ e2sr, edb_filter). Script
+  tools seeded from `bin/solaris` (perl/sh — host-independent). Build
+  invocation needs `CROSS_COMPILER_TARGET_ARCHS= SHRLIB_VERSION=`.
+  One source patch: `patches/01-edif-e2cDefParse-yylineno.patch`.
+- [x] `applSetup.pl` + full `gmake` run in the container against a copy of
+  this repo. Cross-compile works: gmosLib.a, deviceControlLib.a,
+  gemini.Support, all snc CARs built for ppc604_long; macTest generated
+  all startup scripts; dbExpand built gemini.dbd. Repo fix: gmOiwfsCalc.c
+  SOLARIS→vxWorks ifdef.
+- [ ] Copy `/gemini/GEM8.6/{astlib,slalib,timelib}` from polaris — last 3
+  vx objects (gmSeqTracking, devFilterAss, devGratingAss) need their
+  headers, final links need their ppc604_long libs.
+- [ ] Capfast `sch2edif` (commercial, Solaris-only): get the generated
+  `.edf` from a polaris build (`capfast/O.solaris`); the Linux `e2db`
+  then does `.edf → .db` in-build. Long term: commit the `.edf` files.
+- [ ] `adl2dl` is missing on polaris too — `.dl` generation fails there as
+  well (ignored); the `adl` dir install step needs a decision (skip dir or
+  commit `.dl` files).
 - [ ] Byte-compare a polaris build vs a container build of the same tag.
+
+## Local modifications to the polaris copy
+
+Everything under `polaris/` is a copy of the Solaris trees, modified as
+follows (re-apply after re-extracting the tarballs):
+
+1. ANL gnu-tools extracted into `$WIND_BASE/host/x86-linux`.
+2. `base/bin/Linux` + `extensions/bin/Linux` seeded with the non-ELF
+   (script) tools from the corresponding `bin/solaris`.
+3. `patches/01-edif-e2cDefParse-yylineno.patch` applied (declare
+   yylineno/erroryy in the yacc grammar's prologue).
+4. `dev/solaris/bin/perl` symlink → `/usr/bin/perl` (applSetup.pl shebang).
+5. Host-tool subdirs rebuilt for Linux (adds `O.Linux`, `bin/Linux`,
+   `lib/Linux`, `include/os/Linux` — additive only).
 
 ## Usage (so far)
 
