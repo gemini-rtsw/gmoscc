@@ -1,0 +1,40 @@
+# EL9 variant of the gmoscc Linux build environment — matches the OS family
+# used by the gemini-rtsw-ci pipeline (build_rpm.sh runs rockylinux:<el>).
+FROM rockylinux:9
+
+RUN dnf install -y dnf-plugins-core \
+    && dnf config-manager --set-enabled crb \
+    && dnf install -y \
+    glibc.i686 \
+    make \
+    gcc \
+    gcc-c++ \
+    perl \
+    tcsh \
+    file \
+    rsync \
+    flex \
+    bison \
+    byacc \
+    diffutils \
+    && dnf clean all \
+    && ln -s /usr/bin/make /usr/local/bin/gmake \
+    && mkdir -p /export /usr/software \
+    && ln -s /usr/software /export/software \
+    # GEM8.6 CONFIG_SITE.Host.Linux hardcodes /usr/local/bin/gcc
+    && ln -s /usr/bin/gcc /usr/local/bin/gcc \
+    && ln -s /usr/bin/g++ /usr/local/bin/g++ \
+    # old lex library (-ll) used by the snc link line; EL8 flex may not ship
+    # libl.a, so provide a yywrap stub under that name if it's absent
+    && if [ ! -e /usr/lib64/libl.a ]; then \
+         echo "int yywrap(void){return 1;}" > /tmp/yywrap.c \
+         && gcc -c -o /tmp/yywrap.o /tmp/yywrap.c \
+         && ar rc /usr/lib64/libl.a /tmp/yywrap.o \
+         && rm -f /tmp/yywrap.[co]; \
+       fi
+
+ENV WIND_BASE=/usr/software/dev/packages/vxworks/tornado2.2/ppc \
+    WIND_HOST_TYPE=x86-linux
+
+WORKDIR /build
+CMD ["/bin/bash"]

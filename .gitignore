@@ -1,0 +1,19 @@
+# Build products (mirrors .cvsignore; the UAE build installs into the
+# checkout itself: APPLIC_INSTALL = APPLIC_TOP)
+.applTop
+config/
+bin/
+lib/
+include/
+dbd/
+data/
+javalib/
+O.*/
+*.log
+Distfile
+cad.rc
+local.vws
+resource.def
+UAE.dist
+*%
+*~

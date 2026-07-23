@@ -4,6 +4,12 @@ EPICS-based control software for the Gemini Multi-Object Spectrograph (GMOS) con
 
 ---
 
+> **Building on Linux (pilot):** gmoscc also builds on any Linux host with
+> Docker — no Solaris required — via `./tools/linux-build/build.sh`. See
+> [tools/linux-build/README.md](tools/linux-build/README.md). The
+> Solaris/polaris flow below remains the production build path until the
+> Linux build is validated and deployed.
+
 ## Build & Deploy Instructions
 
 ### Prerequisites
