@@ -1490,6 +1490,7 @@ static long depoweringState
         DEBUG(DDR_MSG_FULL,
               "<%ld> %s:depoweringState: from osta:%d\n", pdr->osta);
         pdr->osta = DDR_DEPOWERING;
+        pPriv->MVCounter = 0;
 
 
         /*
@@ -1557,15 +1558,29 @@ static long depoweringState
 
 
     /*
-     *  Abort the operation immediately if the moving flag suddenly comes alive.
+     * hstecher (REL-4969):
+     * The moving flag coming alive here is usually the axis settling as
+     * the power drops, or a stale flag from a stopped motion with no done
+     * interrupt, which omsScanTask only clears after 20 scans of unchanged
+     * position ("motion stopped without done flag").  Such a flag causes
+     * at most a couple of record processings, so tolerate a few sightings
+     * and fall through to the power status checks below to let the command
+     * finish.  Sustained real motion keeps re-processing the record and
+     * still aborts on the 5th consecutive sighting.
      */
 
     if ( pPriv->moving )
     {
-        SET_ERR_MSG("Unexpected motion while depowering");
-        DEBUG(DDR_MSG_ERROR, 
-              "<%ld> %s:depoweringState:moving flag set after powering down%c\n", ' ');
-        return abortingState (pdr, 0);
+        pPriv->MVCounter++;
+        if ( pPriv->MVCounter >= 5 )
+        {
+            pPriv->MVCounter = 0;
+            SET_ERR_MSG("Unexpected motion while depowering");
+            DEBUG(DDR_MSG_ERROR,
+                  "<%ld> %s:depoweringState:moving flag set after powering down%c\n", ' ');
+            return abortingState (pdr, 0);
+        }
+        printf("depoweringState: MVCounter : %ld \n", pPriv->MVCounter);
     }
 
 
@@ -2969,6 +2984,7 @@ static long initRecord
     pPriv->callback = FALSE;
     pPriv->timeout = FALSE;
     pPriv->TOCounter = 0;
+    pPriv->MVCounter = 0;
     pPriv->encoder = 0;
     pPriv->badRead = FALSE;
     pPriv->encoderDeadband = 1;
