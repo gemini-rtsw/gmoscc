@@ -63,16 +63,23 @@ the produced objects/libraries byte-for-byte.
   gemini.Support, all snc CARs built for ppc604_long; macTest generated
   all startup scripts; dbExpand built gemini.dbd. Repo fix: gmOiwfsCalc.c
   SOLARIS→vxWorks ifdef.
-- [ ] Copy `/gemini/GEM8.6/{astlib,slalib,timelib}` from polaris — last 3
-  vx objects (gmSeqTracking, devFilterAss, devGratingAss) need their
-  headers, final links need their ppc604_long libs.
-- [ ] Capfast `sch2edif` (commercial, Solaris-only): get the generated
-  `.edf` from a polaris build (`capfast/O.solaris`); the Linux `e2db`
-  then does `.edf → .db` in-build. Long term: commit the `.edf` files.
-- [ ] `adl2dl` is missing on polaris too — `.dl` generation fails there as
-  well (ignored); the `adl` dir install step needs a decision (skip dir or
-  commit `.dl` files).
-- [ ] Byte-compare a polaris build vs a container build of the same tag.
+- [x] `/gemini/GEM8.6/{astlib,slalib,timelib}` copied — all of `src/`
+  (including gmSeqTracking, devFilterAss, devGratingAss) now compiles.
+- [x] Capfast: polaris `.db` outputs (from `capfast/O.solaris`) seeded
+  into `capfast/O.Linux` — make's chained-intermediate logic accepts them
+  as up to date (`.edf` intermediates are auto-deleted, so `.db` is the
+  natural committed artifact). Note: regenerating `.db` from an edited
+  `.sch` needs licensed Capfast regardless, so this loses nothing.
+- [x] Full `gmake -k`: **everything builds except `adl`** (deferred —
+  `adl2dl` is missing on polaris too). `data/` gets luts + alhConfigs +
+  the 9 top-level `.db` (byte-identical to polaris), `bin/ppc604_long`
+  gets all startup scripts and `local`.
+- [ ] Byte-compare polaris vs container cross-compiled objects
+  (`src/*/O.ppc604_long`) — needs the object tarball from polaris.
+  Note: compare with debug info stripped (`objcopyppc --strip-debug`);
+  `-g` stabs embed build paths. `__FILE__` is relative (`../foo.c`), so
+  code sections should be path-independent.
+- [ ] `adl` dir decision: commit `.dl` files or drop dir from build.
 
 ## Local modifications to the polaris copy
 
