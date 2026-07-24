@@ -12,7 +12,7 @@
 
 Name:           gem-epics3139gem86
 Version:        3.13.9
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        EPICS 3.13.9 GEM8.6 build tree (Linux host tools + ppc604_long target)
 License:        EPICS Open License / Proprietary Gemini additions (org-internal)
 AutoReqProv:    no
@@ -44,10 +44,38 @@ find %{buildroot}%{epicsdir} -type d -name 'O.*' -prune -exec rm -rf {} +
 mkdir -p %{buildroot}/usr/software/dev/solaris/bin
 ln -sf /usr/bin/perl %{buildroot}/usr/software/dev/solaris/bin/perl
 
+# Login-shell environment (the Linux equivalent of polaris ~/.gem8.6 +
+# epics.csh) so dev containers / build hosts get the toolchain on PATH in
+# every shell — users can clone and just gmake.
+mkdir -p %{buildroot}/etc/profile.d
+cat > %{buildroot}/etc/profile.d/gem86.sh <<'EOF'
+# GEM8.6 EPICS / Tornado 2.2 build environment (gem-epics3139gem86 RPM)
+export EPICS=/usr/software/dev/packages/epics/epics3.13.9GEM8.6
+export EPICS_BASE=$EPICS/base
+export HOST_ARCH=Linux
+export WIND_BASE=/usr/software/dev/packages/vxworks/tornado2.2/ppc
+export WIND_HOST_TYPE=x86-linux
+export PATH=$EPICS/base/bin/$HOST_ARCH:$EPICS/base/tools:$EPICS/extensions/bin/$HOST_ARCH:$WIND_BASE/host/$WIND_HOST_TYPE/bin:$PATH
+EOF
+# csh flavor for tcsh users
+cat > %{buildroot}/etc/profile.d/gem86.csh <<'EOF'
+setenv EPICS /usr/software/dev/packages/epics/epics3.13.9GEM8.6
+setenv EPICS_BASE $EPICS/base
+setenv HOST_ARCH Linux
+setenv WIND_BASE /usr/software/dev/packages/vxworks/tornado2.2/ppc
+setenv WIND_HOST_TYPE x86-linux
+setenv PATH $EPICS/base/bin/$HOST_ARCH\:$EPICS/base/tools\:$EPICS/extensions/bin/$HOST_ARCH\:$WIND_BASE/host/$WIND_HOST_TYPE/bin\:$PATH
+EOF
+
 %files
 %{epicsdir}
 /usr/software/dev/solaris
+/etc/profile.d/gem86.sh
+/etc/profile.d/gem86.csh
 
 %changelog
+* Thu Jul 23 2026 Hawi Stecher <hawi.stecher@noirlab.edu> - 3.13.9-2
+- Ship /etc/profile.d/gem86.{sh,csh} so shells get the build env
+
 * Thu Jul 23 2026 Hawi Stecher <hawi.stecher@noirlab.edu> - 3.13.9-1
 - Initial packaging (REL-4693 Linux rehost)

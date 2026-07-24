@@ -12,9 +12,28 @@ and EPICS 3.13.9 already ships `HOST_ARCH=Linux` support that Gemini started
 wiring up years ago. The only tools with no Linux path are the commercial
 Capfast `sch2edif` (schematic → EDIF) and `adl2dl` — both handled below.
 
-## Quick start
+## Quick start (dev container — recommended)
 
-Prerequisites: Docker; the build-environment trees (one-time setup below).
+Everyone with GHCR access can build without any polaris trees:
+
+```sh
+./gemini-rtsw-ci/dev_environment.sh --el 9    # NB: --el 9, default is 8
+# inside the container:
+git clone git@github.com:gemini-rtsw/gmoscc.git && cd gmoscc
+./tools/linux-build/setup.sh    # once per checkout (.applTop + applSetup)
+make                            # and just `make` from then on
+```
+
+The dev image ships `gmoscc-devel`, which pulls the three build-environment
+packages; `/etc/profile.d/gem86.sh` (from gem-epics3139gem86 ≥ 3.13.9-2)
+puts the toolchain on PATH in every shell. `setup.sh` does the per-checkout
+UAE bootstrap — the only part that can't be baked into the image, because
+applSetup bakes the checkout's absolute path into the generated config.
+
+## Quick start (mounted trees — build-env maintenance)
+
+For working on the build environment itself (or without rpm-repo access),
+with the polaris trees on disk (one-time setup below):
 
 ```sh
 ./tools/linux-build/build.sh              # applSetup (if needed) + gmake

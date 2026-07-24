@@ -42,32 +42,12 @@ Pulls the pinned gmoscc build dependencies into a dev container.
 %setup -q
 
 %build
-# UAE build environment (mirrors tools/linux-build/gem-env.sh); the
-# astlib/slalib/timelib trees come from the gem86-deplibs package at
-# /gemini/GEM8.6
-export EPICS=/usr/software/dev/packages/epics/epics3.13.9GEM8.6
-export EPICS_BASE=$EPICS/base
-export HOST_ARCH=Linux
-export WIND_BASE=/usr/software/dev/packages/vxworks/tornado2.2/ppc
-export WIND_HOST_TYPE=x86-linux
-export PATH=$EPICS/base/bin/Linux:$EPICS/base/tools:$EPICS/extensions/bin/Linux:$WIND_BASE/host/x86-linux/bin:$PATH
-
-echo "APPLIC_TOP = $(pwd)" > .applTop
-
-# The capfast .db files are generated on Solaris by the licensed Capfast
-# sch2edif and committed in capfast/db; seed them so make treats the
-# .sch -> .edf -> .db chain as up to date.
-mkdir -p capfast/O.Linux
-cp capfast/db/*.db capfast/O.Linux/
-touch capfast/O.Linux/*.db
-
-# Same arguments as gmosInstall, minus adl (adl2dl has no Linux port — the
-# .dl displays are not part of the deployable tree; REL-4693)
-applSetup.pl -T ppc604_long -I alh -I capfast -I src -I startup -I db \
-    -d /gemini/GEM8.6/astlib/astlib -d /gemini/GEM8.6/slalib/slalib \
-    -d /gemini/GEM8.6/timelib/timelib -S MK
-# The committed Makefile.Dirs still lists adl; drop it for this build
-sed -i '/^DIRS += adl$/d' Makefile.Dirs
+# Environment from the gem-epics3139gem86 package (>= 3.13.9-2); repo copy
+# as fallback so a -1 dependency still builds. Bootstrap (applSetup, capfast
+# .db seed, adl removal) is shared with interactive use via setup.sh.
+if [ -f /etc/profile.d/gem86.sh ]; then . /etc/profile.d/gem86.sh
+else . tools/linux-build/gem-env.sh; fi
+./tools/linux-build/setup.sh
 gmake
 
 %install

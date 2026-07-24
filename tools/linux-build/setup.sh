@@ -1,0 +1,40 @@
+#!/bin/bash
+# Per-checkout bootstrap for building gmoscc on Linux (dev container or any
+# host with the gem-* RPMs installed, or with the trees at the same paths).
+# Run once after cloning; then plain `make`/`gmake` builds forever after.
+#
+#   git clone .../gmoscc.git && cd gmoscc
+#   ./tools/linux-build/setup.sh
+#   make
+set -e
+
+TOP="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$TOP"
+
+# Environment: prefer the RPM-installed profile script, fall back to the
+# repo copy (identical content). Interactive shells normally have this
+# already via /etc/profile.d/gem86.sh.
+if [ -z "${WIND_BASE:-}" ]; then
+    if [ -f /etc/profile.d/gem86.sh ]; then . /etc/profile.d/gem86.sh
+    else . "$TOP/tools/linux-build/gem-env.sh"; fi
+fi
+
+echo "APPLIC_TOP = $TOP" > .applTop
+
+# The capfast .db files are generated on Solaris by the licensed Capfast
+# sch2edif and committed in capfast/db; seed them so make treats the
+# .sch -> .edf -> .db chain as up to date.
+mkdir -p capfast/O.Linux
+cp capfast/db/*.db capfast/O.Linux/
+touch capfast/O.Linux/*.db
+
+# Same arguments as gmosInstall, minus adl (adl2dl has no Linux port)
+applSetup.pl -T ppc604_long -I alh -I capfast -I src -I startup -I db \
+    -d /gemini/GEM8.6/astlib/astlib -d /gemini/GEM8.6/slalib/slalib \
+    -d /gemini/GEM8.6/timelib/timelib -S MK
+
+# The committed Makefile.Dirs still lists adl; drop it for Linux builds
+sed -i '/^DIRS += adl$/d' Makefile.Dirs
+
+echo
+echo "Setup complete — run 'make' (or gmake) to build."
