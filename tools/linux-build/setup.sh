@@ -19,6 +19,14 @@ if [ -z "${WIND_BASE:-}" ]; then
     else . "$TOP/tools/linux-build/gem-env.sh"; fi
 fi
 
+# Scrub generated state. applSetup PRESERVES APPLIC_INSTALL from an existing
+# config/CONFIG.Defs, so a checkout previously bootstrapped in a different
+# container (different mount path) would keep the stale path and fail —
+# and already-generated startup files would keep it silently. A checkout
+# being (re)bootstrapped gets a clean slate.
+rm -rf config bin lib include dbd data Distfile .applTop
+find . -type d -name 'O.*' -prune -exec rm -rf {} +
+
 echo "APPLIC_TOP = $TOP" > .applTop
 
 # The capfast .db files are generated on Solaris by the licensed Capfast
