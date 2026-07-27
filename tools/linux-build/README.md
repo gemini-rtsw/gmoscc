@@ -3,6 +3,12 @@
 Builds gmoscc (EPICS 3.13.9 GEM8.6, VxWorks 5.5 target `ppc604_long`) on a
 Linux host in Docker, replacing the Solaris SPARC build host `polaris`.
 
+> **Porting another IOC?** Read
+> [`docs/README-LINUX-REHOST.md`](../../docs/README-LINUX-REHOST.md) — the
+> generalised procedure. Note that each IOC pins its own GEM tree version
+> (GEM8.4, GEM8.6, ...), and each GEM version needs its **own** dependency
+> RPMs built from scratch; only the method transfers, not these artifacts.
+
 The short version: the Gemini UAE build system is almost entirely
 host-portable. The cross-compiler (`ccppc`, gcc 2.96 for Tornado 2.2) exists
 as Linux x86 binaries [rebuilt by ANL from Wind River's GPL'd
@@ -122,20 +128,44 @@ tree (future work, see CI section).
   overrides: the first stops base from also cross-building, the second works
   around a versioned-symlink install rule that self-links `.a` files.
 
-### The two Solaris-only tools
+### Two dead tools — Capfast and the display screens
 
-- **Capfast `sch2edif`** (commercial, FlexLM-licensed): compiles the 170
-  `capfast/*.sch` schematics. Its end products are 9 top-level `.db` files;
-  the `.edf` intermediates are deleted by make, and the open-source half of
-  the chain (`e2db`) is rebuilt for Linux. Until the `.db` files are
-  committed to the repo (planned — the UAE `DATA` install rule handles
-  committed files natively), `build.sh` seeds them from the polaris V7-16
-  reference build. Editing a `.sch` requires Capfast and therefore polaris
-  (or the QEMU-Solaris lifeboat) regardless of where the build runs.
-- **`adl2dl`**: missing on polaris too — the `.dl` display generation has
-  been failing (ignored) there for years. The `adl` directory is the one
-  remaining build failure on Linux; decision pending (commit the existing
-  `.dl` files, or drop the directory from the build).
+Neither of these works **on Solaris either**. They are not Linux limitations,
+and the rehost is not what broke them.
+
+**Capfast is no longer supported.** The commercial Phase Three Logic tools
+(`sch2edif`, `schplot`, `schps`) turned `capfast/*.sch` schematics into EDIF
+for `e2db` to compile into `.db` databases. On polaris `sch2edif` now **fails
+with a FlexLM licence error** (exit 255, prints the vendor's phone number);
+`CAPFAST_LMHOST=@aguila.cl.gemini.edu` is a Cerro Pachón licence server and
+Capfast is a dead product. So:
+
+- **The 170 `.sch` schematics can no longer be compiled anywhere.** The 9
+  generated `.db` files are committed in `capfast/db/` and are the databases
+  the build actually uses; `setup.sh` seeds them into `capfast/O.Linux` and
+  `touch`es them so make treats the `.sch → .edf → .db` chain as satisfied.
+  (`.db` is the right artifact to commit — make deletes the `.edf`
+  intermediates.)
+- **Future database changes must edit the `.db` files directly.** The `.sch`
+  schematics remain only as historical documentation of design intent; they
+  are no longer the source of truth. Anyone maintaining these databases needs
+  to know that.
+- Only the licensed half of the chain is lost: `e2db` is an open EPICS
+  extension and is rebuilt for Linux here.
+
+**The MEDM/EDD display screens are no longer built.** `adl2dl` converted
+`adl/*.adl` into the `.dl` screens. On polaris `~/.gem8.6` aliases
+`adl2dl` → `adl2dl2.4` and `edd` → `eddadl2.4` — and **neither binary
+exists**; the aliases have been dead for years. Therefore:
+
+- The `adl` directory cannot build on Solaris or Linux. `setup.sh` (and the
+  spec's `%build`) drop `DIRS += adl` from `Makefile.Dirs`.
+- The `.dl` files in production `data/` are **stale artifacts** that rdist
+  never deleted — not reproducible from source by any build.
+- **A CI-built payload therefore contains no display screens.** If they
+  matter, either commit the existing `.dl` files as versioned data, or try
+  rebuilding `adl2dl`/`edd` from the EPICS extensions tree for Linux (the
+  approach that worked for `e2db`; untried).
 
 ## Modifications to the polaris copy
 
@@ -165,29 +195,51 @@ Everything under `polaris/` is a verbatim copy of the Solaris trees except:
 5. Host-tool builds add `O.Linux`, `bin/Linux`, `lib/Linux`,
    `include/os/Linux` — additive only; the Solaris artifacts are untouched.
 
-## Validation
+## Validation (V7-17, same source on both hosts) — COMPLETE
 
-Byte-comparison against the polaris **V7-16** build (note: V7-16 predates
-the REL-4969 commit, so `deviceControl`/`assemblyControl` objects differ by
-source). Of 40 `.o` files, after stripping debug info and `.comment`:
+Objects from a polaris V7-17 build compared against the container build of
+the same commit, after `objcopyppc --strip-debug -R .comment`:
 
-- **16 byte-identical.**
-- **2 identical except local-symbol spelling** — the two compiler builds
-  name function-local statics differently (`mode.3` vs `mode$3`); invisible
-  to the VxWorks loader.
-- **10 differ as expected** from REL-4969's `MVCounter` struct field
-  (all of `src/deviceControl` + `src/assemblyControl`).
-- **12 differ only by alignment padding**: the ANL toolchain was built from
-  Wind River's 2012 cumulative-patch sources (`ccppc -v`: `2.96+ MW/LM`),
-  polaris runs GA 2002 (`2.96+`). The patched compiler inserts a `nop`
-  after some unconditional branches; the instruction streams are otherwise
-  identical.
+- **40 objects: 16 byte-identical**, 24 differing.
+- Per-function analysis of the 24 (functions matched **by name**, never by
+  address — see the warning below): **384 functions containing comparisons →
+  347 identical, 37 differing only in compare mnemonic, 0 operand
+  mismatches.** No differing constants, branch conditions, call targets or
+  operands anywhere in the build.
 
-A same-source comparison against a polaris **V7-17** build is in progress to
-confirm that alignment nops and symbol spelling are the *only* compiler-level
-deltas. If bit-exactness is ever required, Wind River's GA-2002 GCC sources
-(available to vxWorks licensees) can be rebuilt for Linux with ANL's build
-scripts.
+Exactly two systematic compiler differences, both benign:
+
+1. **`-mlongcall` applied more consistently.** The ANL compiler routes all
+   calls through a register (`lis/addi/mtlr/blrl`); polaris's emitted some
+   direct `bl` despite `-mlongcall` in `ARCH_DEP_CFLAGS`. Direct `bl` reaches
+   only ±32 MB, so the ANL behaviour is stricter/safer. This accounts for the
+   code-size growth and all address shifts.
+2. **`cmplwi` → `cmpwi`** (unsigned → signed immediate compare) in 37 places,
+   same register/constant/branch. The operand is provably non-negative in
+   every case — loaded with `lhz` (zero-extending) then masked by
+   `clrlwi ...,16`, so 0–65535, where signed and unsigned compares are
+   identical. A free optimizer tie-break, not a semantic change.
+
+**Verdict:** the toolchains are not bit-identical (`ccppc -v`: ANL
+`2.96+ MW/LM` from Wind River's 2012 cumulative-patch sources vs polaris
+`2.96+` GA 2002), so byte-equality is not available as a safety net — but
+there is no semantic divergence. Normal IOC release testing is the
+appropriate remaining validation. If bit-exactness is ever required, Wind
+River's original GCC sources (available to licensees) can be built for Linux
+with ANL's scripts.
+
+Non-compiled outputs match exactly, as expected: `gemini.Support` and
+`mv167st` (copied from the EPICS tree) and all hand-written `start*` scripts
+are byte-identical to both polaris and production. Generated `*Startup*`
+scripts and `local` differ because they embed `APPLIC_INSTALL` — that is the
+deploy re-homing question, not a build difference.
+
+> **Method warning:** do not compare `.a` archives or whole-directory md5s
+> (archives embed timestamps and uid/gid), and do not compare objects **by
+> address** — a size change shifts every later address, so address-keyed
+> comparison silently compares unrelated instructions. Two wrong conclusions
+> in this project came from exactly that mistake. Compare per function, by
+> name. Also note `objdumpppc` separates mnemonic and operands with a tab.
 
 ## CI integration (gemini-rtsw-ci)
 

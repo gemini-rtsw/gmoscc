@@ -4,11 +4,32 @@ EPICS-based control software for the Gemini Multi-Object Spectrograph (GMOS) con
 
 ---
 
-> **Building on Linux (pilot):** gmoscc also builds on any Linux host with
-> Docker — no Solaris required — via `./tools/linux-build/build.sh`. See
-> [tools/linux-build/README.md](tools/linux-build/README.md). The
-> Solaris/polaris flow below remains the production build path until the
-> Linux build is validated and deployed.
+> **Building on Linux (REL-4693).** gmoscc now builds without Solaris, in a
+> container or in CI on every push:
+>
+> ```sh
+> ./gemini-rtsw-ci/dev_environment.sh --el 9   # NB: --el 9, the default is 8
+> ./tools/linux-build/setup.sh                 # once per checkout
+> make
+> ```
+>
+> See [tools/linux-build/README.md](tools/linux-build/README.md) for details
+> and the object-level validation against a polaris build, and
+> [docs/README-LINUX-REHOST.md](docs/README-LINUX-REHOST.md) for the
+> generalised procedure for other IOCs. The Solaris/polaris flow below still
+> works and remains the deploy path until the `APPLIC_INSTALL` re-homing
+> question is settled (CI output is verification-grade, not IOC-bootable).
+>
+> **Two build steps are permanently gone — on Solaris as well as Linux:**
+> - **Capfast is unsupported.** `sch2edif` fails a FlexLM licence check on
+>   polaris; the `capfast/*.sch` schematics can no longer be compiled
+>   anywhere. The generated databases are committed in `capfast/db/` and
+>   **future database changes must edit those `.db` files directly** — the
+>   schematics are now only historical documentation.
+> - **The MEDM/EDD display screens are no longer built.** `adl2dl`/`edd` do
+>   not exist on polaris (the `~/.gem8.6` aliases have been dead for years),
+>   so the `adl` directory is excluded from the build and the `.dl` files in
+>   production `data/` are stale artifacts, not build products.
 
 ## Build & Deploy Instructions
 
