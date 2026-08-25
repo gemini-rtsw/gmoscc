@@ -53,7 +53,41 @@ Pulls the pinned gmoscc build dependencies into a dev container.
 if [ -f /etc/profile.d/gem86.sh ]; then . /etc/profile.d/gem86.sh
 else . tools/linux-build/gem-env.sh; fi
 ./tools/linux-build/setup.sh
+
+# Re-home APPLIC_INSTALL to the DEPLOY path before building.
+#
+# applSetup.pl stamps APPLIC_INSTALL from pwd, which under rpmbuild is the
+# BUILD directory. That value is baked into the generated
+# bin/ppc604_long/{local,startup}, and APPLIC_INSTALL is the path the IOC cd's
+# into at boot -- so an RPM built that way installs cleanly and then boots the
+# crate into a directory that exists only on the build host.
+#
+# This deliberately inverts the rule in the top-level README ("do not change
+# APPLIC_INSTALL"). That rule is for DEVELOPER builds, where the IOC NFS-mounts
+# the developer's own build tree, so the build path IS the runtime path. For a
+# packaged build the runtime path is where the RPM puts the files, and it is
+# only safe to hardcode because %%{gmosver} is a fixed directory rather than a
+# per-version one.
+sed -i 's|^APPLIC_INSTALL[[:space:]]*=.*|APPLIC_INSTALL = /gemini/GEM8.6/gmos/%{gmosver}|' \
+    config/CONFIG.Defs
+grep -qx "APPLIC_INSTALL = /gemini/GEM8.6/gmos/%{gmosver}" config/CONFIG.Defs || {
+    echo "ERROR: APPLIC_INSTALL was not re-homed; generated startup would name the build dir" >&2
+    grep -n '^APPLIC_INSTALL' config/CONFIG.Defs >&2 || echo "  (no APPLIC_INSTALL line found)" >&2
+    exit 1
+}
+
 gmake
+
+# The failure this guards against is silent at runtime: the crate boots, cd's
+# to a path that is not there, and stops. Cheaper to fail the build.
+for f in bin/ppc604_long/startup bin/ppc604_long/local; do
+    [ -f "$f" ] || continue
+    if grep -q "$PWD" "$f"; then
+        echo "ERROR: build directory leaked into $f" >&2
+        grep -n "$PWD" "$f" | head >&2
+        exit 1
+    fi
+done
 
 %install
 # Mirror the classic rdist payload (UAE.dist): bin/<archs>, include, dbd,
