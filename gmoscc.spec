@@ -1,14 +1,19 @@
 # gmoscc — GMOS Control Computer IOC software.
 # Cross-compiles for vxWorks 5.5 / ppc604_long using the GEM8.6 EPICS tree
 # and Tornado 2.2 Linux toolchain from rpm-repo (see tools/linux-build/).
-# The RPM payload mirrors the classic rdist deploy tree
-# (/gemini/GEM8.6/gmos/<version>); activation stays a symlink flip (setgmos).
+# The RPM payload installs to a FIXED path, /gemini/GEM8.6/gmos/CC. The old
+# versioned V7-xx directory plus a `setgmos` symlink flip existed to let two
+# builds sit side by side and switch atomically; rpm provides that already --
+# `rpm -q` names what is installed and `dnf downgrade` is the rollback -- so
+# the extra indirection only adds a step that can be forgotten.
 
 %global _build_id_links none
 %global __os_install_post %{nil}
 %global debug_package %{nil}
-# Deploy-directory name, matching the historical V7-xx convention
-%global gmosver V7-17
+# Fixed deploy-directory name. Deliberately NOT the version: the version lives
+# in the RPM, and a fixed path is what lets APPLIC_INSTALL and the crate's boot
+# parameters name a location that does not change from release to release.
+%global gmosver CC
 
 Name:           gmoscc
 Version:        7.17
@@ -48,11 +53,45 @@ Pulls the pinned gmoscc build dependencies into a dev container.
 if [ -f /etc/profile.d/gem86.sh ]; then . /etc/profile.d/gem86.sh
 else . tools/linux-build/gem-env.sh; fi
 ./tools/linux-build/setup.sh
+
+# Re-home APPLIC_INSTALL to the DEPLOY path before building.
+#
+# applSetup.pl stamps APPLIC_INSTALL from pwd, which under rpmbuild is the
+# BUILD directory. That value is baked into the generated
+# bin/ppc604_long/{local,startup}, and APPLIC_INSTALL is the path the IOC cd's
+# into at boot -- so an RPM built that way installs cleanly and then boots the
+# crate into a directory that exists only on the build host.
+#
+# This deliberately inverts the rule in the top-level README ("do not change
+# APPLIC_INSTALL"). That rule is for DEVELOPER builds, where the IOC NFS-mounts
+# the developer's own build tree, so the build path IS the runtime path. For a
+# packaged build the runtime path is where the RPM puts the files, and it is
+# only safe to hardcode because %%{gmosver} is a fixed directory rather than a
+# per-version one.
+sed -i 's|^APPLIC_INSTALL[[:space:]]*=.*|APPLIC_INSTALL = /gemini/GEM8.6/gmos/%{gmosver}|' \
+    config/CONFIG.Defs
+grep -qx "APPLIC_INSTALL = /gemini/GEM8.6/gmos/%{gmosver}" config/CONFIG.Defs || {
+    echo "ERROR: APPLIC_INSTALL was not re-homed; generated startup would name the build dir" >&2
+    grep -n '^APPLIC_INSTALL' config/CONFIG.Defs >&2 || echo "  (no APPLIC_INSTALL line found)" >&2
+    exit 1
+}
+
 gmake
+
+# The failure this guards against is silent at runtime: the crate boots, cd's
+# to a path that is not there, and stops. Cheaper to fail the build.
+for f in bin/ppc604_long/startup bin/ppc604_long/local; do
+    [ -f "$f" ] || continue
+    if grep -q "$PWD" "$f"; then
+        echo "ERROR: build directory leaked into $f" >&2
+        grep -n "$PWD" "$f" | head >&2
+        exit 1
+    fi
+done
 
 %install
 # Mirror the classic rdist payload (UAE.dist): bin/<archs>, include, dbd,
-# data, RELEASE.NOTES, test — rooted at the versioned deploy directory.
+# data, RELEASE.NOTES, test — rooted at the fixed deploy directory.
 D=%{buildroot}/gemini/GEM8.6/gmos/%{gmosver}
 mkdir -p $D/bin
 cp -a bin/ppc604_long $D/bin/

@@ -273,8 +273,11 @@ How the pieces fit:
 - **`gmoscc.spec`** (repo root): `%build` = `.applTop` + `applSetup.pl`
   (without `adl`) + `gmake`; `%install` mirrors the classic rdist payload
   (`bin/ppc604_long` minus Distfile, `bin/Linux`, `include`, `dbd`, `data`,
-  `RELEASE.NOTES`, `test`) under `/gemini/GEM8.6/gmos/V7-xx` — the same
-  tree rdist used to ship to pisces, ready for the `setgmos` symlink flip.
+  `RELEASE.NOTES`, `test`) under `/gemini/GEM8.6/gmos/CC` — a fixed path, not
+  a versioned one. rpm already provides what the `V7-xx` + `setgmos` symlink
+  flip provided (`rpm -q` names what is installed, `dnf downgrade` rolls back),
+  and a fixed path is what lets `APPLIC_INSTALL` and the crate's boot
+  parameters name a location that does not change between releases.
 
 Still open:
 
