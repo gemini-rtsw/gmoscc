@@ -22,9 +22,15 @@
 # them. The crates' boot parameters name this path too.
 %global gmosver gmos
 
+# $GIT_HASH first: build_rpm.sh computes the hash on the HOST and passes it
+# into the build container as an environment variable. Shelling out to git
+# alone resolves to "nogit" whenever git is missing from the builder or trips
+# dubious-ownership on the mounted checkout.
+%define git_hash %(if [ -n "$GIT_HASH" ]; then echo "$GIT_HASH"; else git rev-parse --short HEAD 2>/dev/null || echo nogit; fi)
+
 Name:           gmoscc
 Version:        7.17
-Release:        1%{?dist}
+Release:        1.git%{git_hash}%{?dist}
 Summary:        Gemini GMOS Control Computer IOC software (vxWorks ppc604)
 License:        Gemini Observatory (org-internal)
 Source0:        %{name}-%{version}.tar.gz
