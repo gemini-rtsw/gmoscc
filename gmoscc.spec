@@ -1,14 +1,19 @@
 # gmoscc — GMOS Control Computer IOC software.
 # Cross-compiles for vxWorks 5.5 / ppc604_long using the GEM8.6 EPICS tree
 # and Tornado 2.2 Linux toolchain from rpm-repo (see tools/linux-build/).
-# The RPM payload mirrors the classic rdist deploy tree
-# (/gemini/GEM8.6/gmos/<version>); activation stays a symlink flip (setgmos).
+# The RPM payload installs to a FIXED path, /gemini/GEM8.6/gmos/CC. The old
+# versioned V7-xx directory plus a `setgmos` symlink flip existed to let two
+# builds sit side by side and switch atomically; rpm provides that already --
+# `rpm -q` names what is installed and `dnf downgrade` is the rollback -- so
+# the extra indirection only adds a step that can be forgotten.
 
 %global _build_id_links none
 %global __os_install_post %{nil}
 %global debug_package %{nil}
-# Deploy-directory name, matching the historical V7-xx convention
-%global gmosver V7-17
+# Fixed deploy-directory name. Deliberately NOT the version: the version lives
+# in the RPM, and a fixed path is what lets APPLIC_INSTALL and the crate's boot
+# parameters name a location that does not change from release to release.
+%global gmosver CC
 
 Name:           gmoscc
 Version:        7.17
@@ -52,7 +57,7 @@ gmake
 
 %install
 # Mirror the classic rdist payload (UAE.dist): bin/<archs>, include, dbd,
-# data, RELEASE.NOTES, test — rooted at the versioned deploy directory.
+# data, RELEASE.NOTES, test — rooted at the fixed deploy directory.
 D=%{buildroot}/gemini/GEM8.6/gmos/%{gmosver}
 mkdir -p $D/bin
 cp -a bin/ppc604_long $D/bin/
