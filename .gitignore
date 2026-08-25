@@ -19,3 +19,7 @@ cad.rc
 UAE.dist
 *%
 *~
+
+# editor swap/backup files
+.*.sw[a-p]
+*~
