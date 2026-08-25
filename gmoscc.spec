@@ -54,40 +54,52 @@ if [ -f /etc/profile.d/gem86.sh ]; then . /etc/profile.d/gem86.sh
 else . tools/linux-build/gem-env.sh; fi
 ./tools/linux-build/setup.sh
 
-# Re-home APPLIC_INSTALL to the DEPLOY path before building.
-#
-# applSetup.pl stamps APPLIC_INSTALL from pwd, which under rpmbuild is the
-# BUILD directory. That value is baked into the generated
-# bin/ppc604_long/{local,startup}, and APPLIC_INSTALL is the path the IOC cd's
-# into at boot -- so an RPM built that way installs cleanly and then boots the
-# crate into a directory that exists only on the build host.
-#
-# This deliberately inverts the rule in the top-level README ("do not change
-# APPLIC_INSTALL"). That rule is for DEVELOPER builds, where the IOC NFS-mounts
-# the developer's own build tree, so the build path IS the runtime path. For a
-# packaged build the runtime path is where the RPM puts the files, and it is
-# only safe to hardcode because %%{gmosver} is a fixed directory rather than a
-# per-version one.
-sed -i 's|^APPLIC_INSTALL[[:space:]]*=.*|APPLIC_INSTALL = /gemini/GEM8.6/gmos/%{gmosver}|' \
-    config/CONFIG.Defs
-grep -qx "APPLIC_INSTALL = /gemini/GEM8.6/gmos/%{gmosver}" config/CONFIG.Defs || {
-    echo "ERROR: APPLIC_INSTALL was not re-homed; generated startup would name the build dir" >&2
-    grep -n '^APPLIC_INSTALL' config/CONFIG.Defs >&2 || echo "  (no APPLIC_INSTALL line found)" >&2
-    exit 1
-}
-
+# Build with APPLIC_INSTALL left exactly as applSetup.pl set it -- the build
+# directory. It must stay that way for gmake: the UAE build system does not
+# merely stamp APPLIC_INSTALL into generated files, it INSTALLS INTO IT
+# ("Installing $APPLIC_INSTALL/./data/..."), so pointing it at the deploy path
+# makes gmake try to write to /gemini on the build host and fail. That is what
+# the top-level README's "do not change APPLIC_INSTALL" is protecting.
 gmake
+
+# Now re-home: rewrite the build path to the deploy path in the generated
+# files, after everything has been built and installed into the build tree.
+#
+# APPLIC_INSTALL is the path the IOC cd's into at boot, and it is baked into
+# generated files such as bin/ppc604_long/{startup,local}. Under rpmbuild that
+# is the BUILD directory, which exists on no crate -- so without this the RPM
+# installs cleanly and then boots the crate into nothing. Historically the
+# build ran on a host that shared the /gemini namespace, so the build path was
+# reachable and no re-homing was needed; building in a container removes that.
+DEPLOY=/gemini/GEM8.6/gmos/%{gmosver}
+BUILD_PATH=$PWD
+
+# -I (text files only) is deliberate, not an oversight. The built archives and
+# executables DO contain the build path -- ar and ld embed object-directory and
+# debug paths, e.g. .../src/gmos/O.ppc604_long inside gmosLib.a. Those are
+# inert: VxWorks `ld <` loads the file it is given and never consults them, and
+# every compiled artifact on every platform carries the same thing. Running sed
+# over a binary to "fix" them would corrupt it. Only the generated scripts
+# matter, because those name paths the IOC actually reads at boot.
+for f in $(grep -rlI "$BUILD_PATH" bin data dbd include 2>/dev/null); do
+    echo "re-homing $f"
+    sed -i "s|$BUILD_PATH|$DEPLOY|g" "$f"
+done
 
 # The failure this guards against is silent at runtime: the crate boots, cd's
 # to a path that is not there, and stops. Cheaper to fail the build.
-for f in bin/ppc604_long/startup bin/ppc604_long/local; do
-    [ -f "$f" ] || continue
-    if grep -q "$PWD" "$f"; then
-        echo "ERROR: build directory leaked into $f" >&2
-        grep -n "$PWD" "$f" | head >&2
-        exit 1
-    fi
-done
+if grep -rlI "$BUILD_PATH" bin data dbd include 2>/dev/null | grep -q .; then
+    echo "ERROR: build directory still present in files that will be shipped:" >&2
+    grep -rlI "$BUILD_PATH" bin data dbd include >&2
+    exit 1
+fi
+
+# And it must actually name the deploy path, or the rewrite silently did
+# nothing and the previous check passed for the wrong reason.
+grep -q "$DEPLOY" bin/ppc604_long/startup || {
+    echo "ERROR: bin/ppc604_long/startup does not reference $DEPLOY" >&2
+    exit 1
+}
 
 %install
 # Mirror the classic rdist payload (UAE.dist): bin/<archs>, include, dbd,
