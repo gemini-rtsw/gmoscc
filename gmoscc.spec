@@ -1,7 +1,7 @@
 # gmoscc — GMOS Control Computer IOC software.
 # Cross-compiles for vxWorks 5.5 / ppc604_long using the GEM8.6 EPICS tree
 # and Tornado 2.2 Linux toolchain from rpm-repo (see tools/linux-build/).
-# The RPM payload installs to a FIXED path, /gemini/GEM8.6/gmos/CC. The old
+# The RPM payload installs to a FIXED path, /gemini/GEM8.6/gmos/gmos. The old
 # versioned V7-xx directory plus a `setgmos` symlink flip existed to let two
 # builds sit side by side and switch atomically; rpm provides that already --
 # `rpm -q` names what is installed and `dnf downgrade` is the rollback -- so
@@ -13,7 +13,14 @@
 # Fixed deploy-directory name. Deliberately NOT the version: the version lives
 # in the RPM, and a fixed path is what lets APPLIC_INSTALL and the crate's boot
 # parameters name a location that does not change from release to release.
-%global gmosver CC
+#
+# It must stay "gmos". That was the old setgmos symlink name, and 144 places in
+# this repo hardcode /gemini/GEM8.6/gmos/gmos/... rather than deriving it --
+# TDIR and dirLUT settings in the pv files, the MKSS simulation startups, the
+# legacy mv167 scripts. Those are not rewritten by the re-homing below, which
+# only substitutes the build path, so renaming this directory silently breaks
+# them. The crates' boot parameters name this path too.
+%global gmosver gmos
 
 Name:           gmoscc
 Version:        7.17
