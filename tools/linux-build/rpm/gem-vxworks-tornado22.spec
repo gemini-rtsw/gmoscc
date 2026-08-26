@@ -25,7 +25,7 @@
 
 Name:           gem-vxworks-tornado22
 Version:        2.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Prebuilt VxWorks 5.5 kernel images for Tornado 2.2 VME targets
 License:        Proprietary (Wind River / Gemini) — org-internal
 AutoReqProv:    no
@@ -42,9 +42,17 @@ name directly, e.g.
 
     file name (f): /gemini/external/vxWorks/tornado2.2/mv2700/vxWorks
 
-Currently carries the mv2700 (MVME2700) BSP. Additional BSPs are added as new
-versions of this package rather than as separate packages, so one package
-answers "which kernels does this boot server offer".
+Currently carries the mv2700 (MVME2700) BSP, plus tornado2.0/vxUsers -- the
+shell login definitions the GMOS startup script reads. That file lives under a
+DIFFERENT Tornado version directory than the kernel, which is why it is called
+out here: packaging only tornado2.2 leaves a boot that loads the kernel fine
+and then fails on
+
+    can't open input '/gemini/external/vxWorks/tornado2.0/vxUsers'
+
+Additional BSPs and versions are added as new releases of this package rather
+than as separate packages, so one package answers "what does this boot server
+offer the crates".
 
 Install on the boot server that exports /gemini. The crate fetches the image
 over rsh or TFTP depending on its boot flags; neither needs this package on
@@ -53,6 +61,7 @@ the crate itself.
 %install
 mkdir -p %{buildroot}/gemini/external/vxWorks
 cp -a %{trees}/gemini/external/vxWorks/tornado2.2 \
+      %{trees}/gemini/external/vxWorks/tornado2.0 \
       %{buildroot}/gemini/external/vxWorks/
 # The staging tree is usually an NFS copy read through root_squash, so the
 # files arrive owned by nobody. Package them as root-owned; they are served
@@ -62,8 +71,23 @@ chown -R root:root %{buildroot}/gemini/external/vxWorks
 %files
 %defattr(-,root,root,-)
 /gemini/external/vxWorks/tornado2.2
+/gemini/external/vxWorks/tornado2.0
 
 %changelog
+* Wed Aug 26 2026 Hawi Stecher <hawi.stecher@noirlab.edu> - 2.2-2
+- Add tornado2.0/vxUsers. Found during the REL-4693 TR: the crate loaded its
+  kernel and ran the startup script, which then failed on
+  "can't open input '/gemini/external/vxWorks/tornado2.0/vxUsers'". It is a
+  different Tornado version directory from the kernel, so packaging
+  tornado2.2 alone missed it. Without it no shell login users are defined and
+  telnet/rlogin to the crate is refused; the IOC itself is unaffected.
+- Note: vxUsers contains a VxWorks-hashed shell password. It has been
+  world-readable on the NFS export since 2006, so packaging does not change
+  its exposure much, but the hash is a weak additive checksum and should not
+  be treated as protecting anything.
+  vxUsers 85 bytes, dated 2006-08-26,
+  sha256 dab0eeca7dbb7a6323b4ce5c83e1620383413049b57310f96f4427d9072b7041
+
 * Mon Aug 24 2026 Hawi Stecher <hawi.stecher@noirlab.edu> - 2.2-1
 - Initial packaging of the mv2700 VxWorks 5.5 image, dated 2010-01-14, taken
   from pisces:/export/gemini/external/vxWorks/tornado2.2/mv2700. Packaged so
