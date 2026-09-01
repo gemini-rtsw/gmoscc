@@ -42,13 +42,20 @@ AutoReqProv:    no
 # that installing gmoscc on the file server pulls everything a crate needs;
 # see startup/local.vws for the mount and startup/common/gmStartup* for the
 # loads.
-Requires:       gem86-epics-runtime
-Requires:       gem86-deplibs
-Requires:       gem-vxworks-tornado22
+# Pinned exactly, not by name alone. These are loaded by `ld <` at boot, so
+# the version on the server IS the version running -- an unpinned dep means a
+# crate can boot different code than the build that was tested, with nothing
+# to show for it. gmos-deplibs carries the support libraries at GMOS-private
+# paths; the shared /gemini/GEM8.6/<lib>/<lib> symlinks are no longer used.
+Requires:       gem86-epics-runtime = 3.13.9
+Requires:       gmos-astlib  = 1.6
+Requires:       gmos-slalib  = 1.9.4
+Requires:       gmos-timelib = 1.8.6
+Requires:       gem-vxworks-tornado22 >= 2.2
 
 BuildRequires:  gem-tornado22-linux
 BuildRequires:  gem-epics3139gem86
-BuildRequires:  gem86-deplibs
+BuildRequires:  gmos-deplibs
 BuildRequires:  glibc(x86-32)
 BuildRequires:  make, gcc, gcc-c++, perl, tcsh
 
@@ -60,7 +67,7 @@ generated startup scripts, databases, LUTs and alarm configs.
 
 %package devel
 Summary:        Build environment for gmoscc development images
-Requires:       gem-tornado22-linux, gem-epics3139gem86, gem86-deplibs
+Requires:       gem-tornado22-linux, gem-epics3139gem86, gmos-deplibs
 Requires:       glibc(x86-32), make, gcc, gcc-c++, perl, tcsh
 
 %description devel

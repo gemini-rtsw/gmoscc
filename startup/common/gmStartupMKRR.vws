@@ -31,10 +31,10 @@ ld < /gemini/external/GEM8.6/base/bin/$(arch)/seq
 # libraries are available in the standard /gemini directory).
 ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gemini.Support
 
-ld < /gemini/GEM8.6/slalib/slalib/bin/$(arch)/slalib
-ld < /gemini/GEM8.6/timelib/timelib/bin/$(arch)/timelib
-ld < /gemini/GEM8.6/astlib/astlib/bin/$(arch)/astlib
-ld < /gemini/GEM8.6/timelib/timelib/bin/$(arch)/timeSeq
+ld < /gemini/GEM8.6/gmos/support/slalib/V1-9-4/bin/$(arch)/slalib
+ld < /gemini/GEM8.6/gmos/support/timelib/V1-8-6/bin/$(arch)/timelib
+ld < /gemini/GEM8.6/gmos/support/astlib/V1-6/bin/$(arch)/astlib
+ld < /gemini/GEM8.6/gmos/support/timelib/V1-8-6/bin/$(arch)/timeSeq
 
 ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/deviceControlLib.a
 ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gmosLib.a

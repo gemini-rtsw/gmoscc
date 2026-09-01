@@ -38,8 +38,8 @@ touch capfast/O.Linux/*.db
 
 # Same arguments as gmosInstall, minus adl (adl2dl has no Linux port)
 applSetup.pl -T ppc604_long -I alh -I capfast -I src -I startup -I db \
-    -d /gemini/GEM8.6/astlib/astlib -d /gemini/GEM8.6/slalib/slalib \
-    -d /gemini/GEM8.6/timelib/timelib -S MK
+    -d /gemini/GEM8.6/gmos/support/astlib/V1-6 -d /gemini/GEM8.6/gmos/support/slalib/V1-9-4 \
+    -d /gemini/GEM8.6/gmos/support/timelib/V1-8-6 -S MK
 
 # The committed Makefile.Dirs still lists adl; drop it for Linux builds
 sed -i '/^DIRS += adl$/d' Makefile.Dirs

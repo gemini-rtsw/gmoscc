@@ -11,6 +11,7 @@
 #   gemini/GEM8.6/...                     gem86-deplibs
 #   gemini/external/vxWorks/tornado2.2    gem-vxworks-tornado22
 #   gemini/external/GEM8.6/...            gem86-epics-runtime
+#   gemini/GEM8.6/{ast,sla,time}lib       gmos-deplibs (GMOS-private copy)
 #
 # Stage the last one from the boot server, e.g.
 #   mkdir -p "$GMOSCC_BUILDENV/gemini/external/vxWorks"
@@ -31,6 +32,7 @@ gem-epics3139gem86:usr/software
 gem86-deplibs:gemini/GEM8.6
 gem-vxworks-tornado22:gemini/external/vxWorks/tornado2.2
 gem86-epics-runtime:gemini/external/GEM8.6
+gmos-deplibs:gemini/GEM8.6
 "
 SPECS=""
 for entry in $CANDIDATES; do
