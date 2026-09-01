@@ -145,7 +145,7 @@ alias gmosNoCP 'unsetenv GMOS_CP_ACCESS && set prompt = "`uname -n`% " && echo "
 
 #alias  ayla     'setenv DISPLAY ayla:0.0'
 #alias  manta    'setenv DISPLAY manta:0.0'
-#alias  pisces   'setenv DISPLAY pisces:0.0'
+#alias  mkotcsbootv2-lv1   'setenv DISPLAY mkotcsbootv2-lv1:0.0'
 
 #
 # ------------------------------------------------------------------------

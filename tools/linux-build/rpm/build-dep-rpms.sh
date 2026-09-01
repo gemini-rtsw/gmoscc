@@ -10,10 +10,11 @@
 #   usr/software/...                      gem-tornado22-linux, gem-epics3139gem86
 #   gemini/GEM8.6/...                     gem86-deplibs
 #   gemini/external/vxWorks/tornado2.2    gem-vxworks-tornado22
+#   gemini/external/GEM8.6/...            gem86-epics-runtime
 #
 # Stage the last one from the boot server, e.g.
 #   mkdir -p "$GMOSCC_BUILDENV/gemini/external/vxWorks"
-#   rsync -a /net/pisces/export/gemini/external/vxWorks/tornado2.2 \
+#   rsync -a /net/mkotcsbootv2-lv1/export/gemini/external/vxWorks/tornado2.2 \
 #         "$GMOSCC_BUILDENV/gemini/external/vxWorks/"
 set -e
 
@@ -29,6 +30,7 @@ gem-tornado22-linux:usr/software
 gem-epics3139gem86:usr/software
 gem86-deplibs:gemini/GEM8.6
 gem-vxworks-tornado22:gemini/external/vxWorks/tornado2.2
+gem86-epics-runtime:gemini/external/GEM8.6
 "
 SPECS=""
 for entry in $CANDIDATES; do

@@ -12,19 +12,19 @@ dbpf "g7:cc:msEnableEnable","0"
 dbpf "g7:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "g7:sad:name.VAL","GMOS-N (simulated) (V6-5)"
-dbpf "g7:sad:cc:name.VAL","GMOS-N (V6-5) - simulated"
+dbpf "g7:sad:name.VAL","GMOS-N (simulated) (@VERSION@)"
+dbpf "g7:sad:cc:name.VAL","GMOS-N (@VERSION@) - simulated"
 
 # Load initialization files
-pvload "$(iocpath)/data/gmosCcSim.pv","top=g7:, sadtop=g7:sad:"
-pvload "$(iocpath)/data/gmOiwfsSim.pv","top=g7:wfs:"
-pvload "$(iocpath)/data/gmMaskSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmFilterSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmGratingSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmTranslationSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmTempCalibrate.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmSeqSim.pv","top=g7:, sadtop=g7:sad:"
-pvload "$(iocpath)/data/gmSeqTracking.pv","top=g7:, sadtop=g7:sad:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmosCcSim.pv","top=g7:, sadtop=g7:sad:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmOiwfsSim.pv","top=g7:wfs:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmMaskSim.pv","top=g7:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmFilterSim.pv","top=g7:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmGratingSim.pv","top=g7:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmTranslationSim.pv","top=g7:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmTempCalibrate.pv","top=g7:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmSeqSim.pv","top=g7:, sadtop=g7:sad:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmSeqTracking.pv","top=g7:, sadtop=g7:sad:"
 
 # Start sequences
 seq &timeSeq, "sys=g7:cc:"

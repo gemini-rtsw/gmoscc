@@ -7,17 +7,17 @@
 shellPromptSet "GMOS Interlock Test > "
 
 # cd to application install directory (beware automounter problems)
-cd "$(iocpath)"
+cd "/gemini/GEM8.6/gmos/gmos"
 pwd
 
 # Load the OMS test routines.
-ld < $(iocpath)/bin/$(arch)/testOms844.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/testOms844.o
 
 # Disable all motors
 omsAllOff
 
 # Turn OFF all Solid State Relays
-pvload "$(iocpath)/data/ssrOff.pv","top=gm:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/ssrOff.pv","top=gm:"
 
 # Wait for 5 seconds
 taskDelay(300)
@@ -26,6 +26,6 @@ taskDelay(300)
 omsAllOnSlow
 
 # Turn ON all Solid State Relays
-pvload "$(iocpath)/data/ssrOn.pv","top=gm:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/ssrOn.pv","top=gm:"
 
 # Interlock test script finished. Now please reboot.

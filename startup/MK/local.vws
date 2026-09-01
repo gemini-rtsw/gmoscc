@@ -8,12 +8,12 @@ routeAdd "0.0.0.0" , "10.2.2.1"
 routeAdd "0.0.0.0" , "10.1.2.1"
 routeAdd "0.0.0.0" , "10.1.5.1"
 
-hostAdd ("pisces","10.2.2.57")
-nfsMount "pisces", "/export/gemini", "/gemini"
+hostAdd ("mkotcsbootv2-lv1","10.2.2.145")
+nfsMount "mkotcsbootv2-lv1", "/gemini", "/gemini"
 
 # Tell VxWorks the unix user ID and group ID of "gemvx",
 # so that file access over NFS works.
 
-nfsAuthUnixSet "pisces", 2966, 10, 0
+nfsAuthUnixSet "mkotcsbootv2-lv1", 2966, 10, 0
 
-cd "$(iocpath)"
+cd "/gemini/GEM8.6/gmos/gmos"

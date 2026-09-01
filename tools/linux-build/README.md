@@ -100,7 +100,7 @@ All of these are git-ignored (see `.gitignore`); `--clean` removes them.
 
 Deployment is unchanged for now: the IOC boots over NFS from a tree on the
 `/gemini` filesystem, deployed with `gmake rdist` + `tools/deploy.sh` from
-pisces (see the top-level README). A container build on a laptop produces a
+mkotcsbootv2-lv1 (see the top-level README). A container build on a laptop produces a
 correct tree, but its baked-in `APPLIC_INSTALL` path (`/build/gmoscc`) is only
 meaningful in the container — deployable builds need to be made on a host
 that shares the `/gemini` namespace, or the deploy flow needs to re-home the
@@ -284,7 +284,7 @@ Still open:
 - **GHCR package access**: the gmoscc repo needs Write on the `rpm-repo`
   package (github.com/orgs/gemini-rtsw/packages/container/rpm-repo/settings
   → Manage Actions access) or the pipeline fails pulling/pushing.
-- **Deploy story**: install the RPM on pisces and keep `setgmos`, or teach
+- **Deploy story**: install the RPM on mkotcsbootv2-lv1 and keep `setgmos`, or teach
   `deploy.sh` to take a CI artifact. Needs the `APPLIC_INSTALL` re-homing
   question answered (the IOC reads that path at boot; a CI build bakes the
   rpmbuild path, so a deployed CI RPM is not yet bootable — verification

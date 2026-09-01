@@ -35,7 +35,7 @@ EPICS-based control software for the Gemini Multi-Object Spectrograph (GMOS) con
 
 ### Prerequisites
 
-- SSH access to `polaris` (build host, Solaris) and `pisces` (deploy host, Linux)
+- SSH access to `polaris` (build host, Solaris) and `mkotcsbootv2-lv1` (deploy host, Linux)
 - Access to the Gemini software tree at `/gemini/external/GEM8.6/`
 
 ---
@@ -88,61 +88,39 @@ APPLIC_INSTALL = /home/gemvx/<you>/<your build dir>
 APPLIC_IOCPATH =
 ```
 
-### 6. Set the deploy path
+### 6. Deploy
 
-> **Important:** Only edit `APPLIC_IOCPATH`. **Do not** change `APPLIC_INSTALL` — it must stay pointed at your build directory, otherwise the generated `local`/`startup` files will reference a path that doesn't exist on the IOC at boot time.
->
-> **Also:** `APPLIC_IOCPATH` must **not** point at the production directory. Use a versioned subdir like `V7-15-test1` so a misfired `rdist` cannot overwrite prod.
+Builds ship as RPMs. `rdist`, `Distfile`, `deploy.sh` and `setgmos` are all
+retired: the startup scripts name `/gemini/GEM8.6/gmos/gmos` literally, and the
+RPM installs exactly there. `APPLIC_IOCPATH` is no longer part of deployment --
+leave it as `applSetup.pl` wrote it.
 
-```csh
-vi config/CONFIG.Defs
+Build the package (see `tools/linux-build/README.md`), publish it to rpm-repo
+with `gemini-rtsw-repo/upload-rpm.sh`, then on the boot server:
+
+```sh
+sudo dnf install gmoscc
 ```
 
-Leave `APPLIC_INSTALL` alone. Set only:
+That pulls `gem86-epics-runtime`, `gem86-deplibs` and `gem-vxworks-tornado22`
+as dependencies -- every `/gemini` tree the crate loads at boot.
 
-```
-APPLIC_IOCPATH = pisces:/gemini/GEM8.6/gmos/<your-version-dir>
-```
+### 7. Verify
 
-The version name you use here (e.g. `V7-15-test1`) is what `deploy.sh` will ask you to confirm before deploying.
-
-### 7. Generate the Distfile
-
-```csh
-rm -f Distfile
-gmake rdist
-cat Distfile
+```sh
+rpm -q gmoscc
+ls /gemini/GEM8.6/gmos/gmos/bin/ppc604_long/
 ```
 
-Review the `cat` output and verify the source and destination paths look correct before proceeding.
+### 8. Reboot the crate
 
-### 8. Deploy from pisces
+There is one fixed directory, so there are no symlinks to flip. Rollback is
+`sudo dnf downgrade gmoscc`.
 
-> **Important:** The deploy script must be run from `pisces`, not `polaris`. The two hosts have incompatible `rdist` protocol versions.
-
-```csh
-ssh gemvx@pisces
-cd <your working dir>/gmoscc
-./tools/deploy.sh
-```
-
-`deploy.sh` will show you the source and destination, then ask you to confirm by typing the version name. If the destination already exists it will warn you and require an exact match before proceeding.
-
-### 9. Verify the deployment
-
-```csh
-cd /gemini/GEM8.6/gmos
-```
-
-Diff your test directory against the production directory and copy over any config files as needed.
-
-### 10. Activate and reboot
-
-```csh
-setgmos
-```
-
-Set the symlinks to point to the new build, then reboot the GMOS CC.
+After the boot, confirm the crate is running the build you think it is: the
+package version is stamped into `gm:sad:name` and `gm:sad:cc:name`, and the
+startup log should show `cd "/gemini/GEM8.6/gmos/gmos"` followed by loads from
+that same path.
 
 ---
 
@@ -150,7 +128,7 @@ Set the symlinks to point to the new build, then reboot the GMOS CC.
 
 - `config/`, `Distfile`, `bin/`, `lib/`, and `include/` are all generated — they are not stored in the repo.
 - `.applTop` is excluded from the repo (see `.cvsignore`) because it contains a machine-local path.
-- Always double-check `APPLIC_IOCPATH` in `config/CONFIG.Defs` before deploying. A stale value pointing at the wrong directory can overwrite production binaries.
+- `APPLIC_IOCPATH` is vestigial: the startup scripts hardcode the deploy path, so nothing reads it any more.
 
 ---
 
@@ -164,21 +142,17 @@ These have all caused real incidents. The build system is quiet about them — n
 2. **Editing `APPLIC_INSTALL` in `config/CONFIG.Defs`.**
    `APPLIC_INSTALL` is the path the IOC will `cd` into at boot — it gets stamped into the generated `bin/ppc604_long/local` and `startup` files. It must match your **build directory** (where the object files actually live on the NFS-mounted filesystem the IOC sees), not the deploy destination. `applSetup.pl` sets this correctly from `pwd`; leave it alone.
 
-3. **Setting `APPLIC_IOCPATH` to the production directory (e.g. `/gemini/GEM8.6/gmos/gmos`).**
-   `APPLIC_IOCPATH` is the rdist destination. Setting it to the prod symlink target means `gmake rdist` produces a Distfile that points at prod, and the next deploy mirrors your tree over production — overwriting binaries and deleting any unversioned files (config edits, dated backups). Always use a versioned subdir like `V7-16` or `V7-15-test1`.
+3. **Trusting prod's `CONFIG.Defs`.**
+   Anyone can `rdist` into prod and replace its `config/CONFIG.Defs`. Never read that file expecting it to reflect what prod was *built* with. `rpm -q gmoscc` names what is installed.
 
-4. **Trusting prod's `CONFIG.Defs`.**
-   Anyone can `rdist` into prod and replace its `config/CONFIG.Defs`. Never read that file expecting it to reflect what prod was *built* with. If you need to know the last good install path, check the `gmos` symlink target with `ls -la /gemini/GEM8.6/gmos/`.
+### Quick sanity check before packaging
 
-5. **Running `deploy.sh` from polaris.**
-   The Solaris and Linux `rdist` implementations have an incompatible protocol version. `deploy.sh` detects polaris and refuses; if you bypass it with raw `rdist`, the deploy will fail or hang. Always deploy from pisces.
-
-### Quick sanity check before deploy
-
-```csh
-grep gemini bin/ppc604_long/local bin/ppc604_long/startup
-cat Distfile
+```sh
+grep -n '^cd ' bin/ppc604_long/*Startup* bin/ppc604_long/startup
+grep -c '@VERSION@' bin/ppc604_long/*Startup*
 ```
 
-- `local` and `startup` should reference your **build directory** (where the IOC will NFS-mount and read object files from).
-- `Distfile` `install -R` lines should reference your **versioned deploy directory**, never `/gemini/GEM8.6/gmos/gmos`.
+- Every `cd` should name `/gemini/GEM8.6/gmos/gmos`. The scripts hardcode it, so
+  a different value means a stale generated file.
+- `@VERSION@` should be gone from the RPM's copies -- `%build` substitutes it and
+  fails the build if any remain.

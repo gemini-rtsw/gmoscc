@@ -23,3 +23,6 @@ UAE.dist
 # editor swap/backup files
 .*.sw[a-p]
 *~
+
+# build_rpm.sh output
+rpms/

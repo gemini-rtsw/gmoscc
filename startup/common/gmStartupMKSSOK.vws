@@ -15,13 +15,13 @@ shellPromptSet "GMOS-N - sim > "
 loginStringSet "MVME167 vxWorks (GMOS-N - sim)\n\nlogin: "
 
 # cd to application install directory (beware automounter problems)
-cd "$(iocpath)"
+cd "/gemini/GEM8.6/gmos/gmos"
 pwd
 
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
 # (Commented out, since already done in startup_MINIMAL)
-# < $(iocpath)/bin/$(arch)/local
+# < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/local
 
 # Load EPICS core and record stuff
 ld < $(base)/bin/$(arch)/iocCore
@@ -40,36 +40,36 @@ ld < /gemini/slalib/bin/$(arch)/slalib
 ld < /gemini/timelib/bin/$(arch)/timelib
 ld < /gemini/astlib/bin/$(arch)/astlib
 
-ld < $(iocpath)/bin/$(arch)/drvOmsVme.o
-ld < $(iocpath)/bin/$(arch)/devDeviceControl.o
-ld < $(iocpath)/bin/$(arch)/devBarcode.o
-ld < $(iocpath)/bin/$(arch)/recAssControl.o
-ld < $(iocpath)/bin/$(arch)/gmosGensubLib.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/drvOmsVme.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/devDeviceControl.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/devBarcode.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/recAssControl.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gmosGensubLib.o
 
-ld < $(iocpath)/bin/$(arch)/gmMaskGenSubs.o
-ld < $(iocpath)/bin/$(arch)/devMaskControl.o
-ld < $(iocpath)/bin/$(arch)/gmOiwfsCalc.o
-ld < $(iocpath)/bin/$(arch)/gmOiwfsGenSubs.o
-ld < $(iocpath)/bin/$(arch)/gmOiwfsCadSupport.o
-ld < $(iocpath)/bin/$(arch)/tcs_simulator.o
-ld < $(iocpath)/bin/$(arch)/devOiwfsControl.o
-ld < $(iocpath)/bin/$(arch)/devAtmdcControl.o
-ld < $(iocpath)/bin/$(arch)/devFilterAss.o
-ld < $(iocpath)/bin/$(arch)/gmosLutLib.o
-ld < $(iocpath)/bin/$(arch)/devGratingAss.o
-ld < $(iocpath)/bin/$(arch)/lifter.o
-ld < $(iocpath)/bin/$(arch)/devTranslationAss.o
-ld < $(iocpath)/bin/$(arch)/gmosCcCadLib.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gmMaskGenSubs.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/devMaskControl.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gmOiwfsCalc.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gmOiwfsGenSubs.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gmOiwfsCadSupport.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/tcs_simulator.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/devOiwfsControl.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/devAtmdcControl.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/devFilterAss.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gmosLutLib.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/devGratingAss.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/lifter.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/devTranslationAss.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gmosCcCadLib.o
 
 
 # Load sequences here
 ld < /gemini/timelib/bin/mv167/timeSeq
 
-ld < $(iocpath)/bin/$(arch)/assemblyCar.o
-ld < $(iocpath)/bin/$(arch)/dtaAssemblyCar.o
-ld < $(iocpath)/bin/$(arch)/systemCar.o
-ld < $(iocpath)/bin/$(arch)/commandCar.o
-ld < $(iocpath)/bin/$(arch)/lifterSim.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/assemblyCar.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/dtaAssemblyCar.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/systemCar.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/commandCar.o
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/lifterSim.o
 
 # Initialise the Gemini Time System (1=master, 1=simulate, intPerSecond, intPerTick, timeOffset)
 timeClockInit 0, 1, 60, 1, 0
@@ -81,16 +81,16 @@ TSconfigure 1, 0, 0, 0, 0, 0
 devBarcodeSimulate = 3
 
 # Load one or more ASCII databases here
-dbLoad "$(iocpath)/data/default.dctsdr"
-dbLoadRecords "$(iocpath)/data/gmosCcTopMKSS.db"
-dbLoadRecords "$(iocpath)/data/gmosCcSadTopMKSS.db"
-dbLoadRecords "$(iocpath)/data/gmSeqTopMKSS.db"
-dbLoadRecords "$(iocpath)/data/gmSeqSadTopMKSS.db"
+dbLoad "/gemini/GEM8.6/gmos/gmos/data/default.dctsdr"
+dbLoadRecords "/gemini/GEM8.6/gmos/gmos/data/gmosCcTopMKSS.db"
+dbLoadRecords "/gemini/GEM8.6/gmos/gmos/data/gmosCcSadTopMKSS.db"
+dbLoadRecords "/gemini/GEM8.6/gmos/gmos/data/gmSeqTopMKSS.db"
+dbLoadRecords "/gemini/GEM8.6/gmos/gmos/data/gmSeqSadTopMKSS.db"
 
 # This turns off logging
 # iocLogDisable=1
 
-iocInit "$(iocpath)/data/resource.def"
+iocInit "/gemini/GEM8.6/gmos/gmos/data/resource.def"
 
 # Ensure master enable is disabled while startup script executes
 dbpf "g7:cc:msEnableEnable","0"
@@ -98,19 +98,19 @@ dbpf "g7:cc:msEnableEnable","0"
 dbpf "g7:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "g7:sad:name.VAL","GMOS-N (simulated) (V6-5)"
-dbpf "g7:sad:cc:name.VAL","GMOS-N (V6-5) - simulated"
+dbpf "g7:sad:name.VAL","GMOS-N (simulated) (@VERSION@)"
+dbpf "g7:sad:cc:name.VAL","GMOS-N (@VERSION@) - simulated"
 
 # Load initialization files
-pvload "$(iocpath)/data/gmosCcSim.pv","top=g7:, sadtop=g7:sad:"
-pvload "$(iocpath)/data/gmOiwfsSim.pv","top=g7:wfs:"
-pvload "$(iocpath)/data/gmMaskSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmFilterSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmGratingSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmTranslationSim.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmTempCalibrate.pv","top=g7:cc:"
-pvload "$(iocpath)/data/gmSeqSim.pv","top=g7:, sadtop=g7:sad:"
-pvload "$(iocpath)/data/gmSeqTracking.pv","top=g7:, sadtop=g7:sad:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmosCcSim.pv","top=g7:, sadtop=g7:sad:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmOiwfsSim.pv","top=g7:wfs:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmMaskSim.pv","top=g7:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmFilterSim.pv","top=g7:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmGratingSim.pv","top=g7:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmTranslationSim.pv","top=g7:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmTempCalibrate.pv","top=g7:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmSeqSim.pv","top=g7:, sadtop=g7:sad:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmSeqTracking.pv","top=g7:, sadtop=g7:sad:"
 
 # Start sequences
 seq &timeSeq, "sys=g7:cc:"

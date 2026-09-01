@@ -90,7 +90,7 @@ chown -R root:root %{buildroot}/gemini/external/vxWorks
 
 * Mon Aug 24 2026 Hawi Stecher <hawi.stecher@noirlab.edu> - 2.2-1
 - Initial packaging of the mv2700 VxWorks 5.5 image, dated 2010-01-14, taken
-  from pisces:/export/gemini/external/vxWorks/tornado2.2/mv2700. Packaged so
+  from mkotcsbootv2-lv1:/export/gemini/external/vxWorks/tornado2.2/mv2700. Packaged so
   the boot kernel a crate loads is identifiable by rpm -q rather than being an
   undated binary copied between hosts.
 - Both files are ELF 32-bit MSB PowerPC, statically linked, not stripped;

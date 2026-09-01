@@ -14,7 +14,7 @@ loginStringSet "MVME167 vxWorks (GMOS-N tc1)\n\nlogin: "
 
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
-< $(iocpath)/bin/$(arch)/local
+< /gemini/GEM8.6/gmos/gmos/bin/$(arch)/local
 
 # Execute the GMOS startup script
-< $(iocpath)/bin/$(arch)/gmStartupMKRRtc1
+< /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gmStartupMKRRtc1

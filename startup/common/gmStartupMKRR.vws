@@ -13,13 +13,13 @@ shellPromptSet "GMOS-N > "
 loginStringSet "MVME167 vxWorks (GMOS-N)\n\nlogin: "
 
 # cd to application install directory (beware automounter problems)
-cd "$(iocpath)"
+cd "/gemini/GEM8.6/gmos/gmos"
 pwd
 
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
 # (Commented out, since already done in startup_MINIMAL)
-< $(version)/bin/$(arch)/local
+< /gemini/GEM8.6/gmos/gmos/bin/$(arch)/local
 
 # Load EPICS core, pvload and sequencer
 ld < /gemini/external/GEM8.6/base/bin/$(arch)/iocCore
@@ -29,24 +29,24 @@ ld < /gemini/external/GEM8.6/base/bin/$(arch)/seq
 # Load any application records, device support or drivers here,
 # or code for subroutine records. It is assumed that Gemini
 # libraries are available in the standard /gemini directory).
-ld < $(version)/bin/$(arch)/gemini.Support
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gemini.Support
 
 ld < /gemini/GEM8.6/slalib/slalib/bin/$(arch)/slalib
 ld < /gemini/GEM8.6/timelib/timelib/bin/$(arch)/timelib
 ld < /gemini/GEM8.6/astlib/astlib/bin/$(arch)/astlib
 ld < /gemini/GEM8.6/timelib/timelib/bin/$(arch)/timeSeq
 
-ld < $(version)/bin/$(arch)/deviceControlLib.a
-ld < $(version)/bin/$(arch)/gmosLib.a
-ld < $(version)/bin/$(arch)/assemblyControlLib.a
-ld < $(version)/bin/$(arch)/gmSeqLib.a
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/deviceControlLib.a
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gmosLib.a
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/assemblyControlLib.a
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/gmSeqLib.a
 
 # Load sequences here
 
-ld < $(version)/bin/$(arch)/assemblyCar
-ld < $(version)/bin/$(arch)/dtaAssemblyCar
-ld < $(version)/bin/$(arch)/systemCar
-ld < $(version)/bin/$(arch)/commandCar
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/assemblyCar
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/dtaAssemblyCar
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/systemCar
+ld < /gemini/GEM8.6/gmos/gmos/bin/$(arch)/commandCar
 
 # Initialise the Gemini Time System (1=master, 1=simulate, intPerSecond, intPerTick, timeOffset)
 timeClockInit 0, 1, 60, 1, 0
@@ -55,21 +55,21 @@ timeClockInit 0, 1, 60, 1, 0
 TSconfigure 1, 0, 0, 0, 0, 0
 
 # Load one or more ASCII databases here
-dbLoadDatabase "$(version)/dbd/gemini.dbd"
-dbLoadRecords "$(version)/data/gmosCcTop.db"
-dbLoadRecords "$(version)/data/gmosCcSadTop.db"
-dbLoadRecords "$(version)/data/gmSeqTop.db"
-dbLoadRecords "$(version)/data/gmSeqSadTop.db"
+dbLoadDatabase "/gemini/GEM8.6/gmos/gmos/dbd/gemini.dbd"
+dbLoadRecords "/gemini/GEM8.6/gmos/gmos/data/gmosCcTop.db"
+dbLoadRecords "/gemini/GEM8.6/gmos/gmos/data/gmosCcSadTop.db"
+dbLoadRecords "/gemini/GEM8.6/gmos/gmos/data/gmSeqTop.db"
+dbLoadRecords "/gemini/GEM8.6/gmos/gmos/data/gmSeqSadTop.db"
 
 #putenv("EPICS_IOC_LOG_PORT=7004")
-#putenv("EPICS_IOC_LOG_INET=10.2.2.57")
+#putenv("EPICS_IOC_LOG_INET=10.2.2.145")
 #putenv("EPICS_IOC_LOG_FILE_NAME=/gemdata/log/iocLog.text")
 #iocLogDisable=0
 
 # This turns off logging
  iocLogDisable=1
 
-iocInit "$(version)/data/resource.def"
+iocInit "/gemini/GEM8.6/gmos/gmos/data/resource.def"
 
 # Ensure master enable is disabled while startup script executes
 dbpf "gm:cc:msEnableEnable","0"
@@ -77,20 +77,20 @@ dbpf "gm:cc:msEnableEnable","0"
 dbpf "gm:sad:cc:historyLog","Booting..."
 
 #Define the database name
-dbpf "gm:sad:name.VAL","GMOS-N (V7-13)"
-dbpf "gm:sad:cc:name.VAL","GMOS-N (V7-13)"
+dbpf "gm:sad:name.VAL","GMOS-N (@VERSION@)"
+dbpf "gm:sad:cc:name.VAL","GMOS-N (@VERSION@)"
 
 # Load initialization files
-pvload "$(version)/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"
-pvload "$(version)/data/gmAtmSim.pv","top=gm:cc:"
-pvload "$(version)/data/gmOiwfs.pv","top=gm:wfs:"
-pvload "$(version)/data/gmMask.pv","top=gm:cc:"
-pvload "$(version)/data/gmFilter.pv","top=gm:cc:"
-pvload "$(version)/data/gmGrating.pv","top=gm:cc:"
-pvload "$(version)/data/gmTranslation.pv","top=gm:cc:"
-pvload "$(version)/data/gmTempCalibrate.pv","top=gm:cc:"
-pvload "$(version)/data/gmSeq.pv","top=gm:, sadtop=gm:sad:"
-pvload "$(version)/data/gmSeqTracking.pv","top=gm:, sadtop=gm:sad:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmosCc.pv","top=gm:, sadtop=gm:sad:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmAtmSim.pv","top=gm:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmOiwfs.pv","top=gm:wfs:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmMask.pv","top=gm:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmFilter.pv","top=gm:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmGrating.pv","top=gm:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmTranslation.pv","top=gm:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmTempCalibrate.pv","top=gm:cc:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmSeq.pv","top=gm:, sadtop=gm:sad:"
+pvload "/gemini/GEM8.6/gmos/gmos/data/gmSeqTracking.pv","top=gm:, sadtop=gm:sad:"
 # Start sequences
 seq &timeSeq, "sys=gm:cc:"
 

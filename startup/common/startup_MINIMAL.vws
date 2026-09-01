@@ -15,10 +15,10 @@ loginStringSet "MVME167 vxWorks (minimal)\n\nlogin: "
 
 # The local file contains site-specific information
 # such as the default router and the vxWorks password file.
-< $(iocpath)/bin/$(arch)/local
+< /gemini/GEM8.6/gmos/gmos/bin/$(arch)/local
 
 # cd to application install startup directory (beware automounter problems)
-cd "$(iocpath)/bin/$(arch)"
+cd "/gemini/GEM8.6/gmos/gmos/bin/$(arch)"
 pwd
 
 # Now execute a script manually using "< script"

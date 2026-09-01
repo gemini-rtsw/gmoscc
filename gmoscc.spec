@@ -36,6 +36,16 @@ License:        Gemini Observatory (org-internal)
 Source0:        %{name}-%{version}.tar.gz
 AutoReqProv:    no
 
+# Runtime deps are the OTHER /gemini trees the crate ld's at boot, not
+# anything this host executes -- AutoReqProv finds none of them, because the
+# consumer is a vxWorks target reading them over NFS. Listed explicitly so
+# that installing gmoscc on the file server pulls everything a crate needs;
+# see startup/local.vws for the mount and startup/common/gmStartup* for the
+# loads.
+Requires:       gem86-epics-runtime
+Requires:       gem86-deplibs
+Requires:       gem-vxworks-tornado22
+
 BuildRequires:  gem-tornado22-linux
 BuildRequires:  gem-epics3139gem86
 BuildRequires:  gem86-deplibs
@@ -86,6 +96,19 @@ gmake
 # reachable and no re-homing was needed; building in a container removes that.
 DEPLOY=/gemini/GEM8.6/gmos/%{gmosver}
 BUILD_PATH=$PWD
+
+# Stamp the running version into gm:sad:name / gm:sad:cc:name. The startup
+# scripts carry @VERSION@ rather than a literal, because a hand-maintained
+# "V7-13" string went three releases stale and would have reported the wrong
+# build for every boot in between. The RPM is the only thing that knows what
+# it is, so it is what fills this in -- a boot log or a dbgf on either record
+# now names the exact package, git hash included.
+sed -i "s|@VERSION@|%{version}-%{release}|g" bin/ppc604_long/*Startup* 2>/dev/null || :
+if grep -rlI '@VERSION@' bin 2>/dev/null | grep -q .; then
+    echo "ERROR: unsubstituted @VERSION@ remains in generated startup files:" >&2
+    grep -rlI '@VERSION@' bin >&2
+    exit 1
+fi
 
 # -I (text files only) is deliberate, not an oversight. The built archives and
 # executables DO contain the build path -- ar and ld embed object-directory and
