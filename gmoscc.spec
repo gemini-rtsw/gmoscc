@@ -51,7 +51,12 @@ Requires:       gem86-epics-runtime = 3.13.9
 Requires:       gmos-astlib  = 1.6
 Requires:       gmos-slalib  = 1.9.4
 Requires:       gmos-timelib = 1.8.6
-Requires:       gem-vxworks-tornado22 >= 2.2
+# >= 2.2-2, not >= 2.2: 2.2-1 carries the kernel but NOT tornado2.0/vxUsers,
+# which the startup script reads. A crate on 2.2-1 loads its kernel over rsh
+# and then dies on "can't open input .../tornado2.0/vxUsers" -- found the hard
+# way in the REL-4693 TR, and again when dnf left 2.2-1 in place because it
+# satisfied a >= 2.2 requirement.
+Requires:       gem-vxworks-tornado22 >= 2.2-2
 
 BuildRequires:  gem-tornado22-linux
 BuildRequires:  gem-epics3139gem86
