@@ -25,7 +25,7 @@
 
 Name:           gem-vxworks-tornado22
 Version:        2.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Prebuilt VxWorks 5.5 kernel images for Tornado 2.2 VME targets
 License:        Proprietary (Wind River / Gemini) — org-internal
 AutoReqProv:    no
@@ -42,13 +42,17 @@ name directly, e.g.
 
     file name (f): /gemini/external/vxWorks/tornado2.2/mv2700/vxWorks
 
-Currently carries the mv2700 (MVME2700) BSP, plus tornado2.0/vxUsers -- the
-shell login definitions the GMOS startup script reads. That file lives under a
-DIFFERENT Tornado version directory than the kernel, which is why it is called
-out here: packaging only tornado2.2 leaves a boot that loads the kernel fine
-and then fails on
+Currently carries the mv2700 (MVME2700) BSP, plus vxUsers -- the shell login
+definitions the GMOS startup script reads. Without vxUsers the kernel loads
+fine and the IOC runs, but loginUserAdd never runs, so no shell users exist
+and telnet/rlogin to the crate is refused:
 
-    can't open input '/gemini/external/vxWorks/tornado2.0/vxUsers'
+    can't open input '.../vxUsers'
+
+vxUsers historically lived under tornado2.0 and every other VxWorks IOC still
+reads it there. This package ships its own copy under tornado2.2 instead, and
+owns nothing in tornado2.0, so that a Tornado 2.0 package can own that tree
+without a file conflict. See the %install comment.
 
 Additional BSPs and versions are added as new releases of this package rather
 than as separate packages, so one package answers "what does this boot server
@@ -61,8 +65,25 @@ the crate itself.
 %install
 mkdir -p %{buildroot}/gemini/external/vxWorks
 cp -a %{trees}/gemini/external/vxWorks/tornado2.2 \
-      %{trees}/gemini/external/vxWorks/tornado2.0 \
       %{buildroot}/gemini/external/vxWorks/
+
+# vxUsers under tornado2.2, NOT tornado2.0 where it has historically lived.
+#
+# The file is site-wide login configuration, not a Tornado artifact -- it sits
+# under a tornado2.0 directory because that is where someone dropped it in
+# 2006. Five IOC families read it from that path (gnirscc, oiwfs, hrwfs, bto,
+# and gmoscc until now), so tornado2.0/ belongs to whichever package serves
+# those, and this package must not also own a file inside it: two packages
+# owning /gemini/external/vxWorks/tornado2.0/vxUsers is an rpm file conflict,
+# tolerated only while both copies stay byte-identical and broken the moment
+# they diverge.
+#
+# gmoscc builds and runs on Tornado 2.2 and touches nothing else under
+# tornado2.0, so it reads its copy from here instead. See startup/local.vws.
+# The counterpart copy at tornado2.0/vxUsers is owned by the Tornado 2.0
+# package; if the shell password is ever rotated, BOTH need updating.
+cp -a %{trees}/gemini/external/vxWorks/tornado2.0/vxUsers \
+      %{buildroot}/gemini/external/vxWorks/tornado2.2/vxUsers
 # The staging tree is usually an NFS copy read through root_squash, so the
 # files arrive owned by nobody. Package them as root-owned; they are served
 # read-only to crates and nothing needs write access.
@@ -71,9 +92,13 @@ chown -R root:root %{buildroot}/gemini/external/vxWorks
 %files
 %defattr(-,root,root,-)
 /gemini/external/vxWorks/tornado2.2
-/gemini/external/vxWorks/tornado2.0
 
 %changelog
+* Thu Sep 03 2026 Hawi Stecher <hawi.stecher@noirlab.edu> - 2.2-3
+- Move vxUsers from tornado2.0/ to tornado2.2/ and stop owning tornado2.0
+  entirely, so this package cannot collide with a Tornado 2.0 package (hrwfs
+  and the other 2.0 IOCs genuinely use that tree at build and runtime).
+  gmoscc's startup scripts follow it; no other IOC is affected.
 * Wed Aug 26 2026 Hawi Stecher <hawi.stecher@noirlab.edu> - 2.2-2
 - Add tornado2.0/vxUsers. Found during the REL-4693 TR: the crate loaded its
   kernel and ran the startup script, which then failed on

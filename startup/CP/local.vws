@@ -2,7 +2,7 @@
 # This file contains site-specific information
 # 
 
-< /gemini/external/vxWorks/tornado2.0/vxUsers
+< /gemini/external/vxWorks/tornado2.2/vxUsers
 
 routeAdd "0.0.0.0" , "172.17.2.1"
 
