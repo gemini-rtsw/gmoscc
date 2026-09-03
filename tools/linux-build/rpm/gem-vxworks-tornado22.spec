@@ -52,7 +52,7 @@ and telnet/rlogin to the crate is refused:
 vxUsers historically lived under tornado2.0 and every other VxWorks IOC still
 reads it there. This package ships its own copy under tornado2.2 instead, and
 owns nothing in tornado2.0, so that a Tornado 2.0 package can own that tree
-without a file conflict. See the %install comment.
+without a file conflict. See the install-section comment.
 
 Additional BSPs and versions are added as new releases of this package rather
 than as separate packages, so one package answers "what does this boot server
