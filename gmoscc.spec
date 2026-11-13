@@ -21,6 +21,18 @@
 # only substitutes the build path, so renaming this directory silently breaks
 # them. The crates' boot parameters name this path too.
 %global gmosver gmos
+%global deploy /gemini/GEM8.6/gmos/%{gmosver}
+
+# CONFIG SUB-REPO. The tuned files -- every .lut and .pv the IOC loads from
+# data/ -- and the dated backups operations keep beside them live in
+# github.com/gemini-rtsw/gmoscc-config, checked out at gmoscc-config/. They
+# are NOT owned by this package: defaults go to data.dist/, %%posttrans copies
+# one into data/ only where data/ has none, and data/ becomes a git work tree
+# of gmoscc-config on first install. An install or upgrade never overwrites a
+# tuned file. Same pattern as gnirscc and bootsmith-config.
+# History source for the shipped repo (the source tarball has no .git):
+%{!?cfgrepo:%global cfgrepo %(pwd)/gmoscc-config}
+%global cfgremote git@github.com:gemini-rtsw/gmoscc-config.git
 
 # $GIT_HASH first: build_rpm.sh computes the hash on the HOST and passes it
 # into the build container as an environment variable. Shelling out to git
@@ -66,6 +78,7 @@ BuildRequires:  gem-epics3139gem86
 BuildRequires:  gmos-deplibs
 BuildRequires:  glibc(x86-32)
 BuildRequires:  make, gcc, gcc-c++, perl, tcsh
+BuildRequires:  git, tar, gzip
 
 %description
 EPICS 3.13 (GEM8.6) control software for the GMOS control computer,
@@ -152,6 +165,24 @@ grep -q "$DEPLOY" bin/ppc604_long/startup || {
     exit 1
 }
 
+# Config sub-repo: a shallow clone at the pinned submodule commit, on main,
+# tracking origin/main (as gnirscc and bootsmith ship theirs). CI checks out
+# submodules at depth 1; on a host that reaches GitHub, git fetch --unshallow
+# gets the rest of the history.
+[ -f gmoscc-config/gr.lut ] || { echo "ERROR: gmoscc-config/ is empty -- git submodule update --init" >&2; exit 1; }
+pin=$(git -c safe.directory='*' -C "%{cfgrepo}" rev-parse HEAD)
+rm -rf config-repo
+git -c safe.directory='*' clone -q --depth 1 --no-local "file://%{cfgrepo}" config-repo
+git -C config-repo config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+git -C config-repo checkout -q -B main
+git -C config-repo update-ref refs/remotes/origin/main HEAD
+git -C config-repo branch -q --set-upstream-to=origin/main main
+git -C config-repo remote set-url origin %{cfgremote}
+git -C config-repo config core.sharedRepository world
+[ "$(git -C config-repo rev-parse HEAD)" = "$pin" ] || { echo "ERROR: config-repo is not at the submodule pin $pin" >&2; exit 1; }
+diff -r -x .git config-repo gmoscc-config >/dev/null || { echo "ERROR: gmoscc-config files differ from commit $pin" >&2; exit 1; }
+tar -C config-repo -czf config-repo.tar.gz .
+
 %install
 # Mirror the classic rdist payload (UAE.dist): bin/<archs>, include, dbd,
 # data, RELEASE.NOTES, test — rooted at the fixed deploy directory.
@@ -162,8 +193,102 @@ rm -f $D/bin/ppc604_long/Distfile
 cp -a bin/Linux $D/bin/
 cp -a include dbd data test RELEASE.NOTES $D/
 
+# Tuned files leave the payload. Every .lut/.pv the build produced must exist
+# in gmoscc-config, or a fresh install would have nothing to seed it from;
+# the default shipped in data.dist/ is gmoscc-config's (production's) copy,
+# never the build's src/MK copy.
+mkdir -p $D/data.dist
+for f in $D/data/*.lut $D/data/*.pv; do
+    n=$(basename "$f")
+    [ -f "gmoscc-config/$n" ] || { echo "ERROR: $n is built but not in gmoscc-config" >&2; exit 1; }
+    rm -f "$f"
+    cp -p "gmoscc-config/$n" "$D/data.dist/$n"
+done
+# Neither built nor tuned: production's screens, scripts and test files.
+for f in static-data/*; do
+    [ "$(basename "$f")" = README ] && continue
+    cp -p "$f" $D/data/
+done
+install -Dpm 0644 config-repo.tar.gz %{buildroot}%{_datadir}/%{name}/config-repo.tar.gz
+
+%pretrans
+# Until this release the package OWNED data/*.lut and data/*.pv. On the
+# upgrade that stops owning them, rpm installs the new package and then
+# erases the old one's files that nothing owns any more -- i.e. deletes the
+# live tuned files, after %%post and before %%posttrans. Stash them here so
+# %%posttrans can put them back. An existing stash (interrupted earlier run)
+# is kept: it may hold the only copy. Never fails the transaction.
+d=%{deploy}/data
+s=%{deploy}/.tuned-stash
+if [ -d "$d" ]; then
+    mkdir -p "$s" 2>/dev/null && \
+    for f in "$d"/*.lut "$d"/*.pv; do
+        [ -f "$f" ] || continue
+        [ -e "$s/$(basename "$f")" ] || cp -p "$f" "$s/" || :
+    done
+fi
+exit 0
+
+%post
+# data/ is root's and git refuses repos owned by someone else; allow this one.
+# Only if git is installed: the package does not require it.
+if command -v git >/dev/null 2>&1; then
+    git config --system --get-all safe.directory 2>/dev/null | grep -qx '%{deploy}/data' || \
+        git config --system --add safe.directory '%{deploy}/data' || :
+fi
+:
+
+%posttrans
+# Runs after the old package's files were erased. Strictly additive: an
+# existing file in data/ is never touched. Never fails the install.
+d=%{deploy}/data
+s=%{deploy}/.tuned-stash
+# 1. Put back live tuned files the owned->unowned upgrade deleted.
+if [ -d "$s" ]; then
+    ok=1
+    for f in "$s"/*; do
+        [ -f "$f" ] || continue
+        n=$(basename "$f")
+        [ -e "$d/$n" ] || cp -p "$f" "$d/$n" || ok=0
+    done
+    if [ $ok = 1 ]; then rm -rf "$s"; else
+        echo "gmoscc: WARNING: could not restore all tuned files; copies kept in $s" >&2; fi
+fi
+# 2. Seed defaults only where data/ still has none (fresh install).
+for f in %{deploy}/data.dist/*; do
+    [ -f "$f" ] || continue
+    n=$(basename "$f")
+    [ -e "$d/$n" ] || cp -p "$f" "$d/$n" || :
+done
+# 3. First install only: make data/ a git work tree of gmoscc-config. Repo
+#    files missing from data/ (dated backups) are copied in; .git goes in
+#    last, so a half-done run leaves none and the next install retries.
+tb=%{_datadir}/%{name}/config-repo.tar.gz
+if [ -d "$d" ] && [ ! -e "$d/.git" ] && [ -r "$tb" ]; then
+    t=$(mktemp -d "%{deploy}/.config-repo.XXXXXX" 2>/dev/null) || t=
+    if [ -n "$t" ] && [ -d "$t" ] && tar -xzf "$tb" -C "$t" --no-same-owner; then
+        (cd "$t" && find . -path ./.git -prune -o -type f -print) | while IFS= read -r f; do
+            f=${f#./}
+            if [ ! -e "$d/$f" ] && [ ! -L "$d/$f" ]; then
+                mkdir -p "$(dirname "$d/$f")" && cp -p "$t/$f" "$d/$f"
+            fi
+        done
+        if chmod -R a+rwX "$t/.git" && mv "$t/.git" "$d/.git"; then
+            echo "gmoscc: $d is now a git work tree of gmoscc-config (git status there)" >&2
+        else
+            echo "gmoscc: WARNING: could not set up $d/.git; the IOC files are unaffected" >&2
+        fi
+    else
+        echo "gmoscc: WARNING: could not unpack $tb; the IOC files are unaffected" >&2
+    fi
+    [ -n "$t" ] && rm -rf "$t"
+fi
+exit 0
+
 %files
-/gemini/GEM8.6/gmos/%{gmosver}
+%{deploy}
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/config-repo.tar.gz
 
 %files devel
 

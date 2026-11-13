@@ -2,3 +2,6 @@
 	path = gemini-rtsw-ci
 	url = https://github.com/gemini-rtsw/gemini-rtsw-ci.git
 	branch = main
+[submodule "gmoscc-config"]
+	path = gmoscc-config
+	url = https://github.com/gemini-rtsw/gmoscc-config.git
