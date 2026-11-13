@@ -263,6 +263,13 @@ for f in %{deploy}/data.dist/*; do
     n=$(basename "$f")
     [ -e "$d/$n" ] || cp -p "$f" "$d/$n" || :
 done
+# 2b. Tuned files are edited in place by sci/eng from their own accounts.
+#     Mode only; content is never touched. Every install, so files restored
+#     from the stash (root 0644 under the old package) get it too.
+for f in %{deploy}/data.dist/*; do
+    [ -f "$f" ] || continue
+    [ -f "$d/$(basename "$f")" ] && chmod 0666 "$d/$(basename "$f")" || :
+done
 # 3. First install only: make data/ a git work tree of gmoscc-config. Repo
 #    files missing from data/ (dated backups) are copied in; .git goes in
 #    last, so a half-done run leaves none and the next install retries.
@@ -289,7 +296,17 @@ fi
 exit 0
 
 %files
-%{deploy}
+%dir %{deploy}
+%{deploy}/RELEASE.NOTES
+%{deploy}/bin
+%{deploy}/data.dist
+%{deploy}/dbd
+%{deploy}/include
+%{deploy}/test
+# Scientists and engineers tune from their own accounts and keep dated
+# backups beside the tuned files, so data/ itself must be writable by anyone.
+%dir %attr(0777,root,root) %{deploy}/data
+%{deploy}/data/*
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/config-repo.tar.gz
 

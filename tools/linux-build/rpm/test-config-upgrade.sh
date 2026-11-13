@@ -61,14 +61,20 @@ to /rpms/new.rpm
 snap > /tmp/after
 missing=$(comm -23 <(cut -d' ' -f1 /tmp/before) <(cut -d' ' -f1 /tmp/after))
 [ -z "$missing" ] || { echo "$missing"; fail "files deleted from data/"; }
-changed=$(join -j1 <(sort /tmp/before) <(sort /tmp/after) | awk '$2!=$5||$3!=$6||$4!=$7{print $1}')
+# Content and owner must not change; mode may change only for tuned files,
+# which are made 0666 for sci/eng (checked below).
+tuned=$(ls $D/data.dist)
+changed=$(join -j1 <(sort /tmp/before) <(sort /tmp/after) | while read p m1 o1 h1 m2 o2 h2; do
+    n=${p#./}; [ "$h1" != "$h2" ] || [ "$o1" != "$o2" ] && { echo "$p"; continue; }
+    [ "$m1" != "$m2" ] && ! echo "$tuned" | grep -qx "$n" && echo "$p"; done || :)
 [ -z "$changed" ] || { echo "$changed"; fail "files already in data/ changed"; }
-echo "  every file already in data/ present and unchanged ($(wc -l < /tmp/before) files)"
+echo "  every file already in data/ present, content and owner unchanged ($(wc -l < /tmp/before) files)"
 added=$(comm -13 <(cut -d' ' -f1 /tmp/before) <(cut -d' ' -f1 /tmp/after) | sed 's|^\./||')
 echo "  added: $(echo "$added" | grep -c .) files"
 grep -q 'retuned in operations' $D/data/gr.lut || fail "tuned gr.lut lost its edit"
 grep -q 'retuned in operations' $D/data/gmOiwfs.pv || fail "tuned gmOiwfs.pv lost its edit"
-[ "$(stat -c %a $D/data/flt.lut)" = 664 ] || fail "flt.lut mode not kept"
+for n in $tuned; do [ "$(stat -c %a $D/data/$n)" = 666 ] || fail "tuned $n not 0666"; done
+[ "$(stat -c %a $D/data)" = 777 ] || fail "data/ not 0777"
 grep -q "local copy" $D/data/$clash || fail "local backup overwritten by the repo's"
 [ -d $D/data/.git ] || fail "data/.git missing"
 [ -e $D/.tuned-stash ] && fail "stash left behind"
@@ -76,7 +82,7 @@ ls -d $D/.config-repo.* 2>/dev/null && fail "temp dir left behind"
 rpm -qf $D/data/gr.lut >/dev/null 2>&1 && fail "gr.lut still owned by a package"
 [ -f $D/data/gmosTop.dl ] || fail "static .dl not installed"
 rpm -qf $D/data/gmosTop.dl >/dev/null || fail "static .dl not owned by the package"
-echo "  tuned edits, mode, local backups kept; tuned files unowned; static files owned"
+echo "  tuned edits and local backups kept; tuned 0666, data/ 0777; tuned files unowned; static files owned"
 
 echo "== git as a non-root user"
 dnf -y -q install git >/dev/null
@@ -84,7 +90,8 @@ rpm -U --nodeps --replacepkgs /rpms/new.rpm    # %post sets safe.directory now g
 git config --system --get-all safe.directory | grep -qx $D/data || fail "safe.directory not set"
 useradd -m sci
 su - sci -c "cd $D/data && git status --short | head -20 | sed 's/^/  /'"
-su - sci -c "cd $D/data && git -c user.name=sci -c user.email=sci@example.invalid commit -qam 'ops tuning' && git log --oneline | sed 's/^/  /'"
+su - sci -c "cd $D/data && cp -p gr.lut gr.lut.2026.11.13-sci && echo '# sci edit' >> gr.lut" || fail "sci could not back up and edit gr.lut"
+su - sci -c "cd $D/data && git add gr.lut.2026.11.13-sci && git -c user.name=sci -c user.email=sci@example.invalid commit -qam 'ops tuning' && git log --oneline | sed 's/^/  /'"
 head=$(git -C $D/data rev-parse HEAD)
 
 echo "== reinstall: no-op for data/"
