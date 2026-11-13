@@ -180,7 +180,10 @@ git -C config-repo branch -q --set-upstream-to=origin/main main
 git -C config-repo remote set-url origin %{cfgremote}
 git -C config-repo config core.sharedRepository world
 [ "$(git -C config-repo rev-parse HEAD)" = "$pin" ] || { echo "ERROR: config-repo is not at the submodule pin $pin" >&2; exit 1; }
-diff -r -x .git config-repo gmoscc-config >/dev/null || { echo "ERROR: gmoscc-config files differ from commit $pin" >&2; exit 1; }
+# The source tarball (gemini-rtsw-ci build_rpm.sh: find -name '.git*' -prune)
+# drops .gitignore, so compare without it; the shipped repo still has it.
+diff -r -x .git -x .gitignore config-repo gmoscc-config || { echo "ERROR: gmoscc-config files differ from commit $pin" >&2; exit 1; }
+[ -f config-repo/.gitignore ] || { echo "ERROR: config-repo lost .gitignore" >&2; exit 1; }
 tar -C config-repo -czf config-repo.tar.gz .
 
 %install
