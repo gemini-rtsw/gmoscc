@@ -1,0 +1,10 @@
+Files the IOC tree carries in data/ that are neither built nor tuned: DM
+screen display lists (.dl), dm launch scripts, test files and LUT_edit.py.
+
+Copied from production /gemini/GEM8.6/gmos/gmos -> V7-16/data on 2026-11-13.
+capfast/adl cannot regenerate the .dl files on Linux yet, so the RPM installs
+these as they are. Where a file also exists elsewhere in this repo (adl/,
+test/) and differs, the copy here is production's and is the one installed.
+
+Tuned files (*.lut, *.pv) are not here: they live in the gmoscc-config
+submodule and are never owned by the RPM.
